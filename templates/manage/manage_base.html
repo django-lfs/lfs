@@ -1,0 +1,87 @@
+{% load i18n %}
+{% load sql %}
+{% load adminmedia %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>{% block title %}{% endblock %}</title>        
+        <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/widgets.css" />
+        <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}lfs/css/lfs.css" />
+        <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}lfs/css/lfs.manage.css" />
+        <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}lfs/jquery/jquery-ui-themeroller/jquery-ui-themeroller.css" />
+        <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}lfs/jquery/jquery.jgrowl.css" />
+
+        <script type="text/javascript" src="/admin/jsi18n/"></script>
+        <script type="text/javascript" src="{% admin_media_prefix %}js/core.js"></script>
+        <script type="text/javascript" src="{% admin_media_prefix %}js/calendar.js"></script>
+        <script type="text/javascript" src="{% admin_media_prefix %}js/admin/DateTimeShortcuts.js"></script>
+        
+        <script type="text/javascript" src="{% admin_media_prefix %}js/urlify.js"></script>
+        <script type="text/javascript" src="{{MEDIA_URL}}lfs/tiny_mce/jscripts/tiny_mce/tiny_mce.js"></script>
+        
+        <script type="text/javascript" src="{{MEDIA_URL}}lfs/jquery/jquery.pack.js"></script>
+        <script type="text/javascript" src="{{MEDIA_URL}}lfs/jquery/jquery.livequery.pack.js"></script>
+        <script type="text/javascript" src="{{MEDIA_URL}}lfs/jquery/jquery.form.pack.js"></script>
+        <script type="text/javascript" src="{{MEDIA_URL}}lfs/jquery/jquery.jgrowl_minimized.js"></script>
+        <script type="text/javascript" src="{{MEDIA_URL}}lfs/jquery/jquery.cookie.pack.js"></script>
+
+        <script type="text/javascript" src="{{MEDIA_URL}}lfs/jquery/jquery-ui-personalized-1.5.3.packed.js"></script>
+        <script type="text/javascript" src="{{MEDIA_URL}}lfs/js/lfs.manage.js"></script>
+        <script type="text/javascript" src="{{MEDIA_URL}}lfs/jquery/json2.js"></script>
+        
+        {% block javascript %}{% endblock %}
+        
+    </head>
+    <body class="{% block body_class %}{% endblock %}">
+        
+        {# {% dbinfo %} #}
+        
+        <h1><a href="{% url lfs_shop_view %}">LFS</a></h1>
+        
+        <div class="username">
+            {% if user.is_authenticated %}
+                {% if user.last_name %}
+                    <span>{{user.first_name}} {{user.last_name}}</span>
+                {% else %}
+                    <span>{{ user.username }}</span>
+                {% endif %}
+                | <a href="/logout">{% trans 'Logout' %}</a>
+            {% else %}
+                <a href="/login">{% trans 'Login' %}</a>
+            {% endif %}
+        </div>
+        
+        <div id="menu">
+              <a href="{% url lfs_manage_shop %}">{% trans 'Shop' %}</a>
+            | <a href="{% url lfs_manage_product_dispatcher %}">{% trans 'Products' %}</a>
+            | <a href="{% url lfs_manage_categories %}">{% trans 'Categories' %}</a>
+            | <a href="{% url lfs.manage.views.manage_shipping %}">{% trans 'Shipping Methods' %}</a>
+            | <a href="{% url lfs_manage_payment %}">{% trans 'Payment Methods' %}</a>
+            | <a href="{% url lfs_manage_taxes %}">{% trans 'Taxes' %}</a>
+            | <a href="{% url lfs_manage_pages %}">{% trans 'Pages' %}</a>
+            | <a href="{% url lfs_manage_static_blocks %}">{% trans 'Static blocks' %}</a>            
+            | <a href="{% url lfs.manage.views.manage_orders %}">{% trans 'Orders' %}</a>
+            | <a href="{% url lfs_manage_reviews %}">{% trans 'Reviews' %}</a>
+        </div>
+        
+        <table class="main">
+            <tr>
+                {% block left-slot-wrapper %}
+                    <td class="left-slot">
+                        <div style="height:20px"></div>
+                        {% block left_slot %}{% endblock %}
+                    </td>
+                {% endblock %}
+                <td class="middle-slot">
+                    {% block content %}{% endblock %}
+                </td>
+            </tr>
+        </table>    
+        {% block footer %}
+        <hr />
+        <p>{% trans 'Powered by LFS' %}</p>
+        <div id="spinner"></div>
+        {% endblock %}
+    </body>
+</html>

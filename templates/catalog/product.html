@@ -1,0 +1,31 @@
+{% extends "catalog/product_base.html" %}
+{% load lfs_tags %}
+{% load lfs_tagging_tags %}
+
+{% block content %}    
+    {% product_breadcrumbs product %}
+    {% product_navigation product %}
+    
+    <div id="product-inline">
+        {{product_inline|safe}}
+    </div>
+    
+    {# <h2>Tag cloud</h2>   #}
+    {# {% load tagging_tags %} #}
+    {# {% tag_cloud_for_model catalog.Product as cloud with steps=6 min_count=1 distribution=log %} #}
+    {#  #}
+    {# {% for tag in cloud %} #}
+    {#     <a href="{% url product_tag_detail tag.name %}" style="font-size:1{{tag.font_size}}px"> #}
+    {#         {{tag}}</a>  #}
+    {# {% endfor %} #}
+    {#  #}
+    {# {% tags_for_object product as tags %}         #}
+    {# {% if tags %} #}
+    {#     <h2>Tags</h2> #}
+    {#     {% for tag in tags %} #}
+    {#         <a href="{% url product_tag_detail tag.name %}"> #}
+    {#             {{tag}}</a>  #}
+    {#     {% endfor %}         #}
+    {# {% endif %} #}
+
+{% endblock %}

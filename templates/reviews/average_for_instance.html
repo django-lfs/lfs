@@ -1,0 +1,12 @@
+{% load lfs_tags %}
+{% if average %}
+    <div style="margin-left:-5px">
+        <ul class="star-rating">
+    
+            <li class="current-rating"
+                style="width:{{average|multiply:25}}px">
+                Currently 3/5 Stars
+            </li>
+        </ul>
+    </div>
+{% endif %}

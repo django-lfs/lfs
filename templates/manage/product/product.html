@@ -1,0 +1,126 @@
+{% extends "manage/manage_base.html" %}
+
+{% load i18n %}
+{% load lfs_tags lfs_manage_tags %}
+
+{% block body_class %}manage-product{% endblock %}
+
+{% block left_slot %}
+    <form id="selectable-products-filter-form"
+          action="{% url lfs_manage_selectable_products_inline %}"
+          method="post"
+          onsubmit="return false">
+        
+        <input type="hidden"
+               name="reset_page"
+               value="1" />
+                 
+        <input type="text" 
+               name="name_filter"
+               value="{{request.session.name_filter}}"
+               id="selectable-products-filter-input" /> 
+
+        <a class="selectable-products-reset-link"
+           href="{% url lfs_manage_selectable_products_inline %}?reset-filter=1">
+           <img class="icon-padding"
+                src="{{MEDIA_URL}}lfs/icons/cancel.png"
+                title="{% trans 'Reset Filter' %}"
+                alt="{% trans 'Reset' %}"/>
+        </a>
+
+        {% category_filter "selectable-products-category-filter" %}
+               
+    </form>
+
+    <div id="selectable-products">
+        {{selectable_products}}
+    </div>
+
+{% endblock %}
+
+{% block content %}
+    
+    <div id="product">
+        <span class="label">
+            {{product.name}}
+        </span>
+        |
+        <a href="{% url lfs_manage_products %}">
+           {% trans 'Overview' %}
+        </a>
+        |
+        <a href="{% url lfs_manage_add_product %}">
+           {% trans 'Add product' %}
+        </a>
+        |
+        <a class="confirmation-link"
+           data="{% trans 'Delete?' %}"
+           href="{% url lfs_manage_delete_product product.id %}">
+           {% trans 'Delete product' %}
+        </a>
+        |
+        <a href="{% url lfs.manage.views.product_by_id product.id %}"
+           target="_blank">
+           {% trans 'Preview product' %}
+        </a>
+    
+        <div id="manage-tabs">
+            <ul>
+                <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Product' %}</a></li>
+                
+                {% if not product.is_variant %}
+                    <li class="ui-tabs-nav-item"><a href="#categories">{% trans 'Categories' %}</a></li>
+                {% endif %}
+                
+                <li class="ui-tabs-nav-item"><a href="#images">{% trans 'Images' %}</a></li>
+                
+                {% if not product.is_variant %}
+                    <li class="ui-tabs-nav-item"><a href="#properties">{% trans 'Variants' %}</a></li>
+                {% endif %}
+
+                <li class="ui-tabs-nav-item"><a href="#accessories">{% trans 'Accessories' %}</a></li>
+                <li class="ui-tabs-nav-item"><a href="#related-products">{% trans 'Related Products' %}</a></li>
+                <li class="ui-tabs-nav-item"><a href="#dimension">{% trans 'Dimension' %}</a></li>                
+                <li class="ui-tabs-nav-item"><a href="#seo">{% trans 'SEO' %}</a></li>
+
+            </ul>
+
+            <div id="data">
+                {{product_data|safe}}
+            </div>
+            
+            {% if not product.is_variant %}
+                <div id="categories">
+                    {{categories|safe}}
+                </div>                
+            {% endif %}
+            
+            <div id="images">
+                {{images|safe}}
+            </div>
+            
+            {% if not product.is_variant %}
+                <div id="properties">
+                    {{properties|safe}}
+                </div>
+            {% endif %}
+                
+            <div id="accessories">
+                {{accessories|safe}}
+            </div>
+            
+            <div id="related-products">
+                {{related_products|safe}}
+            </div>
+
+            <div id="dimension">
+                {{dimension|safe}}
+            </div>
+
+            <div id="seo">
+                {{seo|safe}}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

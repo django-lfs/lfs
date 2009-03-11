@@ -1,0 +1,10 @@
+{% for shipping_method in shipping_methods %}
+    <div>
+        <input type="radio" 
+               name="shipping-method"
+               class="update-checkout"
+               {% ifequal shipping_method.id selected_shipping_method.id  %}checked="checked"{% endifequal %}
+               value="{{shipping_method.id}}" />
+            {{shipping_method.name}}
+    </div>    
+{% endfor %}

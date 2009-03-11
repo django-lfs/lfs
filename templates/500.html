@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block left-slot-wrapper %}{% endblock %}
+{% block right-slot-wrapper %}{% endblock %}
+
+{% block content %}
+    <h1>
+        {% trans 'We are sorry!' %}
+    </h1>
+    <p>
+        {% trans 'An error has occured. Please try again in a minute.' %}
+    </p>
+{% endblock %}

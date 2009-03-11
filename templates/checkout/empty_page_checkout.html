@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <div>
+        {% trans 'There is nothing to checkout' %}
+    </div>
+
+    <div id="cart-buttons">
+        <a class="shopping-button" href="{{shopping_url}}">{% trans 'Go on shopping' %}</a>
+    </div>
+    
+{% endblock %}

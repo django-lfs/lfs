@@ -1,0 +1,46 @@
+{% extends "manage/manage_base.html" %}
+{% load i18n %}
+
+{% block left_slot %}
+    <div id="portlet">
+        {{categories_portlet}}
+    </div>    
+{% endblock %}
+
+{% block content %}
+
+    <div>
+        <span class="label">{{category.name}}</span>
+        | <a href="{% url lfs_manage_add_top_category %}">{% trans 'Add top category' %}</a>
+        {% if category %}
+            | <a href="{% url lfs_manage_add_category category.id %}">{% trans 'Add category' %}</a>
+            | <a class="confirmation-link"
+                 data="{% trans 'Delete?' %}" 
+                 href="{% url lfs_delete_category category.id %}">{% trans 'Delete category' %}</a>
+            | <a href="{% url lfs.catalog.views.category_view category.slug %}" target="_blank">{% trans 'Preview' %}</a>            
+        {% endif %}
+    </div>
+
+    <div id="manage-tabs">
+        <ul>
+            <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Category' %}</a></li>
+            <li class="ui-tabs-nav-item"><a href="#products">{% trans 'Products' %}</a></li>            
+            <li class="ui-tabs-nav-item"><a href="#seo">{% trans 'SEO' %}</a></li>            
+        </ul>
+    
+        <div id="data">
+            {{data|safe}}
+        </div>
+        <div id="products">
+            {{products|safe}}
+        </div>
+        <div id="seo">
+            {{seo|safe}}
+        </div>
+    </div>
+<script>
+    $(function() {    
+        tinyMCE.execCommand('mceAddControl', true, 'id_description');
+    });    
+</script>    
+{% endblock %}

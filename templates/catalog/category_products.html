@@ -1,0 +1,60 @@
+{% load i18n lfs_tags %}
+
+{% if category.static_block %}
+    <div class="static-block">
+        {{category.static_block.html|safe}}
+    </div>
+{% endif %}
+
+<h1>
+    {{category.name}}
+</h1>
+<p>
+    {{category.description|safe}}
+</p>
+
+<div>
+    {% if show_pages %}
+        {% if previous_url %}
+            <a href="{{previous_url}}">Previous</a>
+        {% else %}
+            Previous
+        {% endif %} 
+    
+        {% for page in pages %}
+            <a class="{% if page.selected%}emphasized{% endif %}"
+               href="{% url lfs_category category.slug page.start %}">
+                {{page.name}}
+            </a>                
+        {% endfor %}    
+    
+        {% if next_url %}
+            <a href="{{next_url}}">Next</a>
+        {% else %}
+            Next
+        {% endif %}
+        ({{amount_of_products}} Products)
+    {% endif %}
+</div>    
+
+<div id="products">
+    <table>
+        {% for col in products %}
+        <tr>
+            {% for product in col %}
+                <td>
+                    <div>{{product.name}}</div>
+                    <div>
+                        <a href="{% url lfs.catalog.views.product_view product.slug %}">
+                            <img alt="{{product.name}}"
+                                 src="{{product.get_image.url_200x200}}" />
+                        </a>
+                    </div>
+                    <div>{{product.price|currency}} | <a href="{% url lfs_product product.slug %}">{% trans 'Details' %}</a></div>
+                    
+                </td>
+            {% endfor %}
+        </tr>        
+        {% endfor %}    
+    </table>
+</div>

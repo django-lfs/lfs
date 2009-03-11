@@ -1,0 +1,7 @@
+<ul id="menu">
+    <li id="c0"><a href='{% url lfs_shop_view %}'>holzpuzzle</a></li>
+    {% for category in categories %}
+        <li id="c{{category.id}}"><a {% if category.selected %}class="selected"{% endif %} href='{% url lfs_category category.slug 0 %}'>{{category.name}}</a></li>
+    {% endfor %}
+</ul>
+<br clear="all" />

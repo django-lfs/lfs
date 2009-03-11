@@ -1,0 +1,190 @@
+body {
+    font-size: 85%;
+    background-color: #fff !important;
+}
+
+h2 {
+    margin-top: 0;
+    border-bottom: 1px solid #aaa;
+}
+
+fieldset {
+    border:1px solid #aaa;
+    padding:20px;
+    margin-bottom:10px;
+}
+
+td.left-slot {
+  padding: 0 6px;
+  width: 240px;
+}
+
+a {
+    color: black;
+}
+
+a:visited {
+    color: black;
+}
+
+a:hover {
+    color: blue;
+}
+
+a.selected {
+    font-weight: bold;
+}
+
+.navigation-pages {
+    padding:2px 0;    
+    margin: 6px 0;
+    background-color: #eee;
+    border: 1px solid #aaa;
+    text-align:center;
+}
+
+.navigation-pages img {
+    position:relative; top:3px;
+}
+
+a.selectable-product {
+    color: black;
+    text-decoration:none;
+    display:block;
+}
+
+a.selectable-product:hover {
+    background-color: #aaa;
+}
+
+a.selectable-product.current {
+    font-weight: bold;    
+    background-color: #aaa;
+}
+
+ul.menu li {
+    list-style-type: none;
+}
+
+img {
+    border:none;
+}
+
+/* Forms */
+.top-buttons {
+    padding-bottom: 8px;
+}
+
+/* Accessories */
+.selectable-products {
+    min-height: 200px;
+    margin: 6px 0;
+}
+
+.selectable-product.variant {
+    padding-left: 10px;
+}
+
+table.orders,
+table.order-general,
+table.order-items,
+table.order-addresses,
+table.order-message,
+table.manage-overview,
+.selected-accessories table,
+.selectable-products table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.manage-overview th,
+.selected-accessories th,
+.selectable-products th {
+    background-color: #aaa;
+}
+
+table.manage-overview th,
+table.manage-overview td,
+.selectable-products table th,
+.selectable-products table td {
+    padding: 2px;
+}
+
+table.order-message,
+table.order-addresses, 
+table.order-items {
+    margin-top:20px;
+    font-size: 90%;
+}
+
+table.orders th,
+table.order-message th,
+table.order-general th,
+table.order-items th,
+table.order-addresses th {
+    background-color: #eee;
+}
+
+.selected-accessories {
+    height: 200px;
+    overflow: auto;
+    margin: 6px 0 20px 0;    
+}
+
+.checkbox {
+    width: 1px;
+}
+
+tr.odd {
+    background-color: #ddd;
+}
+
+div.manage-form-buttons {
+    padding-top: 20px;
+}
+
+#message {
+    border: 1px solid red;
+    display: none;
+}
+
+textarea {
+    width: 600px;
+}
+
+body.manage-product .image-item {
+    padding: 10px 0;
+}
+
+body.manage-product ul.manage-categories {
+    list-style-type: none;
+    padding-left: 20px;    
+}
+
+body.manage-product ul.manage-categories.root {
+    padding: 0;
+}
+
+.droppable-hover {
+    background-color: yellow;
+    height: 23px;
+}
+
+a.button {
+    border: 1px solid #aaa;
+}
+
+#selectable-products-filter-input,
+#selectable-products-category-filter {
+    width: 180px;
+}
+
+/* criteria */
+.criterion-value {
+    text-align:right;
+    width: 80px;
+}
+
+a.criterion-add-first-button {
+    text-decoration: None;
+}

@@ -1,0 +1,12 @@
+{% load i18n %}
+{% load lfs_tags %}
+
+{% if deliverable %}
+    <div>
+        {{delivery_time}}
+    </div>
+{% else %}
+    <div>
+        {% trans 'Not deliverable' %}
+    </div>        
+{% endif %}

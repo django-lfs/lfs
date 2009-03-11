@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n lfs_tags %}
+
+{% block content %}
+    
+    <h2>{% trans 'Products for tag' %} "{{tag}}"</h2>
+    <table class="lfs-default">
+        <tr>
+            <th>{% trans 'Image' %}</th>
+            <th>{% trans 'Product' %}</th>
+            <th class="number">
+                {% trans 'Price' %}
+            </th>
+        </tr>
+        {% for product in product_list %}
+            <tr class="{% cycle 'even' 'odd' %}">
+                <td>
+                    <a href="{{product.get_absolute_url}}">
+                        <img src="{{product.get_image.url_60x60}}"
+                             alt="{{product.name}}" 
+                             title="{{product.name}}" />
+                    </a>     
+                </td>
+                <td class="text">
+                    <a href="{{product.get_absolute_url}}">                    
+                        {{product.name}}
+                    </a>
+                </td>
+                <td class="number">
+                    {{product.price|currency}}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>    
+{% endblock %}

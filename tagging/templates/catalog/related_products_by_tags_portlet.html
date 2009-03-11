@@ -1,0 +1,15 @@
+{% load i18n %}
+<div class="related-products-by-tags-portlet portlet">
+    <div class="portlet">
+        {% trans 'Products with same Tags' %}
+    </div>
+    <ul class="root">        
+        {% for product in related_products %}
+            <li>
+                <a href="{{product.get_absolute_url}}">
+                    {{product.name}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>    

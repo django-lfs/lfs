@@ -1,0 +1,128 @@
+{% load i18n %}
+{% load lfs_tags %}
+
+<form action="{% url lfs_manage_save_products %}"
+      method="post">
+
+    <div class="navigation-pages">
+        {% if page.has_previous %}
+            <a class="products-page-link"
+               href="{% url lfs_manage_products %}?page=1">First</a>
+            <a class="products-page-link"
+               href="{% url lfs_manage_products %}?page={{page.previous_page_number}}">Previous</a>
+        {% else %}
+            <span>{% trans 'First' %}</span>
+            <span>{% trans 'Previous' %}</span>
+        {% endif %}
+
+        {{page.number}} / {{paginator.num_pages}}
+
+        {% if page.has_next %}
+            <a class="products-page-link"
+               href="{% url lfs_manage_products %}?page={{page.next_page_number}}">Next</a>
+            <a class="products-page-link"
+               href="{% url lfs_manage_products %}?page={{paginator.num_pages}}">Last</a>
+   
+        {% else %}
+            <span>{% trans 'Next' %}</span>
+            <span>{% trans 'Last' %}</span>
+        {% endif %}
+    </div>
+     
+    <table class="manage-overview">
+        <tr>
+            <th width="1px">
+                <input type="checkbox"
+                       class="select-all-1" />
+            </th>
+            <th width="1px">
+                {% trans 'URL' %}
+            </th>
+            <th width="1px">
+                {% trans 'Name' %}
+            </th>
+            <th>
+                {% trans 'SKU' %}
+            </th>            
+            <th>
+                {% trans 'Sub type' %}
+            </th>
+            <th>
+                <input type="checkbox" class="select-all-2"/> {% trans 'For Sale' %}
+            </th>
+            <th class="number">
+                {% trans 'Sale Price' %}
+            </th>
+            <th class="number">
+                {% trans 'Price' %}
+            </th>
+            <th class="right">
+                {% trans 'Edit' %} / {% trans 'View' %}
+            </th>
+        </tr>
+        {% for product in page.object_list %}
+            <tr>
+                <td>
+                    <input type="hidden"
+                           name="id-{{product.id}}"
+                           value="{{product.id}}" />
+                           
+                    <input type="checkbox" name="delete-{{product.id}}"
+                           class="select-1" />
+                </td>
+                <td>
+                    <input type="text"
+                           size="30"
+                           name="slug-{{product.id}}"
+                           value="{{product.slug}}" />
+                </td>
+                <td>
+                    <input type="text"
+                           size="30"
+                           name="name-{{product.id}}"
+                           value="{{product.name}}" />
+                </td>
+                <td>
+                    <input type="text"
+                           size="30"
+                           name="sku-{{product.id}}"
+                           value="{{product.sku}}" />
+                </td>
+                <td>
+                    {{product.sub_type|sub_type_name}}
+                </td>
+                <td>
+                    <input type="checkbox"
+                           name="for_sale-{{product.id}}"
+                           class="select-2"
+                           {% if  product.for_sale %}checked="checked"{% endif %} />
+                </td>
+                <td class="number">
+                    <input class="number"
+                           size="8"
+                           type="text"
+                           name="for_sale_price-{{product.id}}"
+                           value="{{product.for_sale_price}}" />
+                </td>
+                <td class="number">
+                    <input class="number"
+                           size="8"
+                           type="text"
+                           name="price-{{product.id}}"
+                           value="{{product.price}}" />
+                </td>
+                <td class="right">
+                    <a href="{% url lfs_manage_product product.id %}">
+                        Edit</a>
+                    | <a target="_blank"
+                       href="{% url lfs_product_by_id product.id %}">
+                        View</a>
+                    
+                </td>
+            </tr>            
+        {% endfor %}
+    </table>
+    <div class="manage-form-buttons">
+        <input type="submit" name="save" value="{% trans 'Save' %}" />
+    </div>
+</form>    

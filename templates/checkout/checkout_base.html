@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <table class="main">
+        <tr>
+            <td class="middle-slot">
+                {% block middle_slot %}{% endblock %}
+            </td>
+            <td class="right-slot">
+            </td>
+        </tr>
+    </table>            
+{% endblock %}

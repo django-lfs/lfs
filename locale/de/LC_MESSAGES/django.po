@@ -1,0 +1,1883 @@
+# LFS German Translations
+# Copyright (C) 2009 Kai Diefenbach
+# This file is distributed under the same license as the LFS package.
+# Kai Diefenbach <kai.diefenbach@iqpp.de>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: LFS\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-03-10 22:24+0100\n"
+"PO-Revision-Date: 2009-02-22 07:20+0100\n"
+"Last-Translator: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
+"Language-Team: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: cart/models.py:28 criteria/models.py:126
+msgid "User"
+msgstr "Benutzer"
+
+#: cart/models.py:29
+msgid "Session"
+msgstr "Session"
+
+#: cart/models.py:61 templates/cart/added_to_cart.html:60
+#: templates/cart/cart_portlet.html:7
+msgid "Cart"
+msgstr "Warenkorb"
+
+#: cart/models.py:62 catalog/models.py:657 catalog/models.py:681
+#: catalog/models.py:698 tagging/templates/catalog/product_list.html:10
+#: templates/cart/added_to_cart_items.html:6
+#: templates/cart/cart_inline.html:40
+#: templates/checkout/checkout_cart_inline.html:6
+#: templates/manage/product/product.html:69
+#: templates/search/search_results.html:18
+msgid "Product"
+msgstr "Produkt"
+
+#: cart/models.py:63 catalog/models.py:660
+#: templates/cart/added_to_cart.html:24
+#: templates/cart/added_to_cart_items.html:9
+#: templates/catalog/product_inline.html:108
+#: templates/manage/product/accessories_inline.html:95
+msgid "Quantity"
+msgstr "Menge"
+
+#: catalog/models.py:32 catalog/models.py:212 catalog/models.py:711
+#: catalog/models.py:727 catalog/models.py:758 core/models.py:65
+#: payment/models.py:49 shipping/models.py:53
+#: templates/cart/added_to_cart.html:21
+#: templates/catalog/product_inline.html:41
+#: templates/catalog/product_inline.html:107
+#: templates/mail/order_received_mail.html:180
+#: templates/manage/category/products_inline.html:40
+#: templates/manage/category/selected_products.html:40
+#: templates/manage/order/order.html:173
+#: templates/manage/product/accessories_inline.html:38
+#: templates/manage/product/accessories_inline.html:89
+#: templates/manage/product/products_inline.html:42
+#: templates/manage/product/properties.html:76
+#: templates/manage/product/properties.html:134
+#: templates/manage/product/related_products_inline.html:38
+#: templates/manage/product/related_products_inline.html:89
+msgid "Name"
+msgstr "Name"
+
+#: catalog/models.py:33 catalog/models.py:213 page/models.py:14
+#: templates/manage/product/properties.html:73
+msgid "Slug"
+msgstr "Slug"
+
+#: catalog/models.py:34 catalog/models.py:263
+msgid "Parent"
+msgstr "Kategorie"
+
+#: catalog/models.py:38
+msgid "Show all products"
+msgstr "Alle Produkte anzeigen"
+
+#: catalog/models.py:40 catalog/settings.py:30
+#: templates/manage/manage_base.html:57
+#: templates/manage/category/manage_category.html:27
+#: templates/manage/category/products.html:4
+#: templates/manage/product/accessories.html:19
+#: templates/manage/product/related_products.html:19
+msgid "Products"
+msgstr "Produkte"
+
+#: catalog/models.py:41 catalog/models.py:217 core/models.py:68
+#: payment/models.py:50 shipping/models.py:54 tax/models.py:9
+msgid "Description"
+msgstr "Beschreibung"
+
+#: catalog/models.py:42 catalog/models.py:746 core/models.py:69
+#: payment/models.py:53 shipping/models.py:57
+#: tagging/templates/catalog/product_list.html:9
+#: templates/manage/product/images.html:28
+#: templates/search/search_results.html:17
+msgid "Image"
+msgstr "Bild"
+
+#: catalog/models.py:43 catalog/models.py:659 catalog/models.py:683
+#: catalog/models.py:729 catalog/models.py:747 criteria/models.py:460
+#: page/models.py:17 templates/manage/product/accessories_inline.html:92
+#: templates/manage/product/images.html:34
+msgid "Position"
+msgstr "Position"
+
+#: catalog/models.py:45 core/models.py:70
+#: templates/manage/static_block/static_block.html:29
+#: templates/manage/static_block/static_block.html:33
+msgid "Static block"
+msgstr "Statischer Block"
+
+#: catalog/models.py:46
+msgid "Content"
+msgstr "Inhalt"
+
+#: catalog/models.py:47
+msgid "Active formats"
+msgstr "Formate aktiv"
+
+#: catalog/models.py:49 core/models.py:73
+msgid "Product rows"
+msgstr "Produktzeilen"
+
+#: catalog/models.py:50 core/models.py:72
+msgid "Product cols"
+msgstr "Produktspalten"
+
+#: catalog/models.py:51 core/models.py:74
+msgid "Category cols"
+msgstr "Kategoriespalten"
+
+#: catalog/models.py:53 catalog/models.py:221
+msgid "Meta keywords"
+msgstr "Meta Keywords"
+
+#: catalog/models.py:54 catalog/models.py:222
+msgid "Meta description"
+msgstr "Meta Description"
+
+#: catalog/models.py:214 templates/mail/order_received_mail.html:177
+#: templates/manage/category/products_inline.html:43
+#: templates/manage/category/selected_products.html:43
+#: templates/manage/order/order.html:170
+#: templates/manage/product/products_inline.html:45
+#: templates/manage/product/properties.html:131
+msgid "SKU"
+msgstr "Artikelnummer"
+
+#: catalog/models.py:215 catalog/models.py:728 criteria/models.py:143
+#: order/models.py:20 payment/models.py:56 payment/models.py:93
+#: shipping/models.py:60 shipping/models.py:105
+#: tagging/templates/catalog/product_list.html:12
+#: templates/cart/added_to_cart.html:27
+#: templates/cart/added_to_cart_items.html:12
+#: templates/cart/cart_inline.html:46 templates/catalog/product_inline.html:49
+#: templates/catalog/product_inline.html:109
+#: templates/checkout/checkout_cart_inline.html:12
+#: templates/criteria/country_criterion.html:10
+#: templates/criteria/height_criterion.html:10
+#: templates/criteria/length_criterion.html:10
+#: templates/criteria/price_criterion.html:10
+#: templates/criteria/user_criterion.html:11
+#: templates/criteria/weight_criterion.html:10
+#: templates/criteria/width_criterion.html:9
+#: templates/mail/order_received_mail.html:186
+#: templates/manage/category/products_inline.html:49
+#: templates/manage/category/selected_products.html:49
+#: templates/manage/order/order.html:179 templates/manage/order/orders.html:13
+#: templates/manage/payment/payment_method_prices.html:25
+#: templates/manage/product/accessories_inline.html:44
+#: templates/manage/product/accessories_inline.html:101
+#: templates/manage/product/products_inline.html:57
+#: templates/manage/product/properties.html:79
+#: templates/manage/product/properties.html:142
+#: templates/manage/product/related_products_inline.html:44
+#: templates/manage/product/related_products_inline.html:95
+#: templates/manage/shipping/shipping_method_prices.html:25
+#: templates/search/search_results.html:20
+msgid "Price"
+msgstr "Preis"
+
+#: catalog/models.py:216
+msgid "Short description"
+msgstr "Kurzbeschreibung"
+
+#: catalog/models.py:218 templates/manage/product/images.html:3
+#: templates/manage/product/product.html:75
+msgid "Images"
+msgstr "Bilder"
+
+#: catalog/models.py:224
+msgid "Related products"
+msgstr "Zugehörige Produkte"
+
+#: catalog/models.py:227
+msgid "Acessories"
+msgstr "Zubehör"
+
+#: catalog/models.py:231
+msgid "For sale"
+msgstr "Im Angebot"
+
+#: catalog/models.py:232
+msgid "For sale price"
+msgstr "Angebotspreis"
+
+#: catalog/models.py:233 page/models.py:16 payment/models.py:54
+#: payment/models.py:95 shipping/models.py:58 shipping/models.py:110
+msgid "Active"
+msgstr "Aktiv"
+
+#: catalog/models.py:234
+msgid "Creation date"
+msgstr "Erstellungsdatum"
+
+#: catalog/models.py:237
+msgid "Deliverable"
+msgstr "Lieferbar"
+
+#: catalog/models.py:238
+msgid "Manual delivery time"
+msgstr "Manuelle Lieferzeit"
+
+#: catalog/models.py:239 shipping/models.py:61
+msgid "Delivery time"
+msgstr "Lieferzeit"
+
+#: catalog/models.py:240
+msgid "Order time"
+msgstr "Dauer Bestellung"
+
+#: catalog/models.py:241
+msgid "Ordered at"
+msgstr "Bestellt am"
+
+#: catalog/models.py:242
+msgid "Manage stock amount"
+msgstr "Verwaltung des Lagerbestandes"
+
+#: catalog/models.py:243
+msgid "Stock amount"
+msgstr "Lagerbestand"
+
+#: catalog/models.py:246 criteria/models.py:203 criteria/models.py:221
+#: templates/criteria/country_criterion.html:14
+#: templates/criteria/height_criterion.html:14
+#: templates/criteria/length_criterion.html:14
+#: templates/criteria/price_criterion.html:14
+#: templates/criteria/user_criterion.html:15
+#: templates/criteria/weight_criterion.html:14
+#: templates/criteria/width_criterion.html:13
+msgid "Weight"
+msgstr "Gewicht"
+
+#: catalog/models.py:247 criteria/models.py:265 criteria/models.py:283
+#: criteria/models.py:344 templates/criteria/country_criterion.html:11
+#: templates/criteria/height_criterion.html:11
+#: templates/criteria/length_criterion.html:11
+#: templates/criteria/price_criterion.html:11
+#: templates/criteria/user_criterion.html:12
+#: templates/criteria/weight_criterion.html:11
+#: templates/criteria/width_criterion.html:10
+msgid "Height"
+msgstr "Höhe"
+
+#: catalog/models.py:248 criteria/models.py:387 criteria/models.py:405
+#: templates/criteria/country_criterion.html:12
+#: templates/criteria/height_criterion.html:12
+#: templates/criteria/length_criterion.html:12
+#: templates/criteria/price_criterion.html:12
+#: templates/criteria/user_criterion.html:13
+#: templates/criteria/weight_criterion.html:12
+#: templates/criteria/width_criterion.html:11
+msgid "Length"
+msgstr "Länge"
+
+#: catalog/models.py:249 criteria/models.py:326
+#: templates/criteria/country_criterion.html:13
+#: templates/criteria/height_criterion.html:13
+#: templates/criteria/length_criterion.html:13
+#: templates/criteria/price_criterion.html:13
+#: templates/criteria/user_criterion.html:14
+#: templates/criteria/weight_criterion.html:13
+#: templates/criteria/width_criterion.html:12
+msgid "Width"
+msgstr "Breite"
+
+#: catalog/models.py:252 order/models.py:21 order/models.py:79
+#: payment/models.py:55 shipping/models.py:59 templates/manage/tax/tax.html:28
+#: templates/manage/tax/tax.html.py:32
+msgid "Tax"
+msgstr "Mehrwertsteuer"
+
+#: catalog/models.py:253 templates/manage/product/properties.html:4
+msgid "Properties"
+msgstr "Eigenschaften"
+
+#: catalog/models.py:254
+msgid "Subtype"
+msgstr "Produktart"
+
+#: catalog/models.py:258
+msgid "Default variant"
+msgstr "Variante bearbeiten"
+
+#: catalog/models.py:259
+msgid "Variants display type"
+msgstr "Ansichtsart für Varianten ändern"
+
+#: catalog/models.py:264
+msgid "Active name"
+msgstr "Zugewiesene Bilder"
+
+#: catalog/models.py:265
+msgid "Active SKU"
+msgstr "Zugewiesene Bilder"
+
+#: catalog/models.py:266
+msgid "Active short description"
+msgstr "Beschreibung"
+
+#: catalog/models.py:267
+msgid "Active description"
+msgstr "Beschreibung"
+
+#: catalog/models.py:268
+msgid "Active Price"
+msgstr "Zugewiesene Bilder"
+
+#: catalog/models.py:269
+msgid "Active Images"
+msgstr "Zugewiesene Bilder"
+
+#: catalog/models.py:270 templates/manage/product/related_products.html:12
+msgid "Active related products"
+msgstr "Zugewiesene zugehörige Produkte"
+
+#: catalog/models.py:271 templates/manage/product/accessories.html:12
+msgid "Active accessories"
+msgstr "Zugewiesenes Zubehör"
+
+#: catalog/models.py:272
+msgid "Active meta description"
+msgstr "Beschreibung"
+
+#: catalog/models.py:273
+msgid "Active meta keywords"
+msgstr "Zugewiesene Bilder"
+
+#: catalog/models.py:658
+msgid "Acessory"
+msgstr "Zubehör"
+
+#: catalog/models.py:682 catalog/models.py:699 catalog/models.py:725
+msgid "Property"
+msgstr "Eigenschaften"
+
+#: catalog/models.py:700
+msgid "Option"
+msgstr "Option hinzufügen"
+
+#: catalog/models.py:741 criteria/models.py:456
+msgid "Content type"
+msgstr "Inhaltstyp"
+
+#: catalog/models.py:742 criteria/models.py:453 criteria/models.py:457
+msgid "Content id"
+msgstr "Inhalts ID"
+
+#: catalog/models.py:745 page/models.py:13
+#: templates/manage/product/images.html:31
+msgid "Title"
+msgstr "Titel"
+
+#: catalog/models.py:759
+msgid "HTML"
+msgstr "HTML"
+
+#: catalog/models.py:767
+msgid "Min"
+msgstr "Min"
+
+#: catalog/models.py:768
+msgid "Max"
+msgstr "Max"
+
+#: catalog/models.py:769
+msgid "Unit"
+msgstr "Einheit"
+
+#: catalog/settings.py:8 catalog/settings.py:13
+msgid "Standard"
+msgstr "Standard"
+
+#: catalog/settings.py:9 catalog/settings.py:14
+msgid "Product with variants"
+msgstr "Produkt mit Varianten"
+
+#: catalog/settings.py:10 catalog/settings.py:15
+msgid "Variant"
+msgstr "Variante"
+
+#: catalog/settings.py:22
+msgid "List"
+msgstr "Liste"
+
+#: catalog/settings.py:23
+msgid "Select"
+msgstr "Auswahlbox"
+
+#: catalog/settings.py:31 templates/manage/manage_base.html:58
+#: templates/manage/product/categories.html:3
+#: templates/manage/product/product.html:72
+msgid "Categories"
+msgstr "Kategorien"
+
+#: catalog/settings.py:40
+msgid "hours"
+msgstr "Stunden"
+
+#: catalog/settings.py:41
+msgid "days"
+msgstr "Tage"
+
+#: catalog/settings.py:42
+msgid "weeks"
+msgstr "Wochen"
+
+#: catalog/settings.py:43
+msgid "months"
+msgstr "Monate"
+
+#: catalog/settings.py:47
+msgid "hour"
+msgstr "Stunde"
+
+#: catalog/settings.py:48
+msgid "day"
+msgstr "Tag"
+
+#: catalog/settings.py:49
+msgid "week"
+msgstr "Woche"
+
+#: catalog/settings.py:50
+msgid "month"
+msgstr "Monat"
+
+#: checkout/forms.py:13 checkout/forms.py:22 customer/models.py:41
+msgid "Firstname"
+msgstr "Vorname"
+
+#: checkout/forms.py:14 checkout/forms.py:23 customer/models.py:42
+msgid "Lastname"
+msgstr "Nachname"
+
+#: checkout/forms.py:15 checkout/forms.py:24 customer/models.py:43
+msgid "Street"
+msgstr "Straße"
+
+#: checkout/forms.py:16 checkout/forms.py:25
+msgid "Zip Code"
+msgstr "PLZ"
+
+#: checkout/forms.py:17 checkout/forms.py:26 customer/models.py:45
+msgid "City"
+msgstr "Stadt"
+
+#: checkout/forms.py:18 checkout/forms.py:27 criteria/models.py:64
+#: customer/models.py:46 templates/criteria/country_criterion.html:9
+#: templates/criteria/height_criterion.html:9
+#: templates/criteria/length_criterion.html:9
+#: templates/criteria/price_criterion.html:9
+#: templates/criteria/user_criterion.html:10
+#: templates/criteria/weight_criterion.html:9
+#: templates/criteria/width_criterion.html:8
+msgid "Country"
+msgstr "Land"
+
+#: checkout/forms.py:19 checkout/forms.py:28 customer/models.py:47
+#: templates/mail/order_received_mail.html:74
+#: templates/manage/order/order.html:63
+msgid "Phone"
+msgstr "Telefon"
+
+#: checkout/forms.py:20 checkout/forms.py:29
+#: templates/mail/order_received_mail.html:60
+#: templates/manage/order/order.html:47
+msgid "E-mail"
+msgstr "E-Mail"
+
+#: checkout/forms.py:31
+msgid "Account Number"
+msgstr "Kontonnummer"
+
+#: checkout/forms.py:32
+msgid "Bank Indentification Code"
+msgstr "Bankleitzahl"
+
+#: checkout/forms.py:33
+msgid "Bankname"
+msgstr "Bankname"
+
+#: checkout/forms.py:34 customer/models.py:61 order/models.py:54
+msgid "Depositor"
+msgstr "Kontoeigentümer"
+
+#: checkout/forms.py:42
+msgid "Same as shipping"
+msgstr "Wie Lieferung"
+
+#: checkout/forms.py:43 templates/mail/order_received_mail.html:259
+msgid "Your message to us"
+msgstr "Ihre Nachricht an uns"
+
+#: core/models.py:66
+msgid "Shop owner"
+msgstr "Shopbetreiber"
+
+#: core/models.py:75
+msgid "Google Analytics ID"
+msgstr "Google Analytics ID"
+
+#: core/models.py:76
+msgid "Google Analytics Site Tracking"
+msgstr "Google Analytics Site Tracking"
+
+#: core/models.py:77
+msgid "Google Analytics E-Commerce Tracking"
+msgstr "Google Analytics E-Commerce Tracking"
+
+#: criteria/models.py:41 criteria/models.py:142 criteria/models.py:202
+#: criteria/models.py:325 criteria/models.py:386
+msgid "Operator"
+msgstr "Operator"
+
+#: criteria/models.py:42
+msgid "Countries"
+msgstr "Länder"
+
+#: criteria/models.py:161
+msgid "Cart Price"
+msgstr "Preise Warenkorb"
+
+#: criteria/models.py:452
+msgid "Criterion type"
+msgstr "Typ Kriterium"
+
+#: criteria/settings.py:14 criteria/settings.py:22
+msgid "Equal to"
+msgstr "Gleich wie"
+
+#: criteria/settings.py:15 templates/criteria/number_operators.html:4
+msgid "Less than"
+msgstr "Weniger als"
+
+#: criteria/settings.py:16
+msgid "Less than or equal to"
+msgstr "Wenige als oder gleich wie"
+
+#: criteria/settings.py:17 templates/criteria/number_operators.html:6
+msgid "Greater than"
+msgstr "Größer als"
+
+#: criteria/settings.py:18
+msgid "Greater than or equal to"
+msgstr "Größer als oder gleich wie"
+
+#: criteria/settings.py:23
+msgid "Contain"
+msgstr "Beinhaltet"
+
+#: criteria/settings.py:27 templates/criteria/selection_operators.html:3
+msgid "Is"
+msgstr "Ist"
+
+#: criteria/settings.py:28 templates/criteria/selection_operators.html:4
+msgid "Is not"
+msgstr "Ist nicht"
+
+#: customer/models.py:25
+msgid "Selected shipping method"
+msgstr "Ausgewählte Liefermethode"
+
+#: customer/models.py:26
+msgid "Selected payment method"
+msgstr "Ausgewählte Bezahlmethode"
+
+#: customer/models.py:27
+msgid "Bank account"
+msgstr "Bankkonto"
+
+#: customer/models.py:28
+msgid "Credit card"
+msgstr "Kreditkarte"
+
+#: customer/models.py:29
+msgid "Selected shipping address"
+msgstr "Ausgewählte Lieferadresse"
+
+#: customer/models.py:30
+msgid "Selected invoice address"
+msgstr "Ausgewählte Rechnungsadresse"
+
+#: customer/models.py:31
+msgid "Selected country"
+msgstr "Ausgewähltes Land"
+
+#: customer/models.py:39 customer/models.py:56 customer/models.py:69
+msgid "Customer"
+msgstr "Kunde"
+
+#: customer/models.py:44
+msgid "Zip code"
+msgstr "PLZ"
+
+#: customer/models.py:48
+msgid "E-Mail"
+msgstr "E-Mail"
+
+#: customer/models.py:58 order/models.py:51
+msgid "Account number"
+msgstr "Kontonnummer"
+
+#: customer/models.py:59
+msgid "Bank identification code"
+msgstr "Bankleitzahl"
+
+#: customer/models.py:60 order/models.py:53
+msgid "Bank name"
+msgstr "Bankname"
+
+#: customer/models.py:71
+msgid "Type"
+msgstr "Typ"
+
+#: customer/models.py:72
+msgid "Owner"
+msgstr "Eigentümer"
+
+#: customer/models.py:73
+msgid "Number"
+msgstr "Nummer"
+
+#: customer/models.py:74
+msgid "Expiration date month"
+msgstr "Ablaufdatum Monat"
+
+#: customer/models.py:75
+msgid "Expiration date year"
+msgstr "Ablaufdatum Jahr"
+
+#: mail/utils.py:11
+msgid "Your order has been received"
+msgstr "Ihre Bestellungen wurde empfangen"
+
+#: manage/views/page.py:59
+msgid "Page has been saved."
+msgstr "Seite wurde gespeichert."
+
+#: manage/views/page.py:85
+msgid "Page has been added."
+msgstr "Seite wurde hinzugefügt."
+
+#: manage/views/page.py:106
+msgid "Page has been deleted."
+msgstr "Seite wurde gelöscht."
+
+#: manage/views/payment.py:178 manage/views/payment.py:339
+msgid "Payment method has been added."
+msgstr "Bezahlmethode wurde hinzugefügt."
+
+#: manage/views/payment.py:244 manage/views/shipping.py:243
+msgid "Price has been added"
+msgstr "Preis wurde hinzugefügt."
+
+#: manage/views/payment.py:264 manage/views/shipping.py:262
+msgid "Prices have been deleted"
+msgstr "Preis wurde gelöscht."
+
+#: manage/views/payment.py:276 manage/views/shipping.py:274
+msgid "Prices have been updated"
+msgstr "Preis wurde aktualisiert."
+
+#: manage/views/payment.py:364
+msgid "Payment method has been deleted."
+msgstr "Bezahlmethode wurde gelöscht."
+
+#: manage/views/shipping.py:177 manage/views/static_blocks.py:108
+msgid "Shipping method has been added."
+msgstr "Liefermethode wurde hinzugefügt."
+
+#: manage/views/shipping.py:338
+msgid "Shipping method has been saved."
+msgstr "Liefermethode wurde gespeichert."
+
+#: manage/views/shipping.py:363
+msgid "Shipping method has been deleted."
+msgstr "Liefermethode wurde gelöscht."
+
+#: manage/views/shop.py:40
+msgid "Shop data has been saved."
+msgstr "Shopdaten wurden gespeichert."
+
+#: manage/views/static_blocks.py:47
+msgid "Static block has been saved."
+msgstr "Statischer Block wurde gespeichert."
+
+#: manage/views/static_blocks.py:71
+msgid "Static block has been added."
+msgstr "Statischer Block wurde hinzugefügt."
+
+#: manage/views/tax.py:48
+msgid "Tax has been saved."
+msgstr "Mehrwertsteuer wurde gespeichert."
+
+#: manage/views/tax.py:73
+msgid "Tax has been added."
+msgstr "Mehrwertsteuer wurde hinzugefügt."
+
+#: manage/views/tax.py:100
+msgid "Tax has been deleted."
+msgstr "Mehrwertsteuer wurde gelöscht."
+
+#: manage/views/categories/category.py:95
+msgid "Category data have been saved."
+msgstr "Kategorie wurde gespeichert."
+
+#: manage/views/categories/category.py:97 manage/views/categories/seo.py:40
+#: manage/views/product/product.py:106
+msgid "Please correct the indicated errors."
+msgstr "Bitte korrigieren Sie die angezeigten Fehler."
+
+#: manage/views/categories/products.py:165
+msgid "Selected products have been added to category."
+msgstr "Ausgewählte Produkte wurden zur Kategorie hinzugefügt."
+
+#: manage/views/categories/seo.py:38
+msgid "SEO data has been saved."
+msgstr "SEO Daten wurden gespeichert."
+
+#: manage/views/product/accessories.py:127
+msgid "Accessories have been added."
+msgstr "Zubehör wurde hinzugefügt."
+
+#: manage/views/product/accessories.py:156
+msgid "Accessories have been removed."
+msgstr "Zubehör wurde gelöscht."
+
+#: manage/views/product/accessories.py:183
+#: manage/views/product/accessories.py:203
+msgid "Accessories have been updated."
+msgstr "Zubehör wurde aktualisiert."
+
+#: manage/views/product/categories.py:87
+msgid "Categories have been saved."
+msgstr "Kategorien wurden gespeichert."
+
+#: manage/views/product/images.py:54
+msgid "Images has been deleted."
+msgstr "Bilder wurden gelöscht."
+
+#: manage/views/product/images.py:64
+msgid "Images has been updated."
+msgstr "Bilder wurden aktualisiert."
+
+#: manage/views/product/product.py:104
+msgid "Product dimension has been saved."
+msgstr "Produktabmessungen wurden gespeichert."
+
+#: manage/views/product/related_products.py:124
+msgid "Related products have been added."
+msgstr "Zugehörige Produkte wurden hinzugefügt."
+
+#: manage/views/product/related_products.py:150
+msgid "Related products have been removed."
+msgstr "Zugehörige Produkte"
+
+#: manage/views/product/related_products.py:169
+msgid "Related products have been updated."
+msgstr "Zugehörige Produkte wurden aktualisiert."
+
+#: manage/views/product/seo.py:44
+msgid "Seo data has been saved."
+msgstr "SEODaten wurden gespeichert."
+
+#: order/models.py:17
+msgid "Created"
+msgstr "Erstellt am"
+
+#: order/models.py:18 templates/mail/order_received_mail.html:66
+#: templates/manage/order/order.html:55
+msgid "State"
+msgstr "Status"
+
+#: order/models.py:23
+msgid "firstname"
+msgstr "Vorname"
+
+#: order/models.py:24 order/models.py:25
+msgid "lastname"
+msgstr "Nachname"
+
+#: order/models.py:27
+msgid "Invoice firstname"
+msgstr "Vorname Rechnungsadresse"
+
+#: order/models.py:28
+msgid "Invoice lastname"
+msgstr "Nachname Rechnungsadresse"
+
+#: order/models.py:29
+msgid "Invoice street"
+msgstr "Straße Rechnungsadresse"
+
+#: order/models.py:30
+msgid "Invoice zip code"
+msgstr "PLZ Rechnungsadresse"
+
+#: order/models.py:31
+msgid "Invoice city"
+msgstr "Stadt Rechnungsadresse"
+
+#: order/models.py:32
+msgid "Invoice phone"
+msgstr "Telefon Rechnungsadresse"
+
+#: order/models.py:33
+msgid "Invoice e-mail"
+msgstr "E-Mail Rechnungsadresse"
+
+#: order/models.py:35
+msgid "Shipping firstname"
+msgstr "Vorname Lieferadresse"
+
+#: order/models.py:36
+msgid "Shipping lastname"
+msgstr "Nachname Lieferadresse"
+
+#: order/models.py:37
+msgid "Shipping street"
+msgstr "Straße Lieferadresse"
+
+#: order/models.py:38
+msgid "Shipping zip code"
+msgstr "PLZ Lieferadresse"
+
+#: order/models.py:39
+msgid "Shipping city"
+msgstr "Stadt Lieferadresse"
+
+#: order/models.py:40
+msgid "Shipping phone"
+msgstr "Telefon Lieferadresse"
+
+#: order/models.py:41
+msgid "Shipping e-mail"
+msgstr "E-MailLieferadresse"
+
+#: order/models.py:43
+msgid "Shipping Method"
+msgstr "Liefermethoden"
+
+#: order/models.py:44
+msgid "Shipping Price"
+msgstr "Preis Lieferung"
+
+#: order/models.py:45
+msgid "Shipping Tax"
+msgstr "MwSt. Lieferung"
+
+#: order/models.py:47
+msgid "Payment Method"
+msgstr "Bezahlmethode"
+
+#: order/models.py:48
+msgid "Payment Price"
+msgstr "Preise Zahlmethode"
+
+#: order/models.py:49
+msgid "Payment Tax"
+msgstr "MwSt Bezahlmethode"
+
+#: order/models.py:52
+msgid "Bank identication code"
+msgstr "Bankleitzahl"
+
+#: order/models.py:56 templates/manage/order/orders.html:16
+msgid "Message"
+msgstr "Nachricht"
+
+#: order/models.py:77
+msgid "Price net"
+msgstr "Preis netto"
+
+#: order/models.py:78
+msgid "Price gross"
+msgstr "Preis brutto"
+
+#: order/models.py:86
+msgid "Product quantity"
+msgstr "Anzahl Produkt"
+
+#: order/models.py:87
+msgid "Product SKU"
+msgstr "Artikelnummer"
+
+#: order/models.py:88
+msgid "Product name"
+msgstr "Produktname"
+
+#: order/models.py:89
+msgid "Product price net"
+msgstr "Produktpreis netto"
+
+#: order/models.py:90
+msgid "Product price gross"
+msgstr "Produktpreis brutto"
+
+#: order/models.py:91
+msgid "Product tax"
+msgstr "Mwst Produkt"
+
+#: order/settings.py:11
+msgid "Submitted"
+msgstr "Eingereicht"
+
+#: order/settings.py:12
+msgid "Payed"
+msgstr "Bezahlt"
+
+#: order/settings.py:13
+msgid "Sent"
+msgstr "Versendet"
+
+#: order/settings.py:14
+msgid "Closed"
+msgstr "Geschlossen"
+
+#: order/settings.py:15
+msgid "Canceled"
+msgstr "Storniert"
+
+#: page/models.py:15
+msgid "Text"
+msgstr "Text"
+
+#: page/models.py:18
+msgid "File"
+msgstr "Datei"
+
+#: payment/models.py:51
+msgid "note"
+msgstr "Notiz"
+
+#: payment/models.py:52 payment/models.py:94 shipping/models.py:56
+#: shipping/models.py:106
+#: templates/manage/payment/payment_method_prices.html:22
+#: templates/manage/shipping/shipping_method_prices.html:22
+msgid "Priority"
+msgstr "Priorität"
+
+#: payment/models.py:92 templates/mail/order_received_mail.html:100
+#: templates/manage/order/order.html:89
+msgid "Payment method"
+msgstr "Bezahlmethode"
+
+#: shipping/models.py:55
+msgid "Note"
+msgstr "Notiz"
+
+#: shipping/models.py:104
+msgid "shipping_method"
+msgstr "Liefermethode"
+
+#: tagging/templates/catalog/product_list.html:6
+msgid "Products for tag"
+msgstr "Produkte für Tag"
+
+#: tagging/templates/catalog/related_products_by_tags.html:2
+msgid "Related products by tag"
+msgstr "Zugehörige Produkte für Tag"
+
+#: tagging/templates/catalog/related_products_by_tags_portlet.html:4
+msgid "Products with same Tags"
+msgstr "Produkte mit gleichen Tags"
+
+#: tax/models.py:8
+msgid "Rate"
+msgstr "Satz"
+
+#: templates/404.html:9 templates/500.html:9
+msgid "We are sorry!"
+msgstr "Tut uns leid!"
+
+#: templates/404.html:12
+msgid "The page you have requested could not be found."
+msgstr "Die Seite die Sie angefordert haben existiert nicht."
+
+#: templates/500.html:12
+msgid "An error has occured. Please try again in a minute."
+msgstr "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später noch einmal."
+
+#: templates/base.html:60
+msgid "Powered by"
+msgstr "Powered by"
+
+#: templates/cart/added_to_cart.html:7
+msgid "This products have been added to cart"
+msgstr "Diese Produkte wurden zum Warenkorb hinzugefügt."
+
+#: templates/cart/added_to_cart.html:9
+msgid "This product has been added to cart"
+msgstr "Dieses Produkt wurde zum Warenkorb hinzugefügt."
+
+#: templates/cart/added_to_cart.html:17
+#: templates/catalog/product_inline.html:102
+#: templates/manage/product/accessories_inline.html:77
+#: templates/manage/product/product.html:81
+msgid "Accessories"
+msgstr "Zubehör"
+
+#: templates/cart/added_to_cart.html:30
+#: templates/cart/added_to_cart_items.html:15
+#: templates/cart/added_to_cart_items.html:46
+#: templates/cart/cart_inline.html:49 templates/cart/cart_inline.html:127
+#: templates/catalog/product_inline.html:110
+#: templates/checkout/checkout_cart_inline.html:15
+#: templates/checkout/checkout_cart_inline.html:81
+#: templates/mail/order_received_mail.html:80
+#: templates/mail/order_received_mail.html:189
+#: templates/manage/order/order.html:69 templates/manage/order/order.html:182
+msgid "Total"
+msgstr "Summe"
+
+#: templates/cart/added_to_cart.html:61 templates/cart/cart_inline.html:149
+msgid "Checkout"
+msgstr "Zur Kasse"
+
+#: templates/cart/added_to_cart.html:62
+#: templates/checkout/empty_page_checkout.html:10
+msgid "Go on shopping"
+msgstr "Weitereinkaufen"
+
+#: templates/cart/cart_inline.html:43
+#: templates/checkout/checkout_cart_inline.html:9
+#: templates/mail/order_received_mail.html:183
+#: templates/manage/order/order.html:176
+msgid "Amount"
+msgstr "Menge"
+
+#: templates/cart/cart_inline.html:87
+msgid "Delete Article"
+msgstr "Produkt löschen"
+
+#: templates/cart/cart_inline.html:95
+#: templates/checkout/checkout_cart_inline.html:49
+#: templates/checkout/one_page_checkout.html:219
+#: templates/mail/order_received_mail.html:214
+#: templates/manage/order/order.html:207
+#: templates/shipping/shipping_portlet.html:6
+msgid "Shipping"
+msgstr "Liefermethode"
+
+#: templates/cart/cart_inline.html:111
+#: templates/checkout/checkout_cart_inline.html:65
+#: templates/checkout/one_page_checkout.html:225
+#: templates/mail/order_received_mail.html:229
+#: templates/manage/order/order.html:222
+msgid "Payment"
+msgstr "Bezahlmethode"
+
+#: templates/cart/cart_inline.html:134
+#: templates/checkout/checkout_cart_inline.html:88
+#: templates/mail/order_received_mail.html:250
+#: templates/manage/order/order.html:243
+msgid "Inclusive Taxes"
+msgstr "Inklusive MwSt."
+
+#: templates/cart/cart_inline.html:142
+msgid "Your total delivery will last"
+msgstr "Die Lieferzeit beträgt"
+
+#: templates/cart/cart_inline.html:156 templates/cart/cart_portlet.html:18
+msgid "Cart is empty"
+msgstr "Der Warenkorb ist leer"
+
+#: templates/cart/cart_portlet.html:12
+msgid "Article"
+msgstr "Artikel"
+
+#: templates/catalog/breadcrumbs.html:3 templates/page/page.html:8
+msgid "You are here:"
+msgstr "Sie sind hier:"
+
+#: templates/catalog/breadcrumbs.html:6 templates/page/page.html:11
+msgid "Home"
+msgstr "Start"
+
+#: templates/catalog/category_categories.html:22
+#: templates/catalog/category_products.html:53
+msgid "Details"
+msgstr "Details"
+
+#: templates/catalog/product_inline.html:35
+#: templates/manage/product/product.html:78
+#: templates/manage/product/properties.html:66
+msgid "Variants"
+msgstr "Varianten"
+
+#: templates/catalog/product_inline.html:94
+msgid "Refresh options"
+msgstr "Optionen aktualisieren"
+
+#: templates/catalog/product_inline.html:103
+msgid "This products fit to the product"
+msgstr "Zu diesem Produkt passend"
+
+#: templates/catalog/product_inline.html:169
+msgid "Add to cart"
+msgstr "Zum Warenkorb hinzufügen"
+
+#: templates/catalog/product_inline.html:172
+#: templates/shipping/shipping_portlet.html:15
+#: templates/shipping/shipping_tag.html:10
+msgid "Not deliverable"
+msgstr "Nicht lieferbar"
+
+#: templates/catalog/product_navigation.html:4
+#: templates/catalog/product_navigation.html:6
+#: templates/manage/category/products_inline.html:16
+#: templates/manage/category/selected_products.html:12
+#: templates/manage/product/accessories_inline.html:14
+#: templates/manage/product/products_inline.html:15
+#: templates/manage/product/related_products_inline.html:14
+#: templates/manage/product/selectable_products_inline.html:15
+#: templates/manage/product/selectable_products_inline.html:16
+#: templates/manage/product/selectable_products_inline.html:26
+#: templates/manage/product/selectable_products_inline.html:27
+msgid "Previous"
+msgstr "Vorhergendes"
+
+#: templates/catalog/product_navigation.html:10
+#: templates/catalog/product_navigation.html:12
+#: templates/manage/category/products_inline.html:28
+#: templates/manage/category/selected_products.html:20
+#: templates/manage/category/selected_products.html:25
+#: templates/manage/product/accessories_inline.html:26
+#: templates/manage/product/products_inline.html:27
+#: templates/manage/product/related_products_inline.html:26
+#: templates/manage/product/selectable_products_inline.html:37
+#: templates/manage/product/selectable_products_inline.html:38
+#: templates/manage/product/selectable_products_inline.html:48
+#: templates/manage/product/selectable_products_inline.html:49
+msgid "Next"
+msgstr "Nächstes"
+
+#: templates/catalog/recent_products_portlet.html:8
+msgid "Recent products"
+msgstr "Kürzlich angesehen"
+
+#: templates/catalog/related_products_portlet.html:8
+#: templates/manage/product/product.html:82
+#: templates/manage/product/related_products_inline.html:77
+msgid "Related Products"
+msgstr "Zugehörige Produkte"
+
+#: templates/catalog/sorting.html:7
+msgid "Price ascending"
+msgstr "Preis aufsteigend"
+
+#: templates/catalog/sorting.html:9
+msgid "Price descending"
+msgstr "Preis absteigend"
+
+#: templates/catalog/sorting.html:11
+msgid "Name ascending"
+msgstr "Name aufsteigend"
+
+#: templates/catalog/sorting.html:13
+msgid "Name descending"
+msgstr "Name absteigend"
+
+#: templates/catalog/sorting.html:16
+msgid "Go!"
+msgstr "Los!"
+
+#: templates/catalog/sorting_portlet.html:7
+msgid "Sorting"
+msgstr "Sortierung"
+
+#: templates/checkout/checkout_cart_inline.html:2
+msgid "Your cart"
+msgstr "Ihr Warenkorb"
+
+#: templates/checkout/empty_page_checkout.html:6
+msgid "There is nothing to checkout"
+msgstr "Keine Produkte vorhanden."
+
+#: templates/checkout/one_page_checkout.html:10
+#: templates/mail/order_received_mail.html:91
+#: templates/manage/order/order.html:80
+msgid "Shipping address"
+msgstr "Lieferadresse"
+
+#: templates/checkout/one_page_checkout.html:13
+#: templates/mail/order_received_mail.html:94
+#: templates/manage/order/order.html:83
+msgid "Invoice address"
+msgstr "Rechnungsadresse"
+
+#: templates/checkout/one_page_checkout.html:308
+msgid "Submit order"
+msgstr "Bestellung absenden"
+
+#: templates/checkout/one_page_checkout.html:313
+msgid "Edit cart"
+msgstr "Warenkorb bearbeiten"
+
+#: templates/checkout/thank_you_page.html:5 templates/reviews/thank_you.html:5
+msgid "Thank you"
+msgstr "Vielen Dank!"
+
+#: templates/criteria/number_operators.html:3
+msgid "Equal"
+msgstr "Gleich"
+
+#: templates/criteria/number_operators.html:5
+msgid "Less than equal to"
+msgstr "Kleiner als oder gleich wie"
+
+#: templates/criteria/number_operators.html:7
+msgid "Greater than equal to"
+msgstr "Größer als or gleich wie"
+
+#: templates/mail/order_received_mail.html:41
+#: templates/manage/order/order.html:28
+msgid "General"
+msgstr "Allgemein"
+
+#: templates/mail/order_received_mail.html:46
+#: templates/manage/order/order.html:33
+msgid "Customer name"
+msgstr "Kundenname"
+
+#: templates/mail/order_received_mail.html:52
+#: templates/manage/order/order.html:39 templates/manage/order/orders.html:10
+msgid "Date"
+msgstr "Datum"
+
+#: templates/mail/order_received_mail.html:97
+#: templates/manage/order/order.html:86
+msgid "Shipping method"
+msgstr "Liefermethod"
+
+#: templates/manage/dashboard.html:3
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: templates/manage/manage_base.html:49
+msgid "Logout"
+msgstr "Abmelden"
+
+#: templates/manage/manage_base.html:51
+msgid "Login"
+msgstr "Anmelden"
+
+#: templates/manage/manage_base.html:56 templates/manage/shop/shop.html:10
+#: templates/manage/shop/shop.html.py:14
+msgid "Shop"
+msgstr "Shop"
+
+#: templates/manage/manage_base.html:59
+msgid "Shipping Methods"
+msgstr "Liefermethoden"
+
+#: templates/manage/manage_base.html:60
+msgid "Payment Methods"
+msgstr "Bezahlmethoden"
+
+#: templates/manage/manage_base.html:61
+msgid "Taxes"
+msgstr "Steuern"
+
+#: templates/manage/manage_base.html:62
+msgid "Pages"
+msgstr "Seiten"
+
+#: templates/manage/manage_base.html:63
+msgid "Static blocks"
+msgstr "Statische Blöcke"
+
+#: templates/manage/manage_base.html:64
+msgid "Orders"
+msgstr "Bestellungen"
+
+#: templates/manage/manage_base.html:65
+#: templates/reviews/reviews_for_instance.html:3
+msgid "Reviews"
+msgstr "Bewertung"
+
+#: templates/manage/manage_base.html:83
+msgid "Powered by LFS"
+msgstr "Powered by LFS"
+
+#: templates/manage/category/add_category.html:25
+#: templates/manage/category/add_category.html:33
+#: templates/manage/category/manage_category.html:16
+msgid "Add category"
+msgstr "Kategorie hinzufügen"
+
+#: templates/manage/category/add_category.html:37
+#: templates/manage/page/add_page.html:43
+#: templates/manage/payment/add_payment_method.html:26
+#: templates/manage/product/add_product.html:131
+#: templates/manage/shipping/add_shipping_method.html:27
+#: templates/manage/static_block/add_static_block.html:32
+#: templates/manage/tax/add_tax.html:34
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: templates/manage/category/category_filter.html:4
+#: templates/manage/category/category_select.html:4
+#: templates/manage/product/properties.html:101
+msgid "All"
+msgstr "Alle"
+
+#: templates/manage/category/category_filter.html:5
+msgid "None"
+msgstr "Keine"
+
+#: templates/manage/category/data.html:3
+#: templates/manage/payment/payment_method_data.html:3
+#: templates/manage/shipping/shipping_method_data.html:2
+msgid "Core data"
+msgstr "Stammdaten"
+
+#: templates/manage/category/data.html:10
+#: templates/manage/payment/payment_method_data.html:15
+#: templates/manage/product/products_inline.html:126
+#: templates/manage/shipping/shipping_method_data.html:14
+msgid "Save"
+msgstr "Speichern"
+
+#: templates/manage/category/manage_category.html:14
+msgid "Add top category"
+msgstr "Hauptkategorie hinzufügen"
+
+#: templates/manage/category/manage_category.html:18
+#: templates/manage/order/order.html:19 templates/manage/page/page.html:21
+#: templates/manage/payment/manage_payment.html:40
+#: templates/manage/product/product.html:57
+#: templates/manage/reviews/manage_reviews.html:23
+#: templates/manage/shipping/manage_shipping.html:39
+#: templates/manage/static_block/static_block.html:21
+#: templates/manage/tax/tax.html:22
+msgid "Delete?"
+msgstr "Löschen?"
+
+#: templates/manage/category/manage_category.html:19
+msgid "Delete category"
+msgstr "Kategorie löschen"
+
+#: templates/manage/category/manage_category.html:20
+#: templates/manage/page/page.html:24
+#: templates/manage/static_block/static_block.html:24
+#: templates/reviews/review_form.html:107
+#: templates/reviews/review_preview.html:6
+msgid "Preview"
+msgstr "Vorschau"
+
+#: templates/manage/category/manage_category.html:26
+msgid "Category"
+msgstr "Kategorie"
+
+#: templates/manage/category/manage_category.html:28
+#: templates/manage/category/seo.html:3
+#: templates/manage/product/product.html:84
+#: templates/manage/product/seo.html:3
+msgid "SEO"
+msgstr "SEO"
+
+#: templates/manage/category/products_inline.html:15
+#: templates/manage/category/selected_products.html:11
+#: templates/manage/product/accessories_inline.html:13
+#: templates/manage/product/products_inline.html:14
+#: templates/manage/product/related_products_inline.html:13
+#: templates/manage/product/selectable_products_inline.html:9
+#: templates/manage/product/selectable_products_inline.html:10
+#: templates/manage/product/selectable_products_inline.html:21
+#: templates/manage/product/selectable_products_inline.html:22
+msgid "First"
+msgstr "Erstes"
+
+#: templates/manage/category/products_inline.html:29
+#: templates/manage/category/selected_products.html:22
+#: templates/manage/category/selected_products.html:26
+#: templates/manage/product/accessories_inline.html:27
+#: templates/manage/product/products_inline.html:28
+#: templates/manage/product/related_products_inline.html:27
+#: templates/manage/product/selectable_products_inline.html:43
+#: templates/manage/product/selectable_products_inline.html:44
+#: templates/manage/product/selectable_products_inline.html:51
+#: templates/manage/product/selectable_products_inline.html:52
+msgid "Last"
+msgstr "Letztes"
+
+#: templates/manage/category/products_inline.html:46
+#: templates/manage/category/selected_products.html:46
+#: templates/manage/product/accessories_inline.html:41
+#: templates/manage/product/accessories_inline.html:98
+#: templates/manage/product/products_inline.html:48
+#: templates/manage/product/related_products_inline.html:41
+#: templates/manage/product/related_products_inline.html:92
+msgid "Sub type"
+msgstr "Unterart"
+
+#: templates/manage/category/products_inline.html:52
+#: templates/manage/category/selected_products.html:52
+#: templates/manage/product/categories.html:20
+#: templates/manage/product/categories_children.html:14
+#: templates/manage/product/products_inline.html:60
+#: templates/reviews/review_preview.html:65
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: templates/manage/category/products_inline.html:79
+#: templates/manage/category/selected_products.html:76
+msgid "Edit product"
+msgstr "Produkt bearbeiten"
+
+#: templates/manage/category/products_inline.html:93
+msgid "Add to category"
+msgstr "Zu Kategorie hinzufügen"
+
+#: templates/manage/category/products_inline.html:96
+msgid "Selected products"
+msgstr "Ausgewählte Produkte"
+
+#: templates/manage/category/selected_products.html:91
+msgid "Remove from category"
+msgstr "Von Kategorie entfernen"
+
+#: templates/manage/category/selected_products.html:95
+msgid "This category has no products yet."
+msgstr "Diese Kategorie hat keine Produkte."
+
+#: templates/manage/category/seo.html:9
+msgid "Save SEO"
+msgstr "SEO speichern"
+
+#: templates/manage/order/order.html:17
+#: templates/manage/product/product.html:49
+msgid "Overview"
+msgstr "Übersicht"
+
+#: templates/manage/order/order.html:20
+msgid "Delete order"
+msgstr "Bestellung löschen"
+
+#: templates/manage/order/order.html:22
+msgid "Resend?"
+msgstr "Nocheinmal senden?"
+
+#: templates/manage/order/order.html:23
+msgid "Resend order"
+msgstr "Bestellung senden"
+
+#: templates/manage/order/order.html:252
+msgid "Message from the customer"
+msgstr "Nachricht vom Kunden"
+
+#: templates/manage/page/add_page.html:29
+#: templates/manage/page/add_page.html:33
+#: templates/manage/page/add_page.html:39
+msgid "Add page"
+msgstr "Seite hinzufügen"
+
+#: templates/manage/page/page.html:19
+#: templates/manage/payment/manage_payment.html:37
+#: templates/manage/shipping/manage_shipping.html:36
+#: templates/manage/shipping/shipping_method_criteria.html:13
+#: templates/manage/static_block/static_block.html:19
+#: templates/manage/tax/tax.html:20
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: templates/manage/page/page.html:22
+#: templates/manage/payment/manage_payment.html:42
+#: templates/manage/product/images.html:63
+#: templates/manage/product/properties.html:186
+#: templates/manage/reviews/manage_reviews.html:25
+#: templates/manage/shipping/manage_shipping.html:41
+#: templates/manage/static_block/static_block.html:22
+#: templates/manage/tax/tax.html:23
+msgid "Delete"
+msgstr "Löschen"
+
+#: templates/manage/page/page.html:30 templates/manage/page/page.html.py:34
+msgid "Page"
+msgstr "Seite"
+
+#: templates/manage/page/page.html:40
+msgid "Save page"
+msgstr "Seite speichern"
+
+#: templates/manage/payment/add_payment_method.html:13
+#: templates/manage/payment/add_payment_method.html:22
+msgid "Add payment method"
+msgstr "Bezahlmethode hinzufügen"
+
+#: templates/manage/payment/manage_payment.html:45
+#: templates/manage/shipping/manage_shipping.html:44
+msgid "Data"
+msgstr "Daten"
+
+#: templates/manage/payment/manage_payment.html:46
+#: templates/manage/payment/payment_method_criteria.html:3
+#: templates/manage/shipping/manage_shipping.html:45
+#: templates/manage/shipping/shipping_method_criteria.html:3
+msgid "Criteria"
+msgstr "Kriterien"
+
+#: templates/manage/payment/manage_payment.html:47
+#: templates/manage/payment/payment_method_prices.html:3
+#: templates/manage/shipping/manage_shipping.html:46
+#: templates/manage/shipping/shipping_method_prices.html:3
+msgid "Prices"
+msgstr "Preise"
+
+#: templates/manage/payment/payment_method_criteria.html:15
+#: templates/manage/payment/payment_price_criteria.html:17
+#: templates/manage/shipping/shipping_method_criteria.html:15
+#: templates/manage/shipping/shipping_price_criteria.html:17
+#: templates/manage/shipping/shipping_price_criteria.html:18
+msgid "Add criterion"
+msgstr "Kriterium hinzufügen"
+
+#: templates/manage/payment/payment_method_criteria.html:28
+#: templates/manage/payment/payment_price_criteria.html:30
+#: templates/manage/shipping/shipping_method_criteria.html:28
+#: templates/manage/shipping/shipping_price_criteria.html:31
+msgid "Save criteria"
+msgstr "Kriterium speichern"
+
+#: templates/manage/payment/payment_method_prices.html:4
+#: templates/manage/shipping/shipping_method_prices.html:4
+msgid "Add new price"
+msgstr "Neuen Preis hinzufügen"
+
+#: templates/manage/payment/payment_method_prices.html:9
+#: templates/manage/shipping/shipping_method_prices.html:9
+msgid "Add price"
+msgstr "Preis hinzufügen"
+
+#: templates/manage/payment/payment_method_prices.html:13
+#: templates/manage/shipping/shipping_method_prices.html:13
+msgid "Existing prices"
+msgstr "Existierende Preise"
+
+#: templates/manage/payment/payment_method_prices.html:40
+#: templates/manage/shipping/shipping_method_prices.html:40
+msgid "Edit criteria"
+msgstr "Kriterien bearbeiten"
+
+#: templates/manage/payment/payment_method_prices.html:54
+#: templates/manage/shipping/shipping_method_prices.html:54
+msgid "Delete prices"
+msgstr "Preise löschen"
+
+#: templates/manage/payment/payment_method_prices.html:55
+#: templates/manage/shipping/shipping_method_prices.html:55
+msgid "Update prices"
+msgstr "Preise aktualisieren"
+
+#: templates/manage/payment/payment_price_criteria.html:6
+#: templates/manage/shipping/shipping_price_criteria.html:6
+msgid "Edit criteria for"
+msgstr "Kriterien bearbeiten für"
+
+#: templates/manage/product/accessories_inline.html:73
+msgid "Add to accessories"
+msgstr "Zu Zubehör hinzufügen"
+
+#: templates/manage/product/accessories_inline.html:146
+msgid "Save accessories"
+msgstr "Zubehör speichern"
+
+#: templates/manage/product/accessories_inline.html:151
+msgid "Remove from accessories"
+msgstr "Von Zubehör entfernen"
+
+#: templates/manage/product/add_product.html:25
+#: templates/manage/product/product.html:53
+msgid "Add product"
+msgstr "Produkt hinzufügen"
+
+#: templates/manage/product/categories.html:21
+#: templates/manage/product/categories_children.html:15
+msgid "Edit category"
+msgstr "Kategorie bearbeiten"
+
+#: templates/manage/product/categories.html:30
+msgid "Save categories"
+msgstr "Kategorie speichern"
+
+#: templates/manage/product/categories.html:34
+msgid "There are no categories"
+msgstr "Es gibt keine Kategorien"
+
+#: templates/manage/product/data.html:10
+msgid "Product data"
+msgstr "Produktdaten"
+
+#: templates/manage/product/data.html:204
+msgid "Save data"
+msgstr "Daten speichern"
+
+#: templates/manage/product/dimension.html:2
+#: templates/manage/product/dimension.html:8
+#: templates/manage/product/product.html:83
+msgid "Dimension"
+msgstr "Abmessungen"
+
+#: templates/manage/product/dimension.html:21
+msgid "kg"
+msgstr "kg"
+
+#: templates/manage/product/dimension.html:38
+#: templates/manage/product/dimension.html:55
+#: templates/manage/product/dimension.html:72
+msgid "m"
+msgstr "m"
+
+#: templates/manage/product/dimension.html:79
+msgid "Stock data"
+msgstr "Lagerdaten"
+
+#: templates/manage/product/dimension.html:188
+msgid "Save dimension"
+msgstr "Abmessungen speichern"
+
+#: templates/manage/product/images.html:16
+msgid "Active images"
+msgstr "Zugewiesene Bilder"
+
+#: templates/manage/product/images.html:65
+#: templates/manage/product/properties.html:187
+msgid "Update"
+msgstr "Aktualsieren"
+
+#: templates/manage/product/images.html:69
+msgid "There are no images"
+msgstr "Es sind keine Bilder vorhanden"
+
+#: templates/manage/product/images.html:72
+msgid "Add images"
+msgstr "Bilder hinzufügen"
+
+#: templates/manage/product/images.html:87
+msgid "Save images"
+msgstr "Bilder speichern"
+
+#: templates/manage/product/product.html:27
+#: templates/manage/product/products.html:30
+msgid "Reset Filter"
+msgstr "Reset Filter"
+
+#: templates/manage/product/product.html:28
+#: templates/manage/product/products.html:31
+msgid "Reset"
+msgstr "Reset"
+
+#: templates/manage/product/product.html:59
+msgid "Delete product"
+msgstr "Produkt löschen"
+
+#: templates/manage/product/product.html:64
+msgid "Preview product"
+msgstr "Vorschau"
+
+#: templates/manage/product/products_inline.html:39
+#: templates/manage/product/properties.html:128
+msgid "URL"
+msgstr "URL"
+
+#: templates/manage/product/products_inline.html:51
+msgid "For Sale"
+msgstr "Im Angebot"
+
+#: templates/manage/product/products_inline.html:54
+msgid "Sale Price"
+msgstr "Angebotspreis"
+
+#: templates/manage/product/products_inline.html:60
+msgid "View"
+msgstr "Ansicht"
+
+#: templates/manage/product/properties.html:12
+msgid "Add property"
+msgstr "Eigenschaft hinzufügen"
+
+#: templates/manage/product/properties.html:20
+#: templates/manage/product/properties.html:21
+msgid "Up"
+msgstr "Hoch"
+
+#: templates/manage/product/properties.html:29
+#: templates/manage/product/properties.html:30
+msgid "Down"
+msgstr "Runter"
+
+#: templates/manage/product/properties.html:38
+msgid "Delete property"
+msgstr "Eigenschaft löschen"
+
+#: templates/manage/product/properties.html:48
+msgid "Delete option"
+msgstr "Option löschen"
+
+#: templates/manage/product/properties.html:60
+msgid "Add option"
+msgstr "Option hinzufügen"
+
+#: templates/manage/product/properties.html:112
+msgid "Add variant(s)"
+msgstr "Variant(en) hinzufügen"
+
+#: templates/manage/product/properties.html:179
+msgid "Edit variant"
+msgstr "Variante bearbeiten"
+
+#: templates/manage/product/properties.html:191
+msgid "Display type"
+msgstr "Ansichtsart"
+
+#: templates/manage/product/properties.html:196
+msgid "Change variant display type"
+msgstr "Ansichtsart für Varianten ändern"
+
+#: templates/manage/product/related_products_inline.html:73
+msgid "Add to related products"
+msgstr "Zu zugehörige Produkte hinzufügen"
+
+#: templates/manage/product/related_products_inline.html:125
+msgid "Remove from related products"
+msgstr "Von zugehörige Produkte entfernen"
+
+#: templates/manage/product/selectable_products_inline.html:31
+msgid "of"
+msgstr "von"
+
+#: templates/manage/reviews/add_review.html:20
+#: templates/manage/reviews/add_review.html:30
+#: templates/reviews/reviews_for_instance.html:37
+msgid "Add review"
+msgstr "Bewertung hinzufügen"
+
+#: templates/manage/reviews/manage_reviews.html:29
+msgid "View product"
+msgstr "Produkte ansehen"
+
+#: templates/manage/reviews/manage_reviews.html:34
+#: templates/reviews/already_rated.html:5
+msgid "Review"
+msgstr "Bewertung"
+
+#: templates/manage/reviews/manage_reviews.html:44
+msgid "Save review"
+msgstr "Bewertung speichern"
+
+#: templates/manage/shipping/add_shipping_method.html:13
+#: templates/manage/shipping/add_shipping_method.html:17
+#: templates/manage/shipping/add_shipping_method.html:23
+msgid "Add shipping method"
+msgstr "Liefermethode hinzufügen"
+
+#: templates/manage/shop/shop.html:20
+msgid "Save shop"
+msgstr "Shop speichern"
+
+#: templates/manage/static_block/add_static_block.html:18
+#: templates/manage/static_block/add_static_block.html:22
+msgid "Add static block"
+msgstr "Statischer Block hinzufügen"
+
+#: templates/manage/static_block/add_static_block.html:27
+#: templates/manage/static_block/static_block.html:38
+msgid "Save static block"
+msgstr "Statischer Block speichern"
+
+#: templates/manage/tax/add_tax.html:18 templates/manage/tax/add_tax.html:23
+#: templates/manage/tax/add_tax.html:29
+msgid "Add tax"
+msgstr "Mehrwertsteuer hinzufügen"
+
+#: templates/manage/tax/tax.html:38
+msgid "Save tax"
+msgstr "Mehrwertsteuer speichern"
+
+#: templates/marketing/topseller_portlet.html:8
+msgid "Topseller"
+msgstr "Topseller"
+
+#: templates/page/pages_portlet.html:4
+msgid "Information"
+msgstr "Information"
+
+#: templates/registration/login.html:19
+msgid "Username:"
+msgstr "Benutzername:"
+
+#: templates/registration/login.html:22
+msgid "Password:"
+msgstr "Passwort"
+
+#: templates/registration/login.html:26
+msgid "Log in"
+msgstr "Anmelden"
+
+#: templates/reviews/already_rated.html:6
+msgid "You have already rated for this product."
+msgstr "Sie haben für dieses Produkt bereits rezensiert."
+
+#: templates/reviews/review_form.html:6
+msgid "Add Review"
+msgstr "Bewertung hinzufügen"
+
+#: templates/reviews/review_preview.html:11
+msgid "Your name"
+msgstr "Ihr Name"
+
+#: templates/reviews/review_preview.html:17
+msgid "Your email"
+msgstr "Ihre E-Mail"
+
+#: templates/reviews/review_preview.html:23
+msgid "Your score"
+msgstr "Ihre Bewertung"
+
+#: templates/reviews/review_preview.html:34
+msgid "Your comment"
+msgstr "Ihr Kommentar"
+
+#: templates/reviews/review_preview.html:69
+msgid "Submit"
+msgstr "Absenden"
+
+#: templates/reviews/reviews_for_instance.html:31
+msgid "You have already rated"
+msgstr "Sie haben bereits bewertet"
+
+#: templates/reviews/thank_you.html:8
+msgid "Close Window"
+msgstr "Fenster schließen"
+
+#: templates/search/livesearch_results.html:27
+msgid "All results"
+msgstr "Alle Ergebnisse"
+
+#: templates/search/livesearch_results.html:33
+msgid "No products found"
+msgstr "Keine Produkte gefunden"
+
+#: templates/search/search_results.html:6
+msgid "Search results"
+msgstr "Suchergebnisse"
+
+#: templates/search/search_results.html:8
+msgid "You searched for"
+msgstr "Sie suchten nach"
+
+#: templates/search/search_results.html:9
+#, python-format
+msgid "There has been found 1 product."
+msgid_plural "There has been found %(counter)s products."
+msgstr[0] "Es wurde 1 Produkt gefunden."
+msgstr[1] "Es wuden %(counter)s Produkte gefunden."

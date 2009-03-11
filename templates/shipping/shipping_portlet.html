@@ -1,0 +1,18 @@
+{% load i18n %}
+{% load lfs_tags %}
+
+<div class="shipping-portlet portlet">
+    <div class="portlet-header">
+        {% trans 'Shipping' %}
+    </div>
+    
+    {% if deliverable %}
+        <div>
+            {{delivery_time}}
+        </div>
+    {% else %}
+        <div>
+            {% trans 'Not deliverable' %}
+        </div>        
+    {% endif %}
+</div>

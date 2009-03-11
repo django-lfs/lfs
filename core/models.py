@@ -1,0 +1,97 @@
+# django imports
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
+# lfs imports
+from lfs.core.fields.thumbs import ImageWithThumbsField
+from lfs.catalog.models import StaticBlock
+
+class Country(models.Model):
+    """Holds country relevant data for the shop.
+    """
+    name = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.name
+        
+    class Meta:
+        verbose_name_plural = 'Countries'
+    
+class Shop(models.Model):
+    """Holds all shop related information. 
+    
+    At the moment there must be exactly one shop with id == 1. (This may be 
+    changed in future to provide multi shops.)
+
+    Instance variables:
+
+    - name
+       The name of the shop. This is used for the the title of the HTML pages       
+
+    - shop_owner
+       The shop owner. This is displayed within several places for instance the 
+       checkout page
+    
+    - description
+      
+    - image 
+      An image which can be used as default image if a category doesn't have one
+         
+    - product_cols, product_rows, category_cols
+       Upmost format information, which defines how products and categories are
+       displayed within several views. These may be inherited by categories and
+       sub categories.
+
+    - google_analytics_id   
+       Used to generate google analytics tracker code and e-commerce code. the 
+       id has the format UA-xxxxxxx-xx and is provided by Google.
+    
+    - ga_site_tracking
+       If selected and the google_analytics_id is given google analytics site 
+       tracking code is inserted into the HTML source code.
+
+    - ga_ecommerce_tracking
+       If selected and the google_analytics_id is given google analytics 
+       e-commerce tracking code is inserted into the HTML source code.
+          
+    - countries
+       Selected countries will be offered to the shop customer tho choose for 
+       shipping and invoice address. 
+       
+    - default_country
+       This country will be used to calculate shipping price if the shop
+       customer doesn't have select a country yet.
+    """
+    name = models.CharField(_(u"Name"), max_length=30)
+    shop_owner = models.CharField(_(u"Shop owner"), max_length=100, blank=True)
+
+    description = models.TextField(_(u"Description"), blank=True)
+    image = ImageWithThumbsField(_(u"Image"), upload_to="images", blank=True, null=True, sizes=((60, 60), (100, 100), (200, 200), (400, 400)))    
+    static_block = models.ForeignKey(StaticBlock, verbose_name=_(u"Static block"), blank=True, null=True, related_name="shops")
+    
+    product_cols = models.IntegerField(_(u"Product cols"), default=3)
+    product_rows = models.IntegerField(_(u"Product rows"), default=3)
+    category_cols = models.IntegerField(_(u"Category cols"), default=3)
+    google_analytics_id = models.CharField(_(u"Google Analytics ID"), blank=True, max_length=20)
+    ga_site_tracking = models.BooleanField(_(u"Google Analytics Site Tracking"), default=False)
+    ga_ecommerce_tracking = models.BooleanField(_(u"Google Analytics E-Commerce Tracking"), default=False)
+    
+    default_country = models.ForeignKey(Country)
+    countries = models.ManyToManyField(Country, related_name="shops")
+    
+    class Meta:
+        permissions = (("manage_shop", "Manage shop"),)
+        
+    def __unicode__(self):
+        return self.name
+
+    def get_format_info(self):
+        """
+        """
+        return {
+            "product_cols" : self.product_cols,
+            "product_rows" : self.product_rows,
+            "category_cols" : self.category_cols,
+        }
+
+from monkeys import *

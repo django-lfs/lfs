@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load lfs_tags %}
+
+{% block content %}
+    <h1>{% trans 'Preview' %}</h1>
+    
+    <form action="{% url reviews_reedit %}"
+          method="post">
+          
+        <label for="user_name">{% trans 'Your name' %}:</label>
+        <div class="field">
+            {{name}}
+        </div>
+
+        {% if request.POST.user_email %}
+            <label for="user_email">{% trans 'Your email' %}:</label>          
+            <div class="field">
+                {{email}}
+            </div>
+        {% endif %}
+        
+        <label for="score">{% trans 'Your score' %}:</label>
+        <div class="star-rating-wrapper">
+            <ul class="star-rating">
+                <li class="current-rating"
+                    style="width:{{score|multiply:25}}px">
+                    Currently 3/5 Stars
+                </li>
+            </ul>
+        </div>
+        
+        {% if request.POST.comment %}
+            <label for="comment">{% trans 'Your comment' %}:</label>            
+            <div class="field">
+                {{request.POST.comment|linebreaks}}
+            </div>
+        {% endif %}
+        <input type="hidden"
+               name="user_name"
+               value="{{request.POST.user_name}}" />
+           
+        <input type="hidden"
+               name="user_email"
+               value="{{request.POST.user_email}}" />
+
+        <input type="hidden"
+               name="comment"
+               value="{{request.POST.comment}}" />
+
+        <input type="hidden"
+               name="score"
+               value="{{request.POST.score}}" />
+
+        <input type="hidden"
+               name="content_type_id"
+               value="{{request.POST.content_type_id}}" />
+
+        <input type="hidden"
+               name="content_id"
+               value="{{request.POST.content_id}}" />
+
+        <input type="submit"
+               name="edit"
+               value="{% trans 'Edit' %}" />
+    
+        <input type="submit"
+               name="save"
+               value="{% trans 'Submit' %}" />
+    </form>    
+{% endblock %}
+

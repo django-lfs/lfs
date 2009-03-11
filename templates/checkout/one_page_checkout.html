@@ -1,0 +1,319 @@
+{% extends "checkout/checkout_base.html" %}
+{% load i18n lfs_tags %}
+
+{% block middle_slot %}
+    <form class="checkout-form" 
+          method="post">
+        <table width="100%">
+            <tr>
+                <th>
+                    {% trans 'Shipping address' %}
+                </th>
+                <th>
+                    {% trans 'Invoice address' %}
+                </th>
+            </tr>
+            <tr>
+                <td width="50%">
+                    <table class="shipping-address">
+                        <tr>
+                            <td colspan="2">
+                                {{ form.shipping_firstname.errors }}                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_shipping_firstname">{{form.shipping_firstname.label_tag}}:</label>
+                            </td>
+                            <td>                                
+                                {{ form.shipping_firstname }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ form.shipping_lastname.errors }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_shipping_lastname">{{form.shipping_lastname.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.shipping_lastname }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ form.shipping_street.errors }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_shipping_street">{{form.shipping_street.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.shipping_street }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ form.shipping_zip_code.errors }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_shipping_zip_code">{{form.shipping_zip_code.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.shipping_zip_code }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ form.shipping_city.errors }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_shipping_city">{{form.shipping_city.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.shipping_city }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_shipping_country">{{form.shipping_country.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.shipping_country }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ form.shipping_phone.errors }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_shipping_country">{{form.shipping_phone.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.shipping_phone }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ form.shipping_email.errors }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_shipping_email">{{form.shipping_email.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.shipping_email }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="50%">
+                    <div>
+                        {{ form.no_invoice }}
+                        <label for="id_no_invoice">{{form.no_invoice.label_tag}}</label>
+                    </div>                    
+                    <table class="invoice-address">
+                        <tr>
+                            <td colspan="2">
+                                {{ form.invoice_firstname.errors }}                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_invoice_firstname">{{form.invoice_firstname.label_tag}}:</label>
+                            </td>
+                            <td>                                
+                                {{ form.invoice_firstname }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ form.invoice_lastname.errors }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_invoice_lastname">{{form.invoice_lastname.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.invoice_lastname }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ form.invoice_street.errors }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_invoice_street">{{form.invoice_street.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.invoice_street }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ form.invoice_zip_code.errors }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_invoice_zip_code">{{form.invoice_zip_code.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.invoice_zip_code }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ form.invoice_city.errors }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_invoice_city">{{form.invoice_city.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.invoice_city }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_invoice_country">{{form.invoice_country.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.invoice_country }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ form.invoice_phone.errors }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="id_invoice_phone">{{form.invoice_phone.label_tag}}:</label>
+                            </td>
+                            <td>
+                                {{ form.invoice_phone }}
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </td>
+            </tr>
+        </table>
+        
+        {# Shipping #}
+        <h2>{% trans 'Shipping' %}</h2>
+        <div id="shipping-inline">
+            {{shipping_inline|safe}}
+        </div>    
+        
+        {# Payment #}
+        <h2>{% trans 'Payment' %}</h2>    
+
+        {% for payment_method in payment_methods %}
+            <div>
+                <input type="radio"
+                       name="payment-method"
+                       class="update-checkout payment-methods"
+                       id="payment-method-{{payment_method.id}}"
+                       {% ifequal payment_method.id selected_payment_method.id  %}checked="checked"{% endifequal %}
+                       value="{{payment_method.id}}" />
+                    {{payment_method.name}}
+            </div>
+        {% endfor %}
+        
+        <table id="bank-account">
+            <tr>
+                <td colspan="2">
+                    {{ form.account_number.errors }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="id_account_number">{{form.account_number.label_tag}}:</label>
+                </td>
+                <td>
+                    {{form.account_number}}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {{ form.bank_identification_code.errors }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="id_bank_identification_code">{{form.bank_identification_code.label_tag}}:</label>
+                </td>
+                <td>
+                    {{form.bank_identification_code}}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {{ form.bank_name.errors }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="id_bank_name">{{form.bank_name.label_tag}}:</label>
+                </td>
+                <td>
+                    {{form.bank_name}}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {{ form.depositor.errors }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="id_depositor">{{form.depositor.label_tag}}:</label>
+                </td>
+                <td>
+                    {{form.depositor}}
+                </td>
+            </tr>
+        </table>
+        {# Cart #}
+        <div id="cart-inline">
+            {{cart_inline}}
+        </div>
+
+        {# Message #}
+        <div>
+            <label for="id_message">{{form.message.label_tag}}:</label>
+        </div>
+        <div>
+            {{form.message}}
+        </div>
+                
+        <input class="send-order"
+               type="submit" 
+               value="{% trans 'Submit order' %}" />
+               
+        <input class="edit-cart-button"
+               type="button"
+               onclick="window.location='{% url lfs.cart.views.cart %}'"
+               value="{% trans 'Edit cart' %}" />
+               
+        {# <a class="edit-cart-button" #}
+        {#    href="{% url lfs.cart.views.cart %}">{% trans 'Edit cart' %}</a> #}
+       
+    </form>
+{% endblock %}

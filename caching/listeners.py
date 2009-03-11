@@ -1,0 +1,178 @@
+# django
+from django.core.cache import cache
+from django.db.models.signals import post_save
+from django.db.models.signals import pre_save
+from django.db.models.signals import pre_delete
+
+# lfs imports
+from lfs.cart.models import Cart
+from lfs.catalog.models import Category
+from lfs.catalog.models import Product
+from lfs.catalog.models import StaticBlock
+from lfs.page.models import Page
+from lfs.core.models import Shop
+from lfs.core.signals import cart_changed
+from lfs.core.signals import product_changed
+from lfs.core.signals import category_changed
+from lfs.core.signals import lfs_sorting_changed
+from lfs.shipping.models import ShippingMethod
+
+# Cart
+def cart_changed_listener(sender, **kwargs):
+    update_cart_cache(sender)
+cart_changed.connect(cart_changed_listener)
+
+def cart_deleted_listender(sender, instance, **kwargs):
+    update_cart_cache(instance)
+pre_delete.connect(cart_deleted_listender, sender=Cart)
+    
+# Category
+def category_deleted_listender(sender, instance, **kwargs):
+    update_category_cache(instance)
+pre_delete.connect(category_deleted_listender, sender=Category)
+
+def category_saved_listener(sender, instance, **kwargs):
+    update_category_cache(instance)
+pre_save.connect(category_saved_listener, sender=Category)
+
+def category_changed_listener(sender, **kwargs):
+    update_category_cache(sender)
+category_changed.connect(category_changed_listener)
+
+# Page
+def page_saved_listener(sender, instance, **kwargs):
+    cache.delete("page-%s" % instance.slug)
+    cache.delete("pages")
+post_save.connect(page_saved_listener, sender=Page)
+
+# Product
+def product_changed_listener(sender, **kwargs):
+    update_product_cache(sender)
+product_changed.connect(product_changed_listener)
+
+def product_saved_listener(sender, instance, **kwargs):
+    update_product_cache(instance)
+post_save.connect(product_saved_listener, sender=Product)
+
+# Shipping Method
+def shipping_method_saved_listener(sender, instance, **kwargs):
+    cache.delete("shipping-delivery-time")
+    cache.delete("shipping-delivery-time-cart")
+post_save.connect(shipping_method_saved_listener, sender=ShippingMethod)
+
+# Shop
+def shop_saved_listener(sender, instance, **kwargs):
+    cache.delete("shop-%s" % instance.id)
+post_save.connect(shop_saved_listener, sender=Shop)
+
+# Static blocks
+def static_blocks_saved_listener(sender, instance, **kwargs):
+    update_static_block_cache(instance)
+post_save.connect(static_blocks_saved_listener, sender=StaticBlock)
+
+
+##### 
+def update_category_cache(instance):
+    
+    # NOTE: ATM, we clear the whole cache if a category has been changed. 
+    # Otherwise is lasts to long when the a category has a lot of products 
+    # (1000s) and the shop admin changes a category.
+    clear_cache()
+    return
+    cache.delete("category-breadcrumbs-%s" % instance.slug)
+    cache.delete("category-products-%s" % instance.slug)
+    cache.delete("category-categories-%s" % instance.slug)
+
+    for category in Category.objects.all():
+        cache.delete("categories-portlet-%s" % category.slug)
+
+    cache.delete("category-%s" % instance.id) 
+    cache.delete("category-%s" % instance.slug)
+
+    cache.delete("category-all-children-%s" % instance.id)
+    cache.delete("category-children-%s" % instance.id)
+    cache.delete("category-parents-%s" % instance.id)
+    cache.delete("category-products-%s" % instance.id)
+    
+    # Note: As this is called "pre-saved" newly created categories don't have
+    # the many-to-many attribute "products", hence we have to take care of it 
+    # here.
+    try:
+        for product in instance.products.all():
+            update_product_cache(product)
+    except ValueError:
+        pass
+    
+def update_product_cache(instance):
+    # If the instance is a product with variant or a variant we have to
+    # delete also the parent and all other variants
+    if instance.is_variant():
+        parent = instance.parent
+    else:
+        parent = instance
+    
+    cache.delete("product-%s" % parent.id)
+    cache.delete("product-%s" % parent.slug)
+    cache.delete("product-inline-%s" % parent.id)
+    cache.delete("product-images-%s" % parent.id)
+    cache.delete("related-products-%s" % parent.id)    
+    cache.delete("manage-properties-variants-%s" % parent.id)
+    cache.delete("product-categories-%s-False" % parent.id)
+    cache.delete("product-categories-%s-True" % parent.id)
+    cache.delete("product-navigation-%s" % parent.slug)
+    
+    try:
+        c = cache.get("shipping-delivery-time")
+        del c["product-%s" % parent.slug]
+        cache.set("shipping-delivery-time", c)
+    except (KeyError, TypeError):
+        pass
+    
+    for variant in parent.get_variants():
+        cache.delete("product-%s" % variant.id)
+        cache.delete("product-%s" % parent.slug)
+        cache.delete("product-inline-%s" % variant.id)
+        cache.delete("product-images-%s" % variant.id)
+        cache.delete("related-products-%s" % variant.id)
+        cache.delete("product-categories-%s-False" % variant.id)
+        cache.delete("product-categories-%s-True" % variant.id)
+        cache.delete("product-navigation-%s" % variant.slug)
+        cache.delete("product-shipping-%s" % variant.slug)
+
+def update_cart_cache(instance):
+    """Deletes all cart relevant caches.
+    """
+    cache.delete("cart-%s" % instance.user)
+    cache.delete("cart-%s" % instance.session)
+    cache.delete("cart-items-%s" % instance.id)
+    cache.delete("cart-costs-%s" % instance.id)
+    cache.delete("shipping-delivery-time-cart")
+    cache.delete("shipping-delivery-time")
+        
+def update_static_block_cache(instance):
+    """Deletes all static block relevant caches.
+    """
+    cache.delete("static-block-%s" % instance.id)
+    
+    for category in instance.categories.all():
+        cache.delete("category-inline-%s" % category.slug)
+
+def clear_cache():
+    """
+    """
+    # memcached
+    try:
+        cache._cache.flush_all()
+    except AttributeError:
+        pass            
+    else:
+        return
+
+    try:
+        cache._cache.clear()
+    except AttributeError:
+        pass
+    try:
+        cache._expire_info.clear()
+    except AttributeError:
+        pass

@@ -1,0 +1,7 @@
+{% extends "catalog/category_base.html" %}
+{% load lfs_tags %}
+
+{% block content %}
+    {% category_breadcrumbs category %}
+    {{category_inline|safe}}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block left-slot-wrapper %}{% endblock %}
+{% block right-slot-wrapper %}{% endblock %}
+
+{% block content %}
+    <h1>
+        {% trans 'We are sorry!' %}
+    </h1>
+    <p>
+        {% trans 'The page you have requested could not be found.' %}
+    </p>
+{% endblock %}

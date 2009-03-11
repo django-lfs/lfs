@@ -1,0 +1,14 @@
+{% load i18n %}
+{% if display %}
+    {% if previous %}
+        <a href="{% url lfs_product previous %}">{% trans 'Previous' %}</a>
+    {% else %}
+        {% trans 'Previous' %}
+    {% endif %}
+    {{current}} / {{total}}
+    {% if next %}
+        <a href="{% url lfs_product next %}">{% trans 'Next' %}</a>
+    {% else %}
+        {% trans 'Next' %}
+    {% endif %}    
+{% endif %}

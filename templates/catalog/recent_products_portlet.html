@@ -1,0 +1,22 @@
+{% load i18n %}
+{% load lfs_tags %}
+
+{% if products %}
+    <div class="recent-products-portlet portlet">
+
+        <div class="portlet-header">
+            {% trans 'Recent products' %}
+        </div>
+
+        {% for product in products %}
+            <div class="portlet-body">
+                <a href="{{product.get_absolute_url}}">
+                    {{product.name}}                    
+                </a>
+            </div>
+        {% endfor %}
+        <div class="portlet-footer">
+        </div>        
+    </div>    
+    
+{% endif %}

@@ -1,0 +1,24 @@
+{% load i18n %}
+{% load lfs_tags %}
+
+{% if product.get_related_products %}
+    <div class="related-products-portlet portlet">
+    
+        <div class="portlet-header">
+            {% trans 'Related Products' %}
+        </div>
+
+        {% for related_product in product.get_related_products %}
+            <div>
+                <a href="{{related_product.get_absolute_url}}">
+                    {{related_product.get_name}}
+                </a>
+            </div>
+            <a href="{{related_product.get_absolute_url}}">
+                <img alt="{{related_product.name}}"
+                     src="{{related_product.get_image.url_60x60}}" />
+            </a>
+            <div>{{related_product.get_price|currency}}</div>
+        {% endfor %}    
+    </div>
+{% endif %}

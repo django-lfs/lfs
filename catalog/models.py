@@ -151,7 +151,7 @@ class Category(models.Model):
         return self.meta_description
     
     def get_image(self):
-        """Returns the image of the category if ít has none it inherits that 
+        """Returns the image of the category if it has none it inherits that 
         from the parent category.
         """
         if self.image:

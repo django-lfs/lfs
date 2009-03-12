@@ -68,7 +68,7 @@ class Category(models.Model):
 
     @property
     def content_type(self):
-        """Returns the content_type of the criterion as lower string.
+        """Returns the content type of the category as lower string.
         """
         return u"category"
 
@@ -288,7 +288,7 @@ class Product(models.Model):
 
     @property
     def content_type(self):
-        """Returns the content_type of the criterion as lower string.
+        """Returns the content type of the product as lower string.
         """
         return u"product"
     

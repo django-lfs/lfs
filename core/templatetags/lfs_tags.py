@@ -1,6 +1,7 @@
 # django imports
 from django import template
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
@@ -69,13 +70,21 @@ def _get_shipping(context):
         }
 
 @register.inclusion_tag('catalog/recent_products_portlet.html', takes_context=True)
-def recent_products_portlet(context):
+def recent_products_portlet(context, instance=None):
+    """Displays recent visited products.
     """
-    """
+    slug_not_to_display = ""
+    if instance:
+        ctype = ContentType.objects.get_for_model(instance)
+        if ctype.name == u"product":
+            slug_not_to_display = instance.slug
+        
     request = context.get("request")
     
     products = []
     for slug in request.session.get("RECENT_PRODUCTS", []):
+        if slug == slug_not_to_display:
+            continue
         try:
             product = Product.objects.get(slug=slug)
         except Product.DoesNotExist:

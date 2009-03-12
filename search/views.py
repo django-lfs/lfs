@@ -39,7 +39,7 @@ def livesearch(request, template_name="search/livesearch_results.html"):
 def search(request, template_name="search/search_results.html"):
     """
     """
-    phrase = request.GET.get("phrase")
+    phrase = request.GET.get("phrase", "")
     
     # Products
     query = Q(name__icontains=phrase) & Q(sub_type__in = (STANDARD_PRODUCT, VARIANT))

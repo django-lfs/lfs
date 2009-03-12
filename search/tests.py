@@ -1,28 +1,15 @@
 # django imports
-from django.contrib.auth.models import User
-from django.contrib.auth.models import AnonymousUser
-from django.shortcuts import get_object_or_404
+from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.test.client import Client
 
 # test imports
 from lfs.catalog.models import Product
-from lfs.cart.models import Cart
-from lfs.cart.models import CartItem
-from lfs.cart.views import add_to_cart
-from lfs.cart import utils as cart_utils
-from lfs.customer.models import Address
-from lfs.customer.models import Customer
-from lfs.order.utils import add_order
-from lfs.order.settings import SUBMITTED
-from lfs.payment.models import PaymentMethod
-from lfs.shipping.models import ShippingMethod
-from lfs.tax.models import Tax
-from lfs.tests.utils import DummyRequest
 
 class SearchTestCase(TestCase):
     """Unit tests for lfs.search
     """
+    fixtures = ['lfs_shop.xml']
+    
     def setUp(self):
         """
         """
@@ -32,6 +19,12 @@ class SearchTestCase(TestCase):
     def test_search(self):
         """
         """
-        response = self.client.get("/shops/product/p1")
-        self.failUnless(response.content.find("Product 1") != -1)
+        url = reverse("lfs_search")
         
+        # Must be found
+        response = self.client.get(url, {"phrase" : "Product"})
+        self.failIf(response.content.find("Product 1") == -1)
+
+        # Must not be found
+        response = self.client.get(url, {"phrase" : "Hurz"})
+        self.failIf(response.content.find("Product 1") != -1)

@@ -37,8 +37,8 @@ urlpatterns += patterns('lfs.page.views',
 
 # Search
 urlpatterns += patterns('lfs.search.views',
-    url(r'^search$', "search", name="lfs_search"),
-    url(r'^livesearch$', "livesearch"),
+    url(r'^search', "search", name="lfs_search"),
+    url(r'^livesearch', "livesearch"),
 )
 
 # Checkout

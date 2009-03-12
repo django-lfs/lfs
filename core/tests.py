@@ -24,6 +24,8 @@ from lfs.tests.utils import RequestFactory
 class ShopTestCase(TestCase):
     """Tests the views of the lfs.catalog.
     """
+    fixtures = ['lfs_shop.xml']
+    
     def test_shop_defaults(self):
         """Tests the shop values right after creation of an instance
         """
@@ -40,6 +42,9 @@ class ShopTestCase(TestCase):
         self.assertEqual(shop.default_country.name, "Deutschland")
 
 class TagsTestCase(TestCase):
+    """
+    """
+    fixtures = ['lfs_shop.xml']
 
     def test_ga_site_tracking(self):
         """

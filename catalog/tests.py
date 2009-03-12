@@ -24,6 +24,8 @@ from lfs.tax.models import Tax
 class ViewsTestCase(TestCase):
     """Tests the views of the lfs.catalog.
     """
+    fixtures = ['lfs_shop.xml']
+
     def setUp(self):
         """
         """

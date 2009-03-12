@@ -13,6 +13,8 @@ from lfs.page.models import Page
 class PageTestCase(TestCase):
     """Unit tests for lfs.page
     """
+    fixtures = ['lfs_shop.xml', "lfs_user.xml"]
+        
     def setUp(self):
         """
         """

@@ -9,12 +9,12 @@ from lfs.cart.models import Cart
 from lfs.catalog.models import Category
 from lfs.catalog.models import Product
 from lfs.catalog.models import StaticBlock
-from lfs.page.models import Page
 from lfs.core.models import Shop
 from lfs.core.signals import cart_changed
 from lfs.core.signals import product_changed
 from lfs.core.signals import category_changed
-from lfs.core.signals import lfs_sorting_changed
+from lfs.marketing.models import Topseller
+from lfs.page.models import Page
 from lfs.shipping.models import ShippingMethod
 
 # Cart
@@ -70,6 +70,10 @@ def static_blocks_saved_listener(sender, instance, **kwargs):
     update_static_block_cache(instance)
 post_save.connect(static_blocks_saved_listener, sender=StaticBlock)
 
+# Topseller
+def topseller_saved_listener(sender, instance, **kwargs):
+    update_topseller_cache(instance)
+post_save.connect(topseller_saved_listener, sender=Topseller)
 
 ##### 
 def update_category_cache(instance):
@@ -157,6 +161,12 @@ def update_static_block_cache(instance):
     for category in instance.categories.all():
         cache.delete("category-inline-%s" % category.slug)
 
+def update_topseller_cache(instance):
+    """
+    """
+    cache.delete("topseller-%s" % instance.id)
+    cache.delete("topseller")
+    
 def clear_cache():
     """
     """

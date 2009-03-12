@@ -79,7 +79,7 @@ def recent_products_portlet(context, instance=None):
         ctype = ContentType.objects.get_for_model(instance)
         if ctype.name == u"product":
             slug_not_to_display = instance.slug
-            limit = LFS_RECENT_PRODUCTS_LIMIT + 1
+            limit = settings.LFS_RECENT_PRODUCTS_LIMIT + 1
         
     request = context.get("request")
     

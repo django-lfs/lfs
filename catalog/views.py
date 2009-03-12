@@ -178,11 +178,12 @@ def product_view(request, slug, template_name="catalog/product.html"):
     
     # Store recent products for later use
     recent = request.session.get("RECENT_PRODUCTS", [])
-    if slug not in recent:
-        recent.insert(0, slug)
-        if len(recent) > settings.LFS_RECENT_PRODUCTS_LIMIT:
-            recent = recent[:settings.LFS_RECENT_PRODUCTS_LIMIT+1]
-        request.session["RECENT_PRODUCTS"] = recent
+    if slug in recent:
+        recent.remove(slug)
+    recent.insert(0, slug)
+    if len(recent) > settings.LFS_RECENT_PRODUCTS_LIMIT:
+        recent = recent[:settings.LFS_RECENT_PRODUCTS_LIMIT+1]
+    request.session["RECENT_PRODUCTS"] = recent
     
     # TODO: Factor current_category out to a inclusion tag, so that people can
     # let it away if they don't need it.

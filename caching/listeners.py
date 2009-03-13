@@ -166,11 +166,13 @@ def update_static_block_cache(instance):
     for category in instance.categories.all():
         cache.delete("category-inline-%s" % category.slug)
 
-def update_topseller_cache(instance):
+def update_topseller_cache(topseller):
+    """Deletes all topseller relevant caches.
     """
-    """
-    cache.delete("topseller-%s" % instance.id)
     cache.delete("topseller")
+    product = topseller.product
+    for category in product.get_categories(with_parents=True):
+        cache.delete("topseller-%s" % category.id)
     
 def clear_cache():
     """

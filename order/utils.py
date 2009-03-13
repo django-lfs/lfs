@@ -91,11 +91,12 @@ def add_order(request):
     for cart_item in cart.cartitem_set.all():        
         OrderItem.objects.create(
             order=order,
-
+            
             price_net = cart_item.get_price_net(),
             price_gross = cart_item.get_price_gross(),
             tax = cart_item.get_tax(),
 
+            product = cart_item.product,
             product_sku = cart_item.product.sku,
             product_name = cart_item.product.name,
             product_amount=cart_item.amount,                        

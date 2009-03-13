@@ -5,6 +5,14 @@ urlpatterns = patterns('lfs.manage.views',
     url(r'^$', "dashboard", name="lfs_manage_dashboard"),
 )
 
+# Marketing
+urlpatterns += patterns('lfs.manage.views.marketing',
+    url(r'^marketing$', "marketing.manage_marketing", name="lfs_manage_marketing"),
+    url(r'^add-topseller$', "topseller.add_topseller", name="lfs_manage_add_topseller"),
+    url(r'^update-topseller$', "topseller.update_topseller", name="lfs_manage_update_topseller"),
+    url(r'^topseller-inline$', "topseller.manage_topseller_inline", name="lfs_manage_topseller_inline"),
+)
+
 # Product
 urlpatterns += patterns('lfs.manage.views',
     url(r'^product-dispatcher$', "product_dispatcher", name="lfs_manage_product_dispatcher"),

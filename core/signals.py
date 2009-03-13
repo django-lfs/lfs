@@ -9,3 +9,6 @@ lfs_sorting_changed = django.dispatch.Signal()
 
 # Order
 order_submitted = django.dispatch.Signal()
+
+# Marketing
+topseller_changed = django.dispatch.Signal()

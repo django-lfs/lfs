@@ -28,7 +28,7 @@
 
         <script type="text/javascript" src="{{MEDIA_URL}}lfs/jquery/jquery-ui-personalized-1.5.3.packed.js"></script>
         <script type="text/javascript" src="{{MEDIA_URL}}lfs/js/lfs.manage.js"></script>
-        <script type="text/javascript" src="{{MEDIA_URL}}lfs/jquery/json2.js"></script>
+        <script type="text/javascript" src="{{MEDIA_URL}}lfs/js/json2.js"></script>
         
         {% block javascript %}{% endblock %}
         
@@ -62,6 +62,7 @@
             | <a href="{% url lfs_manage_pages %}">{% trans 'Pages' %}</a>
             | <a href="{% url lfs_manage_static_blocks %}">{% trans 'Static blocks' %}</a>            
             | <a href="{% url lfs.manage.views.manage_orders %}">{% trans 'Orders' %}</a>
+            | <a href="{% url lfs_manage_marketing %}">{% trans 'Marketing' %}</a>
             | <a href="{% url lfs_manage_reviews %}">{% trans 'Reviews' %}</a>
         </div>
         

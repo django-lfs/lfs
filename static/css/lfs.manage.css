@@ -91,6 +91,7 @@ table.order-items,
 table.order-addresses,
 table.order-message,
 table.manage-overview,
+.selected-topseller table,
 .selected-accessories table,
 .selectable-products table {
     width: 100%;

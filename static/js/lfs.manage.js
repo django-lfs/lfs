@@ -613,4 +613,54 @@ $(function() {
         $(this).replaceWith("<span><span>" + data + "</span> <a href='" + url + "'>Yes</a> <a class='confirmation-link-no' href=''>No</a></span>");
         return false;
     });
+    
+    
+    // Marketing / Topseller
+    $("#add-topseller-button").livequery("click", function() {
+        $("#add-topseller-form").ajaxSubmit({
+            "success": function(data) {
+                var data = JSON.parse(data)
+                $("#topseller-inline").html(data["html"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    })
+        
+    $(".topseller-update-button").livequery("click", function() {
+        var action = $(this).attr("name");
+        $("#topseller-update-form").ajaxSubmit({
+            data : {"action" : action},            
+            "success": function(data) {
+                var data = JSON.parse(data);                
+                $("#topseller-inline").html(data["html"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    });
+
+    $(".topseller-page-link").livequery("click", function() {
+        var url = $(this).attr("href");
+        $.get(url, function(data) {
+            $("#topseller-inline").html(data)
+        });
+        return false;
+    });
+
+    $(".filter-topseller-input").livequery("keyup", function() {
+        $("#filter-topseller-form").ajaxSubmit({
+            target: "#topseller-inline"
+        });
+        return false;
+    });
+
+    $(".topseller-categories-filter").livequery("change", function() {
+        $("#filter-topseller-form").ajaxSubmit({
+            "success": function(data) {
+                $("#topseller-inline").html(data);
+            }
+        });
+    });
+    
 })

@@ -13,6 +13,7 @@ from lfs.core.models import Shop
 from lfs.core.signals import cart_changed
 from lfs.core.signals import product_changed
 from lfs.core.signals import category_changed
+from lfs.core.signals import topseller_changed
 from lfs.marketing.models import Topseller
 from lfs.page.models import Page
 from lfs.shipping.models import ShippingMethod
@@ -71,6 +72,10 @@ def static_blocks_saved_listener(sender, instance, **kwargs):
 post_save.connect(static_blocks_saved_listener, sender=StaticBlock)
 
 # Topseller
+def topseller_changed_listener(sender, **kwargs):
+    update_topseller_cache(sender)
+topseller_changed.connect(topseller_changed_listener)
+
 def topseller_saved_listener(sender, instance, **kwargs):
     update_topseller_cache(instance)
 post_save.connect(topseller_saved_listener, sender=Topseller)

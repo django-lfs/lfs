@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Customizing &mdash; LFS v0.1a1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1a1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="LFS v0.1a1 documentation" href="../index.html" />
+    <link rel="next" title="Features" href="features.html" />
+    <link rel="prev" title="Customer" href="customer.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="features.html" title="Features"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="customer.html" title="Customer"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LFS v0.1a1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  
+  <div class="section" id="customizing">
+<h1>Customizing<a class="headerlink" href="#customizing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="themeing">
+<h2>Themeing<a class="headerlink" href="#themeing" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Erzeugen eines Ordners für das Theme</p>
+</li>
+<li><p class="first">Erzeugen eines Ordners &#8220;static&#8221; (mit Unterordner) innerhalb des Themeordners</p>
+</li>
+<li><p class="first">Kopieren des LFS &#8220;templates&#8221; Ordner  in den Themeordner. Die Ordnerstruktur
+sollte wie folgt aussehen:</p>
+<div class="highlight-python"><pre>mytheme
+   |____ static
+   |        |____ css
+   |        |____ js
+   |        |____ img
+   |
+   |____ templates
+            |____ 404.html
+            |____ 500.html
+            |____ base.html
+            |____ cart
+            |____ catalog
+            |____ ...</pre>
+</div>
+</li>
+<li><p class="first">Erzeugen einer symbolischen Verknüpfung zum mytheme/static Ordner innerhalb
+des Standard static Ordners von Django:</p>
+<div class="highlight-python"><pre>$ cd /path/to/django/static/
+$ ln -s /path/to/mytheme/static mytheme</pre>
+</div>
+</li>
+<li><p class="first">Anpassen des Basistemplates &#8220;base.html&#8221;, so dass die Dateien des Themeordners
+verwendet werden, beispielsweise:</p>
+<div class="highlight-python"><pre>&lt;link rel="stylesheet" type="text/css" href="/static/mytheme/css/main.css" /&gt;</pre>
+</div>
+</li>
+<li><p class="first">Registrieren des Templateordners in &#8220;settings.py&#8221;. Vor Standardordner für
+Templates:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TEMPLATE_DIRS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&quot;/path/to/mytheme/templates/&quot;</span><span class="p">,</span>
+    <span class="s">&quot;/path/to/lfs/templates/&quot;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Customizing</a><ul>
+<li><a class="reference external" href="#themeing">Themeing</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="customer.html" title="previous chapter">Customer</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="features.html" title="next chapter">Features</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/narrative/customizing.txt">Show Source</a></li>
+            </ul>
+          <h3>Quick search</h3>
+            <form class="search" action="../search.html" method="get">
+              <input type="text" name="q" size="18" /> <input type="submit" value="Go" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="features.html" title="Features"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="customer.html" title="Customer"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LFS v0.1a1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Kai Diefenbach.
+      Last updated on Feb 08, 2009.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.5.1.
+    </div>
+  </body>
+</html>

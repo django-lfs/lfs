@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lieferung &mdash; LFS v0.1a1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1a1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="LFS v0.1a1 documentation" href="../index.html" />
+    <link rel="prev" title="Features" href="features.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="features.html" title="Features"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LFS v0.1a1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  
+  <div class="section" id="lieferung">
+<h1>Lieferung<a class="headerlink" href="#lieferung" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="allgemein">
+<h2>Allgemein<a class="headerlink" href="#allgemein" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>There can be several shipping methods, e.g. &#8220;standard&#8221; and &#8220;express&#8221; from
+which the customer can choose.</li>
+<li>A shipping method can be set to active/inactive by a simple flag.</li>
+<li>The shipping methods may be restricted by criteria, e.g. the shop owner just
+want to provide &#8220;express&#8221; when the customer lives within a certain country.</li>
+<li>Only when <strong>all</strong> criteria of a shipping method are true the shipping method
+is valid.</li>
+<li>Only active and valid shipping methods are provided to choose.</li>
+<li>A shipping method has a default price, which is by default the current price
+of the shipping method.</li>
+<li>A shipping method can have additional prices for a shipping method. Example:
+if the total cart price is greater than x the price for &#8220;standard&#8221; shipping
+method should be y.</li>
+<li>Shipping method prices are restricted by criteria. The first price for which
+all criteria a true is the current price of the shipping method. If no
+additional price is true the default price of the shippping method is taken as
+the current price.</li>
+<li>First the customer gets the default shipping method automatically. This is -
+at the moment and might be changed - the first active and valid shipping
+method.</li>
+<li>If the current choosen shipping method gets invalid after the shop customer
+changes her cart the default shipping method will be assigned.</li>
+</ul>
+</div>
+<div class="section" id="berechnung-der-lieferzeit">
+<h2>Berechnung der Lieferzeit<a class="headerlink" href="#berechnung-der-lieferzeit" title="Permalink to this headline">¶</a></h2>
+<p>Lieferzeiten hängen von der Liefermethode ab, d.h. jede Liefermethode hat
+genau eine Lieferzeit.</p>
+<p>Die Lieferzeit eines Produktes kann sich für die Produktansicht und der
+Warenkorbansicht unterschieden.</p>
+<p>Die Lieferzeit eines Produkts für die Produktansicht wird der Standard-
+Liefermethode eines Produktes entnommen. Diese ist zur Zeit die erste gültige
+(basierend auf Kriterien) Liefermethode eines Produktes.</p>
+<p>Die Lieferzeit eines Produkts für die Warenkorbansicht wird der Liefermethode
+entnommen, die der Shopkunde gewählt hat. Ist diese jedoch für ein Produkt nicht
+gültig (auf Basis ihrer Kriterien), so wird die Lieferzeit auch hier der
+Standard-Liefermethode entnommen.</p>
+<p>Die Lieferzeiten der Produkte in Warenkorbansicht werden zwar zu Zeit nicht
+angezeigt, jedoch dienen diese als Basis für die Berechnung der Gesamtlieferzeit
+des Warenkorbs.</p>
+<p>Ein Produkt kann eine manuelle Lieferzeiten haben. Ist dies der Fall wird diese
+Lieferzeit angezeigt und die Berechnung auf Basis der Kriterien entfällt.</p>
+<p>Darüber hinaus kann ein Produkt eine Bestellzeit und eine Bestelldatum haben.
+Ist ein Proudukt nicht mehr auf Lager, wird diese Bestellzeit (abzüglich der
+bereits vergangenen Tage seit der Bestellung) hinzugefügt.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Lieferung</a><ul>
+<li><a class="reference external" href="#allgemein">Allgemein</a></li>
+<li><a class="reference external" href="#berechnung-der-lieferzeit">Berechnung der Lieferzeit</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="features.html" title="previous chapter">Features</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/narrative/shipping.txt">Show Source</a></li>
+            </ul>
+          <h3>Quick search</h3>
+            <form class="search" action="../search.html" method="get">
+              <input type="text" name="q" size="18" /> <input type="submit" value="Go" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="features.html" title="Features"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LFS v0.1a1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Kai Diefenbach.
+      Last updated on Feb 08, 2009.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.5.1.
+    </div>
+  </body>
+</html>

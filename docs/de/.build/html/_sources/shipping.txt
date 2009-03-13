@@ -1,0 +1,35 @@
+Shipping
+========
+
+General
+-------
+* There can be several shipping methods, e.g. "standard" and "express" from
+  which the customer can choose.
+
+* A shipping method can be set to active/inactive by a simple flag.
+
+* The shipping methods may be restricted by criteria, e.g. the shop owner just
+  want to provide "express" when the customer lives within a certain country. 
+  Only when **all** criteria of a shipping method are true the shipping method 
+  is valid.
+
+* Only active and valid shipping methods are provided to choose.
+
+* A shipping method has a default price, which is by default the current price
+  of the shipping method.
+
+* A shipping method can have additional prices for a shipping method. Example: 
+  if the total cart price is greater than x the price for "standard" shipping 
+  method should be y.
+  
+* Shipping method prices are restricted by criteria. The first price for which
+  all criteria a true is the current price of the shipping method. If no 
+  additional price is true the default price of the shippping method is taken as
+  the current price.
+
+* First the customer gets the default shipping method automatically. This is -
+  at the moment and might be changed - the first active and valid shipping 
+  method.
+
+* If the current choosen shipping method gets invalid after the shop customer
+  changes her cart the default shipping method will be assigned.

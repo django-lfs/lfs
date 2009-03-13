@@ -15,6 +15,7 @@ from lfs.core.signals import product_changed
 from lfs.core.signals import category_changed
 from lfs.core.signals import topseller_changed
 from lfs.marketing.models import Topseller
+from lfs.order.models import OrderItem
 from lfs.page.models import Page
 from lfs.shipping.models import ShippingMethod
 
@@ -39,6 +40,21 @@ pre_save.connect(category_saved_listener, sender=Category)
 def category_changed_listener(sender, **kwargs):
     update_category_cache(sender)
 category_changed.connect(category_changed_listener)
+
+# OrderItem
+def order_item_listener(sender, instance, **kwargs):
+    """Deletes topseller after an OrderItem has been updated. Topseller are 
+    calculated automatically on base of OrderItems, hence we have to take of
+    that.
+    """
+    cache.delete("topseller")
+    try:
+        for category in instance.product.get_categories(with_parents=True):
+            cache.delete("topseller-%s" % category.id)
+    except: 
+        pass # fail silently        
+pre_delete.connect(order_item_listener, sender=OrderItem)
+post_save.connect(order_item_listener, sender=OrderItem)
 
 # Page
 def page_saved_listener(sender, instance, **kwargs):

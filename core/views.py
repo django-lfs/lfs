@@ -9,9 +9,6 @@ from django.template import RequestContext
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.models import Shop
 
-# arecibo
-from arecibo.wrapper import post
-
 def shop_view(request, template_name="shop/shop.html"):
     """Displays the shop.
     """
@@ -28,8 +25,6 @@ def robots(request, template_name="shop/robots.txt"):
 def server_error(request):
     """Own view in order to pass RequestContext and send an error message.
     """
-    # post(request, 500)
-    
     # mail = EmailMessage(
     #     subject="Error", body=request, from_email="usenet@diefenba.ch", to=["usenet@diefenba.ch"])
     # mail.send(fail_silently=True)

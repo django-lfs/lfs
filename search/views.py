@@ -52,4 +52,5 @@ def search(request, template_name="search/search_results.html"):
     return render_to_response(template_name, RequestContext(request, {
         "products" : products,
         "phrase" : phrase,
+        "total" : total,
     }))

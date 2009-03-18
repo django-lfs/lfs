@@ -18,7 +18,7 @@ def add_order(request):
     invoice_address = customer.selected_invoice_address
     
     cart = cart_utils.get_cart(request)
-    cart_costs = cart_utils.get_cart_costs(request, cart, total=True)
+    cart_costs = cart_utils.get_cart_costs(request, cart, total=False)
     
     shipping_method = shipping_utils.get_selected_shipping_method(request)
     shipping_costs = shipping_utils.get_shipping_costs(request, shipping_method)
@@ -43,9 +43,13 @@ def add_order(request):
         customer_lastname = shipping_address.lastname 
         customer_email = shipping_address.email
     
+    # Calculate the totals    
+    price = cart_costs["price"] + shipping_costs["price"] + payment_costs["price"]
+    tax = cart_costs["tax"] + shipping_costs["tax"] + payment_costs["tax"]
+    
     order = Order.objects.create(
-        price = cart_costs["price"],
-        tax = cart_costs["tax"],
+        price = price,
+        tax = tax,
 
         customer_firstname = customer_firstname,
         customer_lastname = customer_lastname,

@@ -38,6 +38,7 @@ class Category(models.Model):
     show_all_products = models.BooleanField(_(u"Show all products"),default=True) 
     
     products = models.ManyToManyField("Product", verbose_name=_(u"Products"), blank=True, related_name="categories")
+    short_description = models.TextField(_(u"Short description"), blank=True)
     description = models.TextField(_(u"Description"), blank=True)
     image = ImageWithThumbsField(_(u"Image"), upload_to="images", blank=True, null=True, sizes=((60, 60), (100, 100), (200, 200), (400, 400)))
     position = models.IntegerField(_(u"Position"), default=1000)
@@ -142,13 +143,16 @@ class Category(models.Model):
     def get_meta_keywords(self):
         """Returns the meta keywords of the catgory.
         """
-        keywords = self.meta_keywords.replace("<title>", self.name)
-        return keywords
+        mk = self.meta_keywords.replace("<name>", self.name)
+        mk = mk.replace("<short-description>", self.short_description)
+        return mk
         
     def get_meta_description(self):
         """Returns the meta description of the product.
         """
-        return self.meta_description
+        md = self.meta_description.replace("<name>", self.name)
+        md = md.replace("<short-description>", self.short_description)        
+        return md
     
     def get_image(self):
         """Returns the image of the category if it has none it inherits that 
@@ -367,6 +371,15 @@ class Product(models.Model):
         else:
             return self.description
 
+    def get_short_description(self):
+        """Returns the short description of the product. Takes care whether the 
+        product is a variant and short description is active or not.
+        """
+        if self.is_variant() and not self.active_short_description:
+            return self.parent.short_description
+        else:
+            return self.short_description
+
     def get_image(self):
         """Returns the first image (the main image) of the product.
         """        
@@ -403,21 +416,26 @@ class Product(models.Model):
         product is a variant and meta keywords are active or not.
         """
         if self.is_variant() and not self.active_meta_keywords:
-            keywords = self.parent.meta_keywords
+            mk = self.parent.meta_keywords
         else:
-            keywords = self.meta_keywords
+            mk = self.meta_keywords
         
-        keywords = keywords.replace("<title>", self.get_name())
-        return keywords
+        mk = mk.replace("<name>", self.get_name())
+        mk = mk.replace("<short-description>", self.get_short_description())
+        return mk
         
     def get_meta_description(self):
         """Returns the meta description of the product. Takes care whether the 
         product is a variant and meta description are active or not.
         """
         if self.is_variant() and not self.active_meta_description:
-            return self.parent.meta_description
+            md = self.parent.meta_description
         else:
-            return self.meta_description
+            md = self.meta_description
+            
+        md = md.replace("<name>", self.get_name())
+        md = md.replace("<short-description>", self.get_short_description())
+        return md
 
     def get_name(self):
         """Returns the name of the product. Takes care whether the product is a 

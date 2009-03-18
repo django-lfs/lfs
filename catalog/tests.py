@@ -21,6 +21,85 @@ from lfs.catalog.models import ProductVariantOption
 from lfs.core.signals import product_changed
 from lfs.tax.models import Tax
 
+class CategoryTestCase(TestCase):
+    """Tests the Category of the lfs.catalog.
+    """
+    def setUp(self):
+        """
+        """
+        self.c1 = Category.objects.create(name="Category 1", slug="category-1", 
+            short_description="Short description product 1")
+                
+    def test_meta_keywords(self):
+        """
+        """        
+        self.c1.meta_keywords = "KW1 KW2 KW3"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_keywords(), "KW1 KW2 KW3")
+
+        self.c1.meta_keywords = "<name> KW1 KW2 KW3"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_keywords(), "Category 1 KW1 KW2 KW3")
+
+        self.c1.meta_keywords = "KW1 <name> KW2 KW3"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_keywords(), "KW1 Category 1 KW2 KW3")
+
+        self.c1.meta_keywords = "KW1 KW2 KW3 <name>"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_keywords(), "KW1 KW2 KW3 Category 1")
+
+        self.c1.meta_keywords = "<name>"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_keywords(), "Category 1")
+        
+        self.c1.meta_keywords = "<short-description> KW1 KW2 KW3"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_keywords(), "Short description product 1 KW1 KW2 KW3")
+
+        self.c1.meta_keywords = "KW1 <short-description> KW2 KW3"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_keywords(), "KW1 Short description product 1 KW2 KW3")
+
+        self.c1.meta_keywords = "KW1 KW2 KW3 Short description product 1"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_keywords(), "KW1 KW2 KW3 Short description product 1")
+
+        self.c1.meta_keywords = "<short-description>"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_keywords(), "Short description product 1")
+        
+    def test_meta_description(self):
+        """
+        """
+        self.c1.meta_description = "Meta description product 1"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_description(), "Meta description product 1")
+
+        self.c1.meta_description = "<name> Meta description product 1"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_description(), "Category 1 Meta description product 1")
+
+        self.c1.meta_description = "Meta <name> description"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_description(), "Meta Category 1 description")
+
+        self.c1.meta_description = "Meta description product 1 <name>"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_description(), "Meta description product 1 Category 1")
+
+        self.c1.meta_description = "<name>"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_description(), "Category 1")
+
+        self.c1.meta_description = "<short-description> Meta description product 1"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_description(), "Short description product 1 Meta description product 1")
+
+        self.c1.meta_description = "<short-description>"
+        self.c1.save()        
+        self.assertEqual(self.c1.get_meta_description(), "Short description product 1")
+
 class ViewsTestCase(TestCase):
     """Tests the views of the lfs.catalog.
     """
@@ -419,9 +498,10 @@ class ProductTestCase(TestCase):
             name=u"Product 1", 
             slug=u"product-1",
             sku=u"SKU P1",
-            description=u"This is the description of product 1", 
-            meta_description=u"This is the meta description of product 1", 
-            meta_keywords=u"This is the meta keywords of product 1",
+            description=u"Description", 
+            short_description=u"Short description product 1", 
+            meta_description=u"Meta description product 1", 
+            meta_keywords=u"Meta keywords product 1",
             sub_type=PRODUCT_WITH_VARIANTS,
             tax=self.t1,
             price=1.0,
@@ -452,8 +532,8 @@ class ProductTestCase(TestCase):
             slug=u"variant-1",
             sku=u"SKU V1",
             description=u"This is the description of variant 1", 
-            meta_description=u"This is the meta description of variant 1", 
-            meta_keywords=u"This is the meta keywords of variant 1",
+            meta_description=u"Meta description of variant 1", 
+            meta_keywords=u"Meta keywords variant 1",
             sub_type=VARIANT, 
             price=2.0,
             for_sale_price = 1.5,
@@ -602,11 +682,11 @@ class ProductTestCase(TestCase):
         """
         """
         # Test product
-        self.assertEqual(self.p1.get_description(), u"This is the description of product 1")
+        self.assertEqual(self.p1.get_description(), u"Description")
         
         # Test variant. By default the description of a variant is inherited 
         # from parent product.
-        self.assertEqual(self.v1.get_description(), u"This is the description of product 1")
+        self.assertEqual(self.v1.get_description(), u"Description")
         
         # Now we switch to active description.
         self.v1.active_description = True
@@ -702,39 +782,123 @@ class ProductTestCase(TestCase):
         titles = [i.title for i in self.v1.get_sub_images()]
         self.assertEqual(titles, ["Image 5"])
         
-    def test_get_meta_keywords(self):
+    def test_get_meta_keywords_1(self):
+        """Tests the correct return of meta keywords, foremost the replacement 
+        of LFS specific tags <name> and <short-description> for the meta fields.
+        """
+        self.p1.meta_keywords = "KW1 KW2 KW3"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_keywords(), "KW1 KW2 KW3")
+
+        # Test including of the name
+        self.p1.meta_keywords = "<name> KW1 KW2 KW3"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_keywords(), "Product 1 KW1 KW2 KW3")
+
+        self.p1.meta_keywords = "KW1 <name> KW2 KW3"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_keywords(), "KW1 Product 1 KW2 KW3")
+
+        self.p1.meta_keywords = "KW1 KW2 KW3 <name>"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_keywords(), "KW1 KW2 KW3 Product 1")
+
+        self.p1.meta_keywords = "<name>"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_keywords(), "Product 1")
+
+        # Test including of the description        
+        self.p1.meta_keywords = "<short-description> KW1 KW2 KW3"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_keywords(), "Short description product 1 KW1 KW2 KW3")
+
+        self.p1.meta_keywords = "KW1 <short-description> KW2 KW3"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_keywords(), "KW1 Short description product 1 KW2 KW3")
+
+        self.p1.meta_keywords = "KW1 KW2 KW3 <short-description>"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_keywords(), "KW1 KW2 KW3 Short description product 1")
+
+        self.p1.meta_keywords = "<short-description>"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_keywords(), "Short description product 1")
+
+    def test_get_meta_keywords_2(self):
         """
         """
         # Test product
-        self.assertEqual(self.p1.get_meta_keywords(), u"This is the meta keywords of product 1")
+        self.assertEqual(self.p1.get_meta_keywords(), u"Meta keywords product 1")
         
         # Test variant. By default the meta keywords of a variant is inherited 
         # from parent product.
-        self.assertEqual(self.v1.get_meta_keywords(), u"This is the meta keywords of product 1")
+        self.assertEqual(self.v1.get_meta_keywords(), u"Meta keywords product 1")
         
         # Now we switch to active meta keywords.
         self.v1.active_meta_keywords = True
         self.v1.save()
         
         # Now we get the meta keywords of the variant
-        self.assertEqual(self.v1.get_meta_keywords(), u"This is the meta keywords of variant 1")
+        self.assertEqual(self.v1.get_meta_keywords(), u"Meta keywords variant 1")
+        
+    def test_get_meta_description_1(self):
+        """Tests the correct return of meta description, foremost the replacement 
+        of LFS specific tags <name> and <short-description> for the meta fields.
+        """
+        self.p1.meta_description = "Meta description"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_description(), "Meta description")
 
-    def test_get_meta_description(self):
+        # Test the including of name
+        self.p1.meta_description = "<name> Meta description"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_description(), "Product 1 Meta description")
+
+        self.p1.meta_description = "Meta <name> description"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_description(), "Meta Product 1 description")
+
+        self.p1.meta_description = "Meta description <name>"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_description(), "Meta description Product 1")
+
+        self.p1.meta_description = "<name>"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_description(), "Product 1")
+
+        # Test the including of short description
+        self.p1.meta_description = "<short-description> Meta description"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_description(), "Short description product 1 Meta description")
+
+        self.p1.meta_description = "Meta <short-description> description"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_description(), "Meta Short description product 1 description")
+
+        self.p1.meta_description = "Meta description <short-description>"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_description(), "Meta description Short description product 1")
+
+        self.p1.meta_description = "<short-description>"
+        self.p1.save()        
+        self.assertEqual(self.p1.get_meta_description(), "Short description product 1")
+
+    def test_get_meta_description_2(self):
         """
         """
         # Test product
-        self.assertEqual(self.p1.get_meta_description(), u"This is the meta description of product 1")
-        
+        self.assertEqual(self.p1.get_meta_description(), u"Meta description product 1")
+
         # Test variant. By default the meta description of a variant is 
         # inherited from parent product.
-        self.assertEqual(self.v1.get_meta_description(), u"This is the meta description of product 1")
+        self.assertEqual(self.v1.get_meta_description(), u"Meta description product 1")
         
         # Now we switch to active meta description.
         self.v1.active_meta_description = True
         self.v1.save()
         
         # Now we get the meta description of the variant
-        self.assertEqual(self.v1.get_meta_description(), u"This is the meta description of variant 1")
+        self.assertEqual(self.v1.get_meta_description(), u"Meta description of variant 1")        
         
     def test_get_name(self):
         """

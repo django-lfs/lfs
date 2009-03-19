@@ -20,6 +20,7 @@ from lfs.core.models import Shop
 from lfs.core.models import Country
 from lfs.order.models import Order
 from lfs.tests.utils import RequestFactory
+import lfs.core.utils
 
 class ShopTestCase(TestCase):
     """Tests the views of the lfs.catalog.
@@ -40,6 +41,45 @@ class ShopTestCase(TestCase):
         self.assertEqual(shop.ga_site_tracking, False)
         self.assertEqual(shop.ga_ecommerce_tracking, False)
         self.assertEqual(shop.default_country.name, "Deutschland")
+    
+    def test_from_email(self):
+        """
+        """
+        shop = lfs.core.utils.get_default_shop()        
+
+        shop.from_email = "john@doe.com"
+        self.assertEqual(shop.from_email, "john@doe.com")
+        
+    def test_get_notification_emails(self):
+        """
+        """
+        shop = lfs.core.utils.get_default_shop()        
+
+        shop.notification_emails = "john@doe.com, jane@doe.com, baby@doe.com"        
+
+        self.assertEqual(
+            shop.get_notification_emails(), 
+            ["john@doe.com", "jane@doe.com", "baby@doe.com"])
+
+        shop.notification_emails = "john@doe.com\njane@doe.com\nbaby@doe.com"
+        self.assertEqual(
+            shop.get_notification_emails(), 
+            ["john@doe.com", "jane@doe.com", "baby@doe.com"])
+
+        shop.notification_emails = "john@doe.com\r\njane@doe.com\r\nbaby@doe.com"
+        self.assertEqual(
+            shop.get_notification_emails(), 
+            ["john@doe.com", "jane@doe.com", "baby@doe.com"])
+
+        shop.notification_emails = "john@doe.com\n\rjane@doe.com\n\rbaby@doe.com"
+        self.assertEqual(
+            shop.get_notification_emails(), 
+            ["john@doe.com", "jane@doe.com", "baby@doe.com"])
+
+        shop.notification_emails = "john@doe.com,,,,\n\n\n\njane@doe.com"
+        self.assertEqual(
+            shop.get_notification_emails(), 
+            ["john@doe.com", "jane@doe.com"])
 
 class TagsTestCase(TestCase):
     """

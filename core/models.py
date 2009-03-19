@@ -1,3 +1,6 @@
+# python imports
+import re
+
 # django imports
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -32,8 +35,16 @@ class Shop(models.Model):
        The shop owner. This is displayed within several places for instance the 
        checkout page
     
+    - from_email
+       This e-mail address is used for the from header of all outgoing e-mails
+       
+    - notification_emails
+       This e-mail addresses are used for incoming notification e-mails, e.g. 
+       received an order. One e-mail address per line.
+       
     - description
-      
+       A description of the shop
+       
     - image 
       An image which can be used as default image if a category doesn't have one
          
@@ -64,7 +75,9 @@ class Shop(models.Model):
     """
     name = models.CharField(_(u"Name"), max_length=30)
     shop_owner = models.CharField(_(u"Shop owner"), max_length=100, blank=True)
-
+    from_email = models.EmailField(_(u"From e-mail address"))
+    notification_emails  = models.TextField(_(u"Notification email addresses"))
+    
     description = models.TextField(_(u"Description"), blank=True)
     image = ImageWithThumbsField(_(u"Image"), upload_to="images", blank=True, null=True, sizes=((60, 60), (100, 100), (200, 200), (400, 400)))    
     static_block = models.ForeignKey(StaticBlock, verbose_name=_(u"Static block"), blank=True, null=True, related_name="shops")
@@ -93,5 +106,11 @@ class Shop(models.Model):
             "product_rows" : self.product_rows,
             "category_cols" : self.category_cols,
         }
-
+    
+    def get_notification_emails(self):
+        """Returns the notification e-mail addresses as list
+        """
+        adresses = re.split("[\s,]+", self.notification_emails)
+        return adresses
+        
 from monkeys import *

@@ -14,8 +14,9 @@ def scale_to_min_size(image, min_width, min_height):
     
     prop_x = float(min_width) / width
     prop_y = float(min_height) / height
-    
-    # Die größere Proportion (oder Faktor oder Quotient) zwischen Soll-Groesse 
+        
+    # TODO: Translate to english
+    # Die groessere Proportion (oder Faktor oder Quotient) zwischen Soll-Groesse 
     # und Ist-Groesse kommt fuer beide Kanten (da proportional) zur Anwendung. 
     # Das bedeutet die uebrige Kante ist auf jeden Fall groeßer als gewuenscht
     # (da Multiplikation mit Faktor). 
@@ -39,12 +40,14 @@ def scale_to_max_size(image, max_width, max_height):
     # resize proportinal
     width, height = image.size
 
+    # TODO: Translate to english
     # Erechne Proportionen zwischen Soll-Weite und Ist-Weite und zwischen
     # Soll-Hoehe und Ist-Hoehe
     
     prop_width = float(max_width) / width
     prop_height = float(max_height) / height
-
+    
+    # TODO: Translate to english
     # Die kleinere Proportion (oder Faktor oder Quotient) der beiden kommt fuer 
     # beide Kanten (da Proportional) zur Anwendung. Das bedeutet die uebrige 
     # Kante ist auf jeden Fall kleiner als gewuenscht (da Multiplikation mit 

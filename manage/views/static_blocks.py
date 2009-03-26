@@ -13,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
 from lfs.catalog.models import StaticBlock
+from lfs.core.utils import lfs_quote
 
 class StaticBlockForm(ModelForm):
     """Form to add and edit a static block.
@@ -44,7 +45,7 @@ def manage_static_block(request, id, template_name="manage/static_block/static_b
             response = HttpResponseRedirect(
                 reverse("lfs_manage_static_block", kwargs={"id" : sb.id}))
             response.set_cookie("message", 
-                urllib.quote(_(u"Static block has been saved.")))
+                lfs_quote(_(u"Static block has been saved.")))
 
             return response
     else:
@@ -68,7 +69,7 @@ def add_static_block(request, template_name="manage/static_block/add_static_bloc
             url = reverse("lfs_manage_static_block", kwargs={"id" : new_sb.id})
             response = HttpResponseRedirect(url)
             response.set_cookie("message",
-                urllib.quote(_(u"Static block has been added.")))
+                lfs_quote(_(u"Static block has been added.")))
 
             return response
     else:
@@ -105,7 +106,7 @@ def delete_static_block(request, id):
     
     response = HttpResponseRedirect(reverse("lfs_manage_static_blocks"))
     response.set_cookie("message",
-        urllib.quote(_(u"Shipping method has been added.")))
+        lfs_quote(_(u"Shipping method has been added.")))
 
     return response
     

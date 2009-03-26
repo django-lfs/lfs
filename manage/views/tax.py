@@ -13,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
 from lfs.catalog.models import Product
+from lfs.core.utils import lfs_quote
 from lfs.tax.models import Tax
 
 class TaxForm(ModelForm):
@@ -45,7 +46,7 @@ def manage_tax(request, id, template_name="manage/tax/tax.html"):
             url = reverse("lfs_manage_tax", kwargs={"id" : tax.id})
             response = HttpResponseRedirect(url)            
             
-            msg = urllib.quote(_(u"Tax has been saved."))
+            msg = lfs_quote(_(u"Tax has been saved."))
             response.set_cookie("message", msg)            
             
             return response            
@@ -70,7 +71,7 @@ def add_tax(request, template_name="manage/tax/add_tax.html"):
 
             url = reverse("lfs_manage_tax", kwargs={"id" : tax.id})
             response = HttpResponseRedirect(url)                        
-            msg = urllib.quote(_(u"Tax has been added."))
+            msg = lfs_quote(_(u"Tax has been added."))
             response.set_cookie("message", msg)            
             
             return response
@@ -97,8 +98,8 @@ def delete_tax(request, id):
     
     response = HttpResponseRedirect(reverse("lfs_manage_taxes"))
     
-    msg = urllib.quote(_(u"Tax has been deleted."))
-    response.set_cookie("message", msg)            
+    msg = lfs_quote(_(u"Tax has been deleted."))
+    response.set_cookie("message", msg)
             
     return response
     

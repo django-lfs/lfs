@@ -5,7 +5,7 @@
     {% for tax in taxes %}
         <div>
             <a href="{% url lfs_manage_tax tax.id %}">
-                {{tax.rate}}
+                {{tax.rate}}%
             </a>
         </div>
     {% endfor %}

@@ -18,6 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 # lfs imports
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.utils import LazyEncoder
+from lfs.core.utils import lfs_quote
 from lfs.core.widgets.image import LFSImageInput
 from lfs.criteria import utils as criteria_utils
 from lfs.customer.models import Customer
@@ -174,7 +175,7 @@ def add_shipping_method(request,
                 kwargs={"shipping_method_id" : new_shipping_method.id})
             response = HttpResponseRedirect(url)
             response.set_cookie("message",
-                urllib.quote(_(u"Shipping method has been added.")))
+                lfs_quote(_(u"Shipping method has been added.")))
 
             return response
     else:
@@ -335,7 +336,7 @@ def save_shipping_method_data(request, shipping_method_id):
     url = reverse("lfs_manage_shipping_method", kwargs={"shipping_method_id" : shipping_method_id})
     response = HttpResponseRedirect(url)
     response.set_cookie("message",
-        urllib.quote(_(u"Shipping method has been saved.")))
+        lfs_quote(_(u"Shipping method has been saved.")))
 
     return response
  
@@ -360,6 +361,6 @@ def delete_shipping_method(request, shipping_method_id):
     url = reverse("lfs_manage_shipping")
     response = HttpResponseRedirect(url)
     response.set_cookie("message",
-        urllib.quote(_(u"Shipping method has been deleted.")))
+        lfs_quote(_(u"Shipping method has been deleted.")))
 
     return response

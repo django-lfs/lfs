@@ -13,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 # lfs imports
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.models import Shop
+from lfs.core.utils import lfs_quote
 from lfs.core.widgets.image import LFSImageInput
 
 class ShopForm(ModelForm):
@@ -37,7 +38,7 @@ def manage_shop(request, template_name="manage/shop/shop.html"):
             url = reverse("lfs_manage_shop")
             response = HttpResponseRedirect(url)
             
-            msg = urllib.quote(_(u"Shop data has been saved."))
+            msg = lfs_quote(_(u"Shop data has been saved."))
             response.set_cookie("message", msg)
             
             return response

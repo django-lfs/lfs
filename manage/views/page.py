@@ -13,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
 from lfs.core.widgets.file import LFSFileInput
+from lfs.core.utils import lfs_quote
 from lfs.page.models import Page
 
 class PageForm(ModelForm):
@@ -56,7 +57,7 @@ def manage_page(request, id, template_name="manage/page/page.html"):
             new_page = form.save()
             _update_positions()
 
-            msg = urllib.quote(_(u"Page has been saved."))
+            msg = lfs_quote(_(u"Page has been saved."))
             url = reverse("lfs_manage_page", kwargs={"id" : page.id})
             response = HttpResponseRedirect(url)
             response.set_cookie("message", msg)
@@ -82,7 +83,7 @@ def add_page(request, template_name="manage/page/add_page.html"):
             page = form.save()
             _update_positions()
 
-            msg = urllib.quote(_(u"Page has been added."))
+            msg = lfs_quote(_(u"Page has been added."))
             url = reverse("lfs_manage_page", kwargs={"id" : page.id})
             response = HttpResponseRedirect(url)
             response.set_cookie("message", msg)
@@ -103,7 +104,7 @@ def delete_page(request, id):
     page = get_object_or_404(Page, pk=id)    
     page.delete()
 
-    msg = urllib.quote(_(u"Page has been deleted."))
+    msg = lfs_quote(_(u"Page has been deleted."))
     response = HttpResponseRedirect(reverse("lfs_manage_pages"))
     response.set_cookie("message", msg)
 

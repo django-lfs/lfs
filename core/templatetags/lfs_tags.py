@@ -319,6 +319,7 @@ def categories_portlet(context, object=None):
     if categories is not None:
         return categories
     
+    # Calculate current categories
     request = context.get("request")
     if object and object.content_type == "category":
         parents = object.get_parents()
@@ -328,17 +329,17 @@ def categories_portlet(context, object=None):
         current_categories = object.get_categories(with_parents=True)        
     else:
         current_categories = []
-        
+
     categories = []
     for category in Category.objects.filter(parent = None):
         
         if category in current_categories:
             children = _categories_portlet_children(request, current_categories, category)
-            is_current = True            
+            is_current = True
         else:
             children = ""
-            is_current = False            
-            
+            is_current = False
+
         categories.append({
             "slug" : category.slug,
             "name" : category.name,

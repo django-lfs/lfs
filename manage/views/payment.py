@@ -18,6 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 # lfs imports
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.utils import LazyEncoder
+from lfs.core.utils import lfs_quote
 from lfs.core.widgets.image import LFSImageInput
 from lfs.criteria import utils as criteria_utils
 from lfs.customer.models import Customer
@@ -175,7 +176,7 @@ def add_payment_method(request,
                 kwargs={"payment_method_id" : new_payment_method.id})                
             response = HttpResponseRedirect(url)
             response.set_cookie("message",
-                urllib.quote(_(u"Payment method has been added.")))
+                lfs_quote(_(u"Payment method has been added.")))
 
             return response
     else:
@@ -336,7 +337,7 @@ def save_payment_method_data(request, payment_method_id):
     
     url = reverse("lfs_manage_payment_method", kwargs={"payment_method_id" : payment_method_id})    
     response = HttpResponseRedirect(url)
-    msg = urllib.quote(_(u"Payment method has been added."))
+    msg = lfs_quote(_(u"Payment method has been added."))
     response.set_cookie("message", msg)            
 
     return response
@@ -361,7 +362,7 @@ def delete_payment_method(request, payment_method_id):
 
     url = reverse("lfs_manage_payment")    
     response = HttpResponseRedirect(url)
-    msg = urllib.quote(_(u"Payment method has been deleted."))
+    msg = lfs_quote(_(u"Payment method has been deleted."))
     response.set_cookie("message", msg)            
 
     return response

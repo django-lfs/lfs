@@ -587,7 +587,7 @@ $(function() {
         return false;
     })
     
-    // Property groups
+    // PropertyGroup
     $("#add-property-button").livequery("click", function() {
         $("#add-property-form").ajaxSubmit({
             "success": function(data) {
@@ -611,6 +611,52 @@ $(function() {
         });
         return false;
     })
+    
+    // PropertyGroup / Products
+    $("#add-products-button").livequery("click", function() {
+        $("#add-products-form").ajaxSubmit({
+            "success": function(data) {
+                var data = JSON.parse(data);
+                $("#products-inline").html(data["html"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    })
+
+    $(".products-update-button").livequery("click", function() {
+        $("#products-update-form").ajaxSubmit({
+            success : function(data) {
+                var data = JSON.parse(data);
+                $("#products-inline").html(data["html"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    })
+
+    $(".products-page-link").livequery("click", function() {
+        var url = $(this).attr("href");
+        $.get(url, function(data) {
+            $("#products-inline").html(data)
+        });
+        return false;
+    });
+    
+    $(".filter-products-input").livequery("keyup", function() {
+        $("#filter-products-form").ajaxSubmit({
+            "type": "post",
+            "success": function(data) {
+                $("#products-inline").html(data);
+            }
+        });
+    });
+
+    $(".products-categories-filter").livequery("change", function() {
+        $("#filter-products-form").ajaxSubmit({
+            "target": "#products-inline"
+        });
+    });
     
     // Shop Property Options
     $(".shop-property-add-option-button").livequery("click", function() {

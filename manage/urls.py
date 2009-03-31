@@ -69,7 +69,10 @@ urlpatterns += patterns('lfs.manage.views.property_groups',
     url(r'^add-property-group', "add_property_group", name="lfs_add_property_group"),
     url(r'^delete-property-group/(?P<id>\d*)', "delete_property_group", name="lfs_delete_property_group"),
     url(r'^assign-properties/(?P<group_id>\d*)', "assign_properties", name="lfs_assign_properties"),    
-    url(r'^update-properties/(?P<group_id>\d*)', "update_properties", name="lfs_update_properties"),    
+    url(r'^update-properties/(?P<group_id>\d*)', "update_properties", name="lfs_update_properties"),
+    url(r'^assign-products-to-property-group/(?P<group_id>\d*)', "assign_products", name="lfs_assign_products_to_property_group"),
+    url(r'^remove-products-from-property-group/(?P<group_id>\d*)', "remove_products", name="lfs_pg_remove_products"),
+    url(r'^products-inline/(?P<product_group_id>\d*)', "products_inline", name="lfs_pg_products_inline"),
 )
 
 # Shop Properties

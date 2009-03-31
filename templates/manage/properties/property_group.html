@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content %}
-    <div>
+    <div class="site-actions">
         <span class="label">{{property_group.name}}</span> |
         <a href="{% url lfs_add_property_group %}">{% trans 'Add' %}</a> |
         <a class="confirmation-link"
@@ -42,35 +42,7 @@
             {{properties|safe}}
         </div>
         <div id="products">
-            <h2>{% trans 'Products' %}</h2>
-            <table class="property-group-products">
-                <tr>
-                    <th>{% trans 'Name' %}</th>
-                    <th>{% trans 'Edit' %}</th>
-                    <th>{% trans 'View' %}</th>
-                </tr>
-                {% for product in property_group.products.all %}
-                    <tr>
-                        <td>
-                            {{product.name}}
-                        </td>
-                        <td>
-                            <a href="{% url lfs_manage_product product.id %}#properties">
-                                <img src="{{MEDIA_URL}}lfs/icons/pencil.png" 
-                                     alt="{% trans 'Edit' %}"
-                                     title="{% trans 'Edit product' %}" />
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{{product.get_absolute_url}}">
-                                <img src="{{MEDIA_URL}}lfs/icons/pencil.png" 
-                                     alt="{% trans 'Edit' %}"
-                                     title="{% trans 'Edit product' %}" />                                
-                            </a>
-                        </td>                        
-                    </tr>                    
-                {% endfor %}
-            </table>
-        </div>
+            {{products|safe}}
+        </div>    
     </div>        
 {% endblock %}

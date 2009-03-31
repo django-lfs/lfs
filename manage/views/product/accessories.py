@@ -129,6 +129,7 @@ def add_accessories(request, product_id):
     
     return HttpResponse(result)
 
+# TODO: Rename to "update_accessories"
 @permission_required("manage_shop", login_url="/login/")    
 def remove_accessories(request, product_id):
     """Removes passed accessories from product with passed id.

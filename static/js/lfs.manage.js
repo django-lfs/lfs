@@ -51,6 +51,12 @@ $(function() {
         $.cookie("message", null, { path: '/' });
     };
     
+    $('ul.sf-menu').superfish({
+        speed: "fast", 
+        delay: "200",
+        animation: {"color" : "show"},
+    });
+    
     $('#manage-tabs > ul').tabs({ cookie: { expires: 30 } });
     
     $("#dialog").dialog({

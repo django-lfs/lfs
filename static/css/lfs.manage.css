@@ -4,6 +4,7 @@ body {
 }
 
 h2 {
+    color: #58585a;
     margin-top: 0;
     border-bottom: 1px solid #aaa;
 }
@@ -15,24 +16,40 @@ fieldset {
 }
 
 td.left-slot {
-  padding: 0 6px;
-  width: 240px;
+  padding: 0 20px 0 0;
+  width: 200px;
 }
 
 a {
     color: black;
+    text-decoration:none;
 }
 
 a:visited {
-    color: black;
+    color: #58585a;
 }
 
 a:hover {
-    color: blue;
+    color: black;
 }
 
 a.selected {
+    color: black;
     font-weight: bold;
+}
+
+table.main {
+    padding: 0 20px;
+    margin: 0;
+}
+
+.lfs-header {
+    background: url("../img/header_bg.jpg") repeat-x;
+}
+
+.logo {
+    padding: 0 0 15px 60px;
+    height: 93px;
 }
 
 .navigation-pages {
@@ -60,10 +77,6 @@ a.selectable-product:hover {
 a.selectable-product.current {
     font-weight: bold;    
     background-color: #aaa;
-}
-
-ul.menu li {
-    list-style-type: none;
 }
 
 img {
@@ -188,4 +201,8 @@ a.button {
 
 a.criterion-add-first-button {
     text-decoration: None;
+}
+
+div.site-actions {
+    margin: 10px 0;
 }

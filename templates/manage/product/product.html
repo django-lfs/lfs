@@ -41,29 +41,31 @@
 {% block content %}
     
     <div id="product">
-        <span class="label">
-            {{product.name}}
-        </span>
-        |
-        <a href="{% url lfs_manage_products %}">
-           {% trans 'Overview' %}
-        </a>
-        |
-        <a href="{% url lfs_manage_add_product %}">
-           {% trans 'Add product' %}
-        </a>
-        |
-        <a class="confirmation-link"
-           data="{% trans 'Delete?' %}"
-           href="{% url lfs_manage_delete_product product.id %}">
-           {% trans 'Delete product' %}
-        </a>
-        |
-        <a href="{% url lfs.manage.views.product_by_id product.id %}"
-           target="_blank">
-           {% trans 'Preview product' %}
-        </a>
-    
+        
+        <div class="site-actions">
+            <span class="label">
+                {{product.name}}
+            </span>
+            |
+            <a href="{% url lfs_manage_products %}">
+               {% trans 'Overview' %}
+            </a>
+            |
+            <a href="{% url lfs_manage_add_product %}">
+               {% trans 'Add product' %}
+            </a>
+            |
+            <a class="confirmation-link"
+               data="{% trans 'Delete?' %}"
+               href="{% url lfs_manage_delete_product product.id %}">
+               {% trans 'Delete product' %}
+            </a>
+            |
+            <a href="{% url lfs.manage.views.product_by_id product.id %}"
+               target="_blank">
+               {% trans 'Preview product' %}
+            </a>
+        </div>
         <div id="manage-tabs">
             <ul>
                 <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Product' %}</a></li>

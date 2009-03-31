@@ -15,19 +15,22 @@
 {% endblock %}
 
 {% block content %}
-    <span class="label">
-        {{review.name}}
-    </span>
-    | 
-    <a class="confirmation-link" 
-       data="{% trans 'Delete?' %}"
-       href="{% url lfs_delete_review review.id %}">
-        {% trans 'Delete' %}</a>
-    | 
-    <a href="{% url lfs_product review.content.slug %}"
-       target="_blank">
-        {% trans 'View product' %}
-    </a>
+    
+    <div class="site-actions">
+        <span class="label">
+            {{review.name}}
+        </span>
+        | 
+        <a class="confirmation-link" 
+           data="{% trans 'Delete?' %}"
+           href="{% url lfs_delete_review review.id %}">
+            {% trans 'Delete' %}</a>
+        | 
+        <a href="{% url lfs_product review.content.slug %}"
+           target="_blank">
+            {% trans 'View product' %}
+        </a>
+    </div>    
     
     <div id="manage-tabs">
         <ul>

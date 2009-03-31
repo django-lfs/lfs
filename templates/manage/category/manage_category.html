@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    <div>
+    <div class="site-actions">
         <span class="label">{{category.name}}</span>
         | <a href="{% url lfs_manage_add_top_category %}">{% trans 'Add top category' %}</a>
         {% if category %}

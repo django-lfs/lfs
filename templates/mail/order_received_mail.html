@@ -195,7 +195,12 @@
                        {{item.product_sku}} 
                     </td>
                     <td>
-                       {{item.product_name}} 
+                       {{item.product_name}}
+                       {% for option in item.product.get_options %}
+                           <div>
+                               {{option.property.name}} : {{option.value|option_name}}
+                           </div>
+                       {% endfor %}
                     </td>
                     <td class="number">
                        {{item.product_amount}} 

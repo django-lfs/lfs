@@ -7,8 +7,11 @@ category_changed = django.dispatch.Signal()
 product_changed = django.dispatch.Signal()
 lfs_sorting_changed = django.dispatch.Signal()
 
+# Marketing
+topseller_changed = django.dispatch.Signal()
+
 # Order
 order_submitted = django.dispatch.Signal()
 
-# Marketing
-topseller_changed = django.dispatch.Signal()
+# Property
+property_type_changed = django.dispatch.Signal()

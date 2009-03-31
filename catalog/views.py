@@ -1,6 +1,7 @@
 # django imports
 from django.conf import settings
 from django.core.cache import cache
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -20,6 +21,38 @@ import lfs.catalog.utils
 from lfs.core.signals import lfs_sorting_changed
 from lfs.utils import misc as lfs_utils
 
+def set_filter(request, category_slug, property_id, value):
+    """Saves the given filter (by request body) to session. Redirects to the 
+    category with given slug.
+    """    
+    product_filter = request.session.get("product-filter", {})
+    product_filter[property_id] = value
+    request.session["product-filter"] = product_filter
+    
+    url = reverse("lfs_category", kwargs={"slug" : category_slug, "start" : 0})
+    return HttpResponseRedirect(url)
+
+def reset_filter(request, category_slug, property_id):
+    """Resets product filter with given property id. Redirects to the category 
+    with given slug.
+    """
+    if request.session.has_key("product-filter"):
+        if request.session["product-filter"].has_key(property_id):
+            del request.session["product-filter"][property_id]
+            request.session["product-filter"] = request.session["product-filter"]
+        
+    url = reverse("lfs_category", kwargs={"slug" : category_slug, "start" : 0})
+    return HttpResponseRedirect(url)
+
+def reset_all_filter(request, category_slug):
+    """Resets all product filter. Redirects to the category with given slug.
+    """
+    if request.session.has_key("product-filter"):
+        del request.session["product-filter"]
+        
+    url = reverse("lfs_category", kwargs={"slug" : category_slug, "start" : 0})
+    return HttpResponseRedirect(url)
+    
 def set_sorting(request):
     """Saves the given sortings (by request body) to session.
     """
@@ -88,16 +121,28 @@ def category_categories(request, slug, template_name="catalog/category_categorie
     
 def category_products(request, slug, start=0, template_name="catalog/category_products.html"):
     """Displays the products of the category with passed slug.
-    
+
     This is displayed if the category's content attribute is set to products.
     """
-    sorting = request.session.get("sorting")
+    # Resets the product filters if the user navigates to another category. 
+    # TODO: Is this what a customer would expect?
+    last_category = request.session.get("last_category")
+    if (last_category is None) or (last_category.slug != slug):
+        if request.session.has_key("product-filter"):
+            del request.session["product-filter"]
     
+    sorting = request.session.get("sorting")
+    product_filter = request.session.get("product-filter", {})
+    product_filter = product_filter.items()
+
     cache_key = "category-products-%s" % slug
+    filter_key = ["%s-%s" % (i[0], i[1]) for i in product_filter]
+    sub_cache_key = "%s-start-%s-sorting-%s" % ("-".join(filter_key), start, sorting)
+    
     temp = cache.get(cache_key)
     if temp is not None:
         try:
-            return temp["%s-%s" % (start, sorting)]
+            return temp[sub_cache_key]
         except KeyError:
             pass
     else:
@@ -111,17 +156,9 @@ def category_products(request, slug, start=0, template_name="catalog/category_pr
     amount_of_rows = format_info["product_rows"]
     amount_of_cols = format_info["product_cols"]
     amount = amount_of_rows * amount_of_cols
-
-    # First we collect all sub categories. This and using the in operator makes
-    # batching more easier
-    categories = [category]
-    if category.show_all_products:
-        categories.extend(category.get_all_children())
     
-    if sorting is not None:
-        all_products = Product.objects.filter(categories__in = categories).order_by(sorting)
-    else:
-        all_products = Product.objects.filter(categories__in = categories)
+    all_products = lfs.catalog.utils.get_filtered_products_for_category(
+        category, product_filter, sorting)
         
     # Calculate products
     row = []
@@ -167,7 +204,7 @@ def category_products(request, slug, start=0, template_name="catalog/category_pr
         "show_pages" : len(pages) > 1,
     }))
     
-    temp["%s-%s" % (start, sorting)] = result
+    temp[sub_cache_key] = result
     cache.set(cache_key, temp)
     return result
     
@@ -222,9 +259,9 @@ def product_inline(request, id, template_name="catalog/product_inline.html"):
     if product.variants_display_type == SELECT:
         # Get all properties (sorted). We need to traverse through all
         # property/options to select the options of the current variant.
-        for property in product.properties.order_by("productproperties"):
+        for property in product.get_properties():
             options = []
-            for property_option in property.propertyoption_set.all():
+            for property_option in property.options.all():
                 if variant.has_option(property, property_option):
                     selected = True
                 else:
@@ -240,7 +277,7 @@ def product_inline(request, id, template_name="catalog/product_inline.html"):
                 "options" : options                
             })
     else:
-        properties = product.properties.order_by("productproperties")
+        properties = product.get_properties()
         variants = product.get_variants()
     
     # Reviews 

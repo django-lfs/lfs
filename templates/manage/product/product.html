@@ -41,7 +41,6 @@
 {% block content %}
     
     <div id="product">
-        
         <div class="site-actions">
             <span class="label">
                 {{product.name}}
@@ -65,10 +64,25 @@
                target="_blank">
                {% trans 'Preview product' %}
             </a>
+        
+            {% if not product.is_variant %}        
+                |
+                <form style="display:inline"
+                      action="{% url lfs_change_product_subtype product.id %}"
+                      method="post">              
+                    {{form.sub_type}}
+                    <input type="submit"
+                           value="{% trans 'Change' %}" />
+                </form>
+            {% endif %}
         </div>
         <div id="manage-tabs">
             <ul>
-                <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Product' %}</a></li>
+                {% if product.is_variant %}
+                    <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Variant' %}</a></li>                    
+                {% else %}
+                    <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Product' %}</a></li>
+                {% endif %}
                 
                 {% if not product.is_variant %}
                     <li class="ui-tabs-nav-item"><a href="#categories">{% trans 'Categories' %}</a></li>
@@ -76,15 +90,19 @@
                 
                 <li class="ui-tabs-nav-item"><a href="#images">{% trans 'Images' %}</a></li>
                 
-                {% if not product.is_variant %}
-                    <li class="ui-tabs-nav-item"><a href="#properties">{% trans 'Variants' %}</a></li>
+                {% if product.is_product_with_variants %}
+                    <li class="ui-tabs-nav-item"><a href="#variants">{% trans 'Variants' %}</a></li>
                 {% endif %}
 
                 <li class="ui-tabs-nav-item"><a href="#accessories">{% trans 'Accessories' %}</a></li>
                 <li class="ui-tabs-nav-item"><a href="#related-products">{% trans 'Related Products' %}</a></li>
                 <li class="ui-tabs-nav-item"><a href="#dimension">{% trans 'Dimension' %}</a></li>                
                 <li class="ui-tabs-nav-item"><a href="#seo">{% trans 'SEO' %}</a></li>
-
+                
+                {% if product.is_standard %}            
+                    <li class="ui-tabs-nav-item"><a href="#properties">{% trans 'Properties' %}</a></li>
+                {% endif %}
+                    
             </ul>
 
             <div id="data">
@@ -100,10 +118,10 @@
             <div id="images">
                 {{images|safe}}
             </div>
-            
-            {% if not product.is_variant %}
-                <div id="properties">
-                    {{properties|safe}}
+
+            {% if product.is_product_with_variants %}
+                <div id="variants">
+                    {{variants|safe}}
                 </div>
             {% endif %}
                 
@@ -122,7 +140,12 @@
             <div id="seo">
                 {{seo|safe}}
             </div>
-
+            
+            {% if product.is_standard %}            
+                <div id="properties">
+                    {{properties|safe}}
+                </div>
+            {% endif %}    
         </div>
     </div>
 {% endblock %}

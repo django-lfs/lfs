@@ -2,348 +2,127 @@
 from django.contrib.auth.decorators import permission_required
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
+from django.db import IntegrityError
 from django.forms import ModelForm
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.utils import simplejson
 
 # lfs imports
-from lfs.caching.utils import lfs_get_object_or_404
-from lfs.core.signals import product_changed
 from lfs.catalog.models import Product
-from lfs.catalog.models import ProductProperties
-from lfs.catalog.models import ProductVariantOption
+from lfs.catalog.models import ProductPropertyValue
 from lfs.catalog.models import Property
-from lfs.catalog.models import PropertyOption
-from lfs.catalog.settings import VARIANT
-from lfs.manage import utils as manage_utils
-
-class PropertyOptionForm(ModelForm):
-    """Form to add/edit property options.
-    """
-    class Meta:
-        model = PropertyOption
-        fields = ("name", )
-
-class PropertyForm(ModelForm):
-    """Form to add/edit properties.
-    """
-    class Meta:
-        model = Property
-        fields = ("name", )
-
-class ProductVariantSimpleForm(ModelForm):
-    """Form to add/edit variants options.
-    """
-    class Meta:
-        model = Product
-        fields = ("slug", "name", "price", )
-
-class DisplayTypeForm(ModelForm):
-    """Form to add/edit product's sub types.
-    """
-    class Meta:
-        model = Product
-        fields = ("variants_display_type", )
+from lfs.catalog.models import PropertyGroup
+import lfs.catalog.utils
 
 @permission_required("manage_shop", login_url="/login/")
 def manage_properties(request, product_id, template_name="manage/product/properties.html"):
-    """Manages the properties of a product.
     """
-    product = Product.objects.get(pk=product_id)
-
-    property_form = PropertyForm()
-    property_option_form = PropertyOptionForm()
-    variant_simple_form = ProductVariantSimpleForm()
-    display_type_form = DisplayTypeForm(instance=product)
+    """
+    product = get_object_or_404(Product, pk=product_id)
     
-    cache_key = "manage-properties-variants-%s" % product_id
-    variants = cache.get(cache_key)
-    # Get all properties. We need to traverse through all property / options 
-    # in order to select the options of the current variant.
-    if variants is None:
-        variants = []
-        for variant in product.variants.all():
-            properties = []
-            for property in product.properties.order_by("productproperties"):
-                options = []
-                for property_option in property.propertyoption_set.all():
-                    if variant.has_option(property.id, property_option.id):
-                        selected = True
-                    else:
-                        selected = False
-                    options.append({
-                        "id"   : property_option.id,
-                        "name" : property_option.name,
-                        "selected" : selected
-                    })
-                properties.append({
-                    "id" : property.id,
-                    "name" : property.name,
-                    "options" : options                
+    # Generate list of product property groups; used for enter value
+    product_property_groups = []
+    for property_group in product.property_groups.all():
+        properties = []
+        for property in property_group.properties.order_by("groupspropertiesrelation"):
+            # Try to get the value, if it already exists.
+            try:
+                ppv = ProductPropertyValue.objects.get(property = property, product=product)
+            except ProductPropertyValue.DoesNotExist:
+                value = ""
+            else: 
+                value = ppv.value
+            
+            # mark selected options "selected"
+            options = []
+            for option in property.options.all():                
+                options.append({
+                    "id"       : option.id,
+                    "name"     : option.name,
+                    "selected" : str(option.id) == value
                 })
             
-            variants.append({
-                "id" : variant.id,
-                "slug" : variant.slug,
-                "sku" : variant.sku,
-                "name" : variant.name,
-                "price" : variant.price,
-                "properties" : properties
+            properties.append({
+                "id"      : property.id,
+                "name"    : property.name,
+                "type"    : property.type,
+                "options" : options,
+                "value"   : value,
             })
 
-        cache.set(cache_key, variants)
-            
+        product_property_groups.append({
+            "id"   : property_group.id,
+            "name" : property_group.name,
+            "properties" : properties,
+        })
+    
+    # Generate list of all property groups; used for group selection
+    product_property_group_ids = [p["id"] for p in product_property_groups]
+    shop_property_groups = []
+    for property_group in PropertyGroup.objects.all():
+        
+        shop_property_groups.append({
+            "id" : property_group.id,
+            "name" : property_group.name,
+            "selected" : property_group.id in product_property_group_ids,
+        })
+    
     return render_to_string(template_name, RequestContext(request, {
         "product" : product,
-        "variants" : variants,
-        "properties" : product.properties.order_by("productproperties"),
-        "property_option_form" : property_option_form,
-        "property_form" : property_form,
-        "variant_simple_form" : variant_simple_form,
-        "display_type_form" : display_type_form,
+        "product_property_groups" : product_property_groups,
+        "shop_property_groups" : shop_property_groups,
     }))
 
-# Actions        
 @permission_required("manage_shop", login_url="/login/")
-def add_property(request, product_id):
-    """Adds a new property to the product with given product id.
+def update_property_groups(request, product_id):
+    """Updates property groups for the product with passed id.
     """
-    product = Product.objects.get(pk=product_id)
-    property_form = PropertyForm(data=request.POST)
-    if property_form.is_valid():
-        property = property_form.save()
-        product_property = ProductProperties(product=product, property=property, position=999)
-        product_property.save()
-
-        # Refresh positions
-        for i, product_property in enumerate(product.productproperties_set.all()):
-            product_property.position = i
-            product_property.save()
-
-    return HttpResponse(manage_properties(request, product_id))
-
-@permission_required("manage_shop", login_url="/login/")
-def delete_property(request, product_id, property_id):
-    """Deletes property with passed property id.
-    """
-    try:
-        property = Property.objects.get(pk=property_id)
-        product = Product.objects.get(pk=product_id)
-    except ObjectDoesNotExist:
-        pass
-    else:
-        property.delete()
-
-    return HttpResponse(manage_properties(request, product_id))
-
-@permission_required("manage_shop", login_url="/login/")
-def change_property_position(request):
-    """Changes property position based on parameters passed by request body.
-    """
-    product_id = request.GET.get("product_id")
-    property_id = int(request.GET.get("property_id"))
-    direction = request.GET.get("direction")
-
-    try:
-        product_property = ProductProperties.objects.get(product = product_id, property = property_id)
-    except ObjectDoesNotExist:
-        pass
-    else:
-        if direction == "up":
-            product_property.position -= 3
+    selected_group_ids = request.POST.getlist("selected-property-groups")
+    
+    for property_group in PropertyGroup.objects.all():
+        # if the group is within selected groups we try to add it to the product
+        # otherwise we try do delete it
+        if str(property_group.id) in selected_group_ids:
+            try:
+                property_group.products.add(product_id)
+            except IntegrityError:
+                pass
         else:
-            product_property.position += 3
-            
-        product_property.save()
-        
-    _refresh_property_positions(product_id)
-
-    return HttpResponse(manage_properties(request, product_id))
-
-@permission_required("manage_shop", login_url="/login/")
-def add_property_option(request, product_id):
-    """Adds a new option to the property with given property id.
+            property_group.products.remove(product_id)
     
-    NOTE: The reason why to pass the product id here is to be able to redirect
-    to the product. Properties can belong to more than one product.
-    
-    TODO: Do this with REFERER
-    """    
-    property_option_form = PropertyOptionForm(data=request.POST)
-    if property_option_form.is_valid():
-        names = request.POST.get("name").split(",")
-        position = 999
-        for name in names:
-            property_option = PropertyOption(name=name)
-            property_option.property_id = request.POST.get("property_id")
-            property_option.position = position  
-            property_option.save()
-            position += 1
-
-        # Refresh positions
-        for i, option in enumerate(PropertyOption.objects.filter(property = property_option.property)):
-            option.position = i
-            option.save()
-
-    return HttpResponse(manage_properties(request, product_id))
-
-@permission_required("manage_shop", login_url="/login/")
-def delete_property_option(request, product_id, option_id):
-    """Deletes property option with passed option id.
-    """
-    try:
-        property_option = PropertyOption.objects.get(pk=option_id)
-        product = Product.objects.get(pk=product_id)
-    except ObjectDoesNotExist:
-        pass
-    else:
-        property_option.delete()
-    
-    return HttpResponse(manage_properties(request, product_id))
-
-@permission_required("manage_shop", login_url="/login/")
-def add_variants(request, product_id):
-    """Adds variants to product with passed product_id based on property/option-
-    combinations passed within request body.
-    """
-    cache.delete("variants%s" % product_id)
-    
-    product = Product.objects.get(pk=product_id)
-
-    # Add variant(s)
-    variant_simple_form = ProductVariantSimpleForm(data=request.POST)
-
-    # We don't have to check whether the form is valid. If the fields 
-    # are empty we create default ones.
-
-    # First we need to prepare the requested properties for the use 
-    # with cartesian product. That means if the keyword "all" is 
-    # found we collect all options of this properties.            
-    properties = []
-    for key, value in request.POST.items():
-        if key.startswith("property"):
-            property_id = key.split("_")[1]
-            if value == "all":
-                temp = []
-                for option in PropertyOption.objects.filter(property=property_id):
-                    temp.append("%s|%s" % (property_id, option.id))
-                properties.append(temp)
-            else:
-                properties.append(["%s|%s" % (property_id, value)])
-
-    # Create a variant for every requested option combination
-    i = 0
-    for options in manage_utils.cartesian_product(*properties):
-
-        if product.has_variant(options):
-            continue
-
-        price = request.POST.get("price")
-
-        i+=1
-        while 1:
-            name = "%s-%s" % (product.name, i)
-            slug = "%s-%s" % (product.slug, i)
-            sku = "%s-%s" % (product.sku, i)
-            if not Product.objects.filter(slug=slug):
-                break
-            i+=1
-
-        variant = Product(slug=slug, sku=sku, name=name, parent=product, price=price, sub_type=VARIANT)
-        variant.save()
-
-        # Save the option combination for that variant
-        for option in options:
-            property_id, option_id = option.split("|")
-            pvo = ProductVariantOption(product = variant, property_id = property_id, option_id=option_id)
-            pvo.save()
-            variant.productvariantoption_set.add(pvo)
-
-    from lfs.manage.views.product.product import selectable_products_inline
-    result = simplejson.dumps({
-        "properties" : manage_properties(request, product_id),
-        "selectable_products" : selectable_products_inline(request, as_string=True)
-    })        
-    return HttpResponse(result)
+    url = reverse("lfs_manage_product", kwargs={"product_id" : product_id})        
+    return HttpResponseRedirect(url)
 
 @permission_required("manage_shop", login_url="/login/")    
-def update_variants(request, product_id):
-    """Updates/Deletes variants with passed ids (via request body) dependent on 
-    given action (also via request body).
+def update_properties(request, product_id):
+    """Updates properties for product with passed id.
     """
-    product = lfs_get_object_or_404(Product, pk=product_id)
-    
-    action = request.POST.get("action")
-    if action == "delete":
-        for key in request.POST.keys():
-            if key.startswith("delete-"):
-                try:
-                    id = key.split("-")[1]
-                    variant = Product.objects.get(pk=id)
-                except (IndexError, ObjectDoesNotExist):
-                    continue
-                else:
-                    variant.delete()
-    elif action == "update":
-        for key, value in request.POST.items():
-            if key.startswith("variant-"):
-                id = key.split("-")[1]
-                try:
-                    variant = Product.objects.get(pk=id)
-                except ObjectDoesNotExist:
-                    continue
-                else:
-                    for name in ("slug", "name", "sku", "price"):
-                        value = request.POST.get("%s-%s" % (name, id))
-                        if value != "":
-                            setattr(variant, name, value)
-                variant.save()
-            elif key.startswith("property"):
-                # properties are marshalled as: property-variant_id|property_id
-                try:
-                    temp = key.split("-")[1]
-                    variant_id, property_id = temp.split("|")
-                    variant = Product.objects.get(pk=variant_id)
-                    property = variant.get_option(property_id)
-                    property.option_id = value
-                except (AttributeError, IndexError, ObjectDoesNotExist):
-                    continue
-                else:
-                    property.save()
-    
-    # Send a signal to update cache
-    product_changed.send(product)
-    
-    from lfs.manage.views.product.product import selectable_products_inline
-    result = simplejson.dumps({
-        "properties" : manage_properties(request, product_id),
-        "selectable_products" : selectable_products_inline(request, as_string=True)
-    })
-    
-    return HttpResponse(result)
+    # Update properties' values
+    for key, value in request.POST.items():
+        if key.startswith("property") == False:
+            continue        
 
-@permission_required("manage_shop", login_url="/login/")
-def edit_sub_type(request, product_id):
-    """Edits the sub type of the variant with given product slug.
-    """
-    product = Product.objects.get(pk=product_id)
-    
-    form = DisplayTypeForm(data=request.POST)
-    if form.is_valid():
-        product.variants_display_type = request.POST.get("variants_display_type")
-        product.save()
+        property_id = key.split("-")[1]
+        property = get_object_or_404(Property, pk=property_id)
+        product = get_object_or_404(Product, pk=product_id)
+        
+        try:
+            ppv = ProductPropertyValue.objects.get(product = product_id, property = property_id)
+        except ProductPropertyValue.DoesNotExist:
+            if not property.is_valid_value(value):
+                value = 0
+            ProductPropertyValue.objects.create(product=product, property = property, value=value)
+        else:            
+            if not property.is_valid_value(value):
+                value = 0
+            
+            ppv.value = value
+            ppv.save()
 
-    # Send a signal to update cache
-    product_changed.send(product)
-
-    return HttpResponse(manage_properties(request, product_id))
-
-def _refresh_property_positions(product_id):
-    """
-    """
-    # Refresh positions    
-    for i, product_property in enumerate(ProductProperties.objects.filter(product=product_id)):
-        product_property.position = i*2
-        product_property.save()
+    url = reverse("lfs_manage_product", kwargs={"product_id" : product_id})    
+    return HttpResponseRedirect(url)

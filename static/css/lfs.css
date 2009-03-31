@@ -130,6 +130,7 @@ tr.total {
 }
 
 /* Buttons */
+.lfs-buttons,
 #cart-buttons,
 #added-to-cart-buttons {
     padding:10px 0;

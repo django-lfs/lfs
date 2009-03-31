@@ -1,0 +1,24 @@
+<p> 
+    Filter Navigation 
+    <a href="{% url lfs_reset_all_product_filter category.slug %}">R</a>
+</p>
+
+{% for property_group in product_filters %}
+    <div>
+        {{property_group.name}}
+    </div>
+    <div><a href="{% url lfs_reset_product_filter category.slug property_group.id %}">All</a></div>
+    {% for property in property_group.items %}
+        <div>
+            {% if property.quantity %}
+                <a href='{% url lfs_set_product_filter category.slug property_group.id property.value %}'>
+                    {{property.name}} ({{property.quantity}})
+                </a>
+            {% else %}
+                <a href='{% url lfs_set_product_filter category.slug property_group.id property.value %}'>
+                    {{property.name}}
+                </a>                        
+            {% endif %}
+        </div>        
+    {% endfor %}
+{% endfor %}

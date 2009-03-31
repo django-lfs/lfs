@@ -9,6 +9,10 @@ h2 {
     border-bottom: 1px solid #aaa;
 }
 
+h2.heading-middle {
+    margin-top: 20px;
+}
+
 fieldset {
     border:1px solid #aaa;
     padding:20px;
@@ -104,6 +108,9 @@ table.order-items,
 table.order-addresses,
 table.order-message,
 table.manage-overview,
+table.selected-properties,
+table.selectable-properties,
+table.property-group-products,
 .selected-topseller table,
 .selected-accessories table,
 .selectable-products table {
@@ -111,14 +118,17 @@ table.manage-overview,
     border-collapse: collapse;
 }
 
-table.manage-overview th,
+.property-group-products th,
+.selectable-properties th,
+.selected-properties th,
+.manage-overview th,
 .selected-accessories th,
 .selectable-products th {
     background-color: #aaa;
 }
 
-table.manage-overview th,
-table.manage-overview td,
+.manage-overview th,
+.manage-overview td,
 .selectable-products table th,
 .selectable-products table td {
     padding: 2px;
@@ -137,6 +147,10 @@ table.order-general th,
 table.order-items th,
 table.order-addresses th {
     background-color: #eee;
+}
+
+table.selectable-properties {
+    margin-bottom: 30px;
 }
 
 .selected-accessories {

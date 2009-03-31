@@ -393,7 +393,7 @@ $(function() {
     $(".property-add-button").livequery("click", function() {        
         $("#property-add-form").ajaxSubmit({
             success: function(data) {
-                $("#properties").html(data);
+                $("#variants").html(data);
             }
         });
         return false;
@@ -403,7 +403,7 @@ $(function() {
         $(".variants-add-form").ajaxSubmit({
             success: function(data) {
                 data = JSON.parse(data);
-                $("#properties").html(data["properties"]);
+                $("#variants").html(data["properties"]);
                 $("#selectable-products").html(data["selectable_products"]);
             }
         });
@@ -416,7 +416,7 @@ $(function() {
             data : {"action" : action},
             success: function(data) {
                 data = JSON.parse(data)
-                $("#properties").html(data["properties"]);
+                $("#variants").html(data["properties"]);
                 $("#selectable-products").html(data["selectable_products"]);
             }
         })
@@ -427,7 +427,7 @@ $(function() {
         var form = $(this).parents("form:first");
         form.ajaxSubmit({
             "success": function(data) {
-                $("#properties").html(data);
+                $("#variants").html(data);
             }
         });
         return false;
@@ -436,7 +436,7 @@ $(function() {
     $(".property-change-button").livequery("click", function() {
         var href = $(this).attr("href")
         $.post(href, function(data) {
-            $("#properties").html(data);
+            $("#variants").html(data);
         });
         return false;
     })
@@ -586,7 +586,47 @@ $(function() {
         });
         return false;
     })
+    
+    // Property groups
+    $("#add-property-button").livequery("click", function() {
+        $("#add-property-form").ajaxSubmit({
+            "success": function(data) {
+                var data = JSON.parse(data)
+                $("#properties").html(data["html"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    })
 
+    $(".property-group-update-button").livequery("click", function() {
+        var action = $(this).attr("name");
+        $("#property-group-update-form").ajaxSubmit({
+            data : {"action" : action},
+            success : function(data) {
+                var data = JSON.parse(data);
+                $("#properties").html(data["html"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    })
+    
+    // Shop Property Options
+    $(".shop-property-add-option-button").livequery("click", function() {
+        var action = $(this).attr("name");
+        $(this).parents("form:first").ajaxSubmit({
+            data : {"action" : action},
+            success: function(data) {
+                data = JSON.parse(data)
+                $("#options").html(data["options"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    });
+    
+    
     // $(".ajax-form-button").livequery("click", function() {
     //     $(this).parents("form:first").ajaxSubmit({
     //         "success": function(data) {

@@ -22,7 +22,11 @@ from lfs.catalog.settings import DELIVERY_TIME_UNIT_HOURS
 from lfs.catalog.settings import DELIVERY_TIME_UNIT_DAYS
 from lfs.catalog.settings import DELIVERY_TIME_UNIT_WEEKS
 from lfs.catalog.settings import DELIVERY_TIME_UNIT_MONTHS
-
+from lfs.catalog.settings import PROPERTY_TYPE_CHOICES
+from lfs.catalog.settings import PROPERTY_TEXT_FIELD
+from lfs.catalog.settings import PROPERTY_SELECT_FIELD
+from lfs.catalog.settings import PROPERTY_NUMBER_FIELD
+import lfs.catalog.utils
 from lfs.tax.models import Tax
 
 class Category(models.Model):
@@ -184,7 +188,7 @@ class Category(models.Model):
         return parents
     
     def get_products(self):
-        """Returns the products of the category.
+        """Returns the direct products of the category.
         """
         cache_key = "category-products-%s" % self.id
         products = cache.get(cache_key)
@@ -195,7 +199,31 @@ class Category(models.Model):
         cache.set(cache_key, products)
         
         return products
+    
+    def get_all_products(self):
+        """Returns the direct products and all products of the sub categories
+        """
+        cache_key = "category-all-products-%s" % self.id
+        products = cache.get(cache_key)
+        if products is not None:
+            return products
 
+        categories = [self]
+        categories.extend(self.get_all_children())
+        
+        products = lfs.catalog.models.Product.objects.distinct().filter(
+            categories__in = categories).exclude(sub_type=VARIANT)
+        
+        cache.set(cache_key, products)
+        return products
+        
+    def get_filtered_products(self, filters, sorting):
+        """Returns products for this category filtered by passed filters sorted 
+        by passed sorted
+        """
+        return lfs.catalog.utils.get_filtered_products_for_category(
+            self, filters, sorting)
+    
     def get_static_block(self):
         """Returns the static block of the category.
         """
@@ -254,7 +282,6 @@ class Product(models.Model):
     
     # Standard Products
     tax = models.ForeignKey(Tax, verbose_name=_(u"Tax"), blank=True, null=True)
-    properties = models.ManyToManyField("Property", verbose_name=_(u"Properties"), through="ProductProperties")
     sub_type = models.CharField(_(u"Subtype"), 
         max_length=10, choices=PRODUCT_TYPE_CHOICES, default=STANDARD_PRODUCT)
     
@@ -449,27 +476,27 @@ class Product(models.Model):
     def get_option(self, property_id):
         """Returns the id of the selected option for property with passed id.
         """
-        options = cache.get("productvariantoptions%s" % self.id)
+        options = cache.get("productpropertyvalue%s" % self.id)
         if options is None:
             options = {}
-            for pvo in self.productvariantoption_set.all():
-                options[pvo.property_id] = pvo.option_id
-            cache.set("productvariantoptions%s" % self.id, options)
+            for pvo in self.property_values.all():
+                options[pvo.property_id] = pvo.value
+            cache.set("productpropertyvalue%s" % self.id, options)
         try:
             return options[property_id]
         except KeyError:
             return None
 
     def get_options(self):
-        """Returns the property/option pairs of a varianted product in the 
-        correct ordering of the properties.
+        """Returns the property value of a Variant in the correct 
+        ordering of the properties.
         """
-        options = cache.get("productvariantoptions_sorted%s" % self.id)
+        cache_key = "product-property-values-%s" % self.id
+        options = cache.get(cache_key)
         if options is None:
             temp = []
-            for option in self.productvariantoption_set.all():
-                product_property = ProductProperties.objects.get(product=self.parent, property=option.property)
-                temp.append((option, product_property.position))
+            for property_value in self.property_values.all():
+                temp.append((property_value, property_value.property.position))
         
             # TODO: Optimize
             temp.sort(lambda a,b: cmp(a[1], b[1]))
@@ -478,23 +505,23 @@ class Product(models.Model):
             for option in temp:
                 options.append(option[0])
             
-            cache.set("productvariantoptions_sorted%s" % self.id, options)
-            
+            cache.set(cache_key, options)
+        
         return options
 
     def has_option(self, property_id, option_id):
         """Returns True if the variant has the given property / option 
         combination.
         """
-        options = cache.get("productvariantoptions%s" % self.id)
+        options = cache.get("productpropertyvalue%s" % self.id)
         if options is None:
             options = {}
-            for pvo in self.productvariantoption_set.all():
-                options[pvo.property_id] = pvo.option_id
-            cache.set("productvariantoptions%s" % self.id, options)
-            
+            for pvo in self.property_values.all():                
+                options[pvo.property_id] = pvo.value
+            cache.set("productpropertyvalue%s" % self.id, options)
+        
         try:
-            return options[property_id] == option_id
+            return options[property_id] == str(option_id)
         except KeyError:
             return False
 
@@ -525,6 +552,28 @@ class Product(models.Model):
         """
         return self.get_price_gross() - self.get_tax()
 
+    def get_global_properties(self):
+        """Returns all global properties for the product.
+        """
+        properties = []
+        for property_group in self.property_groups.all():
+            properties.extend(property_group.properties.order_by("groupspropertiesrelation"))
+
+        return properties
+    
+    def get_local_properties(self):
+        """Returns local properties of the product
+        """
+        return self.properties.all()
+    
+    def get_properties(self):
+        """Returns local and global properties
+        """
+        properties = self.get_global_properties()
+        properties.extend(self.get_local_properties())
+        
+        return properties        
+        
     def get_standard_price(self):
         """Returns always the standard price for the product. Independent
         whether the product is for sale or not. If you want the real price of 
@@ -630,8 +679,8 @@ class Product(models.Model):
         options.sort()
         options = "".join(options)
         for variant in self.variants.all():
-            temp = variant.productvariantoption_set.all()
-            temp = ["%s|%s" % (x.property.id, x.option.id) for x in temp]
+            temp = variant.property_values.all()
+            temp = ["%s|%s" % (x.property.id, x.value) for x in temp]
             temp.sort()
             temp = "".join(temp)
             
@@ -648,7 +697,7 @@ class Product(models.Model):
         else:
             return True
     
-    def is_standard_product(self):
+    def is_standard(self):
         """Returns True if product is standard product.
         """
         return self.sub_type == STANDARD_PRODUCT
@@ -679,7 +728,7 @@ class ProductAccessories(models.Model):
     
     class Meta:
         ordering = ("position", )
-        verbose_name_plural = "ProductAccessories"        
+        verbose_name_plural = "Product accessories"        
     
     def __unicode__(self):
         return "%s -> %s" % (self.product.name, self.accessory.name)
@@ -689,69 +738,150 @@ class ProductAccessories(models.Model):
         and the quantity in which the accessory is offered.
         """
         return self.accessory.get_price() * self.quantity
-        
-class ProductProperties(models.Model):
-    """Represents the relationship between products and properties. 
-    
-    Using an additional class here to store the position of a property within 
-    a product.
-    """
-    product = models.ForeignKey("Product", verbose_name=_(u"Product"))
-    property = models.ForeignKey("Property", verbose_name=_(u"Property"))
-    position = models.IntegerField(_(u"Position"), blank=True, null=True)
 
-    class Meta:
-        ordering = ("position", )
-        verbose_name_plural = "ProductProperties"
-        
-    def __unicode__(self):
-        return "%s -> %s" % (self.product.name, self.property.name)
+class PropertyGroup(models.Model):
+    """Groups product properties together.
     
-class ProductVariantOption(models.Model):
-    """Represents the unique property/option combination for a ProductVariant``
-    variant.
-    
-    A ``ProductVariant`` can have several such combinations.
+    Can belong to several products, products can have several groups
     """
-    product = models.ForeignKey(Product, verbose_name=_(u"Product"))
-    property = models.ForeignKey("Property", verbose_name=_(u"Property"))
-    option = models.ForeignKey("PropertyOption", verbose_name=_(u"Option"))
+    name = models.CharField(blank=True, max_length=50)
+    products = models.ManyToManyField(Product, verbose_name=_(u"Products"), related_name="property_groups")
     
     def __unicode__(self):
-        return "%s - %s" % (self.property.name, self.option.name)
+        return self.name
 
 class Property(models.Model):
     """Represents a property of a product like color or size.
-    
+
     A property has several ``PropertyOptions`` from which the user can choose 
     (like red, green, blue).
+    
+    A property belongs to exactly one group xor product.
+
+    Parameters:
+        - groups, product: 
+            The group or product it belongs to. A property can belong to several 
+            groups and/or to one product.
+        - name:
+            Is displayed within forms.
+        - filterable:
+            If True the property is used for filtered navigation.
+        - position: 
+            The position of the property within a product.
+
+    NOTE: The 1:n relation from one property to product is by heart. We believe
+          that a property should belong only to one group xor property.
     """
-    name = models.CharField( _(u"Name"), max_length=30)
+    name = models.CharField( _(u"Name"), max_length=50)
+    groups = models.ManyToManyField(PropertyGroup, verbose_name=_(u"Group"), blank=True, null=True, through="GroupsPropertiesRelation", related_name="properties")
+    products = models.ManyToManyField(Product, verbose_name=_(u"Products"), blank=True, null=True, through="ProductsPropertiesRelation", related_name="properties")
+    position = models.IntegerField(_(u"Position"), blank=True, null=True)
+    filterable = models.BooleanField(default=True)
+    local = models.BooleanField(default=False)
+    type = models.PositiveSmallIntegerField(_(u"Type"), choices=PROPERTY_TYPE_CHOICES, default=PROPERTY_TEXT_FIELD)
 
     class Meta:
-        verbose_name_plural = "Properties"
-
+        verbose_name_plural = _(u"Properties")
+        ordering = ["name"]
+        
     def __unicode__(self):
         return self.name
     
-class PropertyOption(models.Model):
-    """Represents a choosable option of a ``Property`` like red, green, blue.
+    @property
+    def is_select_field(self):
+        return self.type == PROPERTY_SELECT_FIELD
+
+    @property
+    def is_text_field(self):
+        return self.type == PROPERTY_TEXT_FIELD
+
+    @property
+    def is_number_field(self):
+        return self.type == PROPERTY_NUMBER_FIELD
+        
+    def is_valid_value(self, value):
+        """Returns True if given value is valid for this property.
+        """
+        if self.is_number_field:
+            try:
+                float(value)
+            except ValueError:
+                return False
+        return True
+        
+class GroupsPropertiesRelation(models.Model):
+    """Represents the m:n relationship between Groups and Properties.
     
-    A property option can have a price (which could change the total price of 
-    a product).
+    This is done via an explicit class to store the position of the property 
+    within the group.
     """
+    group = models.ForeignKey(PropertyGroup, verbose_name=_(u"Group"), related_name="groupproperties")
     property = models.ForeignKey(Property, verbose_name=_(u"Property"))
-    
-    name = models.CharField( _(u"Name"), max_length=30)
-    price = models.FloatField(_(u"Price"), blank=True, null=True, default=0.0)
-    position = models.IntegerField(_(u"Position"), blank=True, null=True)
+    position = models.IntegerField( _(u"Position"), default=999)
     
     class Meta:
         ordering = ("position", )
+        unique_together = ("group", "property")
+
+class ProductsPropertiesRelation(models.Model):
+    """Represents the m:n relationship between Products and Properties.
+    
+    This is done via an explicit class to store the position of the property
+    within the product.
+    """
+    product = models.ForeignKey(Product, verbose_name=_(u"Product"), related_name="productsproperties")
+    property = models.ForeignKey(Property, verbose_name=_(u"Property"))
+    position = models.IntegerField( _(u"Position"), default=999)
+    
+    class Meta:
+        ordering = ("position", )
+        unique_together = ("product", "property")
+
+class PropertyOption(models.Model):
+    """Represents a choosable option of a ``Property`` like red, green, blue.
+    
+    A property option can have an optional price (which could change the total
+    price of a product).
+    """
+    property = models.ForeignKey(Property, verbose_name=_(u"Property"), related_name="options")
+    
+    name = models.CharField( _(u"Name"), max_length=30)
+    price = models.FloatField(_(u"Price"), blank=True, null=True, default=0.0)
+    position = models.IntegerField(_(u"Position"), default=99)
+    
+    class Meta:
+        ordering = ["position"]
     
     def __unicode__(self):
         return self.name
+
+class ProductPropertyValue(models.Model):
+    """Stores the value resp. selected option of a product/property combination.
+    
+    Attributes: 
+        - value
+          Dependent of the property type the value is either a number, a text or 
+          an id of an option.
+    """
+    product = models.ForeignKey(Product, verbose_name=_(u"Product"), related_name="property_values")
+    parent_id = models.IntegerField(blank=True, null=True)
+    property = models.ForeignKey("Property", verbose_name=_(u"Property"), related_name="property_values")
+    value = models.CharField(blank=True, max_length=100)
+    
+    class Meta:
+        unique_together = ("product", "property", "value")
         
+    def __unicode__(self):
+        return "%s/%s: %s" % (self.product.name, self.property.name, self.value)
+        
+    def save(self, force_insert=False, force_update=False):
+        """Overwritten to save the parent id for variants. This is used to count
+        the entries per filter. See catalog/utils/get_product_filters for more.
+        """
+        if self.product.is_variant():
+            self.parent_id = self.product.parent.id
+        super(ProductPropertyValue, self).save(force_insert, force_update)
+
 class Image(models.Model):
     """An image with a title and several sizes. Can be part of a product or 
     category.

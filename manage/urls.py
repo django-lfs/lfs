@@ -24,6 +24,7 @@ urlpatterns += patterns('lfs.manage.views',
     url(r'^delete-product/(?P<product_id>\d*)$', "delete_product", name="lfs_manage_delete_product"),
     url(r'^selectable-products-inline$', "selectable_products_inline", name="lfs_manage_selectable_products_inline"),
     url(r'^save-product-dimension/(?P<product_id>\d*)$', "dimension", name="lfs_save_product_dimension"),
+    url(r'^change-product-subtype/(?P<product_id>\d*)$', "change_subtype", name="lfs_change_product_subtype"),
 )
 
 # Products
@@ -49,20 +50,44 @@ urlpatterns += patterns('lfs.manage.views',
 )
 
 # Variants
-urlpatterns += patterns('lfs.manage.views.product.properties',
-    url(r'properties/(?P<product_id>\d*)$', "manage_properties"),
-    url(r'add-property/(?P<product_id>\d*)$', "add_property"),    
-    url(r'add-property-option/(?P<product_id>\d*)$', "add_property_option"),
-    url(r'delete-property/(?P<product_id>\d*)/(?P<property_id>\d*)$', "delete_property"),
-    url(r'delete-property-option/(?P<product_id>\d*)/(?P<option_id>\d*)$', "delete_property_option"),
-    url(r'change-property-position$', "change_property_position"),    
-    url(r'update-variants/(?P<product_id>\d*)$', "update_variants", name="lfs_manage_update_variants"),
+urlpatterns += patterns('lfs.manage.views.product.variants',
+    url(r'^properties/(?P<product_id>\d*)$', "manage_variants"),
+    url(r'^add-property/(?P<product_id>\d*)$', "add_property"),    
+    url(r'^add-property-option/(?P<product_id>\d*)$', "add_property_option"),
+    url(r'^delete-property/(?P<product_id>\d*)/(?P<property_id>\d*)$', "delete_property"),
+    url(r'^delete-property-option/(?P<product_id>\d*)/(?P<option_id>\d*)$', "delete_property_option"),
+    url(r'^change-property-position$', "change_property_position"),    
+    url(r'^update-variants/(?P<product_id>\d*)$', "update_variants", name="lfs_manage_update_variants"),
+    url(r'^add-variants/(?P<product_id>\d*)$', "add_variants", name="lfs_add_variants"),
+    url(r'^edit-sub-type/(?P<product_id>\d*)$', "edit_sub_type", name="lfs_edit_sub_type"),    
 )
 
-# Variants
-urlpatterns += patterns('lfs.manage.views',
-    (r'add-variants/(?P<product_id>\d*)$', "add_variants"),
-    (r'edit-sub-type/(?P<product_id>\d*)$', "edit_sub_type"),
+# Property Groups
+urlpatterns += patterns('lfs.manage.views.property_groups',
+    url(r'^manage-property-groups', "manage_property_groups", name="lfs_manage_property_groups"),
+    url(r'^manage-property-group/(?P<id>\d*)', "manage_property_group", name="lfs_manage_property_group"),
+    url(r'^add-property-group', "add_property_group", name="lfs_add_property_group"),
+    url(r'^delete-property-group/(?P<id>\d*)', "delete_property_group", name="lfs_delete_property_group"),
+    url(r'^assign-properties/(?P<group_id>\d*)', "assign_properties", name="lfs_assign_properties"),    
+    url(r'^update-properties/(?P<group_id>\d*)', "update_properties", name="lfs_update_properties"),    
+)
+
+# Shop Properties
+urlpatterns += patterns('lfs.manage.views.properties',
+    url(r'^manage-shop-properties$', "manage_properties", name="lfs_manage_shop_properties"),
+    url(r'^manage-shop-property/(?P<id>\d*)', "manage_property", name="lfs_manage_shop_property"),
+    url(r'^update-shop-property-type/(?P<id>\d*)', "update_property_type", name="lfs_update_shop_property_type"),
+    url(r'^add-shop-property$', "add_property", name="lfs_add_shop_property"),
+    url(r'^delete-shop-property/(?P<id>\d*)', "delete_property", name="lfs_delete_shop_property"),    
+    url(r'^add-shop-property-option/(?P<property_id>\d*)', "add_option", name="lfs_add_shop_property_option"),
+    url(r'^delete-shop-property-option/(?P<id>\d*)', "delete_option", name="lfs_delete_shop_property_option"),
+)
+
+# Product properties
+urlpatterns += patterns('lfs.manage.views.product.properties',
+    url(r'^update-product-properties/(?P<product_id>\d*)$', "update_properties", name="lfs_update_product_properties"),
+    url(r'^update-product-property-groups/(?P<product_id>\d*)$', "update_property_groups", name="lfs_update_product_property_groups"),
+    
 )
 
 # Accesories

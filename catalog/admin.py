@@ -8,6 +8,8 @@ from lfs.catalog.models import Product
 from lfs.catalog.models import ProductAccessories
 from lfs.catalog.models import Property
 from lfs.catalog.models import PropertyOption
+from lfs.catalog.models import PropertyGroup
+from lfs.catalog.models import ProductPropertyValue
 from lfs.catalog.models import StaticBlock
 from lfs.catalog.models import DeliveryTime
 
@@ -31,16 +33,6 @@ class ProductAccessoriesAdmin(admin.ModelAdmin):
     """
 admin.site.register(ProductAccessories, ProductAccessoriesAdmin)
 
-class PropertyAdmin(admin.ModelAdmin):
-    """
-    """    
-admin.site.register(Property, PropertyAdmin)
-
-class PropertyOptionAdmin(admin.ModelAdmin):
-    """
-    """    
-admin.site.register(PropertyOption, PropertyOptionAdmin)
-
 class StaticBlockAdmin(admin.ModelAdmin):
     """
     """    
@@ -50,3 +42,8 @@ class DeliveryTimeAdmin(admin.ModelAdmin):
     """
     """    
 admin.site.register(DeliveryTime, DeliveryTimeAdmin)
+
+admin.site.register(PropertyGroup)
+admin.site.register(Property)
+admin.site.register(PropertyOption)
+admin.site.register(ProductPropertyValue)

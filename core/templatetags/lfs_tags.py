@@ -14,6 +14,7 @@ from lfs.cart import utils as cart_utils
 import lfs.catalog.utils
 from lfs.catalog.models import Category
 from lfs.catalog.models import Product
+from lfs.catalog.models import PropertyOption
 from lfs.catalog.settings import PRODUCT_TYPE_LOOKUP
 from lfs.core.models import Shop
 from lfs.order.models import Order
@@ -167,6 +168,21 @@ def product_breadcrumbs(context, product):
     
     return result
 
+@register.inclusion_tag('catalog/filter_navigation.html', takes_context=True)
+def filter_navigation(context, category):
+    """
+    """
+    request = context.get("request")
+    sorting = request.session.get("sorting")    
+    set_product_filter = request.session.get("product-filter", {})
+    set_product_filter = set_product_filter.items()
+    
+    pf =  lfs.catalog.utils.get_product_filters(category, set_product_filter, sorting)
+    return {
+        "category" : category,
+        "product_filters" : pf,
+    }
+    
 @register.inclusion_tag('catalog/product_navigation.html', takes_context=True)
 def product_navigation(context, product):
     """Provides previous and next product links.
@@ -474,4 +490,12 @@ def multiply(score, pixel):
     """
     """
     return score * pixel
-    
+
+@register.filter
+def option_name(option_id):
+    """
+    """
+    option = lfs_get_object_or_404(PropertyOption, pk=option_id)
+    return option.name
+
+        

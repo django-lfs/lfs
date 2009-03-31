@@ -30,7 +30,7 @@
     <p class="product-description">
         {{variant.get_description|safe}}
     </p>
-
+    
     {% ifequal product.sub_type "1" %}
         <h2>{% trans 'Variants' %}</h2>
         {% ifequal product.variants_display_type 0 %}
@@ -63,7 +63,7 @@
                         </td>
                         {% for option in product_variant.get_options %}
                             <td>
-                                {{option.option.name}}
+                                {{option.value}}
                             </td>                            
                         {% endfor %}
                         <td class="number">

@@ -9,10 +9,16 @@ PRODUCT_TYPE_LOOKUP = {
     PRODUCT_WITH_VARIANTS : _(u"Product with variants"),
     VARIANT : _(u"Variant"),
 }
+
 PRODUCT_TYPE_CHOICES = [
     (STANDARD_PRODUCT, _(u"Standard")),
     (PRODUCT_WITH_VARIANTS, _(u"Product with variants")),
     (VARIANT, _(u"Variant")),
+]
+
+PRODUCT_TYPE_FORM_CHOICES = [
+    (STANDARD_PRODUCT, _(u"Standard")),
+    (PRODUCT_WITH_VARIANTS, _(u"Product with variants")),
 ]
 
 
@@ -49,3 +55,13 @@ DELIVERY_TIME_UNIT_SINGULAR = {
     DELIVERY_TIME_UNIT_WEEKS : _(u"week"),
     DELIVERY_TIME_UNIT_MONTHS : _(u"month"),
 }
+
+PROPERTY_NUMBER_FIELD = 1
+PROPERTY_TEXT_FIELD = 2
+PROPERTY_SELECT_FIELD = 3
+
+PROPERTY_TYPE_CHOICES = (
+    (PROPERTY_NUMBER_FIELD, _(u"Number field")),
+    (PROPERTY_TEXT_FIELD, _(u"Text field")),
+    (PROPERTY_SELECT_FIELD, _(u"Select field")),
+)

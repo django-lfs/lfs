@@ -1,0 +1,74 @@
+{% extends "manage/manage_base.html" %}
+{% load i18n %}
+
+{% block left_slot %}
+    {% for property in properties %}
+        <div>
+            <a href="{% url lfs_manage_shop_property property.id %}"
+               class="selectable {% ifequal property.id current_id %}selected{% endifequal %}">
+                {{property.name}}
+            </a>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+
+    <div>
+        <span class="label">{{property.name}}</span> |
+        <a href="{% url lfs_add_shop_property %}">{% trans 'Add' %}</a> |
+        <a class="confirmation-link"
+           data="{% trans 'Delete?' %}"
+           href="{% url lfs_delete_shop_property property.id %}">{% trans 'Delete' %}</a>
+    </div>
+
+    <div id="manage-tabs">
+        
+        <ul>
+            <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Property' %}</a></li>
+        </ul>
+
+        <div id="data">
+            <h2>{% trans 'Property data' %}</h2>
+
+            <form action="{% url lfs_manage_shop_property property.id %}"
+                  method="post">
+                {% include "manage/lfs_form.html" %}
+                <input type="submit"
+                       value="{% trans 'Save property' %}">
+            </form>
+            
+            <h2 class="heading-middle">{% trans 'Property type' %}</h2>
+            <form action="{% url lfs_update_shop_property_type property.id %}"
+                  method="post">
+
+                <div class="field">
+                    <div class="label">
+                        {{ type_form.type.label_tag }}:
+                    </div>
+        
+                    {% if field.errors %}
+                        <div class="error">
+                            {{ type_form.type }}
+                            {{ type_form.type.errors }}
+                        </div>
+                    {% else %}
+                        <div>
+                            {{ type_form.type }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <input type="submit"
+                       value="{% trans 'Save property type' %}">
+            </form>
+            
+            {% if property.is_select_field %}
+                <div id="options">
+                    {{options|safe}}
+                </div>
+            {% endif %}
+            
+        </div>
+    </div>        
+{% endblock %}

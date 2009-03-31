@@ -142,24 +142,6 @@
             {% endif %}
         </div>
 
-        {% if not product.is_variant %}
-            <div class="field">
-                <div class="label">
-                    {{ form.sub_type.label_tag }}:
-                </div>
-                {% if form.sub_type.errors %}
-                    <div class="error">
-                        {{ form.sub_type }}
-                        {{ form.sub_type.errors }}                        
-                    </div>
-                {% else %}
-                    <div>
-                        {{ form.sub_type }}                    
-                    </div>
-                {% endif %}
-            </div>            
-        {% endif %}
-
         <div class="field">
             <div class="label">
                 {% if product.is_variant %}

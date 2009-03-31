@@ -26,9 +26,11 @@ from lfs.tests.utils import RequestFactory
 class OrderTestCase(TestCase):
     """
     """
+    fixtures = ['lfs_shop.xml']
+    
     def setUp(self):
         """
-        """        
+        """
         session = SessionStore()
         
         rf = RequestFactory()

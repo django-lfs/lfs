@@ -1,4 +1,4 @@
-# django
+# django imports
 from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.db.models.signals import pre_save
@@ -106,6 +106,7 @@ def update_category_cache(instance):
     return
     cache.delete("category-breadcrumbs-%s" % instance.slug)
     cache.delete("category-products-%s" % instance.slug)
+    cache.delete("category-all-products-%s" % instance.slug)
     cache.delete("category-categories-%s" % instance.slug)
 
     for category in Category.objects.all():
@@ -118,6 +119,7 @@ def update_category_cache(instance):
     cache.delete("category-children-%s" % instance.id)
     cache.delete("category-parents-%s" % instance.id)
     cache.delete("category-products-%s" % instance.id)
+    cache.delete("category-all-products-%s" % instance.id)
     
     # Note: As this is called "pre-saved" newly created categories don't have
     # the many-to-many attribute "products", hence we have to take care of it 

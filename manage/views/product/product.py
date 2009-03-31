@@ -1,7 +1,9 @@
+# python imports
+import urllib
+
 # django imports
 from django.contrib.admin import widgets
 from django.contrib.auth.decorators import permission_required
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.db.models import Q
@@ -18,21 +20,33 @@ from django.utils.translation import ugettext_lazy as _
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.catalog.models import Category
 from lfs.catalog.models import Product
-from lfs.catalog.settings import VARIANT
+from lfs.catalog.settings import VARIANT, PRODUCT_TYPE_FORM_CHOICES
 from lfs.core.utils import LazyEncoder
 from lfs.manage.views.product.accessories import manage_accessories
 from lfs.manage.views.product.categories import manage_categories
 from lfs.manage.views.product.images import manage_images
-from lfs.manage.views.product.properties import manage_properties
+from lfs.manage.views.product.variants import manage_variants
 from lfs.manage.views.product.related_products import manage_related_products
 from lfs.manage.views.product.seo import manage_seo
+from lfs.manage.views.product.properties import manage_properties
 
+class ProductSubTypeForm(ModelForm):
+    """Form to change the sub type.
+    """
+    class Meta:
+        model = Product
+        fields = ("sub_type",)
+
+    def __init__(self, *args, **kwargs):
+        super(ProductSubTypeForm, self).__init__(*args, **kwargs)
+        self.fields["sub_type"].choices = PRODUCT_TYPE_FORM_CHOICES
+    
 class ProductDataForm(ModelForm):
     """Form to add and edit master data of a product.
     """
     class Meta:
         model = Product
-        fields = ("name", "slug", "sub_type", "sku", "price", "tax", 
+        fields = ("name", "slug", "sku", "price", "tax", 
             "short_description", "description", "for_sale", "for_sale_price")
 
 class VariantDataForm(ModelForm):
@@ -76,20 +90,38 @@ def manage_product(request, product_id, template_name="manage/product/product.ht
     """Displays the whole manage/edit form for the product with the passed id.
     """
     product = Product.objects.get(pk=product_id)
-
+    
     return render_to_response(template_name, RequestContext(request, {
         "product" : product,
         "product_data" : product_data_form(request, product_id),
         "categories" : manage_categories(request, product_id),
         "images" : manage_images(request, product_id),
-        "properties" : manage_properties(request, product.id),
+        "variants" : manage_variants(request, product.id),
         "accessories" : manage_accessories(request, product.id),
         "related_products" : manage_related_products(request, product.id),
         "selectable_products" : selectable_products_inline(request, as_string=True),
         "seo" : manage_seo(request, product_id),
         "dimension" : dimension(request, product_id),
+        "properties" : manage_properties(request, product_id),
+        "form" : ProductSubTypeForm(instance=product)
     }))
 
+@permission_required("manage_shop", login_url="/login/")
+def change_subtype(request, product_id):
+    """Changes the sub type of the product with passed id.
+    """
+    product = Product.objects.get(pk=product_id)
+    form = ProductSubTypeForm(instance=product, data=request.POST)
+    form.save()
+
+    url = reverse("lfs_manage_product", kwargs={"product_id": product_id})    
+    response = HttpResponseRedirect(url)
+
+    msg = urllib.quote(_(u"Sub type has been changed."))
+    response.set_cookie("message", msg)
+    
+    return response
+    
 @permission_required("manage_shop", login_url="/login/")
 def dimension(request, product_id, template_name="manage/product/dimension.html"):
     """Displays and updates the product dimension.

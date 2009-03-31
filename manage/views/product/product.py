@@ -215,7 +215,9 @@ def selectable_products_inline(request, as_string=False,
             # First we collect all sub categories and using the `in` operator
             category = lfs_get_object_or_404(Category, pk=category_filter)
             categories = [category]
-            categories.extend(category.get_all_children())
+            
+            if category.show_all_products:
+                categories.extend(category.get_all_children())
         
             filters &= Q(categories__in = categories)
     

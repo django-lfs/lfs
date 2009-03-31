@@ -307,13 +307,13 @@ class PropertiesTestCase(TestCase):
     def test_set_filter(self):
         """Tests the setting of a filter via request/view
         """
-        url = reverse("lfs_set_product_filter", kwargs={"property_id" : 1, "value":"Red"})
+        url = reverse("lfs_set_product_filter", kwargs={"category_slug": self.c1.slug, "property_id" : 1, "value":"Red"})
         response = self.client.get(url)
         
         pf = self.client.session.get("product-filter", {})
         self.assertEqual(pf["1"], "Red")
         
-        url = reverse("lfs_set_product_filter", kwargs={"property_id" : 2, "value":"M"})
+        url = reverse("lfs_set_product_filter", kwargs={"category_slug": self.c1.slug, "property_id" : 2, "value":"M"})
         response = self.client.get(url)
 
         pf = self.client.session.get("product-filter", {})
@@ -326,65 +326,63 @@ class PropertiesTestCase(TestCase):
         request = RequestFactory().get("/")
         request.session = SessionStore()        
         
-        f = lfs.catalog.utils.get_product_filters(request, self.c1)
+        f = lfs.catalog.utils.get_product_filters(self.c1, [], None)
+        self.assertEqual(1, 0)
         
     def test_filter_products(self):
         """Tests various scenarious of filtering products.
         """
-        request = RequestFactory().get("/")
-        request.session = SessionStore()        
-
-        request.session["sorting"] = "price"        
-        request.session["product-filter"] = {1: "S"}
-        products = lfs.catalog.utils.get_filtered_products_for_category(request, self.c1)
+        sorting = "price"        
+        filters = [[1, "S"]]
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, sorting)
         self.assertEqual(products[0].id, self.p3.id)
         self.assertEqual(products[1].id, self.p1.id)
 
-        request.session["sorting"] = "-price"
-        products = lfs.catalog.utils.get_filtered_products_for_category(request, self.c1)
+        sorting = "-price"
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, sorting)
         self.assertEqual(products[0].id, self.p1.id)
         self.assertEqual(products[1].id, self.p3.id)
         
-        request.session["product-filter"] = {1: "M"}
-        products = lfs.catalog.utils.get_filtered_products_for_category(request, self.c1)
+        filters = [[1, "M"]]
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, sorting)
         self.assertEqual(products[0].id, self.p2.id)
         
-        request.session["product-filter"] = {2: "1"}
-        products = lfs.catalog.utils.get_filtered_products_for_category(request, self.c1)
+        filters = [[2, "1"]]
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, sorting)
         self.assertEqual(products[0].id, self.p1.id)
         
-        request.session["product-filter"] = {2: "2"}
-        products = lfs.catalog.utils.get_filtered_products_for_category(request, self.c1)
+        filters = [[2, "2"]]
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, sorting)
         self.assertEqual(products[0].id, self.p2.id)
 
         # No filters at all
-        request.session["product-filter"] = {}
-        request.session["sorting"] = "price"
-        products = lfs.catalog.utils.get_filtered_products_for_category(request, self.c1)
+        filters = []
+        sorting = "price"
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, sorting)
         self.assertEqual(products[0].id, self.p3.id)
         self.assertEqual(products[1].id, self.p2.id)
         self.assertEqual(products[2].id, self.p1.id)
         
         # Combinations
-        request.session["product-filter"] = {1: "S", 2: "1"}
-        products = lfs.catalog.utils.get_filtered_products_for_category(request, self.c1)
+        filters = [[1, "S"], [2, "1"]]
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, sorting)
         
         # There need to be only one product, because p3 doesn't have a color 
         # property at all
         self.assertEqual(len(products), 1)
         self.assertEqual(products[0].id, self.p1.id)
 
-        request.session["product-filter"] = {1: "M", 2: "2"}
-        products = lfs.catalog.utils.get_filtered_products_for_category(request, self.c1)
+        filters = [[1, "M"], [2, "2"]]
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, sorting)
         self.assertEqual(products[0].id, self.p2.id)
         
         # Doesn't exist
-        request.session["product-filter"] = {1: "M", 2: "1"}
-        products = lfs.catalog.utils.get_filtered_products_for_category(request, self.c1)
+        filters = [[1, "M"], [2, "1"]]
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, sorting)
         self.failIf(len(products) != 0)
 
-        request.session["product-filter"] = {1: "S", 2: "2"}
-        products = lfs.catalog.utils.get_filtered_products_for_category(request, self.c1)        
+        filters = [[1, "S"], [2, "2"]]
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, sorting)        
         self.failIf(len(products) != 0)
         
 class CategoryTestCase(TestCase):

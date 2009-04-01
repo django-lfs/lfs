@@ -76,7 +76,7 @@ urlpatterns += patterns('lfs.manage.views.property_groups.property_groups',
 urlpatterns += patterns('lfs.manage.views.property_groups.products',
     url(r'^assign-products-to-property-group/(?P<group_id>\d*)', "assign_products", name="lfs_assign_products_to_property_group"),
     url(r'^remove-products-from-property-group/(?P<group_id>\d*)', "remove_products", name="lfs_pg_remove_products"),
-    url(r'^products-inline/(?P<product_group_id>\d*)', "products_inline", name="lfs_pg_products_inline"),
+    url(r'^pg-products-inline/(?P<product_group_id>\d*)', "products_inline", name="lfs_pg_products_inline"),
 )
 
 # Property Groups / Product Values

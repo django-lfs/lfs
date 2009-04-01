@@ -7,6 +7,7 @@ from lfs.catalog.models import ProductPropertyValue
 from lfs.catalog.models import PropertyOption
 from lfs.catalog.models import GroupsPropertiesRelation
 from lfs.core.signals import property_type_changed
+from lfs.core.signals import product_removed_property_group
 
 def property_option_deleted_listender(sender, instance, **kwargs):
     """Deletes all property values which have the deleted PropertyOption 
@@ -71,3 +72,17 @@ def property_type_changed_listener(sender, **kwargs):
     ppvs.delete()
 property_type_changed.connect(property_type_changed_listener)
 
+def product_removed_from_property_group_listener(sender, **kwargs):
+    """
+    """
+    property_group, product = sender
+    
+    # Remove property values for product and properties of the group.
+    for property in property_group.properties.all():
+        try:
+            ppv = ProductPropertyValue.objects.get(product=product, property=property)
+        except ProductPropertyValue.DoesNotExist:
+            pass
+        else:
+            ppv.delete()
+product_removed_property_group.connect(product_removed_from_property_group_listener)

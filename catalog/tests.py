@@ -26,6 +26,7 @@ from lfs.catalog.models import ProductAccessories
 from lfs.catalog.models import ProductPropertyValue
 from lfs.catalog.models import ProductsPropertiesRelation
 from lfs.core.signals import product_changed
+from lfs.core.signals import product_removed_property_group
 from lfs.tax.models import Tax
 from lfs.tests.utils import RequestFactory
 
@@ -63,6 +64,66 @@ class PropertiesTestCase(TestCase):
         self.gpr1 = GroupsPropertiesRelation.objects.create(group = self.pg, property=self.pp1)
         self.gpr2 = GroupsPropertiesRelation.objects.create(group = self.pg, property=self.pp2)
     
+    def test_remove_product_from_group(self):
+        """Tests the remove of a product from a property group.
+        """
+        # First we add another PropertyGroup
+        self.pg2 = PropertyGroup.objects.create(name="Clothes")
+        
+        # Assign all products 
+        self.pg2.products = [self.p1, self.p2, self.p3]
+        self.pg2.save()
+        
+        # And add a simple property
+        self.pp3 = Property.objects.create(name="Color", type=PROPERTY_TEXT_FIELD)
+        GroupsPropertiesRelation.objects.create(group=self.pg2, property=self.pp3)
+        
+        # And some values
+        ProductPropertyValue.objects.create(product=self.p1, property=self.pp3, value="31")
+        ProductPropertyValue.objects.create(product=self.p2, property=self.pp3, value="32")
+        ProductPropertyValue.objects.create(product=self.p3, property=self.pp3, value="33")
+        
+        ppvs = ProductPropertyValue.objects.filter(product=self.p1)
+        self.assertEqual(len(ppvs), 3)
+
+        ppvs = ProductPropertyValue.objects.filter(product=self.p2)
+        self.assertEqual(len(ppvs), 3)
+
+        ppvs = ProductPropertyValue.objects.filter(product=self.p3)
+        self.assertEqual(len(ppvs), 2)
+        
+        # Now we remove product 1 from group 1
+        self.pg.products.remove(self.p1)
+        product_removed_property_group.send([self.pg, self.p1])
+        
+        # All values for the properties of the group and the product are deleted,
+        # but the values for the other group is still there
+        ppvs = ProductPropertyValue.objects.filter(product=self.p1)
+        self.assertEqual(len(ppvs), 1)
+        self.assertEqual(ppvs[0].property.id, self.pp3.id)
+
+        # The values for the other products are still there
+        ppvs = ProductPropertyValue.objects.filter(product=self.p2)
+        self.assertEqual(len(ppvs), 3)
+
+        ppvs = ProductPropertyValue.objects.filter(product=self.p3)
+        self.assertEqual(len(ppvs), 2)
+
+        # Now we remove product 1 also from group 2
+        self.pg2.products.remove(self.p1)
+        product_removed_property_group.send([self.pg2, self.p1])
+        
+        # All values for the properties of the group and the product are deleted
+        ppvs = ProductPropertyValue.objects.filter(product=self.p1)
+        self.assertEqual(len(ppvs), 0)
+        
+        # The values for the other products are still there
+        ppvs = ProductPropertyValue.objects.filter(product=self.p2)
+        self.assertEqual(len(ppvs), 3)
+
+        ppvs = ProductPropertyValue.objects.filter(product=self.p3)
+        self.assertEqual(len(ppvs), 2)
+        
     def test_delete_property_group(self):
         """Tests the deletion of a whole propery group.
         """

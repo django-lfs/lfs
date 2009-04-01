@@ -1,23 +1,18 @@
 # django imports
 from django.contrib.auth.decorators import permission_required
-from django.core.cache import cache
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
-from django.forms import ModelForm
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.utils import simplejson
 
 # lfs imports
 from lfs.catalog.models import Product
 from lfs.catalog.models import ProductPropertyValue
 from lfs.catalog.models import Property
 from lfs.catalog.models import PropertyGroup
-import lfs.catalog.utils
+from lfs.core.signals import product_removed_property_group
 
 @permission_required("manage_shop", login_url="/login/")
 def manage_properties(request, product_id, template_name="manage/product/properties.html"):
@@ -94,6 +89,8 @@ def update_property_groups(request, product_id):
                 pass
         else:
             property_group.products.remove(product_id)
+            product = Product.objects.get(pk=product_id)
+            product_removed_property_group.send([property_group, product])
     
     url = reverse("lfs_manage_product", kwargs={"product_id" : product_id})        
     return HttpResponseRedirect(url)

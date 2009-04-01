@@ -14,7 +14,9 @@ from lfs.caching.utils import lfs_get_object_or_404
 from lfs.catalog.models import Category
 from lfs.catalog.models import Product
 from lfs.catalog.models import PropertyGroup
+from lfs.catalog.models import ProductPropertyValue
 from lfs.core.utils import LazyEncoder
+from lfs.core.signals import product_removed_property_group
 from product_values import product_values
 
 @permission_required("manage_shop", login_url="/login/")
@@ -130,7 +132,10 @@ def remove_products(request, group_id):
             temp_id = temp_id.split("-")[1]
             product = Product.objects.get(pk=temp_id)
             property_group.products.remove(product)
-        
+            
+            # Notify removing
+            product_removed_property_group.send([property_group, product])
+
     result = simplejson.dumps({
         "html" : products_inline(request, group_id, as_string=True),
         "message" : _(u"Products have been removed.")

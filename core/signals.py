@@ -15,3 +15,4 @@ order_submitted = django.dispatch.Signal()
 
 # Property
 property_type_changed = django.dispatch.Signal()
+product_removed_property_group = django.dispatch.Signal()

@@ -20,7 +20,7 @@
 
         <div id="data">
             
-            <h2>{% trans 'Add tax' %}</h2>
+           <span class="label">{% trans 'Rate' %}: {{tax.rate}}%</span>
 
             <form action="{% url lfs_add_tax %}"
                   method="post">

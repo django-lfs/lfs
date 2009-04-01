@@ -5,7 +5,7 @@
 <form id="update-product-values-form"
       action="{% url lfs_update_product_values property_group.id %}"
       method="post">
-    <table class="pg-product-values">
+    <table class="lfs-manage-table">
         <tr>
             <th>
                 {% trans 'Name' %}
@@ -17,7 +17,7 @@
             {% endfor %}            
         </tr>
         {% for product in products %}
-            <tr>
+            <tr class="{% cycle 'even' 'odd' %}">
                 <td>
                     {{product.name}}
                     <input type="hidden"

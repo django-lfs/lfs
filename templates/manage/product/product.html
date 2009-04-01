@@ -45,29 +45,30 @@
             <span class="label">
                 {{product.name}}
             </span>
-            |
-            <a href="{% url lfs_manage_products %}">
-               {% trans 'Overview' %}
+
+            {# <a href="{% url lfs_manage_products %}"> #}
+            {#    {% trans 'Overview' %} #}
+            {# </a> #}
+
+            <a class="add" 
+               href="{% url lfs_manage_add_product %}">
+                {% trans 'Add product' %}
             </a>
-            |
-            <a href="{% url lfs_manage_add_product %}">
-               {% trans 'Add product' %}
-            </a>
-            |
-            <a class="confirmation-link"
+
+            <a class="delete confirmation-link"
                data="{% trans 'Delete?' %}"
                href="{% url lfs_manage_delete_product product.id %}">
                {% trans 'Delete product' %}
             </a>
-            |
-            <a href="{% url lfs.manage.views.product_by_id product.id %}"
+
+            <a class="preview" 
+               href="{% url lfs.manage.views.product_by_id product.id %}"
                target="_blank">
-               {% trans 'Preview product' %}
+               {% trans 'Preview product' %}               
             </a>
         
-            {% if not product.is_variant %}        
-                |
-                <form style="display:inline"
+            {% if not product.is_variant %}
+                <form style="display:inline; padding-left:15px"
                       action="{% url lfs_change_product_subtype product.id %}"
                       method="post">              
                     {{form.sub_type}}

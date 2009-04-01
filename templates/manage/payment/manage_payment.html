@@ -31,16 +31,15 @@
         <span class="label">
             {{payment_method.name}}
         </span>
-        | 
 
-        <a class="add-payment-method-link"
+        <a class="add"
            href="{% url lfs_add_payment_method %}">
-            {% trans 'Add' %}</a>
-        |
-        <a class="confirmation-link"
+            {% trans 'Add payment method' %}</a>
+
+        <a class="delete confirmation-link"
            data="{% trans 'Delete?' %}"
            href="{% url lfs_delete_payment_method payment_method.id %}">
-            {% trans 'Delete' %}</a>
+            {% trans 'Delete payment method' %}</a>
     </div>
             
     <div id="manage-tabs">

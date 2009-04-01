@@ -27,8 +27,8 @@
         <span>{% trans 'Last' %}</span>
     {% endif %}
 
-    <div class="selectable-products">
-        <table>
+    <div>
+        <table class="lfs-manage-table middle">
             <tr>
                 <th class="checkbox">
                     <input type="checkbox"
@@ -78,64 +78,63 @@
     <form id="accessories-update-form"
           action="{% url lfs.manage.views.remove_accessories product.id %}"
           method="post">
-        <div class="selected-accessories">
-            <table>
+        <table class="lfs-manage-table">
+            <tr>
+                <th class="checkbox">
+                    <input type="checkbox"
+                           class="select-all-2" />
+                </th>
+                <th>
+                    {% trans 'Name' %}
+                </th>
+                <th>
+                    {% trans 'Position' %}
+                </th>                    
+                <th>
+                    {% trans 'Quantity' %}
+                </th>                    
+                <th>
+                    {% trans 'Sub type' %}
+                </th>
+                <th class="number">
+                    {% trans 'Price' %}
+                </th>                    
+            </tr>
+    
+            {% for product_accessory in product_accessories %}
                 <tr>
-                    <th class="checkbox">
+                    <td>
                         <input type="checkbox"
-                               class="select-all-2" />
-                    </th>
-                    <th>
-                        {% trans 'Name' %}
-                    </th>
-                    <th>
-                        {% trans 'Position' %}
-                    </th>                    
-                    <th>
-                        {% trans 'Quantity' %}
-                    </th>                    
-                    <th>
-                        {% trans 'Sub type' %}
-                    </th>
-                    <th class="number">
-                        {% trans 'Price' %}
-                    </th>                    
+                               name="accessory-{{product_accessory.accessory.id}}"
+                               class="select-2"/>
+                    </td>
+                    <td>
+                        {{product_accessory.accessory.name}}
+                    </td>                        
+                    <td>
+                        <input class="number"
+                               type="text"
+                               size="3"
+                               name="position-{{product_accessory.accessory.id}}"
+                               value="{{product_accessory.position}}" />
+                    </td>
+                    <td>
+                        <input class="number"
+                               type="text"
+                               size="5"                            
+                               name="quantity-{{product_accessory.accessory.id}}"
+                               value="{{product_accessory.quantity}}" />
+                    </td>
+                    <td>
+                        {{product_accessory.accessory.sub_type|sub_type_name}}
+                    </td>
+                    <td class="number">
+                        {{product_accessory.accessory.price|currency}}
+                    </td>                        
                 </tr>
-        
-                {% for product_accessory in product_accessories %}
-                    <tr>
-                        <td>
-                            <input type="checkbox"
-                                   name="accessory-{{product_accessory.accessory.id}}"
-                                   class="select-2"/>
-                        </td>
-                        <td>
-                            {{product_accessory.accessory.name}}
-                        </td>                        
-                        <td>
-                            <input class="number"
-                                   type="text"
-                                   size="3"
-                                   name="position-{{product_accessory.accessory.id}}"
-                                   value="{{product_accessory.position}}" />
-                        </td>
-                        <td>
-                            <input class="number"
-                                   type="text"
-                                   size="5"                            
-                                   name="quantity-{{product_accessory.accessory.id}}"
-                                   value="{{product_accessory.quantity}}" />
-                        </td>
-                        <td>
-                            {{product_accessory.accessory.sub_type|sub_type_name}}
-                        </td>
-                        <td class="number">
-                            {{product_accessory.accessory.price|currency}}
-                        </td>                        
-                    </tr>
-                {% endfor %}
-            </table>    
-        </div>    
+            {% endfor %}
+        </table>    
+
         <input type="hidden"
                name="keep-filters"
                value="1" />

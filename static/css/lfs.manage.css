@@ -30,7 +30,7 @@ a {
 }
 
 a:visited {
-    color: #58585a;
+    color: black;
 }
 
 a:hover {
@@ -47,13 +47,24 @@ table.main {
     margin: 0;
 }
 
+table.middle {
+    margin-top: 10px;
+}
+
 .lfs-header {
     background: url("../img/header_bg.jpg") repeat-x;
 }
 
 .logo {
+    float:left;
     padding: 0 0 15px 60px;
     height: 93px;
+}
+
+.username {
+    float:right;
+    padding-right: 30px;
+    padding-top: 30px;
 }
 
 .navigation-pages {
@@ -102,31 +113,27 @@ img {
     padding-left: 10px;
 }
 
+table.lfs-manage-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+table.lfs-manage-table th {
+    min-height: 20px;
+    height: 20px;
+    background-color: #ede9e8;
+}
+
 table.orders,
 table.order-general,
 table.order-items,
 table.order-addresses,
 table.order-message,
-table.manage-overview,
-table.selected-properties,
-table.selectable-properties,
-table.property-group-products,
-table.pg-product-values,
-.selected-topseller table,
-.selected-accessories table,
-.selectable-products table {
+table.manage-overview {
     width: 100%;
     border-collapse: collapse;
-}
-
-.pg-product-values th,
-.property-group-products th,
-.selectable-properties th,
-.selected-properties th,
-.manage-overview th,
-.selected-accessories th,
-.selectable-products th {
-    background-color: #aaa;
+    margin-bottom: 10px;
 }
 
 .manage-overview th,
@@ -151,10 +158,6 @@ table.order-addresses th {
     background-color: #eee;
 }
 
-table.selectable-properties {
-    margin-bottom: 30px;
-}
-
 .selected-accessories {
     height: 200px;
     overflow: auto;
@@ -166,7 +169,7 @@ table.selectable-properties {
 }
 
 tr.odd {
-    background-color: #ddd;
+    background-color: #fafafa;
 }
 
 div.manage-form-buttons {
@@ -220,5 +223,33 @@ a.criterion-add-first-button {
 }
 
 div.site-actions {
-    margin: 10px 0;
+    margin: 20px 0;
+}
+
+div.site-actions img {
+    position: relative; top: 3px;
+}
+
+a.add {
+    margin: 0 10px;
+    padding-left: 18px;
+    background: url(/media/lfs/icons/add.png) no-repeat;
+}
+
+span.delete {
+    margin: 0 0 0 10px;
+    padding-left: 20px;
+    background: url(/media/lfs/icons/delete.png) no-repeat;    
+}
+
+a.delete {
+    margin: 0 10px;
+    padding-left: 20px;
+    background: url(/media/lfs/icons/delete.png) no-repeat;
+}
+
+a.preview {
+    margin: 0 10px;
+    padding-left: 18px;
+    background: url(/media/lfs/icons/zoom.png) no-repeat;
 }

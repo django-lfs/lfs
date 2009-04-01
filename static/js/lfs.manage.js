@@ -714,8 +714,9 @@ $(function() {
     $(".confirmation-link").livequery("click", function() {
         confirmation = $(this);
         var url = $(this).attr("href");
-        var data = $(this).attr("data")
-        $(this).replaceWith("<span><span>" + data + "</span> <a href='" + url + "'>Yes</a> <a class='confirmation-link-no' href=''>No</a></span>");
+        var data = $(this).attr("data");
+        var cls = $(this).attr("class");
+        $(this).replaceWith("<span><span class='" + cls + "'>" + data + "</span> <a href='" + url + "'>Yes</a> <a class='confirmation-link-no' href=''>No</a></span>");
         return false;
     });
     

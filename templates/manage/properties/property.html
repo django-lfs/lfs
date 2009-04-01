@@ -14,12 +14,13 @@
 
 {% block content %}
 
-    <div>
-        <span class="label">{{property.name}}</span> |
-        <a href="{% url lfs_add_shop_property %}">{% trans 'Add' %}</a> |
-        <a class="confirmation-link"
+    <div class="site-actions">
+        <span class="label">{{property.name}}</span>
+        <a class="add" 
+           href="{% url lfs_add_shop_property %}">{% trans 'Add Property' %}</a>
+        <a class="delete confirmation-link"
            data="{% trans 'Delete?' %}"
-           href="{% url lfs_delete_shop_property property.id %}">{% trans 'Delete' %}</a>
+           href="{% url lfs_delete_shop_property property.id %}">{% trans 'Delete Property' %}</a>
     </div>
 
     <div id="manage-tabs">

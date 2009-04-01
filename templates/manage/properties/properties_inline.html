@@ -3,7 +3,7 @@
       action="{% url lfs_assign_properties property_group.id %}"
       method="post">
     <h2>{% trans 'Properties' %}</h2>
-    <table class="selectable-properties">
+    <table class="lfs-manage-table">
         <tr>
             <th class="checkbox">
                 <input type="checkbox" 
@@ -45,7 +45,7 @@
       action="{% url lfs_update_properties property_group.id %}"
       method="post">      
     <h2 class="heading-middle">{% trans 'Assigned properties' %}</h2>
-    <table class="selected-properties">
+    <table class="lfs-manage-table">
         <tr>
             <th class="checkbox">
                 <input type="checkbox"

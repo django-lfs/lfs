@@ -31,15 +31,15 @@
         <span class="label">
             {{shipping_method.name}}
         </span>
-        | 
-        <a class="add-shipping-method-link"
+
+        <a class="add"
            href="{% url lfs.manage.views.add_shipping_method %}">
-            {% trans 'Add' %}</a>
-        |
-        <a class="confirmation-link" 
+            {% trans 'Add shipping method' %}</a>
+
+        <a class="delete confirmation-link" 
            data="{% trans 'Delete?' %}"
            href="{% url lfs.manage.views.delete_shipping_method shipping_method.id %}">
-            {% trans 'Delete' %}</a>
+            {% trans 'Delete shipping method' %}</a>
     </div>
             
     <div id="manage-tabs">

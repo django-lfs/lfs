@@ -30,56 +30,54 @@
     <form id="category-products-remove-form"
           action="{% url lfs_manage_category_remove_products category.id %}"
           method="post">
-        <div class="selected-accessories">
-            <table class="manage-overview">
+        <table class="lfs-manage-table middle">
+            <tr>
+                <th class="checkbox">
+                    <input type="checkbox" class="select-all-2" />
+                </th>
+                <th>
+                    {% trans 'Name' %}
+                </th>
+                <th>
+                    {% trans 'SKU' %}
+                </th>
+                <th>
+                    {% trans 'Sub type' %}
+                </th>                
+                <th class="number">
+                    {% trans 'Price' %}
+                </th>
+                <th class="right">
+                    {% trans 'Edit' %}
+                </th>    
+            </tr>
+            {% for product in page_2.object_list %}
                 <tr>
-                    <th class="checkbox">
-                        <input type="checkbox" class="select-all-2" />
-                    </th>
-                    <th>
-                        {% trans 'Name' %}
-                    </th>
-                    <th>
-                        {% trans 'SKU' %}
-                    </th>
-                    <th>
-                        {% trans 'Sub type' %}
-                    </th>                
-                    <th class="number">
-                        {% trans 'Price' %}
-                    </th>
-                    <th class="right">
-                        {% trans 'Edit' %}
-                    </th>    
+                    <td>
+                        <input type="checkbox" class="select-2" name="{{product.id}}" />
+                    </td>            
+                    <td>
+                        {{product.name}}
+                    </td>
+                    <td>
+                        {{product.sku}}
+                    </td>
+                    <td>
+                        {{product.sub_type|sub_type_name}}
+                    </td>                    
+                    <td class="number">
+                        {{product.price|currency}}
+                    </td>
+                    <td class="right">
+                        <a href="{% url lfs_manage_product product.id %}">
+                            <img src="{{MEDIA_URL}}lfs/icons/pencil.png" 
+                                 alt="Edit"
+                                 title="{% trans 'Edit product' %}" />
+                        </a>
+                    </td>
                 </tr>
-                {% for product in page_2.object_list %}
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="select-2" name="{{product.id}}" />
-                        </td>            
-                        <td>
-                            {{product.name}}
-                        </td>
-                        <td>
-                            {{product.sku}}
-                        </td>
-                        <td>
-                            {{product.sub_type|sub_type_name}}
-                        </td>                    
-                        <td class="number">
-                            {{product.price|currency}}
-                        </td>
-                        <td class="right">
-                            <a href="{% url lfs_manage_product product.id %}">
-                                <img src="{{MEDIA_URL}}lfs/icons/pencil.png" 
-                                     alt="Edit"
-                                     title="{% trans 'Edit product' %}" />
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
+            {% endfor %}
+        </table>
 
         <input type="hidden"
                name="keep-session"

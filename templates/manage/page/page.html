@@ -15,13 +15,18 @@
 {% block content %}
 
     <div class="site-actions">
-        <span class="label">{{page.title}}</span> |
-        <a href="{% url lfs_add_page %}">{% trans 'Add' %}</a> |
-        <a class="confirmation-link"
+        <span class="label">{{page.title}}</span>
+        
+        <a class="add" 
+           href="{% url lfs_add_page %}">{% trans 'Add Page' %}</a>
+        
+        <a class="delete confirmation-link"
            data="{% trans 'Delete?' %}"
-           href="{% url lfs_delete_page page.id %}">{% trans 'Delete' %}</a> |
-        <a href="{% url lfs_page_view page.slug %}"
-           target="_blank">{% trans 'Preview' %}</a>
+           href="{% url lfs_delete_page page.id %}">{% trans 'Delete Page' %}</a>
+
+        <a class="preview" 
+           href="{% url lfs_page_view page.slug %}"
+           target="_blank">{% trans 'Preview Page' %}</a>
     </div>
 
     <div id="manage-tabs">

@@ -30,7 +30,7 @@
     {% endif %}
 
     <div class="selectable-products">
-        <table>
+        <table class="lfs-manage-table">
             <tr>
                 <th class="checkbox">
                     <input type="checkbox"
@@ -93,7 +93,7 @@
            value="{% trans 'Add to category' %}" />
 
 </form>
-<h2>{% trans 'Selected products' %}</h2>
+<h2 class="heading-middle">{% trans 'Selected products' %}</h2>
 
 <form id="category-selected-products-filter-form"
       action="{% url lfs_selected_products category.id %}"

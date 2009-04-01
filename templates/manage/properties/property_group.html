@@ -26,6 +26,7 @@
             <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Property Group' %}</a></li>            
             <li class="ui-tabs-nav-item"><a href="#properties">{% trans 'Properties' %}</a></li>            
             <li class="ui-tabs-nav-item"><a href="#products">{% trans 'Products' %}</a></li>
+            <li class="ui-tabs-nav-item"><a href="#product-values">{% trans 'Product values' %}</a></li>
         </ul>
 
         <div id="data">
@@ -41,8 +42,14 @@
         <div id="properties">
             {{properties|safe}}
         </div>
+
         <div id="products">
             {{products|safe}}
         </div>    
+        
+        <div id="product-values">
+            {{product_values|safe}}
+        </div>    
+
     </div>        
 {% endblock %}

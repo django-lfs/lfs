@@ -63,16 +63,25 @@ urlpatterns += patterns('lfs.manage.views.product.variants',
 )
 
 # Property Groups
-urlpatterns += patterns('lfs.manage.views.property_groups',
+urlpatterns += patterns('lfs.manage.views.property_groups.property_groups',
     url(r'^manage-property-groups', "manage_property_groups", name="lfs_manage_property_groups"),
     url(r'^manage-property-group/(?P<id>\d*)', "manage_property_group", name="lfs_manage_property_group"),
     url(r'^add-property-group', "add_property_group", name="lfs_add_property_group"),
     url(r'^delete-property-group/(?P<id>\d*)', "delete_property_group", name="lfs_delete_property_group"),
     url(r'^assign-properties/(?P<group_id>\d*)', "assign_properties", name="lfs_assign_properties"),    
     url(r'^update-properties/(?P<group_id>\d*)', "update_properties", name="lfs_update_properties"),
+)
+
+# Property Groups / Products
+urlpatterns += patterns('lfs.manage.views.property_groups.products',
     url(r'^assign-products-to-property-group/(?P<group_id>\d*)', "assign_products", name="lfs_assign_products_to_property_group"),
     url(r'^remove-products-from-property-group/(?P<group_id>\d*)', "remove_products", name="lfs_pg_remove_products"),
     url(r'^products-inline/(?P<product_group_id>\d*)', "products_inline", name="lfs_pg_products_inline"),
+)
+
+# Property Groups / Product Values
+urlpatterns += patterns('lfs.manage.views.property_groups.product_values',
+    url(r'^update-product-values/(?P<property_group_id>\d*)/', "update_product_values", name="lfs_update_product_values"),
 )
 
 # Shop Properties

@@ -111,6 +111,7 @@ table.manage-overview,
 table.selected-properties,
 table.selectable-properties,
 table.property-group-products,
+table.pg-product-values,
 .selected-topseller table,
 .selected-accessories table,
 .selectable-products table {
@@ -118,6 +119,7 @@ table.property-group-products,
     border-collapse: collapse;
 }
 
+.pg-product-values th,
 .property-group-products th,
 .selectable-properties th,
 .selected-properties th,

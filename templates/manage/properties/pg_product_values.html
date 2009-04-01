@@ -1,0 +1,52 @@
+{% load i18n %}
+
+<h2>{% trans 'Product values' %}</h2>
+
+<form id="update-product-values-form"
+      action="{% url lfs_update_product_values property_group.id %}"
+      method="post">
+    <table class="pg-product-values">
+        <tr>
+            <th>
+                {% trans 'Name' %}
+            </th>
+            {% for property in property_group.properties.all %}
+                <th>
+                    {{property.name}}
+                </th>
+            {% endfor %}            
+        </tr>
+        {% for product in products %}
+            <tr>
+                <td>
+                    {{product.name}}
+                    <input type="hidden"
+                           name="product-id"
+                           value="{{product.id}}" />
+                </td>
+                {% for property in product.properties %}
+                    <td>
+                        {% ifequal property.type 1 %}
+                            <input type="text" 
+                                   name="property-{{product.id}}-{{property.id}}"
+                                   value="{{property.value}}" />
+                        {% else %}
+                            <select name="property-{{product.id}}-{{property.id}}">
+                                <option value="">-----</option>
+                                {% for option in property.options %}
+                                    <option value="{{option.id}}"
+                                            {% if option.selected %}selected="selected"{% endif %}>
+                                        {{option.name}}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        {% endifequal %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    <input type="submit"
+           value="{% trans 'Save values' %}"
+           id="update-product-values-button" />
+</form>

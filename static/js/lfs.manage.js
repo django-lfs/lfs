@@ -617,7 +617,8 @@ $(function() {
         $("#add-products-form").ajaxSubmit({
             "success": function(data) {
                 var data = JSON.parse(data);
-                $("#products-inline").html(data["html"]);
+                $("#products-inline").html(data["products_inline"]);
+                $("#product-values").html(data["product_values_inline"]);
                 $.jGrowl(data["message"]);
             }
         });
@@ -657,6 +658,18 @@ $(function() {
             "target": "#products-inline"
         });
     });
+    
+    // PropertyGroup / Product Property Values
+    $("#update-product-values-button").livequery("click", function() {
+        $("#update-product-values-form").ajaxSubmit({
+            success : function(data) {
+                var data = JSON.parse(data);
+                $("#product-values").html(data["html"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    })
     
     // Shop Property Options
     $(".shop-property-add-option-button").livequery("click", function() {

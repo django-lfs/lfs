@@ -15,4 +15,7 @@ order_submitted = django.dispatch.Signal()
 
 # Property
 property_type_changed = django.dispatch.Signal()
+
+# TODO: Replace this with "m2m_changed" when available, or think about to use
+# an explicit relation ship class
 product_removed_property_group = django.dispatch.Signal()

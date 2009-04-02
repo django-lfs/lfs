@@ -46,7 +46,7 @@ def manage_review(request, review_id=None, template_name="manage/reviews/manage_
         form = ReviewForm(instance=review)
     
     return render_to_response(template_name, RequestContext(request, {
-        "review" : review,
+        "current_review" : review,
         "reviews" : reviews,
         "form" : form,
     }))

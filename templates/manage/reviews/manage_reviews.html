@@ -5,7 +5,8 @@
     <div id="reviews">
         {% for review in reviews %}
             <div>
-                <a href="{% url lfs_manage_review review.id %}">
+                <a class="selectable {% ifequal current_review.id review.id %}selected{% endifequal %}" 
+                   href="{% url lfs_manage_review review.id %}">
                     {{review.name}} ({{review.get_score_display}})
                 </a>
             </div>
@@ -18,15 +19,15 @@
     
     <div class="site-actions">
         <span class="label">
-            {{review.name}}
+            {{current_review.name}}
         </span>
         | 
         <a class="confirmation-link" 
            data="{% trans 'Delete?' %}"
-           href="{% url lfs_delete_review review.id %}">
+           href="{% url lfs_delete_review current_review.id %}">
             {% trans 'Delete' %}</a>
         | 
-        <a href="{% url lfs_product review.content.slug %}"
+        <a href="{% url lfs_product current_review.content.slug %}"
            target="_blank">
             {% trans 'View product' %}
         </a>
@@ -38,7 +39,7 @@
         </ul>
 
         <div id="review">
-            <form action="{% url lfs_manage_review review.id %}"
+            <form action="{% url lfs_manage_review current_review.id %}"
                   method="post">
                 <table>
                     {% include "manage/lfs_form.html" %}

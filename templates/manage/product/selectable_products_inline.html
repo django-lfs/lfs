@@ -54,8 +54,8 @@
 </div>
 
 {% for product in page.object_list %}
-    <div>
-        <a class="selectable-product {% ifequal current_product product.id %}current{% endifequal %}"
+    <div style="padding-bottom:2px">
+        <a class="selectable {% ifequal current_product product.id %}selected{% endifequal %}"
            id="selectable-product-id_{{product.id}}"
            href="{% url lfs.manage.views.manage_product product.id %}">
             {{product.name}}
@@ -63,7 +63,7 @@
 
         {% for variant in product.variants.all %}
             <div>
-                <a class="selectable-product variant {% ifequal current_product variant.id %}current{% endifequal %}"
+                <a class="selectable variant {% ifequal current_product variant.id %}selected{% endifequal %}"
                    id="selectable-product-id_{{variant.id}}"
                    href="{% url lfs.manage.views.manage_product variant.id %}">
                     {{variant.name}}

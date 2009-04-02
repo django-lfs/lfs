@@ -338,11 +338,11 @@ msgstr "Zugewiesene Bilder"
 
 #: catalog/models.py:270 templates/manage/product/related_products.html:12
 msgid "Active related products"
-msgstr "Zugewiesene zugehörige Produkte"
+msgstr "Zugehörige Produkte aktivieren"
 
 #: catalog/models.py:271 templates/manage/product/accessories.html:12
 msgid "Active accessories"
-msgstr "Zugewiesenes Zubehör"
+msgstr "Zubehör aktivieren"
 
 #: catalog/models.py:272
 msgid "Active meta description"

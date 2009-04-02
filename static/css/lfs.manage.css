@@ -20,7 +20,7 @@ a:hover {
 h2 {
     color: #58585a;
     margin-top: 0;
-    border-bottom: 1px solid #58585a;
+    border-bottom: 1px solid #ccc;
 }
 
 img {
@@ -28,7 +28,7 @@ img {
 }
 
 fieldset {
-    border:1px solid #58585a;
+    border:1px solid #ccc;
     padding:20px;
     margin-bottom:10px;
 }
@@ -39,6 +39,10 @@ textarea {
 
 h2.heading-middle {
     margin-top: 20px;
+}
+
+img.icon-padding {
+    position:relative; top:3px;
 }
 
 .label {
@@ -139,7 +143,7 @@ td.left-slot {
 
 #selectable-products-filter-input,
 #selectable-products-category-filter {
-    width: 180px;
+    width: 170px;
 }
 
 a.selectable {
@@ -259,3 +263,26 @@ span.delete {
     background: url(/media/lfs/icons/delete.png) no-repeat;    
 }
 
+/* Forms */
+.field {
+    margin-bottom:10px;
+}
+
+.field .error input {
+    border-color: red;
+}
+
+.field li {
+    display: inline;    
+    color: red;
+}
+
+.field ul {
+    display: inline;
+    list-style-type: none;
+    padding: 0;
+}
+
+select.categories {
+    width: 200px;
+}

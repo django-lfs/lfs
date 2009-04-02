@@ -67,8 +67,14 @@
                     <td>
                         <ul class="sf-menu"
                             width="100%">
-                            <li>
-                                <a href="{% url lfs_manage_shop %}">{% trans 'Shop' %}</a>
+                            <li><a>{% trans 'Shop' %}</a>
+                                <ul>
+                                    <li><a href="{% url lfs_manage_shop %}">{% trans 'Preferences' %}</a></li>
+                                    <li><a href="{% url lfs.manage.views.manage_shipping %}">{% trans 'Shipping Methods' %}</a></li>
+                                    <li><a href="{% url lfs_manage_payment %}">{% trans 'Payment Methods' %}</a></li>
+                                    <li><a href="{% url lfs_manage_taxes %}">{% trans 'Taxes' %}</a></li>                                    
+                                </ul>
+                                
                             </li>
                             <li><a>{% trans 'Catalog' %}</a>
                                 <ul>
@@ -83,9 +89,6 @@
                                     <li><a href="{% url lfs_manage_property_groups %}">{% trans 'Property Groups' %}</a></li>                                    
                                 </ul>
                             </li>
-                            <li><a href="{% url lfs.manage.views.manage_shipping %}">{% trans 'Shipping Methods' %}</a></li>
-                            <li><a href="{% url lfs_manage_payment %}">{% trans 'Payment Methods' %}</a></li>
-                            <li><a href="{% url lfs_manage_taxes %}">{% trans 'Taxes' %}</a></li>
                             <li>
                                 <a>HTML</a>
                                 <ul>

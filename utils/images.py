@@ -18,7 +18,7 @@ def scale_to_min_size(image, min_width, min_height):
     # TODO: Translate to english
     # Die groessere Proportion (oder Faktor oder Quotient) zwischen Soll-Groesse 
     # und Ist-Groesse kommt fuer beide Kanten (da proportional) zur Anwendung. 
-    # Das bedeutet die uebrige Kante ist auf jeden Fall groeßer als gewuenscht
+    # Das bedeutet die uebrige Kante ist auf jeden Fall groesser als gewuenscht
     # (da Multiplikation mit Faktor). 
     
     if prop_x > prop_y:

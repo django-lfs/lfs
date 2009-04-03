@@ -71,6 +71,7 @@
                                 <ul>
                                     <li><a href="{% url lfs_manage_shop %}">{% trans 'Preferences' %}</a></li>
                                     <li><a href="{% url lfs.manage.views.manage_shipping %}">{% trans 'Shipping Methods' %}</a></li>
+                                    <li><a href="{% url lfs_manage_delivery_times %}">{% trans 'Delivery Times' %}</a></li>
                                     <li><a href="{% url lfs_manage_payment %}">{% trans 'Payment Methods' %}</a></li>
                                     <li><a href="{% url lfs_manage_taxes %}">{% trans 'Taxes' %}</a></li>                                    
                                 </ul>
@@ -99,6 +100,7 @@
                             <li><a href="{% url lfs.manage.views.manage_orders %}">{% trans 'Orders' %}</a></li>
                             <li><a href="{% url lfs_manage_marketing %}">{% trans 'Marketing' %}</a></li>
                             <li><a href="{% url lfs_manage_reviews %}">{% trans 'Reviews' %}</a></li>
+                            <li><a href="{% url lfs_manage_utils %}">{% trans 'Utils' %}</a></li>
                         </ul>
                     </td>
                 </tr>
@@ -120,9 +122,14 @@
         </table>
 
         {% block footer %}
-
-        <p>{% trans 'Powered by LFS' %}</p>
-        <div id="spinner"></div>
+            <div class="footer">
+                <p>{% trans 'Powered by' %} <a target="_blank" href="http://www.getlfs.com">LFS</a> - A Lighting Fast Shop for <a target="_blank" href="http://www.djangoproject.com">Django</a></p>
+                <p>
+                    <a target="_blank" href="http://www.getlfs.com">LFS</a> is a product of <a target="_blank" href="http://www.iqpp.de">iqplusplus</a> 
+                    - &copy; 2009 by <a target="_blank" href="http://www.iqpp.de">iqplusplus</a>
+                </p>
+                <p>Distributed under the <a target="_blank" href="http://www.opensource.org/licenses/bsd-license.php">BSD-Licencse</a></p>
+            </div>
         {% endblock %}
     </body>
 </html>

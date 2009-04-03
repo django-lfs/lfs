@@ -5,6 +5,14 @@ urlpatterns = patterns('lfs.manage.views',
     url(r'^$', "dashboard", name="lfs_manage_dashboard"),
 )
 
+urlpatterns += patterns('lfs.manage.views.delivery_times',
+    url(r'^delivery_times$', "manage_delivery_times", name="lfs_manage_delivery_times"),
+    url(r'^delivery_time/(?P<id>\d*)$', "manage_delivery_time", name="lfs_manage_delivery_time"),
+    url(r'^add-delivery-time$', "add_delivery_time", name="lfs_add_delivery_time"),
+    url(r'^delete-delivery-time/(?P<id>\d*)$', "delete_delivery_time", name="lfs_delete_delivery_time"),
+)
+
+
 # Marketing
 urlpatterns += patterns('lfs.manage.views.marketing',
     url(r'^marketing$', "marketing.manage_marketing", name="lfs_manage_marketing"),
@@ -212,6 +220,7 @@ urlpatterns += patterns('lfs.manage.views.review',
 # Shop
 urlpatterns += patterns('lfs.manage.views.shop',
     url(r'^manage-shop$', "manage_shop", name="lfs_manage_shop"),    
+    url(r'^save-shop-default-values$', "save_default_values", name="lfs_save_shop_default_values"),
 )
 
 # Tax
@@ -220,5 +229,11 @@ urlpatterns += patterns('lfs.manage.views.tax',
     url(r'^delete-tax/(?P<id>\d*)$', "delete_tax", name="lfs_delete_tax"),
     url(r'^manage-taxes$', "manage_taxes", name="lfs_manage_taxes"),
     url(r'^manage-tax/(?P<id>\d*)$', "manage_tax", name="lfs_manage_tax"),    
+)
+
+# Utils
+urlpatterns += patterns('lfs.manage.views.utils',
+    url(r'^utilities$', "utilities", name="lfs_manage_utils"),
+    url(r'^clear-cache$', "clear_cache", name="lfs_clear_cache"),
 )
 

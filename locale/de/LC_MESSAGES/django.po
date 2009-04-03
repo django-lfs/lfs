@@ -120,7 +120,7 @@ msgstr "Inhalt"
 
 #: catalog/models.py:47
 msgid "Active formats"
-msgstr "Formate aktiv"
+msgstr "Formate aktivieren"
 
 #: catalog/models.py:49 core/models.py:73
 msgid "Product rows"

@@ -2,9 +2,11 @@
 import urllib
 
 # django imports
+from django.http import HttpResponseRedirect
 from django.utils import simplejson
 from django.utils.functional import Promise
 from django.utils.encoding import force_unicode 
+from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
 from lfs.caching.utils import lfs_get_object_or_404
@@ -27,3 +29,13 @@ def lfs_quote(string, encoding="utf-8"):
     """Encodes string to encoding before quoting.
     """
     return urllib.quote(string.encode(encoding))
+    
+def set_message_cookie(url, msg):
+    """Creates response object with given url and adds message cookie with passed
+    message.
+    """
+    msg = lfs_quote(_(u"Cache has been cleared."))
+    response = HttpResponseRedirect(url)
+    response.set_cookie("message", msg)
+    
+    return response

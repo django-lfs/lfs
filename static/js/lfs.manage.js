@@ -769,4 +769,16 @@ $(function() {
         });
     });
     
+    // Shop 
+    $("#shop-default-values-button").livequery("click", function() {
+        $("#shop-default-values-form").ajaxSubmit({
+            "success": function(data) {
+                var data = JSON.parse(data)
+                $("#default-values").html(data["html"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    })
+    
 })

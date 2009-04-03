@@ -915,13 +915,14 @@ class DeliveryTime(models.Model):
     min = models.FloatField(_(u"Min"))
     max = models.FloatField(_(u"Max"))
     unit = models.PositiveSmallIntegerField(_(u"Unit"), choices=DELIVERY_TIME_UNIT_CHOICES, default=DELIVERY_TIME_UNIT_DAYS)
+    description = models.TextField(blank=True)
     
     class Meta:
         ordering = ("min", )
         
     def __unicode__(self):
         return self.round().as_string()
-
+        
     def __add__(self, other):
         """Adds to delivery times.
         """
@@ -941,7 +942,13 @@ class DeliveryTime(models.Model):
         unit_new = a.unit
 
         return DeliveryTime(min=min_new, max=max_new, unit=unit_new)
-
+    
+    @property
+    def name(self):
+        """Returns the name of the delivery time
+        """
+        return self.round().as_string()
+        
     def subtract_days(self, days):
         """Substract the given days from delivery time's min and max. Takes the 
         unit into account.

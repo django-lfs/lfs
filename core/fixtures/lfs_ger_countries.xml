@@ -8,7 +8,7 @@
     
   <object pk="13" model="core.country">
     <field type="CharField" name="code">at</field>
-    <field type="CharField" name="name">Östereich</field>
+    <field type="CharField" name="name">Österreich</field>
   </object>
 
   <object pk="42" model="core.country">

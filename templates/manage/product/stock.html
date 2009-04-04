@@ -1,7 +1,7 @@
 {% load i18n %}
 <h2>{% trans 'Dimension' %}</h2>
-<form id="product-dimension-form"
-      action="{% url lfs_save_product_dimension product.id %}"
+<form id="product-stock-form"
+      action="{% url lfs_save_product_stock product.id %}"
       method="post">
     
     <fieldset>
@@ -183,7 +183,7 @@
         
     </fieldset>
 
-    <input class="product-dimension-button"
+    <input class="product-stock-button"
            type="submit" 
-           value="{% trans 'Save dimension' %}" />
+           value="{% trans 'Save stock' %}" />
 </form>        

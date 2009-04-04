@@ -31,7 +31,7 @@ urlpatterns += patterns('lfs.manage.views',
     url(r'^edit-product-data/(?P<product_id>\d*)$', "edit_product_data"),
     url(r'^delete-product/(?P<product_id>\d*)$', "delete_product", name="lfs_manage_delete_product"),
     url(r'^selectable-products-inline$', "selectable_products_inline", name="lfs_manage_selectable_products_inline"),
-    url(r'^save-product-dimension/(?P<product_id>\d*)$', "dimension", name="lfs_save_product_dimension"),
+    url(r'^save-product-stock/(?P<product_id>\d*)$', "stock", name="lfs_save_product_stock"),
     url(r'^change-product-subtype/(?P<product_id>\d*)$', "change_subtype", name="lfs_change_product_subtype"),
 )
 

@@ -99,7 +99,7 @@
 
                 <li class="ui-tabs-nav-item"><a href="#accessories">{% trans 'Accessories' %}</a></li>
                 <li class="ui-tabs-nav-item"><a href="#related-products">{% trans 'Related Products' %}</a></li>
-                <li class="ui-tabs-nav-item"><a href="#dimension">{% trans 'Dimension' %}</a></li>                
+                <li class="ui-tabs-nav-item"><a href="#stock">{% trans 'Stock' %}</a></li>                
                 <li class="ui-tabs-nav-item"><a href="#seo">{% trans 'SEO' %}</a></li>
                 
                 {% if product.is_standard %}            
@@ -136,8 +136,8 @@
                 {{related_products|safe}}
             </div>
 
-            <div id="dimension">
-                {{dimension|safe}}
+            <div id="stock">
+                {{stock|safe}}
             </div>
 
             <div id="seo">

@@ -59,8 +59,8 @@ class VariantDataForm(ModelForm):
             "description", "for_sale", "for_sale_price", 
             "active_related_products")
 
-class ProductDimensionForm(ModelForm):
-    """Form to add and edit dimension data of a product.
+class ProductStockForm(ModelForm):
+    """Form to add and edit stock data of a product.
     """
     class Meta:
         model = Product
@@ -69,7 +69,7 @@ class ProductDimensionForm(ModelForm):
                   "deliverable", "order_time", "ordered_at")
     
     def __init__(self, *args, **kwargs):
-        super(ProductDimensionForm, self).__init__(*args, **kwargs)
+        super(ProductStockForm, self).__init__(*args, **kwargs)
         self.fields["ordered_at"].widget = widgets.AdminDateWidget()
 
 @permission_required("manage_shop", login_url="/login/")
@@ -101,7 +101,7 @@ def manage_product(request, product_id, template_name="manage/product/product.ht
         "related_products" : manage_related_products(request, product.id),
         "selectable_products" : selectable_products_inline(request, as_string=True),
         "seo" : manage_seo(request, product_id),
-        "dimension" : dimension(request, product_id),
+        "stock" : stock(request, product_id),
         "properties" : manage_properties(request, product_id),
         "form" : ProductSubTypeForm(instance=product)
     }))
@@ -123,21 +123,21 @@ def change_subtype(request, product_id):
     return response
     
 @permission_required("manage_shop", login_url="/login/")
-def dimension(request, product_id, template_name="manage/product/dimension.html"):
-    """Displays and updates the product dimension.
+def stock(request, product_id, template_name="manage/product/stock.html"):
+    """Displays and updates product's stock data.
     """
     product = lfs_get_object_or_404(Product, pk=product_id)
 
     if request.method == "POST":
-        form = ProductDimensionForm(instance=product, data=request.POST)
+        form = ProductStockForm(instance=product, data=request.POST)
         if form.is_valid():
             form.save()
-            form = ProductDimensionForm(instance=product)
-            message = _(u"Product dimension has been saved.")
+            form = ProductStockForm(instance=product)
+            message = _(u"Product stock data has been saved.")
         else:
             message = _(u"Please correct the indicated errors.")
     else:
-        form = ProductDimensionForm(instance=product)
+        form = ProductStockForm(instance=product)
         
     result = render_to_string(template_name, RequestContext(request, {
         "product" : product, 

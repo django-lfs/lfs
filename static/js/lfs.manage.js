@@ -574,12 +574,12 @@ $(function() {
     });
 
     // Product / Dimension
-    $(".product-dimension-button").livequery("click", function() {
-        $("#product-dimension-form").ajaxSubmit({
+    $(".product-stock-button").livequery("click", function() {
+        $("#product-stock-form").ajaxSubmit({
             "type": "post",
             "success": function(data) {
                 var data = JSON.parse(data);
-                $("#dimension").html(data["html"]);
+                $("#stock").html(data["html"]);
                 DateTimeShortcuts.init();
                 $.jGrowl(data["message"]);
             }

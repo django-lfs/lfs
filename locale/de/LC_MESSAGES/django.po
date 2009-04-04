@@ -748,7 +748,7 @@ msgstr "Eigenschaftsdaten wurden gespeichert."
 
 #: manage/views/properties.py:87
 msgid "Property type has been changed."
-msgstr "Eigenschaftstype wurden gespeichert."
+msgstr "Eigenschaftstyp wurden gespeichert."
 
 #: manage/views/properties.py:115
 msgid "Property has been added."
@@ -2129,7 +2129,7 @@ msgstr "Eigenschaftstyp"
 
 #: templates/manage/properties/property.html:64
 msgid "Save property type"
-msgstr "Eigenschaftstype speichern"
+msgstr "Eigenschaftstyp speichern"
 
 #: templates/manage/properties/property_group.html:19
 msgid "Add Property Group"

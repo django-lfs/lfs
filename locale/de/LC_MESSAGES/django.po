@@ -2060,7 +2060,7 @@ msgstr "Optionen"
 
 #: templates/manage/properties/options_inline.html:67
 msgid "Update options"
-msgstr "Preise aktualisieren"
+msgstr "Optionen aktualisieren"
 
 #: templates/manage/properties/pg_product_values.html:3
 #: templates/manage/properties/property_group.html:30

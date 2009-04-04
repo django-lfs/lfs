@@ -6,26 +6,28 @@
 
     <div class="navigation-pages">
         {% if page.has_previous %}
-            <a class="products-page-link"
-               href="{% url lfs_manage_products %}?page=1">First</a>
-            <a class="products-page-link"
-               href="{% url lfs_manage_products %}?page={{page.previous_page_number}}">Previous</a>
+            <a class="products-page-link first"
+               href="{% url lfs_products_inline %}?page=1"
+               title="{% trans 'First' %}"></a>
+            <a class="products-page-link previous"
+               href="{% url lfs_products_inline %}?page={{page.previous_page_number}}"
+               title="{% trans 'Previous' %}"></a>
         {% else %}
-            <span>{% trans 'First' %}</span>
-            <span>{% trans 'Previous' %}</span>
+            <a class="first" title="{% trans 'First' %}"></a>
+            <a class="previous" title="{% trans 'Previous' %}"></a>
         {% endif %}
 
         {{page.number}} / {{paginator.num_pages}}
 
         {% if page.has_next %}
-            <a class="products-page-link"
-               href="{% url lfs_manage_products %}?page={{page.next_page_number}}">Next</a>
-            <a class="products-page-link"
-               href="{% url lfs_manage_products %}?page={{paginator.num_pages}}">Last</a>
-   
+            <a class="products-page-link next"
+               href="{% url lfs_products_inline %}?page={{page.next_page_number}}"
+               title="{% trans 'Next' %}"></a>
+            <a class="products-page-link last"
+               href="{% url lfs_products_inline %}?page={{paginator.num_pages}}"></a>   
         {% else %}
-            <span>{% trans 'Next' %}</span>
-            <span>{% trans 'Last' %}</span>
+            <a class="next" title="{% trans 'Next' %}"></a>
+            <a class="last" title="{% trans 'Last' %}"></a>
         {% endif %}
     </div>
      
@@ -112,12 +114,13 @@
                            value="{{product.price}}" />
                 </td>
                 <td class="right">
-                    <a href="{% url lfs_manage_product product.id %}">
-                        Edit</a>
-                    | <a target="_blank"
-                       href="{% url lfs_product_by_id product.id %}">
-                        View</a>
-                    
+                    <a class="edit" 
+                       href="{% url lfs_manage_product product.id %}"
+                       title="{% trans 'Edit' %}"></a>
+                    <a class="view" 
+                       target="_blank"
+                       href="{% url lfs_product_by_id product.id %}"
+                       title="{% trans 'View' %}"></a>
                 </td>
             </tr>            
         {% endfor %}

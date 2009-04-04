@@ -193,6 +193,38 @@ a.send {
     background: url(/media/lfs/icons/email.png) no-repeat;
 }
 
+a.first {
+    padding-left: 15px;
+    background: url(/media/lfs/icons/resultset_first.png) no-repeat;
+}
+
+a.previous {
+    padding-left: 15px;
+    background: url(/media/lfs/icons/resultset_previous.png) no-repeat;
+}
+
+a.next {
+    padding-left: 15px;
+    background: url(/media/lfs/icons/resultset_next.png) no-repeat;
+}
+
+a.last {
+    padding-left: 15px;
+    background: url(/media/lfs/icons/resultset_last.png) no-repeat;
+}
+
+a.view {
+    padding-left: 20px;
+    background: url(/media/lfs/icons/zoom.png) no-repeat;
+}
+
+a.edit {
+    margin-right:10px;
+    padding-left: 20px;
+    background: url(/media/lfs/icons/pencil.png) no-repeat;
+}
+
+
 /* Forms */
 .top-buttons {
     padding-bottom: 8px;

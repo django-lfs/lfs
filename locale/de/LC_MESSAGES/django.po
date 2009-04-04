@@ -1462,7 +1462,7 @@ msgstr "Marketing"
 #: templates/manage/manage_base.html:102
 #: templates/reviews/reviews_for_instance.html:3
 msgid "Reviews"
-msgstr "Bewertung"
+msgstr "Bewertungen"
 
 #: templates/manage/manage_base.html:103
 msgid "Utils"

@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 # lfs imports
+import lfs.core.utils
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.mail import utils as mail_utils
 from lfs.order.models import Order
@@ -61,10 +62,12 @@ def delete_order(request, order_id):
 
 @permission_required("manage_shop", login_url="/login/")        
 def send_order(request, order_id):
-    """Sends order with provided order id ot the customer of this order.
+    """Sends order with passed order id to the customer of this order.
     """
     order = lfs_get_object_or_404(Order, pk=order_id)    
     mail_utils.send_order_received_mail(order)
     
-    return HttpResponseRedirect(
-        reverse("lfs_manage_order", kwargs={"order_id" : order.id}))
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_order", kwargs={"order_id" : order.id}),
+        msg = u"Order has been sent.",
+    )

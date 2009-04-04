@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+from lfs.core.models import Country
 from lfs.catalog.models import Product
 from lfs.order.settings import ORDER_STATES
 from lfs.order.settings import SUBMITTED
@@ -29,6 +30,7 @@ class Order(models.Model):
     invoice_street = models.CharField(_(u"Invoice street"), blank=True, max_length=100)
     invoice_zip_code = models.CharField(_(u"Invoice zip code"), max_length=10)    
     invoice_city = models.CharField(_(u"Invoice city"), max_length=50)
+    invoice_country = models.ForeignKey(Country, related_name="orders_invoice_country")
     invoice_phone = models.CharField(_(u"Invoice phone"), blank=True, max_length=20)
     invoice_email = models.EmailField(_(u"Invoice e-mail"), blank=True, null=True, max_length=50)
 
@@ -37,6 +39,7 @@ class Order(models.Model):
     shipping_street = models.CharField(_(u"Shipping street"), blank=True, max_length=100)
     shipping_zip_code = models.CharField(_(u"Shipping zip code"), max_length=10)    
     shipping_city = models.CharField(_(u"Shipping city"), max_length=50)
+    shipping_country = models.ForeignKey(Country, related_name="orders_shipping_country")
     shipping_phone = models.CharField(_(u"Shipping phone"), blank=True, max_length=20)
     shipping_email = models.EmailField(_(u"Shipping e-mail"), blank=True, null=True, max_length=50)
     

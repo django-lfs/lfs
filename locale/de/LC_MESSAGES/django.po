@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-04 11:40+0200\n"
+"POT-Creation-Date: 2009-04-04 14:44+0200\n"
 "PO-Revision-Date: 2009-02-22 07:20+0100\n"
 "Last-Translator: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
 "Language-Team: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
@@ -54,11 +54,11 @@ msgstr "Menge"
 #: templates/catalog/product_inline.html:41
 #: templates/catalog/product_inline.html:107
 #: templates/mail/order_received_mail.html:180
-#: templates/manage/category/products_inline.html:40
+#: templates/manage/category/products_inline.html:39
 #: templates/manage/category/selected_products.html:39
 #: templates/manage/marketing/topseller_inline.html:37
 #: templates/manage/marketing/topseller_inline.html:88
-#: templates/manage/order/order.html:173
+#: templates/manage/order/order.html:181
 #: templates/manage/product/accessories_inline.html:38
 #: templates/manage/product/accessories_inline.html:88
 #: templates/manage/product/products_inline.html:42
@@ -163,9 +163,9 @@ msgid "Meta description"
 msgstr "Meta Description"
 
 #: catalog/models.py:246 templates/mail/order_received_mail.html:177
-#: templates/manage/category/products_inline.html:43
+#: templates/manage/category/products_inline.html:42
 #: templates/manage/category/selected_products.html:42
-#: templates/manage/order/order.html:170
+#: templates/manage/order/order.html:178
 #: templates/manage/product/products_inline.html:45
 #: templates/manage/product/variants.html:147
 msgid "SKU"
@@ -188,11 +188,11 @@ msgstr "Artikelnummer"
 #: templates/criteria/weight_criterion.html:10
 #: templates/criteria/width_criterion.html:9
 #: templates/mail/order_received_mail.html:186
-#: templates/manage/category/products_inline.html:49
+#: templates/manage/category/products_inline.html:48
 #: templates/manage/category/selected_products.html:48
 #: templates/manage/marketing/topseller_inline.html:43
 #: templates/manage/marketing/topseller_inline.html:97
-#: templates/manage/order/order.html:179 templates/manage/order/orders.html:13
+#: templates/manage/order/order.html:187 templates/manage/order/orders.html:13
 #: templates/manage/payment/payment_method_prices.html:25
 #: templates/manage/product/accessories_inline.html:44
 #: templates/manage/product/accessories_inline.html:100
@@ -407,7 +407,7 @@ msgstr "Inhalts ID"
 msgid "Title"
 msgstr "Titel"
 
-#: catalog/models.py:907
+#: catalog/models.py:907 templates/manage/manage_base.html:94
 msgid "HTML"
 msgstr "HTML"
 
@@ -527,13 +527,13 @@ msgstr "Land"
 
 #: checkout/forms.py:19 checkout/forms.py:28 customer/models.py:47
 #: templates/mail/order_received_mail.html:74
-#: templates/manage/order/order.html:63
+#: templates/manage/order/order.html:72
 msgid "Phone"
 msgstr "Telefon"
 
 #: checkout/forms.py:20 checkout/forms.py:29
 #: templates/mail/order_received_mail.html:60
-#: templates/manage/order/order.html:47
+#: templates/manage/order/order.html:56
 msgid "E-mail"
 msgstr "E-Mail"
 
@@ -861,8 +861,8 @@ msgid "Sub type has been changed."
 msgstr "Produkttyp wurden gespeichert."
 
 #: manage/views/product/product.py:136
-msgid "Product dimension has been saved."
-msgstr "Produktabmessungen wurden gespeichert."
+msgid "Product stock data has been saved."
+msgstr "Produkt-Lagerdaten wurden gespeichert."
 
 #: manage/views/product/related_products.py:124
 msgid "Related products have been added."
@@ -921,7 +921,7 @@ msgid "Created"
 msgstr "Erstellt am"
 
 #: order/models.py:18 templates/mail/order_received_mail.html:66
-#: templates/manage/order/order.html:55
+#: templates/manage/order/order.html:64
 msgid "State"
 msgstr "Status"
 
@@ -1093,7 +1093,7 @@ msgid "Priority"
 msgstr "Priorität"
 
 #: payment/models.py:92 templates/mail/order_received_mail.html:100
-#: templates/manage/order/order.html:89
+#: templates/manage/order/order.html:98
 msgid "Payment method"
 msgstr "Bezahlmethode"
 
@@ -1133,7 +1133,7 @@ msgstr "Die Seite die Sie angefordert haben existiert nicht."
 msgid "An error has occured. Please try again in a minute."
 msgstr "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später noch einmal."
 
-#: templates/base.html:60 templates/manage/manage_base.html:126
+#: templates/base.html:60 templates/manage/manage_base.html:135
 msgid "Powered by"
 msgstr "Powered by"
 
@@ -1161,7 +1161,7 @@ msgstr "Zubehör"
 #: templates/checkout/checkout_cart_inline.html:81
 #: templates/mail/order_received_mail.html:80
 #: templates/mail/order_received_mail.html:189
-#: templates/manage/order/order.html:69 templates/manage/order/order.html:182
+#: templates/manage/order/order.html:78 templates/manage/order/order.html:190
 msgid "Total"
 msgstr "Summe"
 
@@ -1177,7 +1177,7 @@ msgstr "Weitereinkaufen"
 #: templates/cart/cart_inline.html:43
 #: templates/checkout/checkout_cart_inline.html:9
 #: templates/mail/order_received_mail.html:183
-#: templates/manage/order/order.html:176
+#: templates/manage/order/order.html:184
 msgid "Amount"
 msgstr "Menge"
 
@@ -1189,7 +1189,7 @@ msgstr "Produkt löschen"
 #: templates/checkout/checkout_cart_inline.html:49
 #: templates/checkout/one_page_checkout.html:219
 #: templates/mail/order_received_mail.html:219
-#: templates/manage/order/order.html:212
+#: templates/manage/order/order.html:220
 #: templates/shipping/shipping_portlet.html:6
 msgid "Shipping"
 msgstr "Liefermethode"
@@ -1198,14 +1198,14 @@ msgstr "Liefermethode"
 #: templates/checkout/checkout_cart_inline.html:65
 #: templates/checkout/one_page_checkout.html:225
 #: templates/mail/order_received_mail.html:234
-#: templates/manage/order/order.html:227
+#: templates/manage/order/order.html:235
 msgid "Payment"
 msgstr "Bezahlmethode"
 
 #: templates/cart/cart_inline.html:134
 #: templates/checkout/checkout_cart_inline.html:88
 #: templates/mail/order_received_mail.html:255
-#: templates/manage/order/order.html:248
+#: templates/manage/order/order.html:256
 msgid "Inclusive Taxes"
 msgstr "Inklusive MwSt."
 
@@ -1338,13 +1338,13 @@ msgstr "Keine Produkte vorhanden."
 
 #: templates/checkout/one_page_checkout.html:10
 #: templates/mail/order_received_mail.html:91
-#: templates/manage/order/order.html:80
+#: templates/manage/order/order.html:89
 msgid "Shipping address"
 msgstr "Lieferadresse"
 
 #: templates/checkout/one_page_checkout.html:13
 #: templates/mail/order_received_mail.html:94
-#: templates/manage/order/order.html:83
+#: templates/manage/order/order.html:92
 msgid "Invoice address"
 msgstr "Rechnungsadresse"
 
@@ -1373,22 +1373,22 @@ msgid "Greater than equal to"
 msgstr "Größer als or gleich wie"
 
 #: templates/mail/order_received_mail.html:41
-#: templates/manage/order/order.html:28
+#: templates/manage/order/order.html:37
 msgid "General"
 msgstr "Allgemein"
 
 #: templates/mail/order_received_mail.html:46
-#: templates/manage/order/order.html:33
+#: templates/manage/order/order.html:42
 msgid "Customer name"
 msgstr "Kundenname"
 
 #: templates/mail/order_received_mail.html:52
-#: templates/manage/order/order.html:39 templates/manage/order/orders.html:10
+#: templates/manage/order/order.html:48 templates/manage/order/orders.html:10
 msgid "Date"
 msgstr "Datum"
 
 #: templates/mail/order_received_mail.html:97
-#: templates/manage/order/order.html:86
+#: templates/manage/order/order.html:95
 msgid "Shipping method"
 msgstr "Liefermethod"
 
@@ -1452,35 +1452,50 @@ msgid "Static blocks"
 msgstr "Statische Blöcke"
 
 #: templates/manage/manage_base.html:100
+msgid "Customers"
+msgstr "Kunden"
+
+#: templates/manage/manage_base.html:102
+msgid "Orders Overview"
+msgstr "Übersicht Bestellungen"
+
+#: templates/manage/manage_base.html:103
 msgid "Orders"
 msgstr "Bestellungen"
 
-#: templates/manage/manage_base.html:101
-msgid "Marketing"
-msgstr "Marketing"
-
-#: templates/manage/manage_base.html:102
+#: templates/manage/manage_base.html:104
 #: templates/reviews/reviews_for_instance.html:3
 msgid "Reviews"
 msgstr "Bewertungen"
 
-#: templates/manage/manage_base.html:103
+#: templates/manage/manage_base.html:107
+msgid "Marketing"
+msgstr "Marketing"
+
+#: templates/manage/manage_base.html:109
+#: templates/manage/marketing/marketing.html:16
+#: templates/manage/marketing/topseller_inline.html:76
+#: templates/marketing/topseller_portlet.html:8
+msgid "Topseller"
+msgstr "Topseller"
+
+#: templates/manage/manage_base.html:112
 msgid "Utils"
 msgstr "Werkzeuge"
 
-#: templates/manage/manage_base.html:128
+#: templates/manage/manage_base.html:137
 msgid "is a product of"
 msgstr "ist ein Produkt von"
 
-#: templates/manage/manage_base.html:129
+#: templates/manage/manage_base.html:138
 msgid "by"
 msgstr "bei"
 
-#: templates/manage/manage_base.html:131
+#: templates/manage/manage_base.html:140
 msgid "Distributed under the"
 msgstr "Veröffentlicht unter der"
 
-#: templates/manage/manage_base.html:131
+#: templates/manage/manage_base.html:140
 msgid "BSD-License"
 msgstr "BSD-Lizenz"
 
@@ -1540,7 +1555,7 @@ msgstr "Hauptkategorie hinzufügen"
 
 #: templates/manage/category/manage_category.html:25
 #: templates/manage/delivery_times/base.html:22
-#: templates/manage/order/order.html:19 templates/manage/page/page.html:24
+#: templates/manage/order/order.html:23 templates/manage/page/page.html:24
 #: templates/manage/payment/manage_payment.html:40
 #: templates/manage/product/product.html:61
 #: templates/manage/properties/options_inline.html:56
@@ -1606,7 +1621,7 @@ msgstr "Erstes"
 msgid "Last"
 msgstr "Letztes"
 
-#: templates/manage/category/products_inline.html:46
+#: templates/manage/category/products_inline.html:45
 #: templates/manage/category/selected_products.html:45
 #: templates/manage/marketing/topseller_inline.html:40
 #: templates/manage/marketing/topseller_inline.html:94
@@ -1620,7 +1635,7 @@ msgstr "Letztes"
 msgid "Sub type"
 msgstr "Unterart"
 
-#: templates/manage/category/products_inline.html:52
+#: templates/manage/category/products_inline.html:51
 #: templates/manage/category/selected_products.html:51
 #: templates/manage/product/categories.html:20
 #: templates/manage/product/categories_children.html:14
@@ -1631,16 +1646,16 @@ msgstr "Unterart"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: templates/manage/category/products_inline.html:79
+#: templates/manage/category/products_inline.html:78
 #: templates/manage/category/selected_products.html:75
 msgid "Edit product"
 msgstr "Produkt bearbeiten"
 
-#: templates/manage/category/products_inline.html:93
+#: templates/manage/category/products_inline.html:91
 msgid "Add to category"
 msgstr "Zu Kategorie hinzufügen"
 
-#: templates/manage/category/products_inline.html:96
+#: templates/manage/category/products_inline.html:94
 msgid "Selected products"
 msgstr "Ausgewählte Produkte"
 
@@ -1683,12 +1698,6 @@ msgstr "Lieferzeit"
 msgid "Save Delivery Time"
 msgstr "Lieferzeit speichern"
 
-#: templates/manage/marketing/marketing.html:16
-#: templates/manage/marketing/topseller_inline.html:76
-#: templates/marketing/topseller_portlet.html:8
-msgid "Topseller"
-msgstr "Topseller"
-
 #: templates/manage/marketing/topseller_inline.html:72
 msgid "Add to topseller"
 msgstr "Zu Topseller hinzufügen"
@@ -1701,23 +1710,19 @@ msgstr "Topseller speichern"
 msgid "Remove from topseller"
 msgstr "Topseller entfernen"
 
-#: templates/manage/order/order.html:17
-msgid "Overview"
-msgstr "Übersicht"
-
-#: templates/manage/order/order.html:20
+#: templates/manage/order/order.html:25
 msgid "Delete order"
 msgstr "Bestellung löschen"
 
-#: templates/manage/order/order.html:22
+#: templates/manage/order/order.html:28
 msgid "Resend?"
 msgstr "Nocheinmal senden?"
 
-#: templates/manage/order/order.html:23
+#: templates/manage/order/order.html:30
 msgid "Resend order"
 msgstr "Bestellung senden"
 
-#: templates/manage/order/order.html:257
+#: templates/manage/order/order.html:265
 msgid "Message from the customer"
 msgstr "Nachricht vom Kunden"
 
@@ -1864,30 +1869,6 @@ msgstr "Produktdaten"
 msgid "Save data"
 msgstr "Daten speichern"
 
-#: templates/manage/product/dimension.html:2
-#: templates/manage/product/dimension.html:8
-#: templates/manage/product/product.html:102
-msgid "Dimension"
-msgstr "Abmessungen"
-
-#: templates/manage/product/dimension.html:21
-msgid "kg"
-msgstr "kg"
-
-#: templates/manage/product/dimension.html:38
-#: templates/manage/product/dimension.html:55
-#: templates/manage/product/dimension.html:72
-msgid "m"
-msgstr "m"
-
-#: templates/manage/product/dimension.html:79
-msgid "Stock data"
-msgstr "Lagerdaten"
-
-#: templates/manage/product/dimension.html:188
-msgid "Save dimension"
-msgstr "Abmessungen speichern"
-
 #: templates/manage/product/images.html:16
 msgid "Active images"
 msgstr "Zugewiesene Bilder"
@@ -1939,6 +1920,10 @@ msgstr "Vorschau"
 msgid "Change"
 msgstr "Ändern"
 
+#: templates/manage/product/product.html:102
+msgid "Stock"
+msgstr "Lagerdaten"
+
 #: templates/manage/product/products_inline.html:39
 #: templates/manage/product/variants.html:144
 msgid "URL"
@@ -1981,6 +1966,28 @@ msgstr "Von zugehörige Produkte entfernen"
 #: templates/manage/product/selectable_products_inline.html:31
 msgid "of"
 msgstr "von"
+
+#: templates/manage/product/stock.html:2 templates/manage/product/stock.html:8
+msgid "Dimension"
+msgstr "Abmessungen"
+
+#: templates/manage/product/stock.html:21
+msgid "kg"
+msgstr "kg"
+
+#: templates/manage/product/stock.html:38
+#: templates/manage/product/stock.html:55
+#: templates/manage/product/stock.html:72
+msgid "m"
+msgstr "m"
+
+#: templates/manage/product/stock.html:79
+msgid "Stock data"
+msgstr "Lagerdaten"
+
+#: templates/manage/product/stock.html:188
+msgid "Save stock"
+msgstr "Lagerdaten sichern"
 
 #: templates/manage/product/variants.html:21
 msgid "Local properties"
@@ -2295,6 +2302,15 @@ msgid "There has been found 1 product."
 msgid_plural "There has been found %(counter)s products."
 msgstr[0] "Es wurde 1 Produkt gefunden."
 msgstr[1] "Es wuden %(counter)s Produkte gefunden."
+
+#~ msgid "Product dimension has been saved."
+#~ msgstr "Produktabmessungen wurden gespeichert."
+
+#~ msgid "Overview"
+#~ msgstr "Übersicht"
+
+#~ msgid "Save dimension"
+#~ msgstr "Abmessungen speichern"
 
 #~ msgid "Powered by LFS"
 #~ msgstr "Powered by LFS"

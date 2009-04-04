@@ -123,12 +123,12 @@
 
         {% block footer %}
             <div class="footer">
-                <p>{% trans 'Powered by' %} <a target="_blank" href="http://www.getlfs.com">LFS</a> &mdash; A Lightning Fast Shop for <a target="_blank" href="http://www.djangoproject.com">Django</a></p>
+                <p>{% trans 'Powered by' %} <a target="_blank" href="http://www.getlfs.com">LFS</a> &mdash; Lightning Fast Shop</p>
                 <p>
-                    <a target="_blank" href="http://www.getlfs.com">LFS</a> is a product of <a target="_blank" href="http://www.iqpp.de">iqplusplus</a> 
-                    &mdash; &copy; 2009 by <a target="_blank" href="http://www.iqpp.de">iqplusplus</a>
+                    <a target="_blank" href="http://www.getlfs.com">LFS</a> {% trans 'is a product of' %} <a target="_blank" href="http://www.iqpp.de">iqplusplus</a> 
+                    &mdash; &copy; 2009 {% trans 'by' %} <a target="_blank" href="http://www.iqpp.de">iqplusplus</a>
                 </p>
-                <p>Distributed under the <a target="_blank" href="http://www.opensource.org/licenses/bsd-license.php">BSD-License</a></p>
+                <p>{% trans 'Distributed under the' %} <a target="_blank" href="http://www.opensource.org/licenses/bsd-license.php">{% trans 'BSD-License' %}</a></p>
             </div>
         {% endblock %}
     </body>

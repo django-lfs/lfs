@@ -76,39 +76,6 @@ table.lfs-manage-table th {
     background-color: #ede9e8;
 }
 
-table.orders,
-table.order-general,
-table.order-items,
-table.order-addresses,
-table.order-message,
-table.manage-overview {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 10px;
-}
-
-table.manage-overview th,
-table.manage-overview td,
-table.selectable-products table th,
-table.selectable-products table td {
-    padding: 2px;
-}
-
-table.order-message,
-table.order-addresses, 
-table.order-items {
-    margin-top:20px;
-    font-size: 90%;
-}
-
-table.orders th,
-table.order-message th,
-table.order-general th,
-table.order-items th,
-table.order-addresses th {
-    background-color: #eee;
-}
-
 table.middle {
     margin-top: 10px;
 }
@@ -218,6 +185,12 @@ a.preview {
     margin: 0 10px;
     padding-left: 18px;
     background: url(/media/lfs/icons/zoom.png) no-repeat;
+}
+
+a.send {
+    margin: 0 10px;
+    padding-left: 22px;
+    background: url(/media/lfs/icons/email.png) no-repeat;
 }
 
 /* Forms */

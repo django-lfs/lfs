@@ -91,15 +91,24 @@
                                 </ul>
                             </li>
                             <li>
-                                <a>HTML</a>
+                                <a>{% trans 'HTML' %}</a>
                                 <ul>
                                     <li><a href="{% url lfs_manage_pages %}">{% trans 'Pages' %}</a></li>                    
                                     <li><a href="{% url lfs_manage_static_blocks %}">{% trans 'Static blocks' %}</a></li>
                                 </ul>
                             </li>
-                            <li><a href="{% url lfs.manage.views.manage_orders %}">{% trans 'Orders' %}</a></li>
-                            <li><a href="{% url lfs_manage_marketing %}">{% trans 'Marketing' %}</a></li>
-                            <li><a href="{% url lfs_manage_reviews %}">{% trans 'Reviews' %}</a></li>
+                            <li><a>{% trans 'Customers' %}</a>
+                                <ul>
+                                    <li><a href="{% url lfs_orders %}">{% trans 'Orders Overview' %}</a></li>
+                                    <li><a href="{% url lfs.manage.views.manage_orders %}">{% trans 'Orders' %}</a></li>
+                                    <li><a href="{% url lfs_manage_reviews %}">{% trans 'Reviews' %}</a></li>                                    
+                                </ul>
+                            </li>
+                            <li><a>{% trans 'Marketing' %}</a>
+                                <ul>
+                                    <li><a href="{% url lfs_manage_marketing %}">{% trans 'Topseller' %}</a></li>
+                                </ul>
+                            </li>
                             <li><a href="{% url lfs_manage_utils %}">{% trans 'Utils' %}</a></li>
                         </ul>
                     </td>

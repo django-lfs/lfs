@@ -39,7 +39,7 @@ def order_view(request, order_id, template_name="manage/order/order.html"):
     orders = Order.objects.all()
     
     return render_to_response(template_name, RequestContext(request, {
-        "order" : order,
+        "current_order" : order,
         "orders" : orders,
     }))
     

@@ -4,8 +4,9 @@
 
 {% block left_slot %}
     {% for order in orders %}
-        <div>
-            <a href="{% url lfs.manage.views.order_view order.id %}">
+        <div>            
+            <a href="{% url lfs.manage.views.order_view order.id %}"
+               class="selectable {% ifequal order.id current_order.id %}selected{% endifequal %}">
                 {{order.created}}
             </a>
         </div>
@@ -14,15 +15,23 @@
 {% endblock %}
 
 {% block content %}
-       <a href="{% url lfs_orders %}">{% trans 'Overview' %}</a>
-     | <a class="confirmation-link"
-          data="{% trans 'Delete?' %}"
-          href="{% url lfs_delete_order order.id %}">{% trans 'Delete order' %}</a> 
-     | <a class="confirmation-link" 
-          data="{% trans 'Resend?' %}"
-          href="{% url lfs_send_order order.id %}">{% trans 'Resend order' %}</a>
-    
-    <table class="order-general">
+
+    <div class="site-actions">
+        
+        <span class="label">{{current_order.created}}</span>
+        <a class="delete confirmation-link"
+           data="{% trans 'Delete?' %}" 
+           href="{% url lfs_delete_order current_order.id %}">
+           {% trans 'Delete order' %}</a>
+        
+        <a class="send confirmation-link" 
+           data="{% trans 'Resend?' %}"
+           href="{% url lfs_send_order current_order.id %}">
+           {% trans 'Resend order' %}
+        </a>
+          
+    </div>
+    <table class="lfs-manage-table">
         <tr>
             <th colspan="4">
                 {% trans 'General' %}
@@ -33,13 +42,13 @@
                 {% trans 'Customer name' %}:
             </td>
             <td>
-                {{order.customer_firstname}} {{order.customer_lastname}}
+                {{current_order.customer_firstname}} {{current_order.customer_lastname}}
             </td>
             <td class="label">
                 {% trans 'Date' %}:
             </td>
             <td>
-                {{order.created}}
+                {{current_order.created}}
             </td>
         </tr>
         <tr>
@@ -47,15 +56,15 @@
                 {% trans 'E-mail' %}:
             </td>
             <td>
-                <a href="mailto:{{order.customer_email}}">
-                    {{order.customer_email}}
+                <a href="mailto:{{current_order.customer_email}}">
+                    {{current_order.customer_email}}
                 </a>                
             </td>
             <td class="label">
                 {% trans 'State' %}:
             </td>
             <td>
-                {{order.get_state_display}}
+                {{current_order.get_state_display}}
             </td>
         </tr>
         <tr>
@@ -63,13 +72,13 @@
                 {% trans 'Phone' %}:
             </td>
             <td>
-                {{order.shipping_phone}}
+                {{current_order.shipping_phone}}
             </td>
             <td class="label">
                 {% trans 'Total' %}:
             </td>
             <td>
-                {{order.price|currency}}
+                {{current_order.price|currency}}
             </td>
         </tr>
         
@@ -92,70 +101,70 @@
         <tr>
             <td>
                 <div>
-                    {{order.shipping_firstname}}
+                    {{current_order.shipping_firstname}}
                 </div>
                 <div>
-                    {{order.shipping_lastname}}
+                    {{current_order.shipping_lastname}}
                 </div>
                 <div>
-                    {{order.shipping_street}}
+                    {{current_order.shipping_street}}
                 </div>
                 <div>
-                    {{order.shipping_zip_code}} {{order.shipping_city}}
+                    {{current_order.shipping_zip_code}} {{current_order.shipping_city}}
                 </div>
                 <div>
-                    {{order.shipping_phone}}
+                    {{current_order.shipping_phone}}
                 </div>
                 <div>
-                    <a href="mailto:{{order.customer_email}}">
-                        {{order.customer_email}}
+                    <a href="mailto:{{current_order.customer_email}}">
+                        {{current_order.customer_email}}
                     </a>                
                 </div>
             </td>
             <td>
                 <div>
-                    {{order.invoice_firstname}}
+                    {{current_order.invoice_firstname}}
                 </div>
                 <div>
-                    {{order.invoice_lastname}}
+                    {{current_order.invoice_lastname}}
                 </div>
     
                 <div>
-                    {{order.invoice_street}}
+                    {{current_order.invoice_street}}
                 </div>
                 <div>
-                    {{order.invoice_zip_code}} {{order.invoice_city}}
+                    {{current_order.invoice_zip_code}} {{current_order.invoice_city}}
                 </div>
                 <div>
-                    {{order.invoice_phone}}
+                    {{current_order.invoice_phone}}
                 </div>
                 <div>
-                    <a href="mailto:{{order.customer_email}}">
-                        {{order.customer_email}}
+                    <a href="mailto:{{current_order.customer_email}}">
+                        {{current_order.customer_email}}
                     </a>                
                 </div>
             </td>
             <td>
                 <div>
-                    {{order.shipping_method}}
+                    {{current_order.shipping_method}}
                 </div>
             </td>
             <td>
                 <div>
-                    {{order.payment_method.name}}
+                    {{current_order.payment_method.name}}
                 </div>
-                {% ifequal order.payment_method.id 1 %}
+                {% ifequal current_order.payment_method.id 1 %}
                     <div>
-                        {{order.account_number}}
+                        {{current_order.account_number}}
                     </div>
                     <div>
-                        {{order.bank_identification_code}}
+                        {{current_order.bank_identification_code}}
                     </div>
                     <div>
-                        {{order.bank_name}}
+                        {{current_order.bank_name}}
                     </div>
                     <div>
-                        {{order.depositor}}
+                        {{current_order.depositor}}
                     </div>
                 {% endifequal %}
             </td>
@@ -163,8 +172,7 @@
 
     </table>
 
-    <table class="order-items"
-           width="100%">
+    <table class="lfs-manage-table">
         <tr>
             <th>
                 {% trans 'SKU' %}
@@ -182,7 +190,7 @@
                 {% trans 'Total' %}
             </th>
         </tr>
-        {% for item in order.items.all %}
+        {% for item in current_order.items.all %}
             <tr>
                 <td>
                    {{item.product_sku}} 
@@ -209,49 +217,49 @@
         <tr>
             <td></td>
             <td>
-                {% trans 'Shipping' %} ({{order.shipping_method}})
+                {% trans 'Shipping' %} ({{current_order.shipping_method}})
             </td>
             <td class="number">
                 1
             </td>
             <td class="number">
-                {{order.shipping_price|currency}}
+                {{current_order.shipping_price|currency}}
             </td>
             <td class="number">
-                {{order.shipping_price|currency}}
+                {{current_order.shipping_price|currency}}
             </td>
         </tr>
         <tr>
             <td></td>
             <td>
-                {% trans 'Payment' %} ({{order.payment_method}})
+                {% trans 'Payment' %} ({{current_order.payment_method}})
             </td>
             <td class="number">
                 1
             </td>
             <td class="number">
-                {{order.payment_price|currency}}
+                {{current_order.payment_price|currency}}
             </td>
             <td class="number">
-                {{order.payment_price|currency}}
+                {{current_order.payment_price|currency}}
             </td>
         </tr>
         <tr class="total">
             <td colspan="5"
                 class="number total">
-                {{order.price|currency}}
+                {{current_order.price|currency}}
             </td>
         </tr>
         <tr>
             <td colspan="5"
                 class="number tax">
                 <span class="total-label">{% trans 'Inclusive Taxes' %}:</span>
-                {{order.tax|currency}}
+                {{current_order.tax|currency}}
             </td>
         </tr>        
     </table>
-    {% if order.message %}
-        <table class="order-message">
+    {% if current_order.message %}
+        <table class="lfs-manage-table">
             <tr>
                 <th colspan="5">
                     {% trans 'Message from the customer' %}
@@ -259,7 +267,7 @@
             </tr>
             <tr>
                 <td colspan="5">
-                    {{order.message}}
+                    {{current_order.message}}
                 </td>
             </tr>
         </table>

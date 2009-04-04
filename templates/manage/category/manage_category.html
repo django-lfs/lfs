@@ -11,10 +11,10 @@
 
     <div class="site-actions">
         <span class="label">{{category.name}}</span>
-          <a class="add" 
-             href="{% url lfs_manage_add_top_category %}">
-              {% trans 'Add top category' %}
-          </a>
+        <a class="add" 
+           href="{% url lfs_manage_add_top_category %}">
+            {% trans 'Add top category' %}
+        </a>
         {% if category %}
             <a class="add" 
                href="{% url lfs_manage_add_category category.id %}">

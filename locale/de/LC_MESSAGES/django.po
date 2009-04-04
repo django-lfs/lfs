@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-04 11:13+0200\n"
+"POT-Creation-Date: 2009-04-04 11:40+0200\n"
 "PO-Revision-Date: 2009-02-22 07:20+0100\n"
 "Last-Translator: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
 "Language-Team: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
@@ -1467,6 +1467,22 @@ msgstr "Bewertung"
 #: templates/manage/manage_base.html:103
 msgid "Utils"
 msgstr "Werkzeuge"
+
+#: templates/manage/manage_base.html:128
+msgid "is a product of"
+msgstr "ist ein Produkt von"
+
+#: templates/manage/manage_base.html:129
+msgid "by"
+msgstr "bei"
+
+#: templates/manage/manage_base.html:131
+msgid "Distributed under the"
+msgstr "Veröffentlicht unter der"
+
+#: templates/manage/manage_base.html:131
+msgid "BSD-License"
+msgstr "BSD-Lizenz"
 
 #: templates/manage/utils.html:5
 msgid "Utilities"

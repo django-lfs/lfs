@@ -34,8 +34,7 @@ def set_message_cookie(url, msg):
     """Creates response object with given url and adds message cookie with passed
     message.
     """
-    msg = lfs_quote(_(u"Cache has been cleared."))
     response = HttpResponseRedirect(url)
-    response.set_cookie("message", msg)
+    response.set_cookie("message", lfs_quote(msg))
     
     return response

@@ -12,6 +12,7 @@ from lfs.catalog.models import StaticBlock
 class Country(models.Model):
     """Holds country relevant data for the shop.
     """
+    code = models.CharField(max_length=2)
     name = models.CharField(max_length=100)
 
     def __unicode__(self):
@@ -19,6 +20,7 @@ class Country(models.Model):
         
     class Meta:
         verbose_name_plural = 'Countries'
+        ordering = ("name", )
     
 class Shop(models.Model):
     """Holds all shop related information. 

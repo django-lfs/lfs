@@ -93,7 +93,7 @@ def get_property_groups(category):
     cache.set(cache_key, pgs)
     return pgs
 
-def get_product_filters(category, product_filter, sorting):
+def get_product_filters(category, product_filter, price_filter, sorting):
     """Returns the next product filters based on products which are in the given 
     category and within the result set of the current filters.
     """
@@ -101,7 +101,7 @@ def get_product_filters(category, product_filter, sorting):
     options_mapping = get_option_mapping()
     
     # Base are the filtered products
-    products = get_filtered_products_for_category(category, product_filter, sorting)
+    products = get_filtered_products_for_category(category, product_filter, price_filter, sorting)
     if not products: 
         return []
     
@@ -192,7 +192,7 @@ def get_product_filters(category, product_filter, sorting):
     return result
 
 # TODO: Maybe we should pass here filters and sorting instead of the request.
-def get_filtered_products_for_category(category, filters, sorting):
+def get_filtered_products_for_category(category, filters, price_filter, sorting):
     """Returns products for given categories and current filters sorted by 
     current sorting.
     """
@@ -259,20 +259,19 @@ def get_filtered_products_for_category(category, filters, sorting):
         
         # As we factored out the ids of all matching products now, we get the 
         # product instances in the correct order
-        if sorting is None:
-            products = lfs.catalog.models.Product.objects.filter(pk__in=matched_product_ids)
-        else:
-            products = lfs.catalog.models.Product.objects.filter(pk__in=matched_product_ids).order_by(sorting)
+        products = lfs.catalog.models.Product.objects.filter(pk__in=matched_product_ids)
     else:
         categories = [category]
         if category.show_all_products:
             categories.extend(category.get_all_children())
+        products = lfs.catalog.models.Product.objects.filter(categories__in=categories)
     
-        if sorting is not None:
-            products = lfs.catalog.models.Product.objects.filter(categories__in = categories).order_by(sorting)
-        else:
-            products = lfs.catalog.models.Product.objects.filter(categories__in = categories)
-            
+    if price_filter:
+        products = products.filter(price__range=[price_filter["min"], price_filter["max"]])
+    
+    if sorting:
+        products = products.order_by(sorting)
+        
     return products
 
 def get_option_mapping():

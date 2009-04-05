@@ -170,17 +170,21 @@ def product_breadcrumbs(context, product):
 
 @register.inclusion_tag('catalog/filter_navigation.html', takes_context=True)
 def filter_navigation(context, category):
-    """
+    """Displays the filter navigation portlet.
     """
     request = context.get("request")
     sorting = request.session.get("sorting")    
     set_product_filter = request.session.get("product-filter", {})
-    set_product_filter = set_product_filter.items()
+    set_product_filter = set_product_filter.items()        
+
+    price_filter = request.session.get("price-filter")
     
-    pf =  lfs.catalog.utils.get_product_filters(category, set_product_filter, sorting)
+    pf =  lfs.catalog.utils.get_product_filters(category, set_product_filter, price_filter, sorting)
+    
     return {
         "category" : category,
         "product_filters" : pf,
+        "price_filter" : request.session.get("price-filter"),
     }
     
 @register.inclusion_tag('catalog/product_navigation.html', takes_context=True)

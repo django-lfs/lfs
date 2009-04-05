@@ -14,6 +14,8 @@ urlpatterns += patterns('lfs.catalog.views',
     url(r'^product-form-dispatcher', "product_form_dispatcher", name="lfs_product_dispatcher"),
     url(r'^set-sorting', "set_sorting", name="lfs_catalog_set_sorting"),
     url(r'^set-product-filter/(?P<category_slug>[-\w]+)/(?P<property_id>\d+)/(?P<value>.+)', "set_filter", name="lfs_set_product_filter"),
+    url(r'^set-price-filter/(?P<category_slug>[-\w]+)/$', "set_price_filter", name="lfs_set_price_filter"),
+    url(r'^reset-price-filter/(?P<category_slug>[-\w]+)/$', "reset_price_filter", name="lfs_reset_price_filter"),
     url(r'^reset-product-filter/(?P<category_slug>[-\w]+)/(?P<property_id>\d+)', "reset_filter", name="lfs_reset_product_filter"),
     url(r'^reset-all-product-filter/(?P<category_slug>[-\w]+)', "reset_all_filter", name="lfs_reset_all_product_filter"),
 )

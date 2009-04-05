@@ -22,8 +22,8 @@ from lfs.core.signals import lfs_sorting_changed
 from lfs.utils import misc as lfs_utils
 
 def set_filter(request, category_slug, property_id, value):
-    """Saves the given filter (by request body) to session. Redirects to the 
-    category with given slug.
+    """Saves the given filter to session. Redirects to the category with given 
+    slug.
     """    
     product_filter = request.session.get("product-filter", {})
     product_filter[property_id] = value
@@ -32,6 +32,37 @@ def set_filter(request, category_slug, property_id, value):
     url = reverse("lfs_category", kwargs={"slug" : category_slug, "start" : 0})
     return HttpResponseRedirect(url)
 
+def set_price_filter(request, category_slug):
+    """Saves the given price filter to session. Redirects to the category with 
+    given slug.
+    """
+    min = request.REQUEST.get("price-min", "0")
+    max = request.REQUEST.get("price-max", "99999")
+    
+    try:
+        float(min)
+    except TypeError:
+        min = "0"
+
+    try:
+        float(max)
+    except TypeError:
+        max = "0"
+    
+    request.session["price-filter"] = {"min" : min, "max": max}
+
+    url = reverse("lfs_category", kwargs={"slug" : category_slug, "start" : 0})
+    return HttpResponseRedirect(url)
+
+def reset_price_filter(request, category_slug):
+    """Resets the price filter. Redirects to the category with given slug.
+    """
+    if request.session.has_key("price-filter"):
+        del request.session["price-filter"]
+
+    url = reverse("lfs_category", kwargs={"slug" : category_slug, "start" : 0})
+    return HttpResponseRedirect(url)
+    
 def reset_filter(request, category_slug, property_id):
     """Resets product filter with given property id. Redirects to the category 
     with given slug.
@@ -49,6 +80,9 @@ def reset_all_filter(request, category_slug):
     """
     if request.session.has_key("product-filter"):
         del request.session["product-filter"]
+
+    if request.session.has_key("price-filter"):
+        del request.session["price-filter"]
         
     url = reverse("lfs_category", kwargs={"slug" : category_slug, "start" : 0})
     return HttpResponseRedirect(url)
@@ -130,15 +164,24 @@ def category_products(request, slug, start=0, template_name="catalog/category_pr
     if (last_category is None) or (last_category.slug != slug):
         if request.session.has_key("product-filter"):
             del request.session["product-filter"]
+        if request.session.has_key("price-filter"):
+            del request.session["price-filter"]
     
-    sorting = request.session.get("sorting")
+    sorting = request.session.get("sorting", "price")
     product_filter = request.session.get("product-filter", {})
     product_filter = product_filter.items()
 
     cache_key = "category-products-%s" % slug
-    filter_key = ["%s-%s" % (i[0], i[1]) for i in product_filter]
-    sub_cache_key = "%s-start-%s-sorting-%s" % ("-".join(filter_key), start, sorting)
-    
+    sub_cache_key = "start-%s-sorting-%s" % (start, sorting)
+
+    filter_key = ["%s-%s" % (i[0], i[1]) for i in product_filter]    
+    if filter_key: 
+        sub_cache_key += "-%s" % "-".join(filter_key)
+
+    price_filter = request.session.get("price-filter")
+    if price_filter: 
+        sub_cache_key += "-%s-%s" % (price_filter["min"], price_filter["max"])
+        
     temp = cache.get(cache_key)
     if temp is not None:
         try:
@@ -158,7 +201,7 @@ def category_products(request, slug, start=0, template_name="catalog/category_pr
     amount = amount_of_rows * amount_of_cols
     
     all_products = lfs.catalog.utils.get_filtered_products_for_category(
-        category, product_filter, sorting)
+        category, product_filter, price_filter, sorting)
         
     # Calculate products
     row = []

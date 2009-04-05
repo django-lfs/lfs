@@ -908,8 +908,9 @@ class ProductPropertyValue(models.Model):
         - product
           The product for which the value is stored.
         - parent_id
-          If the product is an variant this stores the parent id of it. This is
-          just ot calculate the filters properly.
+          If the product is an variant this stores the parent id of it, if the 
+          product is no variant it stores the id of the product itself. This is
+          just used to calculate the filters properly.
         - property
           The property for which the value is stored.            
         - value
@@ -933,6 +934,8 @@ class ProductPropertyValue(models.Model):
         """
         if self.product.is_variant():
             self.parent_id = self.product.parent.id
+        else:
+            self.parent_id = self.product.id
         super(ProductPropertyValue, self).save(force_insert, force_update)
 
 class Image(models.Model):

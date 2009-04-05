@@ -10,7 +10,7 @@
             <th>
                 {% trans 'Name' %}
             </th>
-            {% for property in property_group.properties.all %}
+            {% for property in all_properties %}
                 <th>
                     {{property.name}}
                 </th>

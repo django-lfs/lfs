@@ -18,11 +18,11 @@ def product_values(request, property_group_id, template_name="manage/properties/
     """Renders the products values part of the property groups management views.
     """
     property_group = lfs_get_object_or_404(PropertyGroup, pk=property_group_id)    
-    
+    all_properties = property_group.properties.order_by("groupspropertiesrelation")
     products = []    
     for product in property_group.products.all():
         properties = []
-        for property in property_group.properties.order_by("groupspropertiesrelation"):
+        for property in all_properties:
             # Try to get the value, if it already exists.
             try:
                 ppv = ProductPropertyValue.objects.get(property = property, product=product)
@@ -57,6 +57,7 @@ def product_values(request, property_group_id, template_name="manage/properties/
     return render_to_string(template_name, RequestContext(request, {
         "property_group" : property_group,
         "products" : products,
+        "all_properties" : all_properties, 
     }))
         
 def update_product_values(request, property_group_id):

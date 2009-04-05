@@ -1,6 +1,3 @@
-# python imports
-import urllib
-
 # django imports
 from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse
@@ -15,6 +12,7 @@ from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+import lfs.core.utils
 from lfs.core.utils import LazyEncoder
 from lfs.core.signals import property_type_changed
 from lfs.catalog.models import Property
@@ -55,12 +53,12 @@ def manage_property(request, id, template_name="manage/properties/property.html"
         form = PropertyDataForm(instance=property, data=request.POST)
         if form.is_valid():
             new_property = form.save()
-            msg = urllib.quote(_(u"Property data has been saved."))
-            url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id})
-            response = HttpResponseRedirect(url)
-            response.set_cookie("message", msg)
+
+            return lfs.core.utils.set_message_cookie(
+                url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id}),
+                msg = u"Property type has been saved.",
+            )        
             
-            return response
     else:
         form = PropertyDataForm(instance=property)
     
@@ -83,16 +81,14 @@ def update_property_type(request, id):
     property = get_object_or_404(Property, pk=id)
     form = PropertyTypeForm(instance=property, data=request.POST)
     new_property = form.save()
-    
-    msg = urllib.quote(_(u"Property type has been changed."))
-    url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id})
-    response = HttpResponseRedirect(url)
-    response.set_cookie("message", msg)
-    
+        
     # Send signal
     property_type_changed.send(property)
-        
-    return response
+
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id}),
+        msg = u"Property type has been changed.",
+    )        
 
 @permission_required("manage_shop", login_url="/login/")
 def options_inline(request, property_id, template_name="manage/properties/options_inline.html"):
@@ -112,12 +108,10 @@ def add_property(request, template_name="manage/properties/add_property.html"):
         if form.is_valid():
             property = form.save()
 
-            msg = urllib.quote(_(u"Property has been added."))
-            url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id})
-            response = HttpResponseRedirect(url)
-            response.set_cookie("message", msg)
-
-            return response
+            return lfs.core.utils.set_message_cookie(
+                url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id}),
+                msg = u"Property has been added.",
+            )        
     else:
         form = PropertyDataForm()
 

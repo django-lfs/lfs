@@ -17,7 +17,7 @@ Diese E-Mail Adresse wird für ausgehende E-Mails genutzt. Beispiele:
  - shop@iqpp.de
  - Online Shop <shop@iqpp.de>
  
-**Benachrichtigungs E-Mail Adressen:
+**Benachrichtigungs E-Mail Adressen**
 Diese E-Mail Adressen werden für eingehende E-Mails verwendet, zum Beispiel 
 Nachrichten über das Kontaktformular oder bei eingehenden Bestellungen.
 
@@ -30,4 +30,4 @@ angezeigt werden kann, z.B. im Kopf (wird nicht in jedem Theme verwendet).
 
 **Statischer Block**
 Ein HTML Block, der je nach Theme in verschiedenen Bereichen des Shops angzeigt
-werden kann, z.B. im Kopf.
+werden kann, z.B. im Kopf (wird nicht in jedem Theme verwendet).

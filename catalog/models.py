@@ -29,6 +29,7 @@ from lfs.catalog.settings import PROPERTY_NUMBER_FIELD
 import lfs.catalog.utils
 from lfs.tax.models import Tax
 
+# TODO: Add attributes to the doc string.
 class Category(models.Model):
     """A category is used to browse through the shop products. A category can
     have one parent category and several child categories.
@@ -237,6 +238,7 @@ class Category(models.Model):
         
         return block
 
+# TODO: Add attributes to the doc string.
 class Product(models.Model):
     """A product is sold within a shop.
     """
@@ -720,6 +722,16 @@ class ProductAccessories(models.Model):
         
     Using an explicit class here to store the position of an accessory within
     a product.
+    
+    Attributes:
+        - product
+          The product of the relationship.
+        - accessory
+          The accessory of the relationship (which is also a product)
+        - position
+          The position of the accessory within the product.
+        - quantity
+          The proposed amount of accessories for the product.    
     """
     product = models.ForeignKey("Product", verbose_name=_(u"Product"), related_name="productaccessories_product")
     accessory = models.ForeignKey("Product", verbose_name=_(u"Acessory"), related_name="productaccessories_accessory")
@@ -743,6 +755,12 @@ class PropertyGroup(models.Model):
     """Groups product properties together.
     
     Can belong to several products, products can have several groups
+    
+    Attributes:
+        - name
+          The name of the property group.
+        - products
+          The assigned products of the property group.
     """
     name = models.CharField(blank=True, max_length=50)
     products = models.ManyToManyField(Product, verbose_name=_(u"Products"), related_name="property_groups")
@@ -814,6 +832,14 @@ class GroupsPropertiesRelation(models.Model):
     
     This is done via an explicit class to store the position of the property 
     within the group.
+    
+    Attributes:
+        - group
+          The property group the property belongs to.
+        - property
+          The property of question of the relationship.
+        - position
+          The position of the property within the group.
     """
     group = models.ForeignKey(PropertyGroup, verbose_name=_(u"Group"), related_name="groupproperties")
     property = models.ForeignKey(Property, verbose_name=_(u"Property"))
@@ -828,6 +854,14 @@ class ProductsPropertiesRelation(models.Model):
     
     This is done via an explicit class to store the position of the property
     within the product.
+    
+    Attributes:
+        - product
+          The product of the relationship.
+        - property
+          The property of the relationship.
+        - position
+          The position of the property within the product.    
     """
     product = models.ForeignKey(Product, verbose_name=_(u"Product"), related_name="productsproperties")
     property = models.ForeignKey(Property, verbose_name=_(u"Property"))
@@ -842,6 +876,17 @@ class PropertyOption(models.Model):
     
     A property option can have an optional price (which could change the total
     price of a product).
+    
+    Attributes:
+        - property 
+          The property to which the option belongs
+        - name 
+          The name of the option
+        - price (Not used at the moment)
+          The price for the option. This might be used for "configurable 
+          products"
+        - position
+          The position of the option within the property
     """
     property = models.ForeignKey(Property, verbose_name=_(u"Property"), related_name="options")
     
@@ -857,11 +902,19 @@ class PropertyOption(models.Model):
 
 class ProductPropertyValue(models.Model):
     """Stores the value resp. selected option of a product/property combination.
+    This is some kind of EAV.
     
-    Attributes: 
+    Attributes:
+        - product
+          The product for which the value is stored.
+        - parent_id
+          If the product is an variant this stores the parent id of it. This is
+          just ot calculate the filters properly.
+        - property
+          The property for which the value is stored.            
         - value
-          Dependent of the property type the value is either a number, a text or 
-          an id of an option.
+          The value for the product/property pair. Dependent of the property 
+          type the value is either a number, a text or an id of an option.
     """
     product = models.ForeignKey(Product, verbose_name=_(u"Product"), related_name="property_values")
     parent_id = models.IntegerField(blank=True, null=True)
@@ -885,6 +938,16 @@ class ProductPropertyValue(models.Model):
 class Image(models.Model):
     """An image with a title and several sizes. Can be part of a product or 
     category.
+    
+    Attributes:
+        - content
+          The content object it belongs to.
+        - title
+          The title of the image.
+        - image
+          The image file.
+        - position
+          The position of the image within the content object it belongs to.
     """
     content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"), related_name="image", blank=True, null=True)
     content_id = models.PositiveIntegerField(_(u"Content id"), blank=True, null=True)
@@ -902,6 +965,12 @@ class Image(models.Model):
         
 class StaticBlock(models.Model):
     """A block of static HTML which can be assigned to content objects.
+    
+    Attributes:
+        - name
+          The name of the static block.
+        - html 
+          The static HTML of the block.
     """
     name = models.CharField(_(u"Name"), max_length=30)
     html = models.TextField( _(u"HTML"), blank=True)
@@ -911,6 +980,16 @@ class StaticBlock(models.Model):
         
 class DeliveryTime(models.Model):
     """Selectable delivery times.
+    
+    Attributes:
+        - min
+          The minimal lasting of the delivery date.
+        - max
+          The maximal lasting of the delivery date.
+        - unit 
+          The unit of the delivery date, e.g. days, months.
+        - description 
+          A short description for internal uses.
     """
     min = models.FloatField(_(u"Min"))
     max = models.FloatField(_(u"Max"))

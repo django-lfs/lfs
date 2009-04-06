@@ -1,6 +1,3 @@
-# python imports
-import urllib
-
 # django imports
 from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse
@@ -9,11 +6,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
-from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+import lfs.core.utils
 from lfs.catalog.models import StaticBlock
-from lfs.core.utils import lfs_quote
 
 class StaticBlockForm(ModelForm):
     """Form to add and edit a static block.
@@ -42,12 +38,10 @@ def manage_static_block(request, id, template_name="manage/static_block/static_b
         form = StaticBlockForm(instance=sb, data=request.POST)
         if form.is_valid():
             form.save()
-            response = HttpResponseRedirect(
-                reverse("lfs_manage_static_block", kwargs={"id" : sb.id}))
-            response.set_cookie("message", 
-                lfs_quote(_(u"Static block has been saved.")))
-
-            return response
+            return lfs.core.utils.set_message_cookie(
+                url = reverse("lfs_manage_static_block", kwargs={"id" : sb.id}),
+                msg = u"Static block has been saved.",
+            )            
     else:
         form = StaticBlockForm(instance=sb)
         
@@ -66,12 +60,10 @@ def add_static_block(request, template_name="manage/static_block/add_static_bloc
         form = StaticBlockForm(data=request.POST)
         if form.is_valid():
             new_sb = form.save()
-            url = reverse("lfs_manage_static_block", kwargs={"id" : new_sb.id})
-            response = HttpResponseRedirect(url)
-            response.set_cookie("message",
-                lfs_quote(_(u"Static block has been added.")))
-
-            return response
+            return lfs.core.utils.set_message_cookie(
+                url = reverse("lfs_manage_static_block", kwargs={"id" : new_sb.id}),
+                msg = u"Static block has been added.",
+            )            
     else:
         form = StaticBlockForm()
 
@@ -100,13 +92,10 @@ def delete_static_block(request, id):
     # deleted
     for category in sb.categories.all():
         category.static_block = None
-        category.save()
-    
+        category.save()    
     sb.delete()
     
-    response = HttpResponseRedirect(reverse("lfs_manage_static_blocks"))
-    response.set_cookie("message",
-        lfs_quote(_(u"Shipping method has been added.")))
-
-    return response
-    
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_static_blocks"),
+        msg = u"Static block has been deleted.",
+    )

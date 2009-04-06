@@ -1,6 +1,3 @@
-# python imports
-import urllib
-
 # django imports
 from django.contrib.auth.decorators import permission_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -16,9 +13,9 @@ from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+import lfs.core.utils
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.utils import LazyEncoder
-from lfs.core.utils import lfs_quote
 from lfs.core.widgets.image import LFSImageInput
 from lfs.criteria import utils as criteria_utils
 from lfs.customer.models import Customer
@@ -171,14 +168,11 @@ def add_payment_method(request,
         form = PaymentForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             new_payment_method = form.save()
-
-            url = reverse("lfs_manage_payment_method", 
-                kwargs={"payment_method_id" : new_payment_method.id})                
-            response = HttpResponseRedirect(url)
-            response.set_cookie("message",
-                lfs_quote(_(u"Payment method has been added.")))
-
-            return response
+            return lfs.core.utils.set_message_cookie(
+                url = reverse("lfs_manage_payment_method", 
+                    kwargs={"payment_method_id" : new_payment_method.id}),
+                msg = u"Payment method has been added.",
+            )            
     else:
         form = PaymentForm()
         
@@ -335,12 +329,11 @@ def save_payment_method_data(request, payment_method_id):
     #         "message" : _(u"Please correct errors below.")
     #     }, cls = LazyEncoder)
     
-    url = reverse("lfs_manage_payment_method", kwargs={"payment_method_id" : payment_method_id})    
-    response = HttpResponseRedirect(url)
-    msg = lfs_quote(_(u"Payment method has been added."))
-    response.set_cookie("message", msg)            
-
-    return response
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_payment_method", 
+            kwargs={"payment_method_id" : payment_method.id}),
+        msg = u"Payment method has been saved.",
+    )
 
 @permission_required("manage_shop", login_url="/login/")    
 def delete_payment_method(request, payment_method_id):
@@ -358,11 +351,9 @@ def delete_payment_method(request, payment_method_id):
             customer.selected_payment_method = payment_utils.get_default_payment_method(request)
             customer.save()
         
-        payment_method.delete()    
+        payment_method.delete()
 
-    url = reverse("lfs_manage_payment")    
-    response = HttpResponseRedirect(url)
-    msg = lfs_quote(_(u"Payment method has been deleted."))
-    response.set_cookie("message", msg)            
-
-    return response
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_payment"),
+        msg = u"Payment method has been deleted.",
+    )            

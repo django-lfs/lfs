@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -11,9 +10,9 @@ from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+import lfs.core.utils
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.models import Shop
-from lfs.core.utils import lfs_quote
 from lfs.core.utils import LazyEncoder
 from lfs.core.widgets.image import LFSImageInput
 
@@ -47,13 +46,10 @@ def manage_shop(request, template_name="manage/shop/shop.html"):
         form = ShopForm(instance=shop, data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
-            url = reverse("lfs_manage_shop")
-            response = HttpResponseRedirect(url)
-            
-            msg = lfs_quote(_(u"Shop data has been saved."))
-            response.set_cookie("message", msg)
-            
-            return response
+            return lfs.core.utils.set_message_cookie(
+                url = reverse("lfs_manage_shop"),
+                msg = u"Shop data has been saved.",
+            )            
     else:
         form = ShopForm(instance=shop)
     

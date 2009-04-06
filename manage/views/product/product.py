@@ -1,6 +1,3 @@
-# python imports
-import urllib
-
 # django imports
 from django.contrib.admin import widgets
 from django.contrib.auth.decorators import permission_required
@@ -17,6 +14,7 @@ from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+import lfs.core.utils
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.catalog.models import Category
 from lfs.catalog.models import Product
@@ -114,13 +112,10 @@ def change_subtype(request, product_id):
     form = ProductSubTypeForm(instance=product, data=request.POST)
     form.save()
 
-    url = reverse("lfs_manage_product", kwargs={"product_id": product_id})    
-    response = HttpResponseRedirect(url)
-
-    msg = urllib.quote(_(u"Sub type has been changed."))
-    response.set_cookie("message", msg)
-    
-    return response
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_product", kwargs={"product_id": product_id}), 
+        msg = u"Sub type has been changed.",
+    )            
     
 @permission_required("manage_shop", login_url="/login/")
 def stock(request, product_id, template_name="manage/product/stock.html"):

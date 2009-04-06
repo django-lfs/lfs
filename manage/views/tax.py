@@ -1,6 +1,3 @@
-# python imports
-import urllib
-
 # django imports
 from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse
@@ -9,11 +6,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
-from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+import lfs.core.utils
 from lfs.catalog.models import Product
-from lfs.core.utils import lfs_quote
 from lfs.tax.models import Tax
 
 class TaxForm(ModelForm):
@@ -43,13 +39,10 @@ def manage_tax(request, id, template_name="manage/tax/tax.html"):
         form = TaxForm(instance=tax, data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
-            url = reverse("lfs_manage_tax", kwargs={"id" : tax.id})
-            response = HttpResponseRedirect(url)            
-            
-            msg = lfs_quote(_(u"Tax has been saved."))
-            response.set_cookie("message", msg)            
-            
-            return response            
+            return lfs.core.utils.set_message_cookie(
+                url = reverse("lfs_manage_tax", kwargs={"id" : tax.id}),
+                msg = u"Tax has been saved.",
+            )            
     else:
         form = TaxForm(instance=tax)
     
@@ -69,12 +62,10 @@ def add_tax(request, template_name="manage/tax/add_tax.html"):
         if form.is_valid():
             tax = form.save()
 
-            url = reverse("lfs_manage_tax", kwargs={"id" : tax.id})
-            response = HttpResponseRedirect(url)                        
-            msg = lfs_quote(_(u"Tax has been added."))
-            response.set_cookie("message", msg)            
-            
-            return response
+            return lfs.core.utils.set_message_cookie(
+                url = reverse("lfs_manage_tax", kwargs={"id" : tax.id}),
+                msg = u"Tax has been added.",
+            )            
     else:
         form = TaxForm()
 
@@ -96,10 +87,7 @@ def delete_tax(request, id):
         
     tax.delete()
     
-    response = HttpResponseRedirect(reverse("lfs_manage_taxes"))
-    
-    msg = lfs_quote(_(u"Tax has been deleted."))
-    response.set_cookie("message", msg)
-            
-    return response
-    
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_taxes"),
+        msg = u"Tax has been deleted.",
+    )

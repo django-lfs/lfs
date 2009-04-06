@@ -1,6 +1,3 @@
-# python imports
-import urllib
-
 # django imports
 from django.contrib.auth.decorators import permission_required
 from django.db import IntegrityError
@@ -16,6 +13,7 @@ from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+import lfs.core.utils
 from lfs.catalog.models import GroupsPropertiesRelation
 from lfs.catalog.models import Property
 from lfs.catalog.models import PropertyGroup
@@ -51,12 +49,10 @@ def manage_property_group(request, id, template_name="manage/properties/property
         form = PropertyGroupForm(instance=property_group, data=request.POST)
         if form.is_valid():
             new_property_group = form.save()
-            msg = urllib.quote(_(u"Property group has been saved."))
-            url = reverse("lfs_manage_property_group", kwargs={"id" : property_group.id})
-            response = HttpResponseRedirect(url)
-            response.set_cookie("message", msg)
-            
-            return response
+            return lfs.core.utils.set_message_cookie(
+                url = reverse("lfs_manage_property_group", kwargs={"id" : property_group.id}),
+                msg = u"Property group has been saved.",
+            )            
     else:
         form = PropertyGroupForm(instance=property_group)
     
@@ -97,13 +93,10 @@ def add_property_group(request, template_name="manage/properties/add_property_gr
         form = PropertyGroupForm(data=request.POST)
         if form.is_valid():
             property_group = form.save()
-
-            msg = urllib.quote(_(u"Property group has been added."))
-            url = reverse("lfs_manage_property_group", kwargs={"id" : property_group.id})
-            response = HttpResponseRedirect(url)
-            response.set_cookie("message", msg)
-
-            return response
+            return lfs.core.utils.set_message_cookie(
+                url = reverse("lfs_manage_property_group", kwargs={"id" : property_group.id}),
+                msg = u"Property group has been added.",
+            )            
     else:
         form = PropertyGroupForm()
 
@@ -119,11 +112,10 @@ def delete_property_group(request, id):
     property_group = get_object_or_404(PropertyGroup, pk=id)    
     property_group.delete()
 
-    msg = urllib.quote(_(u"Property group has been deleted."))
-    response = HttpResponseRedirect(reverse("lfs_manage_property_groups"))
-    response.set_cookie("message", msg)
-
-    return response
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_property_groups"),
+        msg = u"Property group has been deleted.",
+    )            
 
 @permission_required("manage_shop", login_url="/login/")
 def assign_properties(request, group_id):

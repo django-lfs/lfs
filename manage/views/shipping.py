@@ -1,6 +1,3 @@
-# python imports
-import urllib
-
 # django imports
 from django.contrib.auth.decorators import permission_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -16,9 +13,9 @@ from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+import lfs.core.utils
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.utils import LazyEncoder
-from lfs.core.utils import lfs_quote
 from lfs.core.widgets.image import LFSImageInput
 from lfs.criteria import utils as criteria_utils
 from lfs.customer.models import Customer
@@ -171,13 +168,11 @@ def add_shipping_method(request,
         form = ShippingForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             new_shipping_method = form.save()
-            url = reverse("lfs.manage.views.manage_shipping_method", 
-                kwargs={"shipping_method_id" : new_shipping_method.id})
-            response = HttpResponseRedirect(url)
-            response.set_cookie("message",
-                lfs_quote(_(u"Shipping method has been added.")))
-
-            return response
+            return lfs.core.utils.set_message_cookie(
+                url = reverse("lfs.manage.views.manage_shipping_method", 
+                    kwargs={"shipping_method_id" : new_shipping_method.id}),
+                msg = u"Shipping method has been added.",
+            )            
     else:
         form = ShippingForm()
         
@@ -320,25 +315,12 @@ def save_shipping_method_data(request, shipping_method_id):
 
     if shipping_form.is_valid():
         shipping_form.save()
-        # result = simplejson.dumps({
-        #     "state" : "success",
-        #     "form" : form,
-        #     "methods" : shipping_methods(request),
-        #     "message" : _(u"Shipping has been saved.")
-        # }, cls = LazyEncoder)
-    # else:        
-    #     result = simplejson.dumps({
-    #         "state" : "failure",
-    #         "form" : form,
-    #         "message" : _(u"Please correct errors below.")
-    #     }, cls = LazyEncoder)
     
-    url = reverse("lfs_manage_shipping_method", kwargs={"shipping_method_id" : shipping_method_id})
-    response = HttpResponseRedirect(url)
-    response.set_cookie("message",
-        lfs_quote(_(u"Shipping method has been saved.")))
-
-    return response
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_shipping_method", 
+            kwargs={"shipping_method_id" : shipping_method.id}),
+        msg = u"Shipping method has been saved.",
+    )            
  
 @permission_required("manage_shop", login_url="/login/")   
 def delete_shipping_method(request, shipping_method_id):
@@ -356,11 +338,9 @@ def delete_shipping_method(request, shipping_method_id):
             customer.selected_shipping_method = shipping_utils.get_default_shipping_method(request)
             customer.save()
         
-        shipping_method.delete()    
+        shipping_method.delete()
 
-    url = reverse("lfs_manage_shipping")
-    response = HttpResponseRedirect(url)
-    response.set_cookie("message",
-        lfs_quote(_(u"Shipping method has been deleted.")))
-
-    return response
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_shipping"),
+        msg = u"Shipping method has been deleted.",
+    )            

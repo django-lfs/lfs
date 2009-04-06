@@ -10,8 +10,12 @@ register = template.Library()
 def topseller_portlet(context, limit):
     """Displays topseller
     """
+    
     topseller = lfs.marketing.utils.get_topseller(limit)
-    return { "topseller" : topseller }
+    return {
+        "topseller" : topseller,
+        "MEDIA_URL" : context.get("MEDIA_URL"),        
+    }
 
 @register.inclusion_tag('marketing/topseller_portlet.html', takes_context=True)
 def topseller_for_category_portlet(context, category=None, limit=5):
@@ -22,4 +26,7 @@ def topseller_for_category_portlet(context, category=None, limit=5):
     else:     
         topseller = lfs.marketing.utils.get_topseller_for_category(category, limit)
 
-    return { "topseller" : topseller }
+    return {
+        "topseller" : topseller,
+        "MEDIA_URL" : context.get("MEDIA_URL"),
+    }

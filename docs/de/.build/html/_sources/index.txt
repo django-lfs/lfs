@@ -6,9 +6,8 @@
 LFS
 ===
 
-Narrative documentation
-=======================
-
+Allgemeine Dokumentation
+========================
 
 .. toctree::
    :maxdepth: 2
@@ -17,8 +16,29 @@ Narrative documentation
    narrative/customer.rst
    narrative/customizing.rst   
    narrative/features.rst
+   narrative/properties.rst
    narrative/shipping.rst
 
+Management-Bereich
+===================
+
+Shop
+----
+
+.. toctree::
+   :maxdepth: 2
+      
+   online/shop/einstellungen.rst
+   online/shop/liefermethoden.rst
+
+Katalog
+-------
+
+.. toctree::
+   :maxdepth: 2
+      
+   online/katalog/kategorie.rst
+   
 Indices and tables
 ==================
 

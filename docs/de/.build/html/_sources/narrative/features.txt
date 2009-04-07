@@ -58,6 +58,8 @@ Lieferung
 - Variable Anzahl von Liefermethoden
 - Einfache Verwaltung von variablen Lieferpreisen pro Liefermethode, bspw. 
   basierend auf Lieferland, Gewicht, Größe oder Gurtmaß, etc.
+- Intelligente Berechnung der Lieferzeit (unter Berücksichtigung der Lager
+  bestandes und Beschaffungszeit von Waren die nicht auf Lager sind)
 
 Bezahlmethoden
 --------------
@@ -68,7 +70,7 @@ Bezahlmethoden
   basierend auf dem Gesamtpreis der Bestellung, Datum, etc.
   
 Katalog
-----------------
+-------
 - Statische Seiten zur Generierung von Informationen, Landing Pages, etc.
 - Cross-sells, Up-sells and Zugehörige Produkte
 - Produkt Tags

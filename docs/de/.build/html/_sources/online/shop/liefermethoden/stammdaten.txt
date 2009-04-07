@@ -1,0 +1,35 @@
+.. _liefermethoden-stammdaten:
+
+Daten
+=====
+
+*Name*
+Der Name der Liefermethod. Dieser wird zur Auswahl genutzt, beispielsweise auf
+der Checkout-Seite angezeigt
+
+*Beschreibung*
+Kurze Beschreibung der Liefermethode für interne Zwecke.
+
+*Notiz*
+Diese Notiz wird auf der Dankesseite und der Bestellungen angezeigt.
+
+*Priorität*
+Bestimmt die Reihenfolge der Anzeige aller Liefermethoden. Umso kleiner desto
+weiter vorne wird die Liefermethode angezeigt.
+
+*Bild*
+Wird auf der Checkout-Seite nebem dem Titel angzeigt.
+
+*Aktiv*
+Nur aktive Liefermethoden werden zur Auswahl angeboten.
+
+*Mehrwertsteuer*
+Der Mehrwertsteuersatz der Liefermethod.
+
+*Preis*
+Der Standardpreis der Liefermethod. Dieser ist aktiv, wenn entweder keine
+weiteren Preise angegeben sind, bzw. kein weiterer Preis valide ist. Siehe 
+preise.rst
+
+*Lieferzeit*
+Die Lieferzeit der Liefermethode

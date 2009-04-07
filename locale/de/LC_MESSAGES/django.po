@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-07 00:09-0500\n"
+"POT-Creation-Date: 2009-04-07 01:05-0500\n"
 "PO-Revision-Date: 2009-02-22 07:20+0100\n"
 "Last-Translator: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
 "Language-Team: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
@@ -48,8 +48,8 @@ msgid "Quantity"
 msgstr "Menge"
 
 #: catalog/models.py:37 catalog/models.py:246 catalog/models.py:793
-#: catalog/models.py:893 catalog/models.py:978 core/models.py:78
-#: payment/models.py:49 shipping/models.py:53
+#: catalog/models.py:893 catalog/models.py:978 core/models.py:16
+#: core/models.py:78 payment/models.py:49 shipping/models.py:53
 #: templates/cart/added_to_cart.html:21
 #: templates/catalog/product_inline.html:41
 #: templates/catalog/product_inline.html:107
@@ -104,8 +104,9 @@ msgstr "Produkte"
 msgid "Short description"
 msgstr "Kurzbeschreibung"
 
-#: catalog/models.py:47 catalog/models.py:251 core/models.py:83
-#: payment/models.py:50 shipping/models.py:54 tax/models.py:9
+#: catalog/models.py:47 catalog/models.py:251 catalog/models.py:1000
+#: core/models.py:83 payment/models.py:50 shipping/models.py:54
+#: tax/models.py:9
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -561,6 +562,10 @@ msgstr "Wie Lieferung"
 msgid "Your message to us"
 msgstr "Ihre Nachricht an uns"
 
+#: core/models.py:15
+msgid "Country code"
+msgstr "Ländercode"
+
 #: core/models.py:79
 msgid "Shop owner"
 msgstr "Shopbetreiber"
@@ -585,14 +590,19 @@ msgstr "Google Analytics Site Tracking"
 msgid "Google Analytics E-Commerce Tracking"
 msgstr "Google Analytics E-Commerce Tracking"
 
+#: core/models.py:94
+msgid "Default country"
+msgstr "Standardland"
+
+#: core/models.py:95 criteria/models.py:42
+#: templates/manage/shop/default_values.html:64
+msgid "Countries"
+msgstr "Länder"
+
 #: criteria/models.py:41 criteria/models.py:142 criteria/models.py:202
 #: criteria/models.py:325 criteria/models.py:386
 msgid "Operator"
 msgstr "Operator"
-
-#: criteria/models.py:42 templates/manage/shop/default_values.html:64
-msgid "Countries"
-msgstr "Länder"
 
 #: criteria/models.py:161
 msgid "Cart Price"
@@ -1564,6 +1574,7 @@ msgid "None"
 msgstr "Keine"
 
 #: templates/manage/category/data.html:3
+#: templates/manage/delivery_times/base.html:29
 #: templates/manage/payment/payment_method_data.html:3
 #: templates/manage/shipping/shipping_method_data.html:2
 msgid "Core data"
@@ -1718,7 +1729,6 @@ msgstr "Lieferzeit hinzufügen"
 msgid "Delete Delivery Time"
 msgstr "Lieferzeit löschen"
 
-#: templates/manage/delivery_times/base.html:29
 #: templates/manage/delivery_times/base.html:33
 msgid "Delivery Time"
 msgstr "Lieferzeit"

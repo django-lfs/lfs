@@ -32,19 +32,16 @@ Preis
    weiteren Preise angegeben sind, bzw. kein weiterer Preis gültig ist, siehe
    Preise-Tab.
    
-Lieferzeit
-   Die Lieferzeit der Liefermethode.
-
 Kriterien
 ---------
-Kriterien der Liefermethode. Nur wenn alle Kriterien gültig sind, wird die 
+Kriterien der Bezahlmethode. Nur wenn alle Kriterien gültig sind, wird die 
 Liefermethode Shopkunden zur Auswahl angeboten.
 
 Preise
 ------
 Zusätzliche Preise für die Liefermethode. 
 
-Beispielsweise kann der Preis abhängig vom Gesamtgewicht aller Produkte im 
+Beispielsweise kann der Preis abhängig vom Gesamtbetrag aller Produkte im 
 Warenkorb gemacht werden. Der erste Preis, der gültig ist, d.h. für den alle 
 Kriterien zutreffen, ist der aktive Preis. Wenn kein Preis gültig ist, gilt der
 Standardpreis des Daten-Tabs.

@@ -181,10 +181,12 @@ def filter_navigation(context, category):
     
     pf =  lfs.catalog.utils.get_product_filters(category, set_product_filter, price_filter, sorting)
     
+    price_filters = lfs.catalog.utils.get_price_filters(category, set_product_filter, price_filter)
     return {
         "category" : category,
         "product_filters" : pf,
         "price_filter" : request.session.get("price-filter"),
+        "price_filters" : price_filters,
     }
     
 @register.inclusion_tag('catalog/product_navigation.html', takes_context=True)

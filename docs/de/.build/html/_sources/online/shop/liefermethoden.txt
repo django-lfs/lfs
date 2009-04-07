@@ -1,8 +1,9 @@
 Liefermethoden
 ==============
 
-Daten
------
+Stammdaten
+----------
+
 Name
    Eindeutiger Name der Liefermethode. Dieser wird auf der Checkout-Seite zur 
    Auswahl der Liefermethode angezeigt, beispielsweise auf der Checkout-Seite.
@@ -17,7 +18,7 @@ Priorität
    Bestimmt die Reihenfolge der Anzeige aller Liefermethoden.
    
 Bild
-   Wird auf der Checkout-Seite nebem dem Titel angzeigt.
+   Wird auf der Checkout-Seite neben dem Titel angzeigt.
 
 Aktiv
    Selektieren um die die Liefermethode aktivieren. Nur aktive Liefermethoden 
@@ -28,8 +29,8 @@ Mehrwertsteuer
 
 Preis
    Der Standardpreis der Liefermethode. Dieser ist aktiv, wenn entweder keine
-   weiteren Preise angegeben sind, bzw. kein weiterer Preis valide ist. Siehe 
-   preise.rst
+   weiteren Preise angegeben sind, bzw. kein weiterer Preis gültig ist, siehe
+   Preise-Tab.
    
 Lieferzeit
    Die Lieferzeit der Liefermethode.
@@ -41,9 +42,9 @@ Liefermethode Shopkunden zur Auswahl angeboten.
 
 Preise
 ------
-Zusätlziche Preise für die Liefermethode. 
+Zusätzliche Preise für die Liefermethode. 
 
 Beispielsweise kann der Preis abhängig vom Gesamtgewicht aller Produkte im 
-Warenkorb gemacht werden. Der erste Preis, der gültig ist (für den alle 
-Kriterien zutreffen), ist der aktive Preis. Wenn kein Preis gültig ist, gilt der
-Standardpreis.
+Warenkorb gemacht werden. Der erste Preis, der gültig ist, d.h. für den alle 
+Kriterien zutreffen, ist der aktive Preis. Wenn kein Preis gültig ist, gilt der
+Standardpreis des Daten-Tabs.

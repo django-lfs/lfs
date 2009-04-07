@@ -30,6 +30,9 @@ Shop
       
    online/shop/einstellungen.rst
    online/shop/liefermethoden.rst
+   online/shop/lieferzeiten.rst
+   online/shop/bezahlmethoden.rst
+   online/shop/steuern.rst
 
 Katalog
 -------

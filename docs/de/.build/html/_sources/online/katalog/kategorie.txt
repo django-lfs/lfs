@@ -26,15 +26,14 @@ Beschreibung
 
 Bild
    Das Bild der Kategorie. Diese wird in einer Kategorienübersicht angezeigt, 
-   beispielsweise wenn der ``Inalt`` ``Unterkategorien`` für eine Kategorie 
-   oder den Shop ausgewählt ist.
+   beispielsweise wenn für den ``Inhalt`` ``Unterkategorien`` ausgewählt ist.
 
 Statischer Block
-   Falls ein statischer Block ausgewählt ist, so wird dieser in der 
-   Detailansicht einer Kategorie angezeigt.
+   Ein HTML Block, der abhängig vom verwendeten Design in verschiedenen Bereichen
+   der Kategorie angezeigt werden kann, z.B. im Kopf.
    
 Inhalt
-   Hier wird angegeben, ob Produkte oder Unterkatorien für diese Kategorie 
+   Hier wird ausgewählt, ob Produkte oder Unterkatorien für diese Kategorie 
    angezeigt wird.
 
 Formate aktivieren

@@ -12,8 +12,8 @@ from lfs.catalog.models import StaticBlock
 class Country(models.Model):
     """Holds country relevant data for the shop.
     """
-    code = models.CharField(max_length=2)
-    name = models.CharField(max_length=100)
+    code = models.CharField(_(u"Country code"), max_length=2)
+    name = models.CharField(_(u"Name"), max_length=100)
 
     def __unicode__(self):
         return self.name
@@ -91,8 +91,8 @@ class Shop(models.Model):
     ga_site_tracking = models.BooleanField(_(u"Google Analytics Site Tracking"), default=False)
     ga_ecommerce_tracking = models.BooleanField(_(u"Google Analytics E-Commerce Tracking"), default=False)
     
-    default_country = models.ForeignKey(Country)
-    countries = models.ManyToManyField(Country, related_name="shops")
+    default_country = models.ForeignKey(Country, verbose_name=_(u"Default country"))
+    countries = models.ManyToManyField(Country, verbose_name=_(u"Countries"), related_name="shops")
     
     class Meta:
         permissions = (("manage_shop", "Manage shop"),)

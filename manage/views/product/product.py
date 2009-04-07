@@ -114,7 +114,7 @@ def change_subtype(request, product_id):
 
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_product", kwargs={"product_id": product_id}), 
-        msg = u"Sub type has been changed.",
+        msg = _(u"Sub type has been changed."),
     )            
     
 @permission_required("manage_shop", login_url="/login/")

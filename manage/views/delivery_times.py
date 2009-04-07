@@ -1,6 +1,3 @@
-# python imports
-import urllib
-
 # django imports
 from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse
@@ -45,7 +42,7 @@ def manage_delivery_time(request, id, template_name="manage/delivery_times/base.
             new_delivery_time = form.save()
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_delivery_time", kwargs={"id" : id}),
-                msg = u"Delivery time has been saved.",
+                msg = _(u"Delivery time has been saved."),
             )            
     else:
         form = DeliveryTimeForm(instance=delivery_time)
@@ -68,7 +65,7 @@ def add_delivery_time(request, template_name="manage/delivery_times/add.html"):
 
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_delivery_time", kwargs={"id" : delivery_time.id}),
-                msg = u"Delivery time has been added.",
+                msg = _(u"Delivery time has been added."),
             )            
 
     else:
@@ -88,5 +85,5 @@ def delete_delivery_time(request, id):
 
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_delivery_times"),
-        msg = u"Delivery time has been deleted.",
+        msg = _(u"Delivery time has been deleted."),
     )            

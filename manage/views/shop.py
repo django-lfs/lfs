@@ -48,7 +48,7 @@ def manage_shop(request, template_name="manage/shop/shop.html"):
             form.save()
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_shop"),
-                msg = u"Shop data has been saved.",
+                msg = _(u"Shop data has been saved."),
             )            
     else:
         form = ShopForm(instance=shop)

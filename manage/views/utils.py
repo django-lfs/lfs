@@ -18,5 +18,5 @@ def clear_cache(request):
     """
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_utils"),
-        msg = u"Cache has been cleared.",
+        msg = _(u"Cache has been cleared."),
     )

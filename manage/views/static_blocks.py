@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
+from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
 import lfs.core.utils
@@ -40,7 +41,7 @@ def manage_static_block(request, id, template_name="manage/static_block/static_b
             form.save()
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_static_block", kwargs={"id" : sb.id}),
-                msg = u"Static block has been saved.",
+                msg = _(u"Static block has been saved."),
             )            
     else:
         form = StaticBlockForm(instance=sb)
@@ -62,7 +63,7 @@ def add_static_block(request, template_name="manage/static_block/add_static_bloc
             new_sb = form.save()
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_static_block", kwargs={"id" : new_sb.id}),
-                msg = u"Static block has been added.",
+                msg = _(u"Static block has been added."),
             )            
     else:
         form = StaticBlockForm()
@@ -97,5 +98,5 @@ def delete_static_block(request, id):
     
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_static_blocks"),
-        msg = u"Static block has been deleted.",
+        msg = _(u"Static block has been deleted."),
     )

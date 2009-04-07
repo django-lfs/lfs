@@ -171,7 +171,7 @@ def add_payment_method(request,
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_payment_method", 
                     kwargs={"payment_method_id" : new_payment_method.id}),
-                msg = u"Payment method has been added.",
+                msg = _(u"Payment method has been added."),
             )            
     else:
         form = PaymentForm()
@@ -332,7 +332,7 @@ def save_payment_method_data(request, payment_method_id):
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_payment_method", 
             kwargs={"payment_method_id" : payment_method.id}),
-        msg = u"Payment method has been saved.",
+        msg = _(u"Payment method has been saved."),
     )
 
 @permission_required("manage_shop", login_url="/login/")    
@@ -355,5 +355,5 @@ def delete_payment_method(request, payment_method_id):
 
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_payment"),
-        msg = u"Payment method has been deleted.",
+        msg = _(u"Payment method has been deleted."),
     )            

@@ -51,7 +51,7 @@ def manage_property_group(request, id, template_name="manage/properties/property
             new_property_group = form.save()
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_property_group", kwargs={"id" : property_group.id}),
-                msg = u"Property group has been saved.",
+                msg = _(u"Property group has been saved."),
             )            
     else:
         form = PropertyGroupForm(instance=property_group)
@@ -95,7 +95,7 @@ def add_property_group(request, template_name="manage/properties/add_property_gr
             property_group = form.save()
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_property_group", kwargs={"id" : property_group.id}),
-                msg = u"Property group has been added.",
+                msg = _(u"Property group has been added."),
             )            
     else:
         form = PropertyGroupForm()
@@ -114,7 +114,7 @@ def delete_property_group(request, id):
 
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_property_groups"),
-        msg = u"Property group has been deleted.",
+        msg = _(u"Property group has been deleted."),
     )            
 
 @permission_required("manage_shop", login_url="/login/")

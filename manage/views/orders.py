@@ -69,5 +69,5 @@ def send_order(request, order_id):
     
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_order", kwargs={"order_id" : order.id}),
-        msg = u"Order has been sent.",
+        msg = _(u"Order has been sent."),
     )

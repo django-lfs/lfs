@@ -56,7 +56,7 @@ def manage_property(request, id, template_name="manage/properties/property.html"
 
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id}),
-                msg = u"Property type has been saved.",
+                msg = _(u"Property type has been saved."),
             )        
             
     else:
@@ -87,7 +87,7 @@ def update_property_type(request, id):
 
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id}),
-        msg = u"Property type has been changed.",
+        msg = _(u"Property type has been changed."),
     )        
 
 @permission_required("manage_shop", login_url="/login/")
@@ -110,7 +110,7 @@ def add_property(request, template_name="manage/properties/add_property.html"):
 
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id}),
-                msg = u"Property has been added.",
+                msg = _(u"Property has been added."),
             )        
     else:
         form = PropertyDataForm()

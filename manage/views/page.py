@@ -55,7 +55,7 @@ def manage_page(request, id, template_name="manage/page/page.html"):
 
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_page", kwargs={"id" : page.id}),
-                msg = u"Page has been saved.",
+                msg = _(u"Page has been saved."),
             )            
     else:
         form = PageForm(instance=page)
@@ -79,7 +79,7 @@ def add_page(request, template_name="manage/page/add_page.html"):
 
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_page", kwargs={"id" : page.id}),
-                msg = u"Page has been added.",
+                msg = _(u"Page has been added."),
             )            
     else:
         form = PageAddForm()
@@ -98,7 +98,7 @@ def delete_page(request, id):
 
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_pages"),
-        msg = u"Page has been deleted.",
+        msg = _(u"Page has been deleted."),
     )            
 
 def _update_positions():

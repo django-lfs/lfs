@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
+from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
 import lfs.core.utils
@@ -41,7 +42,7 @@ def manage_tax(request, id, template_name="manage/tax/tax.html"):
             form.save()
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_tax", kwargs={"id" : tax.id}),
-                msg = u"Tax has been saved.",
+                msg = _(u"Tax has been saved."),
             )            
     else:
         form = TaxForm(instance=tax)
@@ -64,7 +65,7 @@ def add_tax(request, template_name="manage/tax/add_tax.html"):
 
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs_manage_tax", kwargs={"id" : tax.id}),
-                msg = u"Tax has been added.",
+                msg = _(u"Tax has been added."),
             )            
     else:
         form = TaxForm()
@@ -89,5 +90,5 @@ def delete_tax(request, id):
     
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_taxes"),
-        msg = u"Tax has been deleted.",
+        msg = _(u"Tax has been deleted."),
     )

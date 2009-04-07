@@ -171,7 +171,7 @@ def add_shipping_method(request,
             return lfs.core.utils.set_message_cookie(
                 url = reverse("lfs.manage.views.manage_shipping_method", 
                     kwargs={"shipping_method_id" : new_shipping_method.id}),
-                msg = u"Shipping method has been added.",
+                msg = _(u"Shipping method has been added."),
             )            
     else:
         form = ShippingForm()
@@ -319,7 +319,7 @@ def save_shipping_method_data(request, shipping_method_id):
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_shipping_method", 
             kwargs={"shipping_method_id" : shipping_method.id}),
-        msg = u"Shipping method has been saved.",
+        msg = _(u"Shipping method has been saved."),
     )            
  
 @permission_required("manage_shop", login_url="/login/")   
@@ -342,5 +342,5 @@ def delete_shipping_method(request, shipping_method_id):
 
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_shipping"),
-        msg = u"Shipping method has been deleted.",
+        msg = _(u"Shipping method has been deleted."),
     )            

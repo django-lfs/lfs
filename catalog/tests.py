@@ -30,6 +30,39 @@ from lfs.core.signals import product_removed_property_group
 from lfs.tax.models import Tax
 from lfs.tests.utils import RequestFactory
 
+class PriceFilterTestCase(TestCase):
+    """
+    """
+    def setUp(self):
+        """
+        """
+        self.p1 = Product.objects.create(slug="product-1", price=5)
+        self.p2 = Product.objects.create(slug="product-2", price=3)        
+        self.p3 = Product.objects.create(slug="product-3", price=1)
+
+        self.c1 = Category.objects.create(name="Category 1", slug="category-1")
+        self.c1.products = [self.p1, self.p2, self.p3]
+        self.c1.save()
+    
+    def test_get_price_filter_1(self):
+        """
+        """
+        result = lfs.catalog.utils.get_price_filters(self.c1, [], None)
+        self.assertEqual(result, (1.0, 5.0))
+
+    def test_get_price_filter_2(self):
+        """
+        """
+        self.p1.price = 100
+        self.p1.save()
+        self.p2.price = 200
+        self.p2.save()        
+        self.p3.price = 300
+        self.p3.save()
+        
+        result = lfs.catalog.utils.get_price_filters(self.c1, [], None)
+        self.assertEqual(result, (100.0, 300.0))
+    
 class PropertiesTestCase(TestCase):
     """
     """

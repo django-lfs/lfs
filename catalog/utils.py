@@ -1,12 +1,10 @@
 """Provides several utilities for catalog related stuff.
 """
 
-from datetime import datetime
-
 # django imports
 from django.core.cache import cache
+from django.core.urlresolvers import reverse
 from django.db import connection
-from django.db import IntegrityError
 
 # import lfs
 import lfs.catalog.models
@@ -93,6 +91,86 @@ def get_property_groups(category):
     cache.set(cache_key, pgs)
     return pgs
 
+def get_price_filters(category, product_filter, price_filter):
+    """Creates price filter links based on the min and max price of the 
+    categorie's products.
+    """
+    # Base are the filtered products
+    products = get_filtered_products_for_category(category, product_filter, price_filter, None)
+    if not products: 
+        return []
+
+    # And their variants
+    all_products = []
+    for product in products:
+        all_products.append(product)
+        all_products.extend(product.variants.all())
+    
+    product_ids = [p.id for p in all_products]
+    url = reverse("lfs_set_price_filter", kwargs={"category_slug" : category.slug})
+    
+    # If a price filter is set we return just this.
+    if price_filter:
+        min = price_filter["min"]
+        max = price_filter["max"]
+        products = lfs.catalog.models.Product.objects.filter(
+            price__range=(min, max), pk__in=product_ids)
+        quantity = len(products)
+        
+        return ({
+            "url" : "%s?min=%s&max=%s" % (url, min, max),
+            "content" : "%s-%s" % (min, max),
+        },)
+        
+    product_ids_str = ", ".join([str(p.id) for p in all_products])
+    cursor = connection.cursor()
+    cursor.execute("""SELECT min(price), max(price)
+                      FROM catalog_product
+                      WHERE id IN (%s)""" % product_ids_str)
+                      
+    pmin, pmax = cursor.fetchall()[0]
+    if pmax == pmin:
+        step = pmax
+    else:
+        diff = pmax - pmin
+        step = diff / 3
+        
+    if step >= 0 and step < 3:
+        step = 3
+    elif step >= 3 and step < 6:
+        step = 5    
+    elif step >= 6 and step < 11:
+        step = 10
+    elif step >= 11 and step < 51:
+        step = 50
+    elif step >= 51 and step < 101:
+        step = 100
+    elif step >= 101 and step < 501:
+        step = 500
+    elif step >= 501 and step < 1001:
+        step = 1000        
+    elif step >= 1000 and step < 5001:
+        step = 500
+    elif step >= 5001 and step < 10001:
+        step = 1000
+    
+    result = []
+    for n, i in enumerate(range(0, pmax, step)):
+        if i > pmax:
+            break
+        min = i+1
+        max = i+step
+        products = lfs.catalog.models.Product.objects.filter(price__range=(min, max), pk__in=product_ids)
+        quantity = len(products)
+        if len(products) > 0:
+            result.append({
+                "url" : "%s?min=%s&max=%s" % (url, min, max),
+                "content" : "%s-%s" % (min, max),
+                "quantity" : quantity,
+            })
+
+    return result
+
 def get_product_filters(category, product_filter, price_filter, sorting):
     """Returns the next product filters based on products which are in the given 
     category and within the result set of the current filters.
@@ -171,6 +249,7 @@ def get_product_filters(category, product_filter, price_filter, sorting):
                     "quantity" : amount[row[0]][row[1]],
                     "show_quantity" : False,
                 },)
+            break
         else:
             properties[row[0]].append({
                 "id"       : row[0],

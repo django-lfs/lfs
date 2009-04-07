@@ -14,3 +14,12 @@ def page_view(request, slug, template_name="page/page.html"):
     return render_to_response(template_name, RequestContext(request, {
         "page" : page
     }))
+
+def popup_view(request, slug, template_name="page/popup.html"):
+    """Displays page with passed slug
+    """
+    page = lfs_get_object_or_404(Page, slug=slug)
+    
+    return render_to_response(template_name, RequestContext(request, {
+        "page" : page
+    }))

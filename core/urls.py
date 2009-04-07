@@ -40,6 +40,11 @@ urlpatterns += patterns('lfs.page.views',
     url(r'^page/(?P<slug>[-\w]*)$', "page_view", name="lfs_page_view"),
 )
 
+# Popup
+urlpatterns += patterns('lfs.page.views',
+    url(r'^popup/(?P<slug>[-\w]*)$', "popup_view", name="lfs_popup_view"),
+)
+
 # Search
 urlpatterns += patterns('lfs.search.views',
     url(r'^search', "search", name="lfs_search"),

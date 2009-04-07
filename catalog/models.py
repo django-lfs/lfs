@@ -997,7 +997,7 @@ class DeliveryTime(models.Model):
     min = models.FloatField(_(u"Min"))
     max = models.FloatField(_(u"Max"))
     unit = models.PositiveSmallIntegerField(_(u"Unit"), choices=DELIVERY_TIME_UNIT_CHOICES, default=DELIVERY_TIME_UNIT_DAYS)
-    description = models.TextField(blank=True)
+    description = models.TextField(_(u"Description"), blank=True)
     
     class Meta:
         ordering = ("min", )

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-06 07:49+0200\n"
+"POT-Creation-Date: 2009-04-07 00:09-0500\n"
 "PO-Revision-Date: 2009-02-22 07:20+0100\n"
 "Last-Translator: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
 "Language-Team: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
@@ -706,6 +706,38 @@ msgstr "Ablaufdatum Jahr"
 msgid "Your order has been received"
 msgstr "Ihre Bestellungen wurde empfangen"
 
+#: manage/views/delivery_times.py:45
+msgid "Delivery time has been saved."
+msgstr "Lieferzeit wurde gespeichert."
+
+#: manage/views/delivery_times.py:68
+msgid "Delivery time has been added."
+msgstr "Lieferzeit wurde hinzugefügt."
+
+#: manage/views/delivery_times.py:88
+msgid "Delivery time has been deleted."
+msgstr "Lieferzeit wurde gelöscht."
+
+#: manage/views/orders.py:72
+msgid "Order has been sent."
+msgstr "Bestellung wurde gespeichert."
+
+#: manage/views/page.py:58
+msgid "Page has been saved."
+msgstr "Seite wurde gespeichert."
+
+#: manage/views/page.py:82
+msgid "Page has been added."
+msgstr "Seite wurde hinzugefügt."
+
+#: manage/views/page.py:101
+msgid "Page has been deleted."
+msgstr "Seite wurde gelöscht."
+
+#: manage/views/payment.py:174
+msgid "Payment method has been added."
+msgstr "Bezahlmethode wurde hinzugefügt."
+
 #: manage/views/payment.py:239 manage/views/shipping.py:239
 msgid "Price has been added"
 msgstr "Preis wurde hinzugefügt."
@@ -718,6 +750,26 @@ msgstr "Preis wurde gelöscht."
 msgid "Prices have been updated"
 msgstr "Preis wurde aktualisiert."
 
+#: manage/views/payment.py:335
+msgid "Payment method has been saved."
+msgstr "Bezahlmethode wurde hinzugefügt."
+
+#: manage/views/payment.py:358
+msgid "Payment method has been deleted."
+msgstr "Bezahlmethode wurde gelöscht."
+
+#: manage/views/properties.py:59
+msgid "Property type has been saved."
+msgstr "Eigenschaftstyp wurden gespeichert."
+
+#: manage/views/properties.py:90
+msgid "Property type has been changed."
+msgstr "Eigenschaftstyp wurden gespeichert."
+
+#: manage/views/properties.py:113
+msgid "Property has been added."
+msgstr "Eigenschaft wurde hinzugefügt."
+
 #: manage/views/properties.py:147
 msgid "Option has been added."
 msgstr "Option wurde hinzugefügt."
@@ -725,6 +777,22 @@ msgstr "Option wurde hinzugefügt."
 #: manage/views/properties.py:160
 msgid "Options have been update."
 msgstr "Optionen wurden aktualisiert."
+
+#: manage/views/shipping.py:174
+msgid "Shipping method has been added."
+msgstr "Liefermethode wurde hinzugefügt."
+
+#: manage/views/shipping.py:322
+msgid "Shipping method has been saved."
+msgstr "Liefermethode wurde gespeichert."
+
+#: manage/views/shipping.py:345
+msgid "Shipping method has been deleted."
+msgstr "Liefermethode wurde gelöscht."
+
+#: manage/views/shop.py:51
+msgid "Shop data has been saved."
+msgstr "Shopdaten wurden gespeichert."
 
 #: manage/views/shop.py:86
 msgid "Shop default values have been saved."
@@ -734,6 +802,34 @@ msgstr "Standardwerte Shop wurden gespeichert."
 #: manage/views/categories/seo.py:40 manage/views/product/product.py:133
 msgid "Please correct the indicated errors."
 msgstr "Bitte korrigieren Sie die angezeigten Fehler."
+
+#: manage/views/static_blocks.py:44
+msgid "Static block has been saved."
+msgstr "Statischer Block wurde gespeichert."
+
+#: manage/views/static_blocks.py:66
+msgid "Static block has been added."
+msgstr "Statischer Block wurde hinzugefügt."
+
+#: manage/views/static_blocks.py:101
+msgid "Static block has been deleted."
+msgstr "Statischer Block wurde hinzugefügt."
+
+#: manage/views/tax.py:45
+msgid "Tax has been saved."
+msgstr "Mehrwertsteuer wurde gespeichert."
+
+#: manage/views/tax.py:68
+msgid "Tax has been added."
+msgstr "Mehrwertsteuer wurde hinzugefügt."
+
+#: manage/views/tax.py:93
+msgid "Tax has been deleted."
+msgstr "Mehrwertsteuer wurde gelöscht."
+
+#: manage/views/utils.py:21
+msgid "Cache has been cleared."
+msgstr "Cache wurde gelöscht."
 
 #: manage/views/categories/category.py:95
 msgid "Category data have been saved."
@@ -784,6 +880,10 @@ msgstr "Bilder wurden gelöscht."
 msgid "Images has been updated."
 msgstr "Bilder wurden aktualisiert."
 
+#: manage/views/product/product.py:117
+msgid "Sub type has been changed."
+msgstr "Produkttyp wurden gespeichert."
+
 #: manage/views/product/product.py:131
 msgid "Product stock data has been saved."
 msgstr "Produkt-Lagerdaten wurden gespeichert."
@@ -815,6 +915,18 @@ msgstr "Produkte wurden zugewiesen."
 #: manage/views/property_groups/products.py:141
 msgid "Products have been removed."
 msgstr "Produkte wurden entfernt."
+
+#: manage/views/property_groups/property_groups.py:54
+msgid "Property group has been saved."
+msgstr "Eigenschaftsgruppe wurde gespeichert."
+
+#: manage/views/property_groups/property_groups.py:98
+msgid "Property group has been added."
+msgstr "Eigenschaftsgruppe wurde hinzugefügt."
+
+#: manage/views/property_groups/property_groups.py:117
+msgid "Property group has been deleted."
+msgstr "Eigenschaftsgruppe wurde gelöscht."
 
 #: manage/views/property_groups/property_groups.py:133
 msgid "Properties have been assigned."
@@ -2220,81 +2332,3 @@ msgid "There has been found 1 product."
 msgid_plural "There has been found %(counter)s products."
 msgstr[0] "Es wurde 1 Produkt gefunden."
 msgstr[1] "Es wuden %(counter)s Produkte gefunden."
-
-#~ msgid "Cache has been cleared."
-#~ msgstr "Cache wurde gelöscht."
-
-#~ msgid "Page has been saved."
-#~ msgstr "Seite wurde gespeichert."
-
-#~ msgid "Page has been added."
-#~ msgstr "Seite wurde hinzugefügt."
-
-#~ msgid "Page has been deleted."
-#~ msgstr "Seite wurde gelöscht."
-
-#~ msgid "Payment method has been added."
-#~ msgstr "Bezahlmethode wurde hinzugefügt."
-
-#~ msgid "Payment method has been deleted."
-#~ msgstr "Bezahlmethode wurde gelöscht."
-
-#~ msgid "Property data has been saved."
-#~ msgstr "Eigenschaftsdaten wurden gespeichert."
-
-#~ msgid "Property type has been changed."
-#~ msgstr "Eigenschaftstyp wurden gespeichert."
-
-#~ msgid "Property has been added."
-#~ msgstr "Eigenschaft wurde hinzugefügt."
-
-#~ msgid "Shipping method has been added."
-#~ msgstr "Liefermethode wurde hinzugefügt."
-
-#~ msgid "Shipping method has been saved."
-#~ msgstr "Liefermethode wurde gespeichert."
-
-#~ msgid "Shipping method has been deleted."
-#~ msgstr "Liefermethode wurde gelöscht."
-
-#~ msgid "Shop data has been saved."
-#~ msgstr "Shopdaten wurden gespeichert."
-
-#~ msgid "Static block has been saved."
-#~ msgstr "Statischer Block wurde gespeichert."
-
-#~ msgid "Static block has been added."
-#~ msgstr "Statischer Block wurde hinzugefügt."
-
-#~ msgid "Tax has been saved."
-#~ msgstr "Mehrwertsteuer wurde gespeichert."
-
-#~ msgid "Tax has been added."
-#~ msgstr "Mehrwertsteuer wurde hinzugefügt."
-
-#~ msgid "Tax has been deleted."
-#~ msgstr "Mehrwertsteuer wurde gelöscht."
-
-#~ msgid "Sub type has been changed."
-#~ msgstr "Produkttyp wurden gespeichert."
-
-#~ msgid "Property group has been saved."
-#~ msgstr "Eigenschaftsgruppe wurde gespeichert."
-
-#~ msgid "Property group has been added."
-#~ msgstr "Eigenschaftsgruppe wurde hinzugefügt."
-
-#~ msgid "Property group has been deleted."
-#~ msgstr "Eigenschaftsgruppe wurde gelöscht."
-
-#~ msgid "Product dimension has been saved."
-#~ msgstr "Produktabmessungen wurden gespeichert."
-
-#~ msgid "Overview"
-#~ msgstr "Übersicht"
-
-#~ msgid "Save dimension"
-#~ msgstr "Abmessungen speichern"
-
-#~ msgid "Powered by LFS"
-#~ msgstr "Powered by LFS"

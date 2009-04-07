@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 
 # lfs imports
+from lfs import shipping
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.models import Country
 from lfs.core.models import Shop
@@ -16,8 +17,8 @@ from lfs.criteria.settings import LESS_THAN_EQUAL
 from lfs.criteria.settings import GREATER_THAN
 from lfs.criteria.settings import GREATER_THAN_EQUAL
 from lfs.criteria.settings import NUMBER_OPERATORS
-from lfs.criteria.settings import SELECT_OPERATORS, IS, IS_NOT
-from lfs import shipping
+from lfs.criteria.settings import SELECT_OPERATORS, IS
+from django.template import RequestContext
 
 class Criterion(object):
     """Base class for all lfs criteria.
@@ -28,12 +29,12 @@ class Criterion(object):
         """
         template = "criteria/%s_criterion.html" % self.content_type
 
-        return render_to_string(template, {
+        return render_to_string(template, RequestContext(request, {
             "id" : "ex%s" % self.id,
             "operator" : self.operator,
             "value" : self.value,
             "position" : position,
-        })
+        }))
     
 class CountryCriterion(models.Model, Criterion):
     """A criterion for the shipping country.
@@ -97,13 +98,13 @@ class CountryCriterion(models.Model, Criterion):
                 "selected" : selected,
             })
     
-        return render_to_string("criteria/country_criterion.html", {
+        return render_to_string("criteria/country_criterion.html", RequestContext(request, {
             "id" : "ex%s" % self.id,
             "operator" : self.operator,
             "value" : self.value,
             "position" : position,
             "countries" : countries,        
-        })
+        }))
     
 class UserCriterion(models.Model, Criterion):
     """A criterion for user content objects

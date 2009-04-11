@@ -46,7 +46,7 @@ class UtilsTestCase(TestCase):
         self.c12.products = (self.p3, self.p4)        
         self.c12.save()
 
-        self.o = Order.objects.create()
+        self.o = Order.objects.create(invoice_country_id=1, shipping_country_id=1)
         self.oi1 = OrderItem.objects.create(order=self.o, product_amount=1, product=self.p1)
         self.oi2 = OrderItem.objects.create(order=self.o, product_amount=2, product=self.p2)
         self.oi3 = OrderItem.objects.create(order=self.o, product_amount=3, product=self.p3)

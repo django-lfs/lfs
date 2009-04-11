@@ -27,13 +27,13 @@ def get_product_delivery_time(request, product_slug, for_cart=False):
     shipping method is valid for the given product this one is taken, if not
     the default one - the default one is the first valid shipping method.
     """
+    # TODO: Need a reasonable chaching here    
     if for_cart:
-        cache_key = "shipping-delivery-time-cart"
+        cache_key = "shipping-delivery-time-cart-%s" % (request.user.id)
     else:
         cache_key = "shipping-delivery-time"
-    
-    # TODO: Need a reasonable chaching here
-    shippings = cache.get(cache_key)
+
+    shippings = None # cache.get(cache_key)
     if shippings is None:
         shippings = {}
     

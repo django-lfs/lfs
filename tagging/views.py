@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # python imports
 import re
 

@@ -174,18 +174,23 @@ def filter_navigation(context, category):
     """
     request = context.get("request")
     sorting = request.session.get("sorting")    
-    set_product_filter = request.session.get("product-filter", {})
-    set_product_filter = set_product_filter.items()        
+    
+    # Get saved filters
+    set_product_filters = request.session.get("product-filter", {})
+    set_product_filters = set_product_filters.items()        
+    set_price_filters = request.session.get("price-filter")    
 
-    price_filter = request.session.get("price-filter")
-    
-    pf =  lfs.catalog.utils.get_product_filters(category, set_product_filter, price_filter, sorting)
-    
-    price_filters = lfs.catalog.utils.get_price_filters(category, set_product_filter, price_filter)
+    # calculate filters
+    product_filters = lfs.catalog.utils.get_product_filters(category,
+        set_product_filters, set_price_filters, sorting)
+
+    price_filters = lfs.catalog.utils.get_price_filters(category, 
+        set_product_filters, set_price_filters)
+        
     return {
         "category" : category,
-        "product_filters" : pf,
-        "price_filter" : request.session.get("price-filter"),
+        "product_filters" : product_filters,
+        "set_price_filters" : set_price_filters,
         "price_filters" : price_filters,
     }
     

@@ -107,7 +107,6 @@ def get_price_filters(category, product_filter, price_filter):
         all_products.extend(product.variants.all())
     
     product_ids = [p.id for p in all_products]
-    url = reverse("lfs_set_price_filter", kwargs={"category_slug" : category.slug})
     
     # If a price filter is set we return just this.
     if price_filter:
@@ -118,8 +117,8 @@ def get_price_filters(category, product_filter, price_filter):
         quantity = len(products)
         
         return ({
-            "url" : "%s?min=%s&max=%s" % (url, min, max),
-            "content" : "%s-%s" % (min, max),
+            "min" : min, 
+            "max" : max,
         },)
         
     product_ids_str = ", ".join([str(p.id) for p in all_products])
@@ -161,15 +160,25 @@ def get_price_filters(category, product_filter, price_filter):
         min = i+1
         max = i+step
         products = lfs.catalog.models.Product.objects.filter(price__range=(min, max), pk__in=product_ids)
-        quantity = len(products)
-        if len(products) > 0:
-            result.append({
-                "url" : "%s?min=%s&max=%s" % (url, min, max),
-                "content" : "%s-%s" % (min, max),
-                "quantity" : quantity,
-            })
-
-    return result
+        result.append({
+            "min" : min,
+            "max" : max,
+            "quantity" : len(products),
+        })
+    
+    # return result
+    
+    new_result = []
+    for n, f in enumerate(result):
+        if f["quantity"] == 0:
+            try:
+                result[n+1]["min"] = f["min"]
+            except IndexError:
+                pass
+            continue
+        new_result.append(f)
+        
+    return new_result
 
 def get_product_filters(category, product_filter, price_filter, sorting):
     """Returns the next product filters based on products which are in the given 

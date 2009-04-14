@@ -291,6 +291,7 @@
                     </td>
                 </tr>
             </table>
+
             {# Cart #}
             <div id="cart-inline">
                 {{ cart_inline }}
@@ -298,11 +299,21 @@
 
             {# Message #}
             <div>
-                <label for="id_message">{{ form.message.label_tag }}:</label>
+                <label for="id_message">{{form.message.label_tag}}:</label>
             </div>
             <div>
-                {{ form.message }}
+                {{form.message}}
             </div>
+            
+            <input class="edit-cart-button"
+                   type="button"
+                   onclick="window.location='{% url lfs.cart.views.cart %}'"
+                   value="{% trans 'Edit cart' %}" />
+
+            <input class="send-order"
+                   type="submit" 
+                   value="{% trans 'Submit order' %}" />
+               
         </form>
     </div>
 {% endblock %}

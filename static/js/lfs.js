@@ -105,17 +105,17 @@ $(function() {
     });
     
     // Checkout ##################################################################
-    var table = $('.invoice-address');
-    if ($("#id_no_invoice:checked").val() != null) {
+    var table = $('.shipping-address');
+    if ($("#id_no_shipping:checked").val() != null) {
         table.hide();
     }
     else {
         table.show();
     }        
     
-    $("#id_no_invoice").livequery("click", function() {
-        var table = $('.invoice-address');
-        if ($("#id_no_invoice:checked").val() != null) {
+    $("#id_no_shipping").livequery("click", function() {
+        var table = $('.shipping-address');
+        if ($("#id_no_shipping:checked").val() != null) {
             table.slideUp("fast");
         }
         else {

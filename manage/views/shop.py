@@ -26,7 +26,7 @@ class ShopForm(ModelForm):
     class Meta:
         model = Shop
         fields = ("name", "shop_owner", "from_email", "notification_emails", 
-            "description", "image", "static_block")
+            "description", "image", "static_block", "checkout_type")
 
 class ShopDefaultValuesForm(ModelForm):
     """

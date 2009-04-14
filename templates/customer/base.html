@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load lfs_tags %}
+
+{% block left-slot %}
+    <h1>{% trans 'My account' %}</h1>
+    <ul>
+        <li>
+            <a href="{% url lfs_my_account %}">{% trans 'Overview' %}</a>
+        </li>        
+    </ul>    
+    <ul>
+        <li>
+            <a href="{% url lfs_my_orders %}">{% trans 'Your orders' %}</a>
+        </li>
+    </ul>        
+    <ul>
+        <li>
+            <a href="{% url lfs_my_password %}">{% trans 'Change password' %}</a>
+        </li>        
+        <li>
+            <a href="{% url lfs_my_email %}">{% trans 'Change e-mail' %}</a>
+        </li>
+        {# <li> #}
+        {#     <a href="{% url lfs_my_addresses %}">{% trans 'Change addresses' %}</a> #}
+        {# </li> #}
+    </ul>    
+{% endblock %}

@@ -29,10 +29,30 @@ class Customer(models.Model):
     selected_shipping_address = models.ForeignKey("Address", verbose_name=_(u"Selected shipping address"), blank=True, null=True, related_name="selected_shipping_address")
     selected_invoice_address = models.ForeignKey("Address", verbose_name=_(u"Selected invoice address"), blank=True, null=True, related_name="selected_invoice_address")
     selected_country = models.ForeignKey(Country, verbose_name=_(u"Selected country"), blank=True, null=True)
-
+    
     def __unicode__(self):
         return "%s/%s" % (self.user, self.session)
+        
+    def get_email_address(self):
+        """Returns the email address of the customer dependend on the user is 
+        registered or not.
+        """
+        if self.user:
+            return self.user.email
+        else:
+            return self.selected_shipping_address.email
     
+    def set_email_address(self, email):
+        """Returns the email address of the customer dependend on the user is
+        registered or not.
+        """
+        if self.user:
+            self.user.email = email
+            self.user.save()            
+        else:
+            self.selected_shipping_address.email = email
+            self.selected_shipping_address.save()
+        
 class Address(models.Model):
     """An address which can be used as shipping and/or invoice address.
     """

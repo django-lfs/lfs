@@ -1,0 +1,51 @@
+{% extends "customer/base.html" %}
+{% load i18n %}
+{% load lfs_tags %}
+
+{% block right-slot-wrapper %}{% endblock %}
+
+{% block content %}
+    <h1>{% trans 'Your orders' %}</h1>
+    
+    <div class="site-actions">
+        <form action="{% url lfs_my_orders %}"
+              method="post">
+            <select>
+                <option>{% trans 'Recent orders' %}</option>
+                <option>{% trans '2009' %}</option>
+            </select>
+            <input type="submit"
+                   value="{% trans 'Filter' %}">
+        </form>
+    </div>
+    
+    <table class="order">
+        <tr>
+            <th>
+                {% trans 'Date' %}
+            </th>
+            <th class="number">
+                {% trans 'Price' %}
+            </th>
+            <th class="right">
+                {% trans 'State' %}
+            </th>
+        </tr>
+        {% for order in orders %}
+            <tr>
+                <td>
+                    <a href="{% url lfs_my_order order.id %}">
+                        {{order.created}}
+                    </a>
+                    
+                </td>
+                <td class="number">
+                    {{order.price|currency}}
+                </td>
+                <td class="right">
+                    {{order.get_state_display}}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -12,8 +12,9 @@ Allgemeine Dokumentation
 .. toctree::
    :maxdepth: 2
 
+   narrative/addresses.rst
    narrative/category.rst
-   narrative/customer.rst
+   narrative/checkout.rst
    narrative/customizing.rst   
    narrative/features.rst
    narrative/properties.rst
@@ -41,6 +42,14 @@ Katalog
    :maxdepth: 2
       
    online/katalog/kategorie.rst
+
+Entwickler
+==========
+
+.. toctree::
+   :maxdepth: 2
+      
+   developer/customer.rst
    
 Indices and tables
 ==================

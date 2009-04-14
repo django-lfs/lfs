@@ -1,0 +1,57 @@
+{% extends "customer/base.html" %}
+{% load i18n %}
+{% load lfs_tags %}
+
+{% block right-slot-wrapper %}{% endblock %}
+
+{% block content %}
+    {% if show_shipping_address %}
+        <h1>{% trans 'Your addresses' %}</h1>
+    {% else %}
+        <h1>{% trans 'Your address' %}</h1>
+    {% endif %}
+
+    <form action="{% url lfs_my_addresses %}"
+          method="post">
+        <table class="lfs-default">
+            {% if show_shipping_address %}
+                <tr>
+                    <td>
+                        <h2>{% trans 'Invoice Address' %}</h2>
+                    </td>
+                    <td>
+                        <h2>{% trans 'Shipping Address' %}</h2>
+                    </td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td>
+                    <table>
+                        {{invoice_address_form}}
+                    </table>
+                </td>
+                {% if show_shipping_address %}
+                    <td>
+                        <table>
+                            {{shipping_address_form}}                            
+                        </table>
+                    </td>                                    
+                {% endif %}
+            </tr>
+            <tr>
+                <td>
+                    {% if show_shipping_address %}
+                        <input class="lfs-default"
+                               type="submit"
+                               value="{% trans 'Save addresses' %}">
+                    {% else %}
+                        <input class="lfs-default"
+                               type="submit"
+                               value="{% trans 'Save address' %}">
+                    {% endif %}                    
+                </td>
+            </tr>
+        </table>
+    </form>
+    
+{% endblock %}

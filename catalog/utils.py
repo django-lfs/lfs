@@ -113,7 +113,7 @@ def get_price_filters(category, product_filter, price_filter):
         min = price_filter["min"]
         max = price_filter["max"]
         products = lfs.catalog.models.Product.objects.filter(
-            price__range=(min, max), pk__in=product_ids)
+            effective_price__range=(min, max), pk__in=product_ids)
         quantity = len(products)
         
         return ({
@@ -123,7 +123,7 @@ def get_price_filters(category, product_filter, price_filter):
         
     product_ids_str = ", ".join([str(p.id) for p in all_products])
     cursor = connection.cursor()
-    cursor.execute("""SELECT min(price), max(price)
+    cursor.execute("""SELECT min(effective_price), max(effective_price)
                       FROM catalog_product
                       WHERE id IN (%s)""" % product_ids_str)
                       
@@ -154,12 +154,12 @@ def get_price_filters(category, product_filter, price_filter):
         step = 1000
     
     result = []
-    for n, i in enumerate(range(0, pmax, step)):
+    for n, i in enumerate(range(0, int(pmax), step)):
         if i > pmax:
             break
         min = i+1
         max = i+step
-        products = lfs.catalog.models.Product.objects.filter(price__range=(min, max), pk__in=product_ids)
+        products = lfs.catalog.models.Product.objects.filter(effective_price__range=(min, max), pk__in=product_ids)
         result.append({
             "min" : min,
             "max" : max,
@@ -355,7 +355,7 @@ def get_filtered_products_for_category(category, filters, price_filter, sorting)
         products = lfs.catalog.models.Product.objects.filter(categories__in=categories)
     
     if price_filter:
-        products = products.filter(price__range=[price_filter["min"], price_filter["max"]])
+        products = products.filter(effective_price__range=[price_filter["min"], price_filter["max"]])
     
     if sorting:
         products = products.order_by(sorting)

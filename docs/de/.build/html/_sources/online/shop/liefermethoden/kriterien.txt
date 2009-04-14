@@ -1,5 +1,0 @@
-Kriterien
-=========
-
-Kriterien der Liefermethode. Nur wenn alle Kriterien gültig sind, wird die 
-Liefermethod zur Auswahl angeboten.

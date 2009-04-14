@@ -6,6 +6,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+from lfs.checkout.settings import CHECKOUT_TYPES
+from lfs.checkout.settings import CHECKOUT_TYPE_SELECT
 from lfs.core.fields.thumbs import ImageWithThumbsField
 from lfs.catalog.models import StaticBlock
 
@@ -74,6 +76,10 @@ class Shop(models.Model):
     - default_country
        This country will be used to calculate shipping price if the shop
        customer doesn't have select a country yet.
+       
+    - checkout_type
+       Decides whether the customer has to login, has not to login or has the 
+       choice to to login or not to be able to check out.
     """
     name = models.CharField(_(u"Name"), max_length=30)
     shop_owner = models.CharField(_(u"Shop owner"), max_length=100, blank=True)
@@ -91,8 +97,10 @@ class Shop(models.Model):
     ga_site_tracking = models.BooleanField(_(u"Google Analytics Site Tracking"), default=False)
     ga_ecommerce_tracking = models.BooleanField(_(u"Google Analytics E-Commerce Tracking"), default=False)
     
-    default_country = models.ForeignKey(Country, verbose_name=_(u"Default country"))
     countries = models.ManyToManyField(Country, verbose_name=_(u"Countries"), related_name="shops")
+    default_country = models.ForeignKey(Country, verbose_name=_(u"Default country"))
+    
+    checkout_type = models.IntegerField(_(u"Checkout type"), choices=CHECKOUT_TYPES, default=CHECKOUT_TYPE_SELECT)
     
     class Meta:
         permissions = (("manage_shop", "Manage shop"),)

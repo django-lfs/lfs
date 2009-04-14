@@ -241,12 +241,17 @@ class Category(models.Model):
 # TODO: Add attributes to the doc string.
 class Product(models.Model):
     """A product is sold within a shop.
+
+    Parameters:
+        - effective_price:
+            Only for internal usage (price filtering).
     """
     # All products
     name = models.CharField(_(u"Name"), max_length=80)
     slug = models.SlugField(_(u"Slug"), unique=True, max_length=80)
     sku = models.CharField(_(u"SKU"), blank=True, max_length=30)
     price = models.FloatField(_(u"Price"), default=0.0)
+    effective_price = models.FloatField(_(u"Price"), blank=True)
     short_description = models.TextField(_(u"Short description"), blank=True)
     description = models.TextField(_(u"Description"), blank=True)    
     images = generic.GenericRelation("Image", verbose_name=_(u"Images"), 
@@ -313,6 +318,17 @@ class Product(models.Model):
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.slug)
     
+    def save(self, force_insert=False, force_update=False):
+        """Overwritten to save effective_price
+        use.
+        """
+        if self.for_sale:
+            self.effective_price = self.for_sale_price
+        else:
+            self.effective_price = self.price
+            
+        super(Product, self).save()
+            
     def get_absolute_url(self):
         """Returns the absolute url of the product.
         """

@@ -1,5 +1,6 @@
 # django imports
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
@@ -15,6 +16,9 @@ import lfs.payment.utils
 class Order(models.Model):
     """An order is created when products has been sold.
     """
+    user = models.ForeignKey(User, verbose_name=_(u"User"), blank=True, null=True)
+    session = models.CharField(_(u"Session"), blank=True, max_length=100)
+    
     created = models.DateTimeField(_(u"Created"), auto_now_add=True)
     state = models.PositiveSmallIntegerField(_(u"State"), choices=ORDER_STATES, default=SUBMITTED)
 
@@ -32,7 +36,6 @@ class Order(models.Model):
     invoice_city = models.CharField(_(u"Invoice city"), max_length=50)
     invoice_country = models.ForeignKey(Country, related_name="orders_invoice_country")
     invoice_phone = models.CharField(_(u"Invoice phone"), blank=True, max_length=20)
-    invoice_email = models.EmailField(_(u"Invoice e-mail"), blank=True, null=True, max_length=50)
 
     shipping_firstname = models.CharField(_(u"Shipping firstname"), max_length=50)
     shipping_lastname = models.CharField(_(u"Shipping lastname"), max_length=50)    
@@ -41,7 +44,6 @@ class Order(models.Model):
     shipping_city = models.CharField(_(u"Shipping city"), max_length=50)
     shipping_country = models.ForeignKey(Country, related_name="orders_shipping_country")
     shipping_phone = models.CharField(_(u"Shipping phone"), blank=True, max_length=20)
-    shipping_email = models.EmailField(_(u"Shipping e-mail"), blank=True, null=True, max_length=50)
     
     shipping_method = models.ForeignKey(ShippingMethod, verbose_name=_(u"Shipping Method"), blank=True, null=True)
     shipping_price = models.FloatField(_(u"Shipping Price"), default=0.0)

@@ -5,7 +5,6 @@ from django.core.cache import cache
 from django.http import Http404
 from django.shortcuts import _get_queryset
 
-
 def key_from_instance(instance):
     opts = instance._meta
     return '%s.%s:%s' % (opts.app_label, opts.module_name, instance.pk)    
@@ -52,3 +51,24 @@ def lfs_get_object_or_404(klass, *args, **kwargs):
         return object
     except queryset.model.DoesNotExist:
         raise Http404('No %s matches the given query.' % queryset.model._meta.object_name)
+        
+def clear_cache():
+    """Clears the complete cache.
+    """
+    # memcached
+    try:
+        cache._cache.flush_all()
+    except AttributeError:
+        pass            
+    else:
+        return
+
+    try:
+        cache._cache.clear()
+    except AttributeError:
+        pass
+    try:
+        cache._expire_info.clear()
+    except AttributeError:
+        pass
+        

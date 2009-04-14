@@ -235,5 +235,6 @@ urlpatterns += patterns('lfs.manage.views.tax',
 urlpatterns += patterns('lfs.manage.views.utils',
     url(r'^utilities$', "utilities", name="lfs_manage_utils"),
     url(r'^clear-cache$', "clear_cache", name="lfs_clear_cache"),
+    url(r'^update-effective-price$', "update_effective_price", name="lfs_update_effective_price"),
 )
 

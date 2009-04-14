@@ -5,6 +5,7 @@ from django.db.models.signals import pre_save
 from django.db.models.signals import pre_delete
 
 # lfs imports
+from lfs.caching.utils import clear_cache
 from lfs.cart.models import Cart
 from lfs.catalog.models import Category
 from lfs.catalog.models import Product
@@ -68,7 +69,8 @@ def product_changed_listener(sender, **kwargs):
 product_changed.connect(product_changed_listener)
 
 def product_saved_listener(sender, instance, **kwargs):
-    update_product_cache(instance)
+    # update_product_cache(instance)
+    update_category_cache(instance)
 post_save.connect(product_saved_listener, sender=Product)
 
 # Shipping Method
@@ -191,23 +193,3 @@ def update_topseller_cache(topseller):
     product = topseller.product
     for category in product.get_categories(with_parents=True):
         cache.delete("topseller-%s" % category.id)
-    
-def clear_cache():
-    """
-    """
-    # memcached
-    try:
-        cache._cache.flush_all()
-    except AttributeError:
-        pass            
-    else:
-        return
-
-    try:
-        cache._cache.clear()
-    except AttributeError:
-        pass
-    try:
-        cache._expire_info.clear()
-    except AttributeError:
-        pass

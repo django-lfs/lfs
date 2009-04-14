@@ -17,14 +17,28 @@
         <script type="text/javascript" src="{{MEDIA_URL}}lfs/js/json2.js"></script>
     </head>
     <body class="{% block section %}lfs{% endblock %}">
+        
+        {% if debug %}
+            {{ sql_queries|length }}<!--
+            SQL queries ({{ sql_queries|length }}):
+            {% for query in sql_queries %}
+                {{ query.sql|safe|wordwrap:"75" }} ({{ query.time }})
+            {% endfor %}
+            -->
+        {% endif %}
+        
         <div id="wrapper">
             <h1><a href="{% url lfs.core.views.shop_view %}">LFS</a></h1>
-            
+                        
             <div id="user">
                 {% if user.is_authenticated %}
-                    <span>{{ user.username }}</span> | <a href="/logout">logout</a>
+                    <span>{{ user.username }}</span> 
+                    | <a href="/logout">Logout</a>
+                    | <a href="{% url lfs_my_account %}">My account</a>
                 {% else %}
-                    <a href="/login">login</a>
+                    {% if not ANON_ONLY %}
+                        <a href="{% url lfs_login %}">login</a>
+                    {% endif %}                    
                 {% endif %}
             </div>
             
@@ -67,12 +81,4 @@
         {% block google-analytics-ecommerce %}{% endblock %}
         
     </body>
-    {% if debug %}
-        {{ sql_queries|length }}<!--
-        SQL queries ({{ sql_queries|length }}):
-        {% for query in sql_queries %}
-            {{ query.sql|safe|wordwrap:"75" }} ({{ query.time }})
-        {% endfor %}
-        -->
-    {% endif %}
 </html>

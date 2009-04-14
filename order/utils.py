@@ -14,8 +14,12 @@ def add_order(request):
     is within the responsibility of the checkout form.
     """
     customer = customer_utils.get_customer(request)
-    shipping_address = customer.selected_shipping_address
+
     invoice_address = customer.selected_invoice_address
+    if customer.selected_shipping_address:
+        shipping_address = customer.selected_shipping_address
+    else:
+        shipping_address = customer.selected_invoice_address
     
     cart = cart_utils.get_cart(request)
     cart_costs = cart_utils.get_cart_costs(request, cart, total=False)
@@ -26,33 +30,32 @@ def add_order(request):
     payment_method = payment_utils.get_selected_payment_method(request)
     payment_costs = payment_utils.get_payment_costs(request, payment_method)
 
-    # Set name and email dependent on login state. An anonymous customer doesn't 
-    # have a django user account, so we set the name of the shipping address to
-    # the customer name.
+    # Set email dependend on login state. An anonymous customer doesn't  have a 
+    # django user account, so we set the name of the invoice address to the 
+    # customer name.
     
-    # Note: After this has been processes the order's customer email has an 
-    # email in any case. That means you can use it to send emails to the 
+    # Note: After this has been processed the order's customer email has an
+    # email in any case. That means you can use it to send emails to the
     # customer.
     if request.user.is_authenticated():
         user = request.user
-        customer_firstname = user.first_name
-        customer_lastname = user.last_name
         customer_email = user.email
     else:
-        customer_firstname = shipping_address.firstname
-        customer_lastname = shipping_address.lastname 
-        customer_email = shipping_address.email
-    
+        user = None
+        customer_email = invoice_address.email
+        
     # Calculate the totals    
     price = cart_costs["price"] + shipping_costs["price"] + payment_costs["price"]
     tax = cart_costs["tax"] + shipping_costs["tax"] + payment_costs["tax"]
     
     order = Order.objects.create(
+        user = user,
+        session = request.session.session_key,
         price = price,
         tax = tax,
 
-        customer_firstname = customer_firstname,
-        customer_lastname = customer_lastname,
+        customer_firstname = invoice_address.firstname,
+        customer_lastname = invoice_address.lastname,
         customer_email = customer_email,
                 
         shipping_method = shipping_method,
@@ -62,15 +65,6 @@ def add_order(request):
         payment_price = payment_costs["price"],
         payment_tax = payment_costs["tax"],
 
-        shipping_firstname = shipping_address.firstname,
-        shipping_lastname = shipping_address.lastname,
-        shipping_street = shipping_address.street,
-        shipping_zip_code = shipping_address.zip_code,
-        shipping_city = shipping_address.city,
-        shipping_country = shipping_address.country,
-        shipping_phone = shipping_address.phone,
-        shipping_email = shipping_address.email,
-
         invoice_firstname = invoice_address.firstname,
         invoice_lastname = invoice_address.lastname,
         invoice_street = invoice_address.street,
@@ -78,7 +72,14 @@ def add_order(request):
         invoice_city = invoice_address.city,
         invoice_country = invoice_address.country,
         invoice_phone = invoice_address.phone,
-        invoice_email = invoice_address.email,
+
+        shipping_firstname = shipping_address.firstname,
+        shipping_lastname = shipping_address.lastname,
+        shipping_street = shipping_address.street,
+        shipping_zip_code = shipping_address.zip_code,
+        shipping_city = shipping_address.city,
+        shipping_country = shipping_address.country,
+        shipping_phone = shipping_address.phone,
 
         message = request.POST.get("message", ""),
     )

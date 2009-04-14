@@ -48,9 +48,11 @@ class PriceFilterTestCase(TestCase):
         """
         """
         result = lfs.catalog.utils.get_price_filters(self.c1, [], None)
-        self.assertEqual(result[0]["content"], "1-3")
+        self.assertEqual(result[0]["min"], 1)
+        self.assertEqual(result[0]["max"], 3)
         self.assertEqual(result[0]["quantity"], 2)
-        self.assertEqual(result[1]["content"], "4-6")
+        self.assertEqual(result[1]["min"], 4)
+        self.assertEqual(result[1]["max"], 6)
         self.assertEqual(result[1]["quantity"], 1)
 
     def test_get_price_filter_2(self):
@@ -64,11 +66,14 @@ class PriceFilterTestCase(TestCase):
         self.p3.save()
         
         result = lfs.catalog.utils.get_price_filters(self.c1, [], None)
-        self.assertEqual(result[0]["content"], "1-100")
+        self.assertEqual(result[0]["min"], 1)
+        self.assertEqual(result[0]["max"], 100)
         self.assertEqual(result[0]["quantity"], 1)
-        self.assertEqual(result[1]["content"], "101-200")
+        self.assertEqual(result[1]["min"], 101)
+        self.assertEqual(result[1]["max"], 200)
         self.assertEqual(result[1]["quantity"], 1)
-        self.assertEqual(result[2]["content"], "201-300")
+        self.assertEqual(result[2]["min"], 201)
+        self.assertEqual(result[2]["max"], 300)
         self.assertEqual(result[2]["quantity"], 1)
     
 class PropertiesTestCase(TestCase):

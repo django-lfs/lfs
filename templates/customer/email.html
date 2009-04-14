@@ -1,0 +1,29 @@
+{% extends "customer/base.html" %}
+{% load i18n %}
+{% load lfs_tags %}
+
+{% block right-slot-wrapper %}{% endblock %}
+
+{% block content %}
+    <h1>{% trans 'Change your e-mail address' %}</h1>
+
+    <form action="{% url lfs_my_email %}"
+          method="post">
+        <table>
+            {{email_form}}
+            <tr>
+                <td></td>
+                <td>
+                    <input type="hidden"
+                           name="action"
+                           value="email" />
+        
+                    <input class="lfs-default"
+                           type="submit"
+                           value="{% trans 'Save e-mail address' %}" />
+                </td>
+            </tr>
+        </table>
+        
+    </form>
+{% endblock %}

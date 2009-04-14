@@ -140,7 +140,6 @@ class OrderTestCase(TestCase):
         self.assertEqual(order.shipping_zip_code, "2342")
         self.assertEqual(order.shipping_city, "Gotham City")
         self.assertEqual(order.shipping_phone, "555-111111")
-        self.assertEqual(order.shipping_email, "john@doe.com")
 
         self.assertEqual(order.invoice_firstname, "Jane")
         self.assertEqual(order.invoice_lastname, "Doe")
@@ -148,7 +147,6 @@ class OrderTestCase(TestCase):
         self.assertEqual(order.invoice_zip_code, "2443")
         self.assertEqual(order.invoice_city, "Smallville")
         self.assertEqual(order.invoice_phone, "666-111111")
-        self.assertEqual(order.invoice_email, "jane@doe.com")
 
         # Items
         self.assertEqual(len(order.items.all()), 2)

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load lfs_tags %}
+
+{% block right-slot-wrapper %}{% endblock %}
+
+{% block content %}
+    <h1>{% trans 'Your Data' %}</h1>
+
+    <h2>{% trans 'E-Mail' %}</h2>
+    <form action="{% url lfs_save_email %}"
+          method="post">
+        <table>
+            {{email_form}}
+        </table>
+        
+        <input type="hidden"
+               name="action"
+               value="email" />
+        
+        <input class="lfs-default"
+               type="submit"
+               value="{% trans 'Save e-mail address' %}">
+    </form>
+
+    {% if show_shipping_address %}
+        <h2>{% trans 'Addresses' %}</h2>
+    {% else %}
+        <h2>{% trans 'Address' %}</h2>
+    {% endif %}
+
+    <form action="{% url lfs_save_addresses %}"
+          method="post">
+        <table class="lfs-default">
+            {% if show_shipping_address %}
+                <tr>
+                    <td>
+                        <h2>{% trans 'Invoice Address' %}</h2>
+                    </td>
+                    <td>
+                        <h2>{% trans 'Shipping Address' %}</h2>
+                    </td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td>
+                    <table>
+                        {{invoice_address_form}}
+                    </table>
+                </td>
+                {% if show_shipping_address %}
+                    <td>
+                        <table>
+                            {{shipping_address_form}}
+                        </table>
+                    </td>                                    
+                {% endif %}
+            </tr>
+        </table>
+        <input type="hidden"
+               name="action"
+               value="addresses" />
+
+        {% if show_shipping_address %}
+            <input class="lfs-default"
+                   type="submit"
+                   value="{% trans 'Save addresses' %}">
+        {% else %}
+            <input class="lfs-default"
+                   type="submit"
+                   value="{% trans 'Save address' %}">
+        {% endif %}
+
+    </form>
+    
+    {% if bank_account_form %}
+        <h2>{% trans 'Bank account' %}</h2>
+
+        <form action="{% url lfs_my_data %}"
+              method="post">
+            <table>
+                {{bank_account_form}}
+            </table>
+            <input type="hidden"
+                   name="action"
+                   value="bank_account" />
+            <input class="lfs-default"
+                   type="submit"
+                   value="{% trans 'Save bank account' %}">
+        </form>        
+    {% endif %}
+    
+{% endblock %}

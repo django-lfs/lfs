@@ -7,6 +7,7 @@ table.accessories {
     margin:20px 0;
 }
 
+table.order,
 table.cart {
     width: 100%;    
 }

@@ -33,14 +33,13 @@ def get_cart_price(request, cart, total=False):
 def get_cart_costs(request, cart, total=False):
     """Returns price and tax of the given cart.
     """
+    if cart is None:
+        return {"price" : 0, "tax" : 0}
+    
     cache_key = "cart-costs-%s" % cart.id
     cart_costs = cache.get(cache_key)
     
     if cart_costs is None:
-        
-        if cart is None:
-            cart_costs = {"price" : 0, "tax" : 0}
-
         cart_price = 0
         cart_tax = 0    
         for item in cart.items():
@@ -125,6 +124,7 @@ def update_cart_after_login(request):
             user_cart = Cart.objects.get(user = request.user)
         except ObjectDoesNotExist:
             session_cart.user = request.user
+            session_cart.save()
         else:
             for session_cart_item in session_cart.items():
                 try:

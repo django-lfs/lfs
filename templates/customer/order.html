@@ -1,0 +1,26 @@
+{% extends "customer/base.html" %}
+{% load i18n %}
+{% load lfs_tags %}
+
+{# {% block left-slot %} #}
+{#     {% for order in orders %} #}
+{#         <div>             #}
+{#             <a href="{% url lfs_my_order order.id %}" #}
+{#                class="selectable {% ifequal order.id current_order.id %}selected{% endifequal %}"> #}
+{#                 {{order.created}} #}
+{#             </a> #}
+{#         </div> #}
+{#     {% endfor %} #}
+{# {% endblock %} #}
+
+{% block right-slot-wrapper %}{% endblock %}
+
+{% block content %}
+    <div class="site-actions">
+        <a href="{% url lfs_my_orders %}">{% trans 'Overview' %}</a>
+    </div>
+    
+    <h1>{% trans 'Ordernumber:' %} {{current_order.id}}</h1>
+    
+    {% include "order/lfs_order_tmpl.html" %}
+{% endblock %}

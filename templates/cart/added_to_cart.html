@@ -58,7 +58,7 @@
     
     <div id="added-to-cart-buttons">
         <a class="cart-button" href="{% url lfs.cart.views.cart %}">{% trans 'Cart' %}</a>
-        <a class="checkout-button" href="{% url lfs.checkout.views.checkout %}">{% trans 'Checkout' %}</a>
+        <a class="checkout-button" href="{% url lfs_checkout_dispatcher %}">{% trans 'Checkout' %}</a>
         <a class="shopping-button" href="{{shopping_url}}">{% trans 'Go on shopping' %}</a>
     </div>
 {% endblock %}

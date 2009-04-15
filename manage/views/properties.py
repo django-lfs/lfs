@@ -23,7 +23,7 @@ class PropertyDataForm(ModelForm):
     """
     class Meta:
         model = Property
-        fields = ["name", "filterable"]
+        fields = ["name", "filterable", "unit"]
 
 class PropertyTypeForm(ModelForm):
     """

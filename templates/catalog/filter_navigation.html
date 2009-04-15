@@ -8,18 +8,18 @@
     {% for property_group in product_filters %}
         <div class="portlet-body">
             <div style="padding-bottom:4px">
-                {{property_group.name}}
+                {{ property_group.name }}
                 <a href="{% url lfs_reset_product_filter category.slug property_group.id %}">[x]</a>
             </div>
             {% for property in property_group.items %}
                 <div>
                     {% if property.show_quantity %}
                         <a href='{% url lfs_set_product_filter category.slug property_group.id property.value %}'>
-                            {{property.name}} ({{property.quantity}})
+                            {{ property.name }} {{ property.unit }} ({{ property.quantity }})
                         </a>
                     {% else %}
                         <a href='{% url lfs_set_product_filter category.slug property_group.id property.value %}'>
-                            {{property.name}}
+                            {{ property.name }} {{ property.unit }} 
                         </a>                        
                     {% endif %}
                 </div>        

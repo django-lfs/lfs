@@ -186,7 +186,7 @@ def filter_navigation(context, category):
 
     price_filters = lfs.catalog.utils.get_price_filters(category, 
         set_product_filters, set_price_filters)
-        
+    
     return {
         "category" : category,
         "product_filters" : product_filters,

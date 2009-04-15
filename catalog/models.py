@@ -803,14 +803,13 @@ class Property(models.Model):
         - position: 
             The position of the property within a product.
 
-    NOTE: The 1:n relation from one property to product is by heart. We believe
-          that a property should belong only to one group xor property.
     """
     name = models.CharField( _(u"Name"), max_length=50)
     groups = models.ManyToManyField(PropertyGroup, verbose_name=_(u"Group"), blank=True, null=True, through="GroupsPropertiesRelation", related_name="properties")
     products = models.ManyToManyField(Product, verbose_name=_(u"Products"), blank=True, null=True, through="ProductsPropertiesRelation", related_name="properties")
     position = models.IntegerField(_(u"Position"), blank=True, null=True)
     filterable = models.BooleanField(default=True)
+    unit = models.CharField(_(u"Unit"), blank=True, max_length=15)
     local = models.BooleanField(default=False)
     type = models.PositiveSmallIntegerField(_(u"Type"), choices=PROPERTY_TYPE_CHOICES, default=PROPERTY_TEXT_FIELD)
 

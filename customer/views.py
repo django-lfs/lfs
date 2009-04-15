@@ -40,10 +40,10 @@ def login(request, template_name="customer/login.html"):
     # Using Djangos default AuthenticationForm
     login_form = AuthenticationForm()
     register_form = RegisterForm()
-    
+
     if request.POST.get("action") == "login":
         login_form = AuthenticationForm(data=request.POST)
-
+        
         if login_form.is_valid():
             redirect_to = request.POST.get("next")
             # Light security check -- make sure redirect_to isn't garbage.
@@ -92,8 +92,14 @@ def login(request, template_name="customer/login.html"):
     next_url = urlparse(next_url)
     next_url = next_url[2]
     
+    try:
+        login_form_errors = login_form.errors["__all__"]
+    except KeyError:
+        login_form_errors = None
+        
     return render_to_response(template_name, RequestContext(request, {
         "login_form" : login_form,
+        "login_form_errors" : login_form_errors,
         "register_form" : register_form,
         "next_url" : next_url,
     }))

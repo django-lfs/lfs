@@ -11,13 +11,18 @@
     <form action="{% url lfs_login %}"
           method="post">
         <h2>{% trans 'Login' %}</h2>
+        
+        {% if login_form_errors %}
+            <p>{{ login_form_errors }}</p>
+        {% endif %}
+        
         <div>
             <div class="field">
                 <div class="label">
                     {{ login_form.username.label_tag }}:
                 </div>
         
-                {% if field.errors %}
+                {% if login_form.username.errors %}
                     <div class="error">
                         {{ login_form.username }}
                         {{ login_form.username.errors }}
@@ -34,7 +39,7 @@
                     {{ login_form.password.label_tag }}:
                 </div>
         
-                {% if field.errors %}
+                {% if login_form.password.errors %}
                     <div class="error">
                         {{ login_form.password }}
                         {{ login_form.password.errors }}

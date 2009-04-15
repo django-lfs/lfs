@@ -187,17 +187,19 @@ def get_product_filters(category, product_filter, price_filter, sorting):
     properties_mapping = get_property_mapping()
     options_mapping = get_option_mapping()
     
-    # Base are the filtered products
-    products = get_filtered_products_for_category(category, product_filter, price_filter, sorting)
+    # The base for the calulation of the next filters are the filtered products
+    products = get_filtered_products_for_category(
+        category, product_filter, price_filter, sorting)
     if not products: 
         return []
     
-    # And their variants
+    # ... and their variants
     all_products = []
     for product in products:
         all_products.append(product)
         all_products.extend(product.variants.all())
-
+    
+    # Get the ids for use within the customer SQL
     product_ids = ", ".join([str(p.id) for p in all_products])
 
     # Count entries for current filter
@@ -209,7 +211,15 @@ def get_product_filters(category, product_filter, price_filter, sorting):
     already_count = {}
     amount = {}
     for row in cursor.fetchall():        
-        # We count a property/value pair just one time per product
+        # We count a property/value pair just one time per *product*. For 
+        # "products with variants" this could be stored several times within the 
+        # catalog_productpropertyvalue. Imagine a variant with two properties
+        # color and size:
+        #   v1 = color:red / size: s
+        #   v2 = color:red / size: l
+        # But we want to count color:red just one time. As the product with 
+        # variants is displayed at not the variants.
+        
         if already_count.has_key("%s%s%s" % (row[2], row[0], row[1])):
             continue
         already_count["%s%s%s" % (row[2], row[0], row[1])] = 1
@@ -258,7 +268,7 @@ def get_product_filters(category, product_filter, price_filter, sorting):
                     "quantity" : amount[row[0]][row[1]],
                     "show_quantity" : False,
                 },)
-            break
+            continue
         else:
             properties[row[0]].append({
                 "id"       : row[0],

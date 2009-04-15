@@ -8,6 +8,8 @@ from django.db import connection
 
 # import lfs
 import lfs.catalog.models
+from lfs.catalog.settings import PROPERTY_NUMBER_FIELD
+from lfs.catalog.settings import PROPERTY_TEXT_FIELD
 
 # TODO implement this methods.
 # Category
@@ -283,9 +285,20 @@ def get_product_filters(category, product_filter, price_filter, sorting):
     # Transform the group properties into a list of dicts
     result = []
     for property_id, values in properties.items():
+        
+        property = properties_mapping[property_id]
+        
+        # Sort the values. NOTE: This has to be done here (and not via SQL) as 
+        # the value field of the property is a char field and can't ordered
+        # properly for numbers.
+        if property.type == PROPERTY_NUMBER_FIELD:
+            values.sort(lambda a, b: cmp(float(a["value"]), float(b["value"])))
+        elif property.type == PROPERTY_TEXT_FIELD:
+            values.sort(lambda a, b: cmp(a["value"], b["value"]))
+            
         result.append({
             "id"    : property_id,
-            "name"  : properties_mapping[property_id].name,
+            "name"  : property.name,
             "items" : values
         })
     

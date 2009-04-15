@@ -99,8 +99,8 @@ class Shop(models.Model):
     
     countries = models.ManyToManyField(Country, verbose_name=_(u"Countries"), related_name="shops")
     default_country = models.ForeignKey(Country, verbose_name=_(u"Default country"))
-    
-    checkout_type = models.IntegerField(_(u"Checkout type"), choices=CHECKOUT_TYPES, default=CHECKOUT_TYPE_SELECT)
+        
+    checkout_type = models.PositiveSmallIntegerField(_(u"Checkout type"), choices=CHECKOUT_TYPES, default=CHECKOUT_TYPE_SELECT)
     
     class Meta:
         permissions = (("manage_shop", "Manage shop"),)

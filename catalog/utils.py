@@ -263,14 +263,14 @@ def get_product_filters(category, product_filter, price_filter, sorting):
         # if the property within the set filters we just show the selected value
         if str(row[0]) in set_filters.keys():
             if str(row[1]) in set_filters.values():
-                properties[row[0]] = ({
+                properties[row[0]] = [{
                     "id"       : row[0],
                     "value"    : row[1],
                     "name"     : name,
                     "unit"     : properties_mapping[row[0]].unit,                    
                     "quantity" : amount[row[0]][row[1]],
                     "show_quantity" : False,
-                },)
+                }]
             continue
         else:
             properties[row[0]].append({
@@ -290,7 +290,7 @@ def get_product_filters(category, product_filter, price_filter, sorting):
         
         # Sort the values. NOTE: This has to be done here (and not via SQL) as 
         # the value field of the property is a char field and can't ordered
-        # properly for numbers.
+        # properly for numbers.        
         if property.type == PROPERTY_NUMBER_FIELD:
             values.sort(lambda a, b: cmp(float(a["value"]), float(b["value"])))
         elif property.type == PROPERTY_TEXT_FIELD:

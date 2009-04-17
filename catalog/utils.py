@@ -3,13 +3,11 @@
 
 # django imports
 from django.core.cache import cache
-from django.core.urlresolvers import reverse
 from django.db import connection
 
 # import lfs
 import lfs.catalog.models
 from lfs.catalog.settings import PROPERTY_NUMBER_FIELD
-from lfs.catalog.settings import PROPERTY_TEXT_FIELD
 
 # TODO implement this methods.
 # Category
@@ -260,12 +258,19 @@ def get_product_filters(category, product_filter, price_filter, sorting):
         else:
             name = row[1]
         
+        # Transform to float for later sorting, see below
+        property = properties_mapping[row[0]]
+        if property.type == PROPERTY_NUMBER_FIELD:
+            value = float(row[1])
+        else:
+            value = row[1]
+        
         # if the property within the set filters we just show the selected value
         if str(row[0]) in set_filters.keys():
             if str(row[1]) in set_filters.values():
                 properties[row[0]] = [{
                     "id"       : row[0],
-                    "value"    : row[1],
+                    "value"    : value,
                     "name"     : name,
                     "unit"     : properties_mapping[row[0]].unit,                    
                     "quantity" : amount[row[0]][row[1]],
@@ -275,7 +280,7 @@ def get_product_filters(category, product_filter, price_filter, sorting):
         else:
             properties[row[0]].append({
                 "id"       : row[0],
-                "value"    : row[1],
+                "value"    : value,
                 "name"     : name,
                 "unit"     : properties_mapping[row[0]].unit,
                 "quantity" : amount[row[0]][row[1]],
@@ -283,6 +288,8 @@ def get_product_filters(category, product_filter, price_filter, sorting):
             })
     
     # Transform the group properties into a list of dicts
+    set_filter_keys = set_filters.keys()
+    
     result = []
     for property_id, values in properties.items():
         
@@ -291,13 +298,11 @@ def get_product_filters(category, product_filter, price_filter, sorting):
         # Sort the values. NOTE: This has to be done here (and not via SQL) as 
         # the value field of the property is a char field and can't ordered
         # properly for numbers.        
-        if property.type == PROPERTY_NUMBER_FIELD:
-            values.sort(lambda a, b: cmp(float(a["value"]), float(b["value"])))
-        elif property.type == PROPERTY_TEXT_FIELD:
-            values.sort(lambda a, b: cmp(a["value"], b["value"]))
+        values.sort(lambda a, b: cmp(a["value"], b["value"]))
             
         result.append({
             "id"    : property_id,
+            "show_reset" : str(property_id) in set_filter_keys,
             "name"  : property.name,
             "items" : values
         })

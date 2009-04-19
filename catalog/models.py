@@ -808,6 +808,8 @@ class Property(models.Model):
             If True the property belongs to exactly one product
         - type
            char field, number field or select field
+        - step
+           manuel step for filtering
     """
     name = models.CharField( _(u"Name"), max_length=50)
     groups = models.ManyToManyField(PropertyGroup, verbose_name=_(u"Group"), blank=True, null=True, through="GroupsPropertiesRelation", related_name="properties")
@@ -817,6 +819,7 @@ class Property(models.Model):
     unit = models.CharField(_(u"Unit"), blank=True, max_length=15)
     local = models.BooleanField(default=False)
     type = models.PositiveSmallIntegerField(_(u"Type"), choices=PROPERTY_TYPE_CHOICES, default=PROPERTY_TEXT_FIELD)
+    step = models.IntegerField(_(u"Step"), blank=True, null=True)
 
     class Meta:
         verbose_name_plural = _(u"Properties")

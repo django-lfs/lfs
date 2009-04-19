@@ -205,28 +205,42 @@ def get_product_filters(category, product_filter, price_filter, sorting):
     # Create dict out of already set filters
     set_filters = dict(product_filter)
 
-    result = []
-    properties = lfs.catalog.models.Property.objects.filter(type=PROPERTY_NUMBER_FIELD)
-    property_ids = ", ".join([str(p.id) for p in properties])
     
-    # Min/Max values for all properties
+    cursor = connection.cursor()
+    cursor.execute("""SELECT DISTINCT property_id
+                      FROM catalog_productpropertyvalue""")
+    
+    property_ids = ", ".join([str(p[0]) for p in cursor.fetchall()])
+
+    result = []        
+
+    ########## Number Fields ###################################################
+
     cursor = connection.cursor()
     cursor.execute("""SELECT property_id, min(value_as_float), max(value_as_float)
                       FROM catalog_productpropertyvalue
                       WHERE product_id IN (%s)
                       AND property_id IN (%s)
                       GROUP BY property_id""" % (product_ids, property_ids))
-    
+
+
     for row in cursor.fetchall():
         
-        property = properties_mapping[row[0]]
+        property = properties_mapping[row[0]]        
 
+        if property.is_number_field == False:
+            continue
+            
+        if property.filterable == False:
+            continue
+            
         # If the filter for a property is already set, we display only the 
         # set filter.
         if str(row[0]) in set_filters.keys():
             values = set_filters[str(row[0])]
             result.append({
                 "id" : row[0],
+                "position" : property.position,                
                 "object" : property,
                 "name" : property.name,
                 "unit" : property.unit,
@@ -237,10 +251,11 @@ def get_product_filters(category, product_filter, price_filter, sorting):
             continue
         
         # Otherwise we display all steps.
-        items = calculate_steps(product_ids, row[0], row[1], row[2])
+        items = calculate_steps(product_ids, row[0], row[1], row[2], step=property.step)
 
         result.append({
             "id" : row[0],
+            "position" : property.position,
             "object" : property,
             "name" : property.name,
             "unit" : property.unit,
@@ -248,10 +263,9 @@ def get_product_filters(category, product_filter, price_filter, sorting):
             "show_quantity" : True,            
             "items" : items,
         })
-
-    properties = lfs.catalog.models.Property.objects.exclude(type=PROPERTY_NUMBER_FIELD)
-    property_ids = ", ".join([str(p.id) for p in properties])
     
+    
+    ########## Select Fields ###################################################
     # Count entries for current filter
     cursor = connection.cursor()
     cursor.execute("""SELECT property_id, value, parent_id
@@ -293,10 +307,15 @@ def get_product_filters(category, product_filter, price_filter, sorting):
     set_filters = dict(product_filter)
     properties = {}
     for row in cursor.fetchall():
-        
-        if properties_mapping[row[0]].filterable == False:
+
+        property = properties_mapping[row[0]]
+
+        if property.is_number_field:
             continue
             
+        if property.filterable == False:
+            continue
+                
         if properties.has_key(row[0]) == False:
             properties[row[0]] = []
 
@@ -353,11 +372,13 @@ def get_product_filters(category, product_filter, price_filter, sorting):
             
         result.append({
             "id"    : property_id,
+            "position" : property.position,
             "show_reset" : str(property_id) in set_filter_keys,
             "name"  : property.name,
             "items" : values
         })
     
+    result.sort(lambda a, b: cmp(a["position"], b["position"]))
     return result
 
 def get_filtered_products_for_category(category, filters, price_filter, sorting):
@@ -480,8 +501,10 @@ def calculate_steps(product_ids, property_id, min, max, steps=3, step=None):
         
         if step >= 0 and step < 2:
             step = 1    
-        elif step >= 2 and step < 5:
+        elif step >= 2 and step < 6:
             step = 5
+        elif step >= 6 and step < 11:
+            step = 10
         elif step >= 11 and step < 51:
             step = 50
         elif step >= 51 and step < 101:
@@ -508,6 +531,7 @@ def calculate_steps(product_ids, property_id, min, max, steps=3, step=None):
             "quantity" : calculate_quantity(product_ids, property_id, min, max)
         })
     
+    # Remove entries with zero products
     new_result = []
     for n, f in enumerate(result):
         if f["quantity"] == 0:

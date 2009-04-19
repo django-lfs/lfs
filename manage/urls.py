@@ -100,6 +100,7 @@ urlpatterns += patterns('lfs.manage.views.properties',
     url(r'^add-shop-property$', "add_property", name="lfs_add_shop_property"),
     url(r'^delete-shop-property/(?P<id>\d*)', "delete_property", name="lfs_delete_shop_property"),    
     url(r'^add-shop-property-option/(?P<property_id>\d*)', "add_option", name="lfs_add_shop_property_option"),
+    url(r'^save-shop-property-step/(?P<property_id>\d*)', "save_steps", name="lfs_save_shop_property_step"),
     url(r'^delete-shop-property-option/(?P<id>\d*)', "delete_option", name="lfs_delete_shop_property_option"),
 )
 

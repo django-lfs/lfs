@@ -684,6 +684,17 @@ $(function() {
         });
         return false;
     });
+
+    $(".shop-property-save-steps-button").livequery("click", function() {
+        $(this).parents("form:first").ajaxSubmit({
+            success: function(data) {
+                data = JSON.parse(data)
+                $("#steps").html(data["steps"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    });
     
     
     // $(".ajax-form-button").livequery("click", function() {

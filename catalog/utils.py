@@ -116,10 +116,11 @@ def get_price_filters(category, product_filter, price_filter):
             effective_price__range=(min, max), pk__in=product_ids)
         quantity = len(products)
         
-        return ({
-            "min" : min, 
-            "max" : max,
-        },)
+        return {
+            "show_reset" : True,
+            "show_quantity" : False,
+            "items" : [{"min" : min, "max" : max}],
+            }
         
     product_ids_str = ", ".join([str(p.id) for p in all_products])
     cursor = connection.cursor()
@@ -178,7 +179,11 @@ def get_price_filters(category, product_filter, price_filter):
             continue
         new_result.append(f)
         
-    return new_result
+    return {
+        "show_reset" : False,
+        "show_quantity" : True,
+        "items" : new_result,
+    }
 
 def get_product_filters(category, product_filter, price_filter, sorting):
     """Returns the next product filters based on products which are in the given 

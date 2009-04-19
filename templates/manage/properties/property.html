@@ -66,8 +66,14 @@
             
             {% if property.is_select_field %}
                 <div id="options">
-                    {{options|safe}}
+                    {{ options|safe }}
                 </div>
+            {% endif %}
+
+            {% if property.is_number_field %}
+                <div id="steps">
+                    {{ steps|safe }}
+                </div>            
             {% endif %}
             
         </div>

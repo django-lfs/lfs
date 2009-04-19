@@ -23,7 +23,7 @@ class PropertyDataForm(ModelForm):
     """
     class Meta:
         model = Property
-        fields = ["name", "filterable", "unit", "step"]
+        fields = ["name", "filterable", "unit"]
 
 class PropertyTypeForm(ModelForm):
     """
@@ -32,6 +32,13 @@ class PropertyTypeForm(ModelForm):
         model = Property
         fields = ["type"]
 
+class StepsForm(ModelForm):
+    """
+    """
+    class Meta:
+        model = Property
+        fields = ["step"]
+    
 @permission_required("manage_shop", login_url="/login/")    
 def manage_properties(request):
     """The main view to manage properties.
@@ -69,6 +76,7 @@ def manage_property(request, id, template_name="manage/properties/property.html"
         "type_form" : PropertyTypeForm(instance=property),
         "current_id" : int(id),
         "options" : options_inline(request, id),
+        "steps" : steps_inline(request, id),
     }))
 
 @permission_required("manage_shop", login_url="/login/")    
@@ -91,6 +99,33 @@ def update_property_type(request, id):
         url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id}),
         msg = _(u"Property type has been changed."),
     )        
+
+@permission_required("manage_shop", login_url="/login/")
+def steps_inline(request, property_id, template_name="manage/properties/steps_inline.html"):
+    """Display the steps of a propety. Factored out for Ajax requests.
+    """
+    property = get_object_or_404(Property, pk=property_id)
+
+    form = StepsForm(instance=property)
+    return render_to_string(template_name, RequestContext(request, {
+        "property" : property,
+        "form" : form,
+    }))
+
+def save_steps(request, property_id):
+    """Save the steps of property with given id.
+    """    
+    property = get_object_or_404(Property, pk=property_id)
+    
+    form = StepsForm(instance=property, data=request.POST)    
+    property = form.save()
+
+    result = simplejson.dumps({
+        "steps" : steps_inline(request, property_id),
+        "message" : _(u"Steps have been saved."),
+    }, cls = LazyEncoder)
+    
+    return HttpResponse(result)
 
 @permission_required("manage_shop", login_url="/login/")
 def options_inline(request, property_id, template_name="manage/properties/options_inline.html"):
@@ -166,7 +201,6 @@ def add_option(request, property_id):
         "options" : options_inline(request, property_id),
         "message" : message
     }, cls = LazyEncoder)
-        
     
     return HttpResponse(result)
 

@@ -44,6 +44,7 @@ def product_values(request, property_group_id, template_name="manage/properties/
                 "id"      : property.id,
                 "name"    : property.name,
                 "type"    : property.type,
+                "is_select_field" : property.is_select_field,
                 "options" : options,
                 "value"   : value,
             })

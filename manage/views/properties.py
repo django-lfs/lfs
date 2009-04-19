@@ -79,11 +79,13 @@ def update_property_type(request, id):
     of product property values
     """
     property = get_object_or_404(Property, pk=id)
+    old_type = property.type
     form = PropertyTypeForm(instance=property, data=request.POST)
     new_property = form.save()
         
-    # Send signal
-    property_type_changed.send(property)
+    # Send signal only when the type changed as all values are deleted.
+    if old_type != new_property.type:
+        property_type_changed.send(property)
 
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id}),

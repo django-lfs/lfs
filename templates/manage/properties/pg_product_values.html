@@ -26,11 +26,7 @@
                 </td>
                 {% for property in product.properties %}
                     <td>
-                        {% ifequal property.type 1 %}
-                            <input type="text" 
-                                   name="property-{{product.id}}-{{property.id}}"
-                                   value="{{property.value}}" />
-                        {% else %}
+                        {% if property.is_select_field %}
                             <select name="property-{{product.id}}-{{property.id}}">
                                 <option value="">-----</option>
                                 {% for option in property.options %}
@@ -40,7 +36,11 @@
                                     </option>
                                 {% endfor %}
                             </select>
-                        {% endifequal %}
+                        {% else %}
+                            <input type="text" 
+                                   name="property-{{product.id}}-{{property.id}}"
+                                   value="{{property.value}}" />
+                        {% endif %}
                     </td>
                 {% endfor %}
             </tr>

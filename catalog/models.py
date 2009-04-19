@@ -798,11 +798,16 @@ class Property(models.Model):
             groups and/or to one product.
         - name:
             Is displayed within forms.
+        - position: 
+            The position of the property within a product.            
         - filterable:
             If True the property is used for filtered navigation.
-        - position: 
-            The position of the property within a product.
-
+        - unit: 
+            Something like cm, mm, m, etc.
+        - local
+            If True the property belongs to exactly one product
+        - type
+           char field, number field or select field
     """
     name = models.CharField( _(u"Name"), max_length=50)
     groups = models.ManyToManyField(PropertyGroup, verbose_name=_(u"Group"), blank=True, null=True, through="GroupsPropertiesRelation", related_name="properties")
@@ -936,6 +941,7 @@ class ProductPropertyValue(models.Model):
     parent_id = models.IntegerField(blank=True, null=True)
     property = models.ForeignKey("Property", verbose_name=_(u"Property"), related_name="property_values")
     value = models.CharField(blank=True, max_length=100)
+    value_as_float = models.FloatField(blank=True, null=True)
     
     class Meta:
         unique_together = ("product", "property", "value")
@@ -951,6 +957,14 @@ class ProductPropertyValue(models.Model):
             self.parent_id = self.product.parent.id
         else:
             self.parent_id = self.product.id
+        
+        try:
+            float(self.value)
+        except ValueError:
+            pass
+        else:            
+            self.value_as_float = self.value
+        
         super(ProductPropertyValue, self).save(force_insert, force_update)
 
 class Image(models.Model):

@@ -201,12 +201,63 @@ def get_product_filters(category, product_filter, price_filter, sorting):
     
     # Get the ids for use within the customer SQL
     product_ids = ", ".join([str(p.id) for p in all_products])
+    
+    # Create dict out of already set filters
+    set_filters = dict(product_filter)
 
+    result = []
+    properties = lfs.catalog.models.Property.objects.filter(type=PROPERTY_NUMBER_FIELD)
+    property_ids = ", ".join([str(p.id) for p in properties])
+    
+    # Min/Max values for all properties
+    cursor = connection.cursor()
+    cursor.execute("""SELECT property_id, min(value_as_float), max(value_as_float)
+                      FROM catalog_productpropertyvalue
+                      WHERE product_id IN (%s)
+                      AND property_id IN (%s)
+                      GROUP BY property_id""" % (product_ids, property_ids))
+    
+    for row in cursor.fetchall():
+        
+        property = properties_mapping[row[0]]
+
+        # If the filter for a property is already set, we display only the 
+        # set filter.
+        if str(row[0]) in set_filters.keys():
+            values = set_filters[str(row[0])]
+            result.append({
+                "id" : row[0],
+                "object" : property,
+                "name" : property.name,
+                "unit" : property.unit,
+                "items" : [{"min" : values[0], "max" : values[1]}],
+                "show_reset" : True,
+                "show_quantity" : False,
+            })
+            continue
+        
+        # Otherwise we display all steps.
+        items = calculate_steps(product_ids, row[0], row[1], row[2])
+
+        result.append({
+            "id" : row[0],
+            "object" : property,
+            "name" : property.name,
+            "unit" : property.unit,
+            "show_reset" : False,
+            "show_quantity" : True,            
+            "items" : items,
+        })
+
+    properties = lfs.catalog.models.Property.objects.exclude(type=PROPERTY_NUMBER_FIELD)
+    property_ids = ", ".join([str(p.id) for p in properties])
+    
     # Count entries for current filter
     cursor = connection.cursor()
     cursor.execute("""SELECT property_id, value, parent_id
                       FROM catalog_productpropertyvalue
-                      WHERE product_id IN (%s)""" % product_ids)
+                      WHERE product_id IN (%s)
+                      AND property_id IN (%s)""" % (product_ids, property_ids))
 
     already_count = {}
     amount = {}
@@ -235,7 +286,8 @@ def get_product_filters(category, product_filter, price_filter, sorting):
     cursor.execute("""SELECT property_id, value
                       FROM catalog_productpropertyvalue
                       WHERE product_id IN (%s)
-                      GROUP BY property_id, value""" % product_ids)
+                      AND property_id IN (%s)
+                      GROUP BY property_id, value""" % (product_ids, property_ids))
 
     # Group properties and values (for displaying)
     set_filters = dict(product_filter)
@@ -290,7 +342,6 @@ def get_product_filters(category, product_filter, price_filter, sorting):
     # Transform the group properties into a list of dicts
     set_filter_keys = set_filters.keys()
     
-    result = []
     for property_id, values in properties.items():
         
         property = properties_mapping[property_id]
@@ -309,7 +360,6 @@ def get_product_filters(category, product_filter, price_filter, sorting):
     
     return result
 
-# TODO: Maybe we should pass here filters and sorting instead of the request.
 def get_filtered_products_for_category(category, filters, price_filter, sorting):
     """Returns products for given categories and current filters sorted by 
     current sorting.
@@ -327,8 +377,11 @@ def get_filtered_products_for_category(category, filters, price_filter, sorting)
         # Generate filter
         temp = []
         for f in filters:
-            temp.append("property_id='%s' AND value='%s'" % (f[0], f[1]))
-    
+            if len(f[1]) == 1:
+                temp.append("property_id='%s' AND value='%s'" % (f[0], f[1]))
+            else:
+                temp.append("property_id='%s' AND value_as_float BETWEEN '%s' AND '%s'" % (f[0], f[1][0], f[1][1]))
+                
         fstr = " OR ".join(temp)
     
         # TODO: Will this work with every DB?
@@ -408,3 +461,92 @@ def get_property_mapping():
         properties[property.id] = property
     
     return properties
+    
+def calculate_steps(product_ids, property_id, min, max, steps=3, step=None):
+    """
+    """
+    try:
+        min = float(min)
+        max = float(max)
+    except TypeError:
+        return []
+    
+    if step is None:        
+        if max == min:
+            step = max
+        else:
+            diff = max - min
+            step = diff / steps
+        
+        if step >= 0 and step < 2:
+            step = 1    
+        elif step >= 2 and step < 5:
+            step = 5
+        elif step >= 11 and step < 51:
+            step = 50
+        elif step >= 51 and step < 101:
+            step = 100
+        elif step >= 101 and step < 501:
+            step = 500
+        elif step >= 501 and step < 1001:
+            step = 1000        
+        elif step >= 1000 and step < 5001:
+            step = 500
+        elif step >= 5001 and step < 10001:
+            step = 1000
+    
+    result = []
+    for n, i in enumerate(range(0, int(max), step)):
+        if i > max:
+            break
+        min = i+1
+        max = i+step
+        
+        result.append({
+            "min" : min,
+            "max" : max,
+            "quantity" : calculate_quantity(product_ids, property_id, min, max)
+        })
+    
+    new_result = []
+    for n, f in enumerate(result):
+        if f["quantity"] == 0:
+            try:
+                result[n+1]["min"] = f["min"]
+            except IndexError:
+                pass
+            continue
+        new_result.append(f)
+        
+    return new_result
+    
+def calculate_quantity(product_ids, property_id, min, max):
+    """Calculate the amount of products for given parameters.
+    """
+    # Count entries for current filter
+    cursor = connection.cursor()
+    cursor.execute("""SELECT property_id, value, parent_id
+                      FROM catalog_productpropertyvalue
+                      WHERE product_id IN (%s)
+                      AND property_id = %s
+                      AND value_as_float BETWEEN %s AND %s""" % (product_ids, property_id, min, max))
+    
+    already_count = {}
+    amount = 0
+    for row in cursor.fetchall():
+        # We count a property/value pair just one time per *product*. For 
+        # "products with variants" this could be stored several times within the 
+        # catalog_productpropertyvalue. Imagine a variant with two properties
+        # color and size:
+        #   v1 = color:red / size: s
+        #   v2 = color:red / size: l
+        # But we want to count color:red just one time. As the product with 
+        # variants is displayed at not the variants.
+
+        if already_count.has_key("%s%s%s" % (row[2], row[0], row[1])):
+            continue
+        already_count["%s%s%s" % (row[2], row[0], row[1])] = 1
+    
+        amount += 1    
+        
+    return amount

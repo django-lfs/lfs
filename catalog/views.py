@@ -21,12 +21,17 @@ import lfs.catalog.utils
 from lfs.core.signals import lfs_sorting_changed
 from lfs.utils import misc as lfs_utils
 
-def set_filter(request, category_slug, property_id, value):
+def set_filter(request, category_slug, property_id, value=None, min=None, max=None):
     """Saves the given filter to session. Redirects to the category with given 
     slug.
-    """    
+    """
     product_filter = request.session.get("product-filter", {})
-    product_filter[property_id] = value
+    
+    if value is not None:
+        product_filter[property_id] = value
+    else:
+        product_filter[property_id] = (min, max)
+        
     request.session["product-filter"] = product_filter
     
     url = reverse("lfs_category", kwargs={"slug" : category_slug, "start" : 0})

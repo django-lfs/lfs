@@ -28,20 +28,20 @@
     {% endfor %}
     <div class="portlet-body">
 
-        <div style="padding-bottom:4px">
-            {% trans 'Price' %}
-            <a href="{% url lfs_reset_price_filter category.slug %}">[x]</a>
-        </div>
-        
-        <div style="padding-bottom:4px">
-            {% for price_filter in price_filters %}
-                <div>
-                    <a href="{% url lfs_set_price_filter category.slug %}?min={{ price_filter.min }}&max={{ price_filter.max }}">
-                        {{price_filter.min}}-{{price_filter.max}} 
-                       {% if price_filter.quantity %}({{price_filter.quantity}}){% endif %}</a>
-                </div>
-            {% endfor %}
-        </div>
+        {# <div style="padding-bottom:4px"> #}
+        {#     {% trans 'Price' %} #}
+        {#     <a href="{% url lfs_reset_price_filter category.slug %}">[x]</a> #}
+        {# </div> #}
+        {#  #}
+        {# <div style="padding-bottom:4px"> #}
+        {#     {% for price_filter in price_filters %} #}
+        {#         <div> #}
+        {#             <a href="{% url lfs_set_price_filter category.slug %}?min={{ price_filter.min }}&max={{ price_filter.max }}"> #}
+        {#                 {{price_filter.min}}-{{price_filter.max}}  #}
+        {#                {% if price_filter.quantity %}({{price_filter.quantity}}){% endif %}</a> #}
+        {#         </div> #}
+        {#     {% endfor %} #}
+        {# </div> #}
         
         {# <form action="{% url lfs_set_price_filter category.slug %}" #}
         {#       method="post"> #}

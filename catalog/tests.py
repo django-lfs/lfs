@@ -12,6 +12,7 @@ from lfs.catalog.settings import DELIVERY_TIME_UNIT_HOURS
 from lfs.catalog.settings import DELIVERY_TIME_UNIT_WEEKS
 from lfs.catalog.settings import DELIVERY_TIME_UNIT_DAYS
 from lfs.catalog.settings import DELIVERY_TIME_UNIT_MONTHS
+from lfs.catalog.settings import PROPERTY_NUMBER_FIELD
 from lfs.catalog.settings import PROPERTY_TEXT_FIELD
 from lfs.catalog.settings import PROPERTY_SELECT_FIELD
 from lfs.catalog.models import Category
@@ -105,10 +106,17 @@ class PropertiesTestCase(TestCase):
         self.po2 = PropertyOption.objects.create(id="2", property=self.pp2, name="Blue", position=2)
         self.pvo21 = ProductPropertyValue.objects.create(product=self.p1, property=self.pp2, value="1")
         self.pvo22 = ProductPropertyValue.objects.create(product=self.p2, property=self.pp2, value="2")
-                
+
+        # A property with floats
+        self.pp3 = Property.objects.create(name="Length", type=PROPERTY_NUMBER_FIELD)
+        self.pvo31 = ProductPropertyValue.objects.create(product=self.p1, property=self.pp3, value=10.0)
+        self.pvo32 = ProductPropertyValue.objects.create(product=self.p2, property=self.pp3, value=20.0)
+        self.pvo32 = ProductPropertyValue.objects.create(product=self.p3, property=self.pp3, value=30.0)
+
         # Assign groups and properties
         self.gpr1 = GroupsPropertiesRelation.objects.create(group = self.pg, property=self.pp1)
         self.gpr2 = GroupsPropertiesRelation.objects.create(group = self.pg, property=self.pp2)
+        self.gpr3 = GroupsPropertiesRelation.objects.create(group = self.pg, property=self.pp3)
     
     def test_remove_product_from_group(self):
         """Tests the remove of a product from a property group.
@@ -411,7 +419,7 @@ class PropertiesTestCase(TestCase):
         pg_ids = [pg.id for pg in pgs]
         self.assertEqual(pg_ids, [1])
         
-    def test_set_filter(self):
+    def test_set_filter_1(self):
         """Tests the setting of a filter via request/view
         """
         url = reverse("lfs_set_product_filter", kwargs={"category_slug": self.c1.slug, "property_id" : 1, "value":"Red"})
@@ -425,6 +433,22 @@ class PropertiesTestCase(TestCase):
 
         pf = self.client.session.get("product-filter", {})
         self.assertEqual(pf["1"], "Red")
+        self.assertEqual(pf["2"], "M")
+
+    def test_set_filter_2(self):
+        """Tests the setting of a filter with min/max via request/view
+        """        
+        url = reverse("lfs_set_product_filter", kwargs={"category_slug": self.c1.slug, "property_id" : 1, "min" : "10", "max" : "20"})
+        response = self.client.get(url)
+        
+        pf = self.client.session.get("product-filter", {})
+        self.assertEqual(pf["1"], ("10", "20"))
+        
+        url = reverse("lfs_set_product_filter", kwargs={"category_slug": self.c1.slug, "property_id" : 2, "value":"M"})
+        response = self.client.get(url)
+
+        pf = self.client.session.get("product-filter", {})
+        self.assertEqual(pf["1"], ("10", "20"))
         self.assertEqual(pf["2"], "M")
     
     def test_get_filter(self):
@@ -491,6 +515,25 @@ class PropertiesTestCase(TestCase):
         filters = [[1, "S"], [2, "2"]]
         products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, None, sorting)        
         self.failIf(len(products) != 0)
+        
+        # Min / Max
+        sorting = "price"
+
+        filters = [[3, [0, 9]]]
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, None, sorting)
+        self.assertEqual(len(products), 0)
+
+        filters = [[3, [10, 20]]]
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, None, sorting)
+        self.assertEqual(len(products), 2)
+        self.assertEqual(products[0].id, self.p2.id)
+        self.assertEqual(products[1].id, self.p1.id)
+
+        filters = [[3, [21, 30]]]
+        sorting = "price"
+        products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, None, sorting)
+        self.assertEqual(len(products), 1)
+        self.assertEqual(products[0].id, self.p3.id)
         
 class CategoryTestCase(TestCase):
     """Tests the Category of the lfs.catalog.

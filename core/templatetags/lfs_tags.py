@@ -507,8 +507,8 @@ def option_name(option_id):
     """
     """
     try:
-        option = lfs_get_object_or_404(PropertyOption, pk=option_id)
-    except PropertyOption.DoesNotExist:
+        option = PropertyOption.objects.get(pk=option_id)
+    except (PropertyOption.DoesNotExist, ValueError):
         return option_id
     else:
         return option.name  

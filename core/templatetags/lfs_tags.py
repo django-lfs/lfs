@@ -506,7 +506,11 @@ def multiply(score, pixel):
 def option_name(option_id):
     """
     """
-    option = lfs_get_object_or_404(PropertyOption, pk=option_id)
-    return option.name
+    try:
+        option = lfs_get_object_or_404(PropertyOption, pk=option_id)
+    except PropertyOption.DoesNotExist:
+        return option_id
+    else:
+        return option.name  
 
         

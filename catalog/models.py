@@ -823,7 +823,7 @@ class Property(models.Model):
 
     class Meta:
         verbose_name_plural = _(u"Properties")
-        ordering = ["name"]
+        ordering = ["position"]
         
     def __unicode__(self):
         return self.name

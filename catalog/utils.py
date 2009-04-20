@@ -348,7 +348,6 @@ def get_product_filters(category, product_filter, price_filter, sorting):
                     "id"       : row[0],
                     "value"    : value,
                     "name"     : name,
-                    "unit"     : properties_mapping[row[0]].unit,                    
                     "quantity" : amount[row[0]][row[1]],
                     "show_quantity" : False,
                 }]
@@ -358,7 +357,6 @@ def get_product_filters(category, product_filter, price_filter, sorting):
                 "id"       : row[0],
                 "value"    : value,
                 "name"     : name,
-                "unit"     : properties_mapping[row[0]].unit,
                 "quantity" : amount[row[0]][row[1]],
                 "show_quantity" : True,
             })
@@ -378,6 +376,7 @@ def get_product_filters(category, product_filter, price_filter, sorting):
         result.append({
             "id"    : property_id,
             "position" : property.position,
+            "unit" : property.unit,            
             "show_reset" : str(property_id) in set_filter_keys,
             "name"  : property.name,
             "items" : values

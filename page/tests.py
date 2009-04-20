@@ -45,7 +45,6 @@ class PageTestCase(TestCase):
         response = self.client.get(url)
         
         self.failIf(response.content.find("Page Title") == -1)
-        self.failIf(response.content.find("page-title") == -1)
         self.failIf(response.content.find("<p>This is a body</p>") == -1)
 
     def test_active_pages(self):

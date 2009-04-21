@@ -189,6 +189,26 @@ def get_product_filters(category, product_filter, price_filter, sorting):
     """Returns the next product filters based on products which are in the given 
     category and within the result set of the current filters.
     """
+    if price_filter:
+        ck_price_filter = "%s|%s" % (price_filter["min"], price_filter["max"])    
+    else:
+        ck_price_filter = ""
+    
+    if product_filter:
+        ck_product_filter = ""
+        for pf in product_filter:
+            ck_product_filter += pf[0] + "|"
+            ck_product_filter += "|".join(pf[1])
+    else:
+        ck_product_filter = ""
+        
+    cache_key = "productfilters-%s-%s-%s-%s" % (
+        category.slug, ck_product_filter, ck_price_filter, sorting)
+    
+    result = cache.get(cache_key)
+    if result is not None:
+        return result
+
     properties_mapping = get_property_mapping()
     options_mapping = get_option_mapping()
     
@@ -382,7 +402,9 @@ def get_product_filters(category, product_filter, price_filter, sorting):
             "items" : values
         })
     
-    result.sort(lambda a, b: cmp(a["position"], b["position"]))
+    result.sort(lambda a, b: cmp(a["position"], b["position"]))    
+    cache.set(cache_key, result)
+
     return result
 
 def get_filtered_products_for_category(category, filters, price_filter, sorting):
@@ -495,45 +517,60 @@ def calculate_steps(product_ids, property_id, min, max, steps=3, step=None):
         max = float(max)
     except TypeError:
         return []
-    
-    if step is None:        
-        if max == min:
-            step = max
-        else:
-            diff = max - min
-            step = diff / steps
+
+    result = []    
+
+    filter_steps = lfs.catalog.models.FilterStep.objects.filter(property=property_id)
+    if len(filter_steps):
+        for i, step in enumerate(filter_steps[:len(filter_steps)-1]):
+            min = step.start
+            if i != 0:
+                min += 1.0
+            max = filter_steps[i+1].start 
+            
+            result.append({
+                "min" : min,
+                "max" : max,
+                "quantity" : calculate_quantity(product_ids, property_id, min, max)
+            })
+    else:    
+        if step is None:        
+            if max == min:
+                step = max
+            else:
+                diff = max - min
+                step = diff / steps
         
-        if step >= 0 and step < 2:
-            step = 1    
-        elif step >= 2 and step < 6:
-            step = 5
-        elif step >= 6 and step < 11:
-            step = 10
-        elif step >= 11 and step < 51:
-            step = 50
-        elif step >= 51 and step < 101:
-            step = 100
-        elif step >= 101 and step < 501:
-            step = 500
-        elif step >= 501 and step < 1001:
-            step = 1000        
-        elif step >= 1000 and step < 5001:
-            step = 500
-        elif step >= 5001 and step < 10001:
-            step = 1000
+            if step >= 0 and step < 2:
+                step = 1    
+            elif step >= 2 and step < 6:
+                step = 5
+            elif step >= 6 and step < 11:
+                step = 10
+            elif step >= 11 and step < 51:
+                step = 50
+            elif step >= 51 and step < 101:
+                step = 100
+            elif step >= 101 and step < 501:
+                step = 500
+            elif step >= 501 and step < 1001:
+                step = 1000        
+            elif step >= 1000 and step < 5001:
+                step = 500
+            elif step >= 5001 and step < 10001:
+                step = 1000
     
-    result = []
-    for n, i in enumerate(range(0, int(max), step)):
-        if i > max:
-            break
-        min = i+1
-        max = i+step
+        for n, i in enumerate(range(0, int(max), step)):
+            if i > max:
+                break
+            min = i+1
+            max = i+step
         
-        result.append({
-            "min" : min,
-            "max" : max,
-            "quantity" : calculate_quantity(product_ids, property_id, min, max)
-        })
+            result.append({
+                "min" : min,
+                "max" : max,
+                "quantity" : calculate_quantity(product_ids, property_id, min, max)
+            })
     
     # Remove entries with zero products
     new_result = []

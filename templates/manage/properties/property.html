@@ -39,26 +39,11 @@
                        value="{% trans 'Save property' %}">
             </form>
             
-            <h2 class="heading-middle">{% trans 'Property type' %}</h2>
+            <h2 class="heading-middle">{% trans 'Field type' %}</h2>
             <form action="{% url lfs_update_shop_property_type property.id %}"
                   method="post">
 
-                <div class="field">
-                    <div class="label">
-                        {{ type_form.type.label_tag }}:
-                    </div>
-        
-                    {% if field.errors %}
-                        <div class="error">
-                            {{ type_form.type }}
-                            {{ type_form.type.errors }}
-                        </div>
-                    {% else %}
-                        <div>
-                            {{ type_form.type }}
-                        </div>
-                    {% endif %}
-                </div>
+                {{ type_form.type }}
                 
                 <input type="submit"
                        value="{% trans 'Save property type' %}">

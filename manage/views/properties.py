@@ -17,28 +17,36 @@ from lfs.core.utils import LazyEncoder
 from lfs.core.signals import property_type_changed
 from lfs.catalog.models import Property
 from lfs.catalog.models import PropertyOption
+from lfs.catalog.models import FilterStep
 
 class PropertyDataForm(ModelForm):
-    """
+    """Form to manage core data of a property.
     """
     class Meta:
         model = Property
         fields = ["name", "filterable", "unit", "position"]
 
 class PropertyTypeForm(ModelForm):
-    """
+    """Form to manage property type.
     """
     class Meta:
         model = Property
         fields = ["type"]
 
-class StepsForm(ModelForm):
+class StepTypeForm(ModelForm):
+    """Form to manage the step type of a property.
     """
+    class Meta:
+        model = Property
+        fields = ["step_type"]
+
+class StepForm(ModelForm):
+    """Form to manage step range.
     """
     class Meta:
         model = Property
         fields = ["step"]
-    
+
 @permission_required("manage_shop", login_url="/login/")    
 def manage_properties(request):
     """The main view to manage properties.
@@ -101,23 +109,26 @@ def update_property_type(request, id):
     )        
 
 @permission_required("manage_shop", login_url="/login/")
-def steps_inline(request, property_id, template_name="manage/properties/steps_inline.html"):
+def steps_inline(request, property_id, template_name="manage/properties/step_inline.html"):
     """Display the steps of a propety. Factored out for Ajax requests.
     """
     property = get_object_or_404(Property, pk=property_id)
 
-    form = StepsForm(instance=property)
+    step_form = StepForm(instance=property)    
+    step_type_form = StepTypeForm(instance=property)
+    
     return render_to_string(template_name, RequestContext(request, {
         "property" : property,
-        "form" : form,
+        "step_form" : step_form,
+        "step_type_form" : step_type_form,
     }))
 
-def save_steps(request, property_id):
-    """Save the steps of property with given id.
+def save_step(request, property_id):
+    """Save the steps of the property with given id.
     """    
     property = get_object_or_404(Property, pk=property_id)
     
-    form = StepsForm(instance=property, data=request.POST)    
+    form = StepForm(instance=property, data=request.POST)
     property = form.save()
 
     result = simplejson.dumps({
@@ -126,6 +137,68 @@ def save_steps(request, property_id):
     }, cls = LazyEncoder)
     
     return HttpResponse(result)
+
+def save_step_type(request, property_id):
+    """Save the step type of the property with given id.
+    """    
+    property = get_object_or_404(Property, pk=property_id)
+    
+    form = StepTypeForm(instance=property, data=request.POST)
+    property = form.save()
+
+    result = simplejson.dumps({
+        "steps" : steps_inline(request, property_id),
+        "message" : _(u"Step type has been saved."),
+    }, cls = LazyEncoder)
+    
+    return HttpResponse(result)
+
+@permission_required("manage_shop", login_url="/login/")
+def add_step(request, property_id):
+    """Adds a step to property with passed property id resp. updates steps of 
+    property with passed property id dependent on the given action parameter.
+    """
+    property = get_object_or_404(Property, pk=property_id)
+    
+    if request.POST.get("action") == "add":
+        start = request.POST.get("start", "")
+        if start != "":
+            option = FilterStep.objects.create(start=start, property_id=property_id)
+        message = _(u"Step has been added.")
+    else:
+        
+        for step_id in request.POST.getlist("step"):
+            
+            try:
+                step = FilterStep.objects.get(pk=step_id)
+            except FilterStep.DoesNotExist:
+                pass
+            else:
+                step.start = request.POST.get("start-%s" % step_id, "") 
+                step.save()
+        message = _(u"Steps have been updated.")
+
+    result = simplejson.dumps({
+        "steps" : steps_inline(request, property_id),
+        "message" : message
+    }, cls = LazyEncoder)
+    
+    return HttpResponse(result)
+
+@permission_required("manage_shop", login_url="/login/")    
+def delete_step(request, id):
+    """Deletes step with given id.
+    """
+    try:        
+        step = FilterStep.objects.get(pk=id)
+    except FilterStep.DoesNotExist:
+        url = request.META.get("HTTP_REFERER", reverse("lfs_manage_shop_property"))
+    else:
+        property = step.property
+        url = reverse("lfs_manage_shop_property", kwargs={"id" : property.id})
+        step.delete()        
+    
+    return HttpResponseRedirect(url)
 
 @permission_required("manage_shop", login_url="/login/")
 def options_inline(request, property_id, template_name="manage/properties/options_inline.html"):

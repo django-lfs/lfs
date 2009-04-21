@@ -684,8 +684,33 @@ $(function() {
         });
         return false;
     });
+    
+    // Shop Property Steps
+    $(".shop-property-add-step-button").livequery("click", function() {
+        var action = $(this).attr("name");
+        $(this).parents("form:first").ajaxSubmit({
+            data : {"action" : action},
+            success: function(data) {
+                data = JSON.parse(data)
+                $("#steps").html(data["steps"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    });
+    
+    $(".shop-property-save-step-button").livequery("click", function() {
+        $(this).parents("form:first").ajaxSubmit({
+            success: function(data) {
+                data = JSON.parse(data)
+                $("#steps").html(data["steps"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+        return false;
+    });
 
-    $(".shop-property-save-steps-button").livequery("click", function() {
+    $(".shop-property-save-step-type-button").livequery("click", function() {
         $(this).parents("form:first").ajaxSubmit({
             success: function(data) {
                 data = JSON.parse(data)

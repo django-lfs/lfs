@@ -26,6 +26,10 @@ from lfs.catalog.settings import PROPERTY_TYPE_CHOICES
 from lfs.catalog.settings import PROPERTY_TEXT_FIELD
 from lfs.catalog.settings import PROPERTY_SELECT_FIELD
 from lfs.catalog.settings import PROPERTY_NUMBER_FIELD
+from lfs.catalog.settings import PROPERTY_STEP_TYPE_CHOICES
+from lfs.catalog.settings import PROPERTY_STEP_TYPE_AUTOMATIC
+from lfs.catalog.settings import PROPERTY_STEP_TYPE_STEPS
+from lfs.catalog.settings import PROPERTY_STEP_TYPE_RANGE
 import lfs.catalog.utils
 from lfs.tax.models import Tax
 
@@ -819,6 +823,8 @@ class Property(models.Model):
     unit = models.CharField(_(u"Unit"), blank=True, max_length=15)
     local = models.BooleanField(default=False)
     type = models.PositiveSmallIntegerField(_(u"Type"), choices=PROPERTY_TYPE_CHOICES, default=PROPERTY_TEXT_FIELD)
+    
+    step_type = models.PositiveSmallIntegerField(_(u"Step type"), choices=PROPERTY_STEP_TYPE_CHOICES, default=PROPERTY_STEP_TYPE_AUTOMATIC)
     step = models.IntegerField(_(u"Step"), blank=True, null=True)
 
     class Meta:
@@ -839,6 +845,18 @@ class Property(models.Model):
     @property
     def is_number_field(self):
         return self.type == PROPERTY_NUMBER_FIELD
+    
+    @property
+    def is_range_step_type(self):
+        return self.step_type == PROPERTY_STEP_TYPE_RANGE
+
+    @property
+    def is_automatic_step_type(self):
+        return self.step_type == PROPERTY_STEP_TYPE_AUTOMATIC
+
+    @property
+    def is_steps_step_type(self):
+        return self.step_type == PROPERTY_STEP_TYPE_STEPS
         
     def is_valid_value(self, value):
         """Returns True if given value is valid for this property.
@@ -849,6 +867,25 @@ class Property(models.Model):
             except ValueError:
                 return False
         return True
+
+class FilterStep(models.Model):
+    """A step to build filter ranges for a property.
+    
+    Parameters:
+        - property 
+          The property the Step belongs to
+        - start 
+          The start of the range. The end will be calculated from the start of
+          the next step        
+    """
+    property = models.ForeignKey(Property, verbose_name=_(u"Property"), related_name="steps")
+    start = models.FloatField()
+    
+    class Meta:
+        ordering = ["start"]
+        
+    def __unicode__(self):
+        return "%s %s" % (self.property.name, self.start)
         
 class GroupsPropertiesRelation(models.Model):
     """Represents the m:n relationship between Groups and Properties.

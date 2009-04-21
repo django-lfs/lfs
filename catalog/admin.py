@@ -3,6 +3,7 @@ from django.contrib import admin
 
 # lfs imports
 from lfs.catalog.models import Category
+from lfs.catalog.models import FilterStep
 from lfs.catalog.models import Image
 from lfs.catalog.models import Product
 from lfs.catalog.models import ProductAccessories
@@ -47,3 +48,4 @@ admin.site.register(PropertyGroup)
 admin.site.register(Property)
 admin.site.register(PropertyOption)
 admin.site.register(ProductPropertyValue)
+admin.site.register(FilterStep)

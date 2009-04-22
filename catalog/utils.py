@@ -276,7 +276,7 @@ def get_product_filters(category, product_filter, price_filter, sorting):
             continue
         
         # Otherwise we display all steps.
-        items = calculate_steps(product_ids, row[0], row[1], row[2], step=property.step)
+        items = calculate_steps(product_ids, property, row[1], row[2])
 
         result.append({
             "id" : row[0],
@@ -509,7 +509,7 @@ def get_property_mapping():
     
     return properties
     
-def calculate_steps(product_ids, property_id, min, max, steps=3, step=None):
+def calculate_steps(product_ids, property, min, max):
     """
     """
     try:
@@ -518,10 +518,10 @@ def calculate_steps(product_ids, property_id, min, max, steps=3, step=None):
     except TypeError:
         return []
 
-    result = []    
-
-    filter_steps = lfs.catalog.models.FilterStep.objects.filter(property=property_id)
-    if len(filter_steps):
+    result = []
+    
+    filter_steps = lfs.catalog.models.FilterStep.objects.filter(property=property.id)
+    if property.is_steps_step_type:
         for i, step in enumerate(filter_steps[:len(filter_steps)-1]):
             min = step.start
             if i != 0:
@@ -531,15 +531,15 @@ def calculate_steps(product_ids, property_id, min, max, steps=3, step=None):
             result.append({
                 "min" : min,
                 "max" : max,
-                "quantity" : calculate_quantity(product_ids, property_id, min, max)
+                "quantity" : calculate_quantity(product_ids, property.id, min, max)
             })
     else:    
-        if step is None:        
+        if property.is_automatic_step_type:
             if max == min:
                 step = max
             else:
                 diff = max - min
-                step = diff / steps
+                step = diff / 3         # TODO: Should this be variable?
         
             if step >= 0 and step < 2:
                 step = 1    
@@ -559,7 +559,9 @@ def calculate_steps(product_ids, property_id, min, max, steps=3, step=None):
                 step = 500
             elif step >= 5001 and step < 10001:
                 step = 1000
-    
+        else:
+            step = property.step
+        
         for n, i in enumerate(range(0, int(max), step)):
             if i > max:
                 break
@@ -569,21 +571,24 @@ def calculate_steps(product_ids, property_id, min, max, steps=3, step=None):
             result.append({
                 "min" : min,
                 "max" : max,
-                "quantity" : calculate_quantity(product_ids, property_id, min, max)
+                "quantity" : calculate_quantity(product_ids, property.id, min, max)
             })
     
-    # Remove entries with zero products
-    new_result = []
-    for n, f in enumerate(result):
-        if f["quantity"] == 0:
-            try:
-                result[n+1]["min"] = f["min"]
-            except IndexError:
-                pass
-            continue
-        new_result.append(f)
+    if property.display_no_results:
+        return result
+    else:
+        # Remove entries with zero products
+        new_result = []
+        for n, f in enumerate(result):
+            if f["quantity"] == 0:
+                try:
+                    result[n+1]["min"] = f["min"]
+                except IndexError:
+                    pass
+                continue
+            new_result.append(f)
         
-    return new_result
+        return new_result
     
 def calculate_quantity(product_ids, property_id, min, max):
     """Calculate the amount of products for given parameters.

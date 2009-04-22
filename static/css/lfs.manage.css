@@ -374,3 +374,7 @@ div.footer p {
     text-align: center;
 	line-height: 1pt;
 }
+
+.attention {
+    color: #ef2c38;
+} 

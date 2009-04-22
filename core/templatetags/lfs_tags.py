@@ -477,6 +477,20 @@ def currency(price, arg=None):
     return price
 
 @register.filter
+def number(price, arg=None):
+    """
+    """
+    # TODO: optimize
+    price = lfs.utils.misc.FormatWithCommas("%.2f", price)
+    
+    # replace . and , for german format
+    a, b = price.split(".")
+    a = a.replace(",", ".")
+    price = "%s,%s" % (a, b)
+    
+    return price
+
+@register.filter
 def quantity(quantity):
     """Removes the decimal places when they are zero.
     

@@ -28,8 +28,8 @@ from lfs.catalog.settings import PROPERTY_SELECT_FIELD
 from lfs.catalog.settings import PROPERTY_NUMBER_FIELD
 from lfs.catalog.settings import PROPERTY_STEP_TYPE_CHOICES
 from lfs.catalog.settings import PROPERTY_STEP_TYPE_AUTOMATIC
-from lfs.catalog.settings import PROPERTY_STEP_TYPE_STEPS
-from lfs.catalog.settings import PROPERTY_STEP_TYPE_RANGE
+from lfs.catalog.settings import PROPERTY_STEP_TYPE_MANUAL_STEPS
+from lfs.catalog.settings import PROPERTY_STEP_TYPE_FIXED_STEP
 import lfs.catalog.utils
 from lfs.tax.models import Tax
 
@@ -806,6 +806,9 @@ class Property(models.Model):
             The position of the property within a product.            
         - filterable:
             If True the property is used for filtered navigation.
+        - display_no_results
+            If True filter ranges with no products will be displayed. Otherwise
+            they will be removed.
         - unit: 
             Something like cm, mm, m, etc.
         - local
@@ -819,9 +822,10 @@ class Property(models.Model):
     groups = models.ManyToManyField(PropertyGroup, verbose_name=_(u"Group"), blank=True, null=True, through="GroupsPropertiesRelation", related_name="properties")
     products = models.ManyToManyField(Product, verbose_name=_(u"Products"), blank=True, null=True, through="ProductsPropertiesRelation", related_name="properties")
     position = models.IntegerField(_(u"Position"), blank=True, null=True)
-    filterable = models.BooleanField(default=True)
     unit = models.CharField(_(u"Unit"), blank=True, max_length=15)
     local = models.BooleanField(default=False)
+    filterable = models.BooleanField(default=True)
+    display_no_results = models.BooleanField(_(u"Display no results"), default=False)    
     type = models.PositiveSmallIntegerField(_(u"Type"), choices=PROPERTY_TYPE_CHOICES, default=PROPERTY_TEXT_FIELD)
     
     step_type = models.PositiveSmallIntegerField(_(u"Step type"), choices=PROPERTY_STEP_TYPE_CHOICES, default=PROPERTY_STEP_TYPE_AUTOMATIC)
@@ -848,7 +852,7 @@ class Property(models.Model):
     
     @property
     def is_range_step_type(self):
-        return self.step_type == PROPERTY_STEP_TYPE_RANGE
+        return self.step_type == PROPERTY_STEP_TYPE_FIXED_STEP
 
     @property
     def is_automatic_step_type(self):
@@ -856,7 +860,7 @@ class Property(models.Model):
 
     @property
     def is_steps_step_type(self):
-        return self.step_type == PROPERTY_STEP_TYPE_STEPS
+        return self.step_type == PROPERTY_STEP_TYPE_MANUAL_STEPS
         
     def is_valid_value(self, value):
         """Returns True if given value is valid for this property.

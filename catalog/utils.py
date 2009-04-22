@@ -119,7 +119,7 @@ def get_price_filters(category, product_filter, price_filter):
         return {
             "show_reset" : True,
             "show_quantity" : False,
-            "items" : [{"min" : min, "max" : max}],
+            "items" : [{"min" : float(min), "max" : float(max)}],
             }
         
     product_ids_str = ", ".join([str(p.id) for p in all_products])
@@ -269,7 +269,7 @@ def get_product_filters(category, product_filter, price_filter, sorting):
                 "object" : property,
                 "name" : property.name,
                 "unit" : property.unit,
-                "items" : [{"min" : values[0], "max" : values[1]}],
+                "items" : [{"min" : float(values[0]), "max" : float(values[1])}],
                 "show_reset" : True,
                 "show_quantity" : False,
             })

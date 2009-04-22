@@ -823,9 +823,10 @@ class Property(models.Model):
     products = models.ManyToManyField(Product, verbose_name=_(u"Products"), blank=True, null=True, through="ProductsPropertiesRelation", related_name="properties")
     position = models.IntegerField(_(u"Position"), blank=True, null=True)
     unit = models.CharField(_(u"Unit"), blank=True, max_length=15)
+    display_on_product = models.BooleanField(_(u"Display on product"), default=True)
     local = models.BooleanField(default=False)
     filterable = models.BooleanField(default=True)
-    display_no_results = models.BooleanField(_(u"Display no results"), default=False)    
+    display_no_results = models.BooleanField(_(u"Display no results"), default=False)
     type = models.PositiveSmallIntegerField(_(u"Type"), choices=PROPERTY_TYPE_CHOICES, default=PROPERTY_TEXT_FIELD)
     
     step_type = models.PositiveSmallIntegerField(_(u"Step type"), choices=PROPERTY_STEP_TYPE_CHOICES, default=PROPERTY_STEP_TYPE_AUTOMATIC)

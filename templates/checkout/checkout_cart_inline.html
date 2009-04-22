@@ -27,7 +27,7 @@
                 {{cart_item.product.name}}
                 {% for option in cart_item.product.get_options %}
                     <div>
-                        {{option.property.name}} : {{option.option.name}}
+                        {{option.property.name}} : {{option.option.name}} {{option.property.unit|safe}}
                     </div>
                 {% endfor %}
             </td>

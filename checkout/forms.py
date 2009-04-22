@@ -53,10 +53,10 @@ class OnePageCheckoutForm(forms.Form):
         """
         msg = "This field is required"
         
-        # If the email field is displayed and emtpy then we have to complain.
-        if self.cleaned_data.get("invoice_email") == "":
+        if self.data.get("is_anonymous") == "1" and \
+           not self.cleaned_data.get("invoice_email"):
             self._errors["invoice_email"] = ErrorList([msg])
-        
+
         if not self.cleaned_data.get("no_shipping"):
             if self.cleaned_data.get("shipping_firstname", "") == "":
                 self._errors["shipping_firstname"] = ErrorList([msg])

@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from lfs.checkout.settings import CHECKOUT_TYPES
 from lfs.checkout.settings import CHECKOUT_TYPE_SELECT
 from lfs.core.fields.thumbs import ImageWithThumbsField
+from lfs.core.settings import ACTION_PLACE_CHOICES
 from lfs.catalog.models import StaticBlock
 
 class Country(models.Model):
@@ -23,6 +24,36 @@ class Country(models.Model):
     class Meta:
         verbose_name_plural = 'Countries'
         ordering = ("name", )
+
+class Action(models.Model):
+    """A action is a link which can be displayed on several parts of the web
+    page.
+    
+    Instance variables:
+    
+    - title
+      The title of the menu tab
+    - active
+      If true the tab is displayed.
+    - position 
+      the position of the tab within the menu.
+    - link
+      The link to the object
+    - parent
+      Parent tab to create a tree
+    """
+    title = models.CharField(_(u"Title"), max_length=40)
+    active = models.BooleanField(_(u"Active"), default=False)
+    place = models.PositiveSmallIntegerField(blank=True, null=True, choices=ACTION_PLACE_CHOICES)
+    position = models.IntegerField(_(u"Position"), default=1)
+    link = models.CharField(_(u"Link"), blank=True, max_length=100)
+    parent = models.ForeignKey("self", verbose_name=_(u"Parent"), blank=True, null=True)
+    
+    def __unicode__(self):
+        return self.title
+        
+    class Meta:
+        ordering=("position",)
     
 class Shop(models.Model):
     """Holds all shop related information. 

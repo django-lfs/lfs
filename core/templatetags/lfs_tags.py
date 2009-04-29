@@ -17,6 +17,7 @@ from lfs.catalog.models import Product
 from lfs.catalog.models import PropertyOption
 from lfs.catalog.settings import PRODUCT_TYPE_LOOKUP
 from lfs.core.models import Shop
+from lfs.core.models import Action
 from lfs.order.models import Order
 from lfs.shipping import utils as shipping_utils
 import lfs.utils.misc
@@ -288,6 +289,17 @@ def cart_portlet(context):
     return {
         "amount_of_items" : amount_of_items,
         "price" : price,
+        "MEDIA_URL" : context.get("MEDIA_URL"),
+    }
+
+
+@register.inclusion_tag('shop/tabs.html', takes_context=True)
+def tabs(context):
+    """
+    """
+    tabs = Action.objects.filter(active=True)
+    return {
+        "tabs" : tabs,
         "MEDIA_URL" : context.get("MEDIA_URL"),
     }
 

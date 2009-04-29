@@ -163,9 +163,11 @@
             <td>
                {{item.product_name}} 
                 {% for option in item.product.get_options %}
-                    <div>
-                        {{option.property.name}} : {{option.value|option_name}}
-                    </div>
+                    {% if option.property.display_on_product %}
+                        <div>
+                            {{option.property.name}} : {{option.value|option_name}} {{ option.property.unit|safe }}
+                        </div>
+                    {% endif %}
                 {% endfor %}                   
             </td>
             <td class="number">

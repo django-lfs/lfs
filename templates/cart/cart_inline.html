@@ -60,9 +60,11 @@
                     <td>
                         {{cart_item.product.name}}
                         {% for option in cart_item.product.get_options %}
-                            <div>
-                                {{option.property.name}} : {{option.option.name}}
-                            </div>
+                            {% if option.property.display_on_product %}                                                    
+                                <div>
+                                    {{option.property.name}} : {{option.value|option_name}} {{option.property.unit|safe}}
+                                </div>
+                            {% endif %}
                         {% endfor %}
                     </td>
                     <td class="number">

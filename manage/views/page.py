@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
+from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
 import lfs.core.utils

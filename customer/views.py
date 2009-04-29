@@ -34,8 +34,8 @@ def login(request, template_name="customer/login.html"):
     shop = lfs.core.utils.get_default_shop()
     
     # If only anonymous checkout is allowed this view doesn't exists :)
-    if shop.checkout_type == CHECKOUT_TYPE_ANON:
-        raise Http404()
+    # if shop.checkout_type == CHECKOUT_TYPE_ANON:
+    #     raise Http404()
 
     # Using Djangos default AuthenticationForm
     login_form = AuthenticationForm()

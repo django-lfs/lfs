@@ -15,6 +15,16 @@ def page_view(request, slug, template_name="page/page.html"):
         "page" : page
     }))
 
+def pages_view(request, template_name="page/pages.html"):
+    """Displays an overview of alll pages.
+    """
+    pages = Page.objects.all()
+    
+    return render_to_response(template_name, RequestContext(request, {
+        "pages" : pages
+    }))
+
+
 def popup_view(request, slug, template_name="page/popup.html"):
     """Displays page with passed slug
     """

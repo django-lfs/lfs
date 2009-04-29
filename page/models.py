@@ -12,6 +12,7 @@ class Page(models.Model):
     """
     title = models.CharField(_(u"Title"), max_length=100)
     slug = models.CharField(_(u"Slug"), max_length=100)
+    short_text = models.TextField(blank=True)
     body = models.TextField(_(u"Text"), blank=True)
     active = models.BooleanField(_(u"Active"), default=False)
     position = models.IntegerField(_(u"Position"), default=999)

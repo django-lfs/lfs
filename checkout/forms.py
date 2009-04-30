@@ -51,7 +51,7 @@ class OnePageCheckoutForm(forms.Form):
     def clean(self):
         """
         """
-        msg = "This field is required"
+        msg = _(u"This field is required.")
         
         if self.data.get("is_anonymous") == "1" and \
            not self.cleaned_data.get("invoice_email"):

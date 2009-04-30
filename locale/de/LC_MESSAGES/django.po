@@ -1488,7 +1488,7 @@ msgstr "Anmelden"
 
 #: templates/checkout/login.html:27 templates/customer/login.html:64
 msgid "Forgot password?"
-msgstr "Passwort vergessen"
+msgstr "Passwort vergessen?"
 
 #: templates/checkout/login.html:33 templates/checkout/login.html.py:46
 #: templates/customer/login.html:70 templates/customer/login.html.py:83
@@ -2705,12 +2705,3 @@ msgid "There has been found 1 product."
 msgid_plural "There has been found %(counter)s products."
 msgstr[0] "Es wurde 1 Produkt gefunden."
 msgstr[1] "Es wuden %(counter)s Produkte gefunden."
-
-#~ msgid "Invoice e-mail"
-#~ msgstr "E-Mail Rechnungsadresse"
-
-#~ msgid "Property type"
-#~ msgstr "Eigenschaftstyp"
-
-#~ msgid "Username:"
-#~ msgstr "Benutzername:"

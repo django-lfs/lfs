@@ -1,7 +1,6 @@
 {% load i18n %}
 
 <h2>{% trans 'Prices' %}</h2>
-<h3>{% trans 'Add new price' %}</h3>
 <form action="{% url lfs_manage_add_shipping_price shipping_method.id %}"
       method="post">
     <input type="text" name="price" /> 
@@ -10,7 +9,7 @@
 </form>
 
 {% if prices %}
-    <h2>{% trans 'Existing prices' %}</h2>
+    <h2 class="heading-middle">{% trans 'Existing prices' %}</h2>
     <form action="{% url lfs_manage_update_shipping_prices shipping_method.id %}"
           method="post">
         <table>

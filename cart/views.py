@@ -32,8 +32,8 @@ def cart_inline(request, template_name="cart/cart_inline.html"):
     """
     cart = cart_utils.get_cart(request)
     if cart is None:
-        return ""
-    
+        return render_to_string(template_name, RequestContext(request, {}))
+        
     shop = core_utils.get_default_shop()
     countries = shop.countries.all()
     selected_country = shipping_utils.get_selected_shipping_country(request)

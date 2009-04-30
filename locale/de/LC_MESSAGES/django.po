@@ -2078,7 +2078,7 @@ msgstr "Kriterium hinzufügen"
 #: templates/manage/shipping/shipping_method_criteria.html:28
 #: templates/manage/shipping/shipping_price_criteria.html:31
 msgid "Save criteria"
-msgstr "Kriterium speichern"
+msgstr "Kriterien speichern"
 
 #: templates/manage/payment/payment_method_prices.html:4
 #: templates/manage/shipping/shipping_method_prices.html:4

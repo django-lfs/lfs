@@ -37,7 +37,8 @@ def livesearch(request, template_name="search/livesearch_results.html"):
     return HttpResponse(result)
     
 def search(request, template_name="search/search_results.html"):
-    """
+    """Returns the search result according to given phrase (via get request) 
+    ordered by the globally set sorting.
     """
     phrase = request.GET.get("phrase", "")
     
@@ -45,6 +46,11 @@ def search(request, template_name="search/search_results.html"):
     query = Q(name__icontains=phrase) & Q(sub_type__in = (STANDARD_PRODUCT, VARIANT))
     products = Product.objects.filter(query)
 
+    # Sorting
+    sorting = request.session.get("sorting")    
+    if sorting: 
+        products = products.order_by(sorting)
+        
     total = 0
     if products:
         total += len(products)

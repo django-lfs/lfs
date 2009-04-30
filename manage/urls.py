@@ -227,6 +227,14 @@ urlpatterns += patterns('lfs.manage.views.shop',
     url(r'^save-shop-default-values$', "save_default_values", name="lfs_save_shop_default_values"),
 )
 
+# Shop action
+urlpatterns += patterns('lfs.manage.views.actions',
+    url(r'^add-action$', "add_action", name="lfs_add_action"),
+    url(r'^delete-action/(?P<id>\d*)$', "delete_action", name="lfs_delete_action"),
+    url(r'^manage-actions$', "manage_actions", name="lfs_manage_actions"),
+    url(r'^manage-action/(?P<id>\d*)$', "manage_action", name="lfs_manage_action"),    
+)
+
 # Tax
 urlpatterns += patterns('lfs.manage.views.tax',
     url(r'^add-tax$', "add_tax", name="lfs_add_tax"),

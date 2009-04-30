@@ -18,6 +18,7 @@ from lfs.catalog.models import PropertyOption
 from lfs.catalog.settings import PRODUCT_TYPE_LOOKUP
 from lfs.core.models import Shop
 from lfs.core.models import Action
+from lfs.core.settings import ACTION_PLACE_TABS
 from lfs.order.models import Order
 from lfs.shipping import utils as shipping_utils
 import lfs.utils.misc
@@ -297,7 +298,14 @@ def cart_portlet(context):
 def tabs(context):
     """
     """
-    tabs = Action.objects.filter(active=True)
+    request = context.get("request")
+    tabs = Action.objects.filter(active=True, place=ACTION_PLACE_TABS)
+    
+    for tab in tabs:
+        if request.path.find(tab.link) != -1:
+            tab.selected = True 
+            break
+            
     return {
         "tabs" : tabs,
         "MEDIA_URL" : context.get("MEDIA_URL"),

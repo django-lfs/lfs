@@ -33,17 +33,17 @@
             <div id="user">
                 {% if user.is_authenticated %}
                     <span>{{ user.username }}</span> 
-                    | <a href="/logout">Logout</a>
-                    | <a href="{% url lfs_my_account %}">My account</a>
+                    | <a href="/logout">{% trans 'Logout' %}</a>
+                    | <a href="{% url lfs_my_account %}">{% trans 'My account' %}</a>
                 {% else %}
                     {% if not ANON_ONLY %}
-                        <a href="{% url lfs_login %}">login</a>
+                        <a href="{% url lfs_login %}">{% trans 'Login' %}</a>
                     {% endif %}                    
                 {% endif %}
             </div>
             
             <div id="search">
-                <label for="search">Search:</label>
+                <label for="search">{% trans 'Search' %}:</label>
                 <form id="search-form"
                       action="{% url lfs_search %}"
                       autocomplete="off">

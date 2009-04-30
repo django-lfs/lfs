@@ -10,6 +10,7 @@ from lfs.checkout.settings import CHECKOUT_TYPES
 from lfs.checkout.settings import CHECKOUT_TYPE_SELECT
 from lfs.core.fields.thumbs import ImageWithThumbsField
 from lfs.core.settings import ACTION_PLACE_CHOICES
+from lfs.core.settings import ACTION_PLACE_TABS
 from lfs.catalog.models import StaticBlock
 
 class Country(models.Model):
@@ -33,20 +34,20 @@ class Action(models.Model):
     
     - title
       The title of the menu tab
+    - link
+      The link to the object
     - active
       If true the tab is displayed.
     - position 
       the position of the tab within the menu.
-    - link
-      The link to the object
     - parent
       Parent tab to create a tree
     """
     title = models.CharField(_(u"Title"), max_length=40)
+    link = models.CharField(_(u"Link"), blank=True, max_length=100)    
     active = models.BooleanField(_(u"Active"), default=False)
-    place = models.PositiveSmallIntegerField(blank=True, null=True, choices=ACTION_PLACE_CHOICES)
-    position = models.IntegerField(_(u"Position"), default=1)
-    link = models.CharField(_(u"Link"), blank=True, max_length=100)
+    place = models.PositiveSmallIntegerField(blank=True, null=True, choices=ACTION_PLACE_CHOICES, default=ACTION_PLACE_TABS)
+    position = models.IntegerField(_(u"Position"), default=999)
     parent = models.ForeignKey("self", verbose_name=_(u"Parent"), blank=True, null=True)
     
     def __unicode__(self):

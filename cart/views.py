@@ -76,6 +76,7 @@ def cart_inline(request, template_name="cart/cart_inline.html"):
         "countries" : countries,
         "selected_country" : selected_country,
         "max_delivery_time" : max_delivery_time,
+        "shopping_url" : request.META.get("HTTP_REFERER") or reverse("lfs_shop_view"),
     }))
 
 def added_to_cart(request, template_name="cart/added_to_cart.html"):

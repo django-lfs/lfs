@@ -12,6 +12,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
 import lfs
@@ -39,6 +40,7 @@ def login(request, template_name="customer/login.html"):
 
     # Using Djangos default AuthenticationForm
     login_form = AuthenticationForm()
+    login_form.fields["username"].label = _(u"E-Mail")
     register_form = RegisterForm()
 
     if request.POST.get("action") == "login":

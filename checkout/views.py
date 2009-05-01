@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.utils import simplejson
+from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
 import lfs.core.utils
@@ -41,6 +42,7 @@ def login(request, template_name="checkout/login.html"):
     
     # Using Djangos default AuthenticationForm
     login_form = AuthenticationForm()
+    login_form.fields["username"].label = _(u"E-Mail")
     register_form = RegisterForm()
 
     if request.POST.get("action") == "login":
@@ -75,7 +77,7 @@ def login(request, template_name="checkout/login.html"):
     return render_to_response(template_name, RequestContext(request, {
         "login_form" : login_form,
         "register_form" : register_form,
-        "anonymous_checkout" : shop.checkout_type != CHECKOUT_TYPE_AUTH
+        "anonymous_checkout" : shop.checkout_type != CHECKOUT_TYPE_AUTH,
     }))
     
 def checkout_dispatcher(request):

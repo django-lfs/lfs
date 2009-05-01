@@ -7,7 +7,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response
@@ -16,7 +15,6 @@ from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
 import lfs
-from lfs.checkout.settings import CHECKOUT_TYPE_ANON
 from lfs.customer.forms import AddressForm
 from lfs.customer.forms import EmailForm
 from lfs.customer.forms import RegisterForm
@@ -54,7 +52,9 @@ def login(request, template_name="customer/login.html"):
             
             from django.contrib.auth import login
             login(request, login_form.get_user())
-            return HttpResponseRedirect(redirect_to)
+
+            return lfs.core.utils.set_message_cookie(
+                redirect_to, msg = _(u"You have been logged in."))
         
     elif request.POST.get("action") == "register":
         register_form = RegisterForm(data=request.POST)
@@ -81,7 +81,8 @@ def login(request, template_name="customer/login.html"):
             if not redirect_to or '//' in redirect_to or ' ' in redirect_to:
                 redirect_to = reverse("lfs_shop_view")
             
-            return HttpResponseRedirect(redirect_to)
+            return lfs.core.utils.set_message_cookie(
+                redirect_to, msg = _(u"You have been registered and logged in."))
     
     # Get next_url
     next_url = request.REQUEST.get("next")
@@ -98,7 +99,7 @@ def login(request, template_name="customer/login.html"):
         login_form_errors = login_form.errors["__all__"]
     except KeyError:
         login_form_errors = None
-        
+    
     return render_to_response(template_name, RequestContext(request, {
         "login_form" : login_form,
         "login_form_errors" : login_form_errors,
@@ -107,14 +108,16 @@ def login(request, template_name="customer/login.html"):
     }))
 
 def logout(request):
-    """Custome method to logout a user.
+    """Custom method to logout a user.
     
     The reason to use a custom logout method is just to provide a login and a 
     logoutmethod on one place.
     """
     from django.contrib.auth import logout
     logout(request)
-    return HttpResponseRedirect(reverse("lfs_shop_view"))
+    
+    return lfs.core.utils.set_message_cookie(reverse("lfs_shop_view"),
+        msg = _(u"You have been logged out."))
     
 @login_required
 def orders(request, template_name="customer/orders.html"):

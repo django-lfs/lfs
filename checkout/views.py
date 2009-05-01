@@ -50,7 +50,9 @@ def login(request, template_name="checkout/login.html"):
         if login_form.is_valid():            
             from django.contrib.auth import login
             login(request, login_form.get_user())
-            return HttpResponseRedirect(reverse("lfs_checkout"))
+
+            return lfs.core.utils.set_message_cookie(reverse("lfs_checkout"), 
+                msg = _(u"You have been logged in."))
         
     elif request.POST.get("action") == "register":
         register_form = RegisterForm(data=request.POST)
@@ -71,8 +73,9 @@ def login(request, template_name="checkout/login.html"):
 
             from django.contrib.auth import login
             login(request, user)
-            
-            return HttpResponseRedirect(reverse("lfs_checkout"))
+
+            return lfs.core.utils.set_message_cookie(reverse("lfs_checkout"), 
+                msg = _(u"You have been registered and logged in."))
     
     return render_to_response(template_name, RequestContext(request, {
         "login_form" : login_form,

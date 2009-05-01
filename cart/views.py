@@ -32,7 +32,9 @@ def cart_inline(request, template_name="cart/cart_inline.html"):
     """
     cart = cart_utils.get_cart(request)
     if cart is None:
-        return render_to_string(template_name, RequestContext(request, {}))
+        return render_to_string(template_name, RequestContext(request, {
+            "shopping_url" : request.META.get("HTTP_REFERER") or reverse("lfs_shop_view"),
+        }))
         
     shop = core_utils.get_default_shop()
     countries = shop.countries.all()

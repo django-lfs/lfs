@@ -2098,7 +2098,7 @@ msgstr "Bewertung hinzufügen"
 
 #: templates/manage/reviews/manage_reviews.html:32
 msgid "View product"
-msgstr "Produkte ansehen"
+msgstr "Produkt ansehen"
 
 #: templates/manage/reviews/manage_reviews.html:38
 msgid "Review"

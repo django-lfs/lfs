@@ -1,4 +1,13 @@
 $(function() {
+
+    // Message ################################################################ 
+
+    var message = $.cookie("message");
+    
+    if (message != null) { 
+        $.jGrowl(message);
+        $.cookie("message", null, { path: '/' });
+    };
     
     // Rating ################################################################# 
     $(".rate").click(function() {
@@ -21,7 +30,11 @@ $(function() {
     // });
     
     // Product ################################################################ 
-    $("a.product-image").lightBox()
+    
+    $("a.product-image").lightBox({
+        // "txtImage" : "Bild",
+        // "txtOf" : " von ",
+    })
     
     // Cart ###################################################################
     $(".add-accessory-link").livequery("click", function() {

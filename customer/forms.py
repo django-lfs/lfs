@@ -31,9 +31,9 @@ class RegisterForm(forms.Form):
     """
     email = forms.EmailField(label=_(u"E-mail"), max_length=50)
     password_1 = forms.CharField(
-        label=_(u"Password 1"), widget=forms.PasswordInput(), max_length=20)
+        label=_(u"Password"), widget=forms.PasswordInput(), max_length=20)
     password_2 = forms.CharField(
-        label=_(u"Password 2"), widget=forms.PasswordInput(), max_length=20)
+        label=_(u"Confirm password"), widget=forms.PasswordInput(), max_length=20)
 
     def clean_password_2(self):
         """Validates that password 1 and password 2 are the same.

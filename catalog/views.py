@@ -224,7 +224,7 @@ def category_products(request, slug, start=0, template_name="catalog/category_pr
             
     # Calculate urls
     pages = []
-    for i in range(0, amount_of_products/amount):
+    for i in range(0, amount_of_products/amount+1):
         page_start = i*amount
         pages.append({
             "name" : i+1,

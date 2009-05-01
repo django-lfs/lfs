@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-01 09:43+0200\n"
+"POT-Creation-Date: 2009-05-01 10:33+0200\n"
 "PO-Revision-Date: 2009-02-22 07:20+0100\n"
 "Last-Translator: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
 "Language-Team: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
@@ -23,26 +23,18 @@ msgstr "Benutzer"
 msgid "Session"
 msgstr "Session"
 
-#: cart/models.py:61 templates/cart/added_to_cart.html:60
-#: templates/cart/cart_portlet.html:7
+#: cart/models.py:61
 msgid "Cart"
 msgstr "Warenkorb"
 
 #: cart/models.py:62 catalog/models.py:756 catalog/models.py:931
 #: catalog/models.py:985 marketing/models.py:11
 #: tagging/templates/catalog/product_list.html:10
-#: templates/cart/added_to_cart_items.html:6
-#: templates/cart/cart_inline.html:40
-#: templates/checkout/checkout_cart_inline.html:6
 #: templates/manage/product/product.html:87
-#: templates/search/search_results.html:18
 msgid "Product"
 msgstr "Produkt"
 
 #: cart/models.py:63 catalog/models.py:759
-#: templates/cart/added_to_cart.html:24
-#: templates/cart/added_to_cart_items.html:9
-#: templates/catalog/product_inline.html:108
 #: templates/manage/product/accessories_inline.html:94
 msgid "Quantity"
 msgstr "Menge"
@@ -50,10 +42,6 @@ msgstr "Menge"
 #: catalog/models.py:41 catalog/models.py:254 catalog/models.py:821
 #: catalog/models.py:958 catalog/models.py:1052 core/models.py:20
 #: core/models.py:116 payment/models.py:49 shipping/models.py:53
-#: templates/cart/added_to_cart.html:21
-#: templates/catalog/product_inline.html:41
-#: templates/catalog/product_inline.html:107
-#: templates/mail/order_received_mail.html:186
 #: templates/manage/category/products_inline.html:39
 #: templates/manage/category/selected_products.html:39
 #: templates/manage/marketing/topseller_inline.html:37
@@ -72,7 +60,6 @@ msgstr "Menge"
 #: templates/manage/properties/pg_products_inline.html:88
 #: templates/manage/properties/properties_inline.html:12
 #: templates/manage/properties/properties_inline.html:58
-#: templates/order/lfs_order_tmpl.html:146
 msgid "Name"
 msgstr "Name"
 
@@ -115,7 +102,6 @@ msgstr "Beschreibung"
 #: payment/models.py:53 shipping/models.py:57
 #: tagging/templates/catalog/product_list.html:9
 #: templates/manage/product/images.html:28
-#: templates/search/search_results.html:17
 msgid "Image"
 msgstr "Bild"
 
@@ -165,13 +151,11 @@ msgstr "Meta Keywords"
 msgid "Meta description"
 msgstr "Meta Description"
 
-#: catalog/models.py:256 templates/mail/order_received_mail.html:183
-#: templates/manage/category/products_inline.html:42
+#: catalog/models.py:256 templates/manage/category/products_inline.html:42
 #: templates/manage/category/selected_products.html:42
 #: templates/manage/order/order.html:174
 #: templates/manage/product/products_inline.html:47
 #: templates/manage/product/variants.html:147
-#: templates/order/lfs_order_tmpl.html:143
 msgid "SKU"
 msgstr "Artikelnummer"
 
@@ -179,19 +163,6 @@ msgstr "Artikelnummer"
 #: criteria/models.py:144 order/models.py:25 payment/models.py:56
 #: payment/models.py:93 shipping/models.py:60 shipping/models.py:105
 #: tagging/templates/catalog/product_list.html:12
-#: templates/cart/added_to_cart.html:27
-#: templates/cart/added_to_cart_items.html:12
-#: templates/cart/cart_inline.html:46 templates/catalog/product_inline.html:49
-#: templates/catalog/product_inline.html:109
-#: templates/checkout/checkout_cart_inline.html:12
-#: templates/criteria/country_criterion.html:10
-#: templates/criteria/height_criterion.html:10
-#: templates/criteria/length_criterion.html:10
-#: templates/criteria/price_criterion.html:10
-#: templates/criteria/user_criterion.html:11
-#: templates/criteria/weight_criterion.html:10
-#: templates/criteria/width_criterion.html:9 templates/customer/orders.html:28
-#: templates/mail/order_received_mail.html:192
 #: templates/manage/category/products_inline.html:48
 #: templates/manage/category/selected_products.html:48
 #: templates/manage/marketing/topseller_inline.html:43
@@ -208,8 +179,6 @@ msgstr "Artikelnummer"
 #: templates/manage/properties/pg_products_inline.html:44
 #: templates/manage/properties/pg_products_inline.html:94
 #: templates/manage/shipping/shipping_method_prices.html:24
-#: templates/order/lfs_order_tmpl.html:152
-#: templates/search/search_results.html:20
 msgid "Price"
 msgstr "Preis"
 
@@ -273,46 +242,19 @@ msgid "Stock amount"
 msgstr "Lagerbestand"
 
 #: catalog/models.py:289 criteria/models.py:204 criteria/models.py:222
-#: templates/criteria/country_criterion.html:14
-#: templates/criteria/height_criterion.html:14
-#: templates/criteria/length_criterion.html:14
-#: templates/criteria/price_criterion.html:14
-#: templates/criteria/user_criterion.html:15
-#: templates/criteria/weight_criterion.html:14
-#: templates/criteria/width_criterion.html:13
 msgid "Weight"
 msgstr "Gewicht"
 
 #: catalog/models.py:290 criteria/models.py:266 criteria/models.py:284
-#: criteria/models.py:345 templates/criteria/country_criterion.html:11
-#: templates/criteria/height_criterion.html:11
-#: templates/criteria/length_criterion.html:11
-#: templates/criteria/price_criterion.html:11
-#: templates/criteria/user_criterion.html:12
-#: templates/criteria/weight_criterion.html:11
-#: templates/criteria/width_criterion.html:10
+#: criteria/models.py:345
 msgid "Height"
 msgstr "Höhe"
 
 #: catalog/models.py:291 criteria/models.py:388 criteria/models.py:406
-#: templates/criteria/country_criterion.html:12
-#: templates/criteria/height_criterion.html:12
-#: templates/criteria/length_criterion.html:12
-#: templates/criteria/price_criterion.html:12
-#: templates/criteria/user_criterion.html:13
-#: templates/criteria/weight_criterion.html:12
-#: templates/criteria/width_criterion.html:11
 msgid "Length"
 msgstr "Länge"
 
 #: catalog/models.py:292 criteria/models.py:327
-#: templates/criteria/country_criterion.html:13
-#: templates/criteria/height_criterion.html:13
-#: templates/criteria/length_criterion.html:13
-#: templates/criteria/price_criterion.html:13
-#: templates/criteria/user_criterion.html:14
-#: templates/criteria/weight_criterion.html:13
-#: templates/criteria/width_criterion.html:12
 msgid "Width"
 msgstr "Breite"
 
@@ -550,25 +492,17 @@ msgid "City"
 msgstr "Stadt"
 
 #: checkout/forms.py:18 checkout/forms.py:27 criteria/models.py:65
-#: customer/models.py:66 templates/criteria/country_criterion.html:9
-#: templates/criteria/height_criterion.html:9
-#: templates/criteria/length_criterion.html:9
-#: templates/criteria/price_criterion.html:9
-#: templates/criteria/user_criterion.html:10
-#: templates/criteria/weight_criterion.html:9
-#: templates/criteria/width_criterion.html:8
+#: customer/models.py:66
 msgid "Country"
 msgstr "Land"
 
 #: checkout/forms.py:19 checkout/forms.py:28 customer/models.py:67
-#: templates/mail/order_received_mail.html:74
-#: templates/manage/order/order.html:72 templates/order/lfs_order_tmpl.html:41
+#: templates/manage/order/order.html:72
 msgid "Phone"
 msgstr "Telefon"
 
 #: checkout/forms.py:20 customer/forms.py:27 customer/forms.py:32
-#: templates/mail/order_received_mail.html:60
-#: templates/manage/order/order.html:56 templates/order/lfs_order_tmpl.html:25
+#: templates/manage/order/order.html:56
 msgid "E-mail"
 msgstr "E-Mail"
 
@@ -592,7 +526,7 @@ msgstr "Kontoeigentümer"
 msgid "Same as invoice"
 msgstr "Wie Rechnungsadresse"
 
-#: checkout/forms.py:42 templates/mail/order_received_mail.html:272
+#: checkout/forms.py:42
 msgid "Your message to us"
 msgstr "Ihre Nachricht an uns"
 
@@ -612,10 +546,17 @@ msgstr "Nur anonym"
 msgid "Authenticated only"
 msgstr "Nur authentifiziert"
 
-#: checkout/views.py:45 customer/models.py:68 customer/views.py:43
-#: templates/customer/data.html:10
+#: checkout/views.py:45 customer/models.py:68 customer/views.py:41
 msgid "E-Mail"
 msgstr "E-Mail"
+
+#: checkout/views.py:55 customer/views.py:57
+msgid "You have been logged in."
+msgstr "Sie sind nun angemeldet."
+
+#: checkout/views.py:78 customer/views.py:85
+msgid "You have been registered and logged in."
+msgstr "Sie sind nun registriert und angemeldet."
 
 #: core/models.py:19
 msgid "Country code"
@@ -683,7 +624,7 @@ msgstr "Typ Kriterium"
 msgid "Equal to"
 msgstr "Gleich wie"
 
-#: criteria/settings.py:15 templates/criteria/number_operators.html:4
+#: criteria/settings.py:15
 msgid "Less than"
 msgstr "Weniger als"
 
@@ -691,7 +632,7 @@ msgstr "Weniger als"
 msgid "Less than or equal to"
 msgstr "Wenige als oder gleich wie"
 
-#: criteria/settings.py:17 templates/criteria/number_operators.html:6
+#: criteria/settings.py:17
 msgid "Greater than"
 msgstr "Größer als"
 
@@ -703,11 +644,11 @@ msgstr "Größer als oder gleich wie"
 msgid "Contain"
 msgstr "Beinhaltet"
 
-#: criteria/settings.py:27 templates/criteria/selection_operators.html:3
+#: criteria/settings.py:27
 msgid "Is"
 msgstr "Ist"
 
-#: criteria/settings.py:28 templates/criteria/selection_operators.html:4
+#: criteria/settings.py:28
 msgid "Is not"
 msgstr "Ist nicht"
 
@@ -735,7 +676,7 @@ msgstr "Ausgewählte Liefermethode"
 msgid "Selected payment method"
 msgstr "Ausgewählte Bezahlmethode"
 
-#: customer/models.py:27 templates/customer/data.html:77
+#: customer/models.py:27
 msgid "Bank account"
 msgstr "Bankkonto"
 
@@ -790,6 +731,10 @@ msgstr "Ablaufdatum Monat"
 #: customer/models.py:95
 msgid "Expiration date year"
 msgstr "Ablaufdatum Jahr"
+
+#: customer/views.py:120
+msgid "You have been logged out."
+msgstr "Sie sind nun abgemeldet."
 
 #: mail/utils.py:16
 msgid "Your order has been received"
@@ -1070,9 +1015,7 @@ msgstr "Eigenschaften wurden aktualisiert."
 msgid "Created"
 msgstr "Erstellt am"
 
-#: order/models.py:23 templates/customer/orders.html:31
-#: templates/mail/order_received_mail.html:66
-#: templates/manage/order/order.html:64 templates/order/lfs_order_tmpl.html:33
+#: order/models.py:23 templates/manage/order/order.html:64
 msgid "State"
 msgstr "Status"
 
@@ -1235,8 +1178,7 @@ msgstr "Notiz"
 msgid "Priority"
 msgstr "Priorität"
 
-#: payment/models.py:92 templates/mail/order_received_mail.html:100
-#: templates/manage/order/order.html:98 templates/order/lfs_order_tmpl.html:67
+#: payment/models.py:92 templates/manage/order/order.html:98
 msgid "Payment method"
 msgstr "Bezahlmethode"
 
@@ -1264,445 +1206,17 @@ msgstr "Produkte mit gleichen Tags"
 msgid "Rate"
 msgstr "Satz"
 
-#: templates/404.html:9 templates/500.html:9
-msgid "We are sorry!"
-msgstr "Tut uns leid!"
-
-#: templates/404.html:12
-msgid "The page you have requested could not be found."
-msgstr "Die Seite die Sie angefordert haben existiert nicht."
-
-#: templates/500.html:12
-msgid "An error has occured. Please try again in a minute."
-msgstr "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später noch einmal."
-
-#: templates/base.html:36 templates/manage/manage_base.html:57
-msgid "Logout"
-msgstr "Abmelden"
-
-#: templates/base.html:37 templates/customer/base.html:6
-msgid "My account"
-msgstr "Mein Konto"
-
-#: templates/base.html:40 templates/checkout/login.html:13
-#: templates/checkout/login.html.py:26 templates/customer/login.html:13
-#: templates/customer/login.html.py:63 templates/manage/manage_base.html:59
-msgid "Login"
-msgstr "Anmelden"
-
-#: templates/base.html:46
-msgid "Search"
-msgstr "Suche"
-
-#: templates/base.html:74 templates/manage/manage_base.html:136
-msgid "Powered by"
-msgstr "Powered by"
-
-#: templates/cart/added_to_cart.html:7
-msgid "This products have been added to cart"
-msgstr "Diese Produkte wurden zum Warenkorb hinzugefügt."
-
-#: templates/cart/added_to_cart.html:9
-msgid "This product has been added to cart"
-msgstr "Dieses Produkt wurde zum Warenkorb hinzugefügt."
-
-#: templates/cart/added_to_cart.html:17
-#: templates/catalog/product_inline.html:102
-#: templates/manage/product/accessories_inline.html:77
-#: templates/manage/product/product.html:100
-msgid "Accessories"
-msgstr "Zubehör"
-
-#: templates/cart/added_to_cart.html:30
-#: templates/cart/added_to_cart_items.html:15
-#: templates/cart/added_to_cart_items.html:48
-#: templates/cart/cart_inline.html:49 templates/cart/cart_inline.html:129
-#: templates/catalog/product_inline.html:110
-#: templates/checkout/checkout_cart_inline.html:15
-#: templates/checkout/checkout_cart_inline.html:83
-#: templates/mail/order_received_mail.html:80
-#: templates/mail/order_received_mail.html:195
-#: templates/manage/order/order.html:78 templates/manage/order/order.html:186
-#: templates/order/lfs_order_tmpl.html:47
-#: templates/order/lfs_order_tmpl.html:155
-msgid "Total"
-msgstr "Summe"
-
-#: templates/cart/added_to_cart.html:61 templates/cart/cart_inline.html:151
-msgid "Checkout"
-msgstr "Zur Kasse"
-
-#: templates/cart/added_to_cart.html:62
-#: templates/checkout/empty_page_checkout.html:10
-msgid "Go on shopping"
-msgstr "Weitereinkaufen"
-
-#: templates/cart/cart_inline.html:43
-#: templates/checkout/checkout_cart_inline.html:9
-#: templates/mail/order_received_mail.html:189
-#: templates/manage/order/order.html:180
-#: templates/order/lfs_order_tmpl.html:149
-msgid "Amount"
-msgstr "Menge"
-
-#: templates/cart/cart_inline.html:89
-msgid "Delete Article"
-msgstr "Produkt löschen"
-
-#: templates/cart/cart_inline.html:97
-#: templates/checkout/checkout_cart_inline.html:51
-#: templates/checkout/one_page_checkout.html:220
-#: templates/mail/order_received_mail.html:227
-#: templates/manage/order/order.html:218
-#: templates/order/lfs_order_tmpl.html:187
-#: templates/shipping/shipping_portlet.html:6
-msgid "Shipping"
-msgstr "Liefermethode"
-
-#: templates/cart/cart_inline.html:113
-#: templates/checkout/checkout_cart_inline.html:67
-#: templates/checkout/one_page_checkout.html:226
-#: templates/mail/order_received_mail.html:242
-#: templates/manage/order/order.html:233
-#: templates/order/lfs_order_tmpl.html:202
-msgid "Payment"
-msgstr "Bezahlmethode"
-
-#: templates/cart/cart_inline.html:136
-#: templates/checkout/checkout_cart_inline.html:90
-#: templates/mail/order_received_mail.html:263
-#: templates/manage/order/order.html:254
-#: templates/order/lfs_order_tmpl.html:223
-msgid "Inclusive Taxes"
-msgstr "Inklusive MwSt."
-
-#: templates/cart/cart_inline.html:144
-msgid "Your total delivery will last"
-msgstr "Die Lieferzeit beträgt"
-
-#: templates/cart/cart_inline.html:158 templates/cart/cart_portlet.html:18
-msgid "Cart is empty"
-msgstr "Der Warenkorb ist leer"
-
-#: templates/cart/cart_portlet.html:12
-msgid "Article"
-msgstr "Artikel"
-
-#: templates/catalog/breadcrumbs.html:3 templates/page/page.html:8
-msgid "You are here:"
-msgstr "Sie sind hier:"
-
-#: templates/catalog/breadcrumbs.html:6 templates/page/page.html:11
-#: templates/registration/password_reset_done.html:4
-#: templates/registration/password_reset_form.html:4
-#: templates/shop/menu.html:3
-msgid "Home"
-msgstr "Start"
-
-#: templates/catalog/category_categories.html:22
-#: templates/catalog/category_products.html:53
-msgid "Details"
-msgstr "Details"
-
-#: templates/catalog/filter_navigation.html:5
-msgid "Filters"
-msgstr "Filter"
-
-#: templates/catalog/product_inline.html:35
-#: templates/manage/product/product.html:97
-#: templates/manage/product/variants.html:82
-msgid "Variants"
-msgstr "Varianten"
-
-#: templates/catalog/product_inline.html:94
-msgid "Refresh options"
-msgstr "Optionen aktualisieren"
-
-#: templates/catalog/product_inline.html:103
-msgid "This products fit to the product"
-msgstr "Zu diesem Produkt passend"
-
-#: templates/catalog/product_inline.html:169
-msgid "Add to cart"
-msgstr "In den Warenkorb"
-
-#: templates/catalog/product_inline.html:172
-#: templates/shipping/shipping_portlet.html:15
-#: templates/shipping/shipping_tag.html:10
-msgid "Not deliverable"
-msgstr "Nicht lieferbar"
-
-#: templates/catalog/product_navigation.html:4
-#: templates/catalog/product_navigation.html:6
-#: templates/manage/category/products_inline.html:16
-#: templates/manage/category/selected_products.html:12
-#: templates/manage/marketing/topseller_inline.html:11
-#: templates/manage/marketing/topseller_inline.html:14
-#: templates/manage/product/accessories_inline.html:14
-#: templates/manage/product/products_inline.html:14
-#: templates/manage/product/products_inline.html:17
-#: templates/manage/product/related_products_inline.html:14
-#: templates/manage/product/selectable_products_inline.html:15
-#: templates/manage/product/selectable_products_inline.html:16
-#: templates/manage/product/selectable_products_inline.html:26
-#: templates/manage/product/selectable_products_inline.html:27
-#: templates/manage/properties/pg_products_inline.html:14
-msgid "Previous"
-msgstr "Vorhergendes"
-
-#: templates/catalog/product_navigation.html:10
-#: templates/catalog/product_navigation.html:12
-#: templates/manage/category/products_inline.html:28
-#: templates/manage/category/selected_products.html:20
-#: templates/manage/category/selected_products.html:25
-#: templates/manage/marketing/topseller_inline.html:21
-#: templates/manage/marketing/topseller_inline.html:26
-#: templates/manage/product/accessories_inline.html:26
-#: templates/manage/product/products_inline.html:25
-#: templates/manage/product/products_inline.html:29
-#: templates/manage/product/related_products_inline.html:26
-#: templates/manage/product/selectable_products_inline.html:37
-#: templates/manage/product/selectable_products_inline.html:38
-#: templates/manage/product/selectable_products_inline.html:48
-#: templates/manage/product/selectable_products_inline.html:49
-#: templates/manage/properties/pg_products_inline.html:26
-msgid "Next"
-msgstr "Nächstes"
-
-#: templates/catalog/recent_products_portlet.html:8
-msgid "Recent products"
-msgstr "Kürzlich angesehen"
-
-#: templates/catalog/related_products_portlet.html:8
-#: templates/manage/product/product.html:101
-#: templates/manage/product/related_products_inline.html:76
-msgid "Related Products"
-msgstr "Zugehörige Produkte"
-
-#: templates/catalog/sorting.html:7
-msgid "Price ascending"
-msgstr "Preis aufsteigend"
-
-#: templates/catalog/sorting.html:9
-msgid "Price descending"
-msgstr "Preis absteigend"
-
-#: templates/catalog/sorting.html:11
-msgid "Name ascending"
-msgstr "Name aufsteigend"
-
-#: templates/catalog/sorting.html:13
-msgid "Name descending"
-msgstr "Name absteigend"
-
-#: templates/catalog/sorting.html:16
-msgid "Go!"
-msgstr "Los!"
-
-#: templates/catalog/sorting_portlet.html:7
-msgid "Sorting"
-msgstr "Sortierung"
-
-#: templates/checkout/checkout_cart_inline.html:2
-msgid "Your cart"
-msgstr "Ihr Warenkorb"
-
-#: templates/checkout/empty_page_checkout.html:6
-msgid "There is nothing to checkout"
-msgstr "Keine Produkte vorhanden."
-
-#: templates/checkout/login.html:9 templates/customer/login.html:9
-msgid "Authenticate"
-msgstr "Authentifizieren"
-
-#: templates/checkout/login.html:27 templates/customer/login.html:64
-msgid "Forgot password?"
-msgstr "Passwort vergessen?"
-
-#: templates/checkout/login.html:33 templates/checkout/login.html.py:46
-#: templates/customer/login.html:70 templates/customer/login.html.py:83
-msgid "Register"
-msgstr "Registrieren"
-
-#: templates/checkout/login.html:51
-msgid "Checkout without registration"
-msgstr "Zur Kasse ohne Registrierung"
-
-#: templates/checkout/one_page_checkout.html:14
-#: templates/mail/order_received_mail.html:94
-#: templates/manage/order/order.html:92 templates/order/lfs_order_tmpl.html:58
-msgid "Invoice address"
-msgstr "Rechnungsadresse"
-
-#: templates/checkout/one_page_checkout.html:17
-#: templates/mail/order_received_mail.html:91
-#: templates/manage/order/order.html:89 templates/order/lfs_order_tmpl.html:61
-msgid "Shipping address"
-msgstr "Lieferadresse"
-
-#: templates/checkout/one_page_checkout.html:311
-msgid "Edit cart"
-msgstr "Warenkorb bearbeiten"
-
-#: templates/checkout/one_page_checkout.html:315
-msgid "Submit order"
-msgstr "Bestellung absenden"
-
-#: templates/checkout/thank_you_page.html:5 templates/reviews/thank_you.html:5
-msgid "Thank you"
-msgstr "Vielen Dank!"
-
-#: templates/criteria/number_operators.html:3
-msgid "Equal"
-msgstr "Gleich"
-
-#: templates/criteria/number_operators.html:5
-msgid "Less than equal to"
-msgstr "Kleiner als oder gleich wie"
-
-#: templates/criteria/number_operators.html:7
-msgid "Greater than equal to"
-msgstr "Größer als or gleich wie"
-
-#: templates/customer/account.html:8
-msgid "Your Acccount"
-msgstr "Ihr Konto"
-
-#: templates/customer/account.html:12 templates/customer/base.html:14
-#: templates/customer/orders.html:8
-msgid "Your orders"
-msgstr "Ihre Bestellungen"
-
-#: templates/customer/account.html:17 templates/customer/base.html:19
-#: templates/customer/password.html:23
-msgid "Change password"
-msgstr "Password ändern"
-
-#: templates/customer/account.html:20 templates/customer/base.html:22
-msgid "Change e-mail"
-msgstr "E-Mail ändern"
-
-#: templates/customer/addresses.html:9
-msgid "Your addresses"
-msgstr "Ihre Adressen"
-
-#: templates/customer/addresses.html:11
-msgid "Your address"
-msgstr "Ihre Adresse"
-
-#: templates/customer/addresses.html:20 templates/customer/data.html:38
-msgid "Invoice Address"
-msgstr "Rechnungsadresse"
-
-#: templates/customer/addresses.html:23 templates/customer/data.html:41
-msgid "Shipping Address"
-msgstr "Lieferadresse"
-
-#: templates/customer/addresses.html:46 templates/customer/data.html:67
-msgid "Save addresses"
-msgstr "Addressen speichern"
-
-#: templates/customer/addresses.html:50 templates/customer/data.html:71
-msgid "Save address"
-msgstr "Adresse speichern"
-
-#: templates/customer/base.html:9 templates/customer/order.html:20
-msgid "Overview"
-msgstr "Übersicht"
-
-#: templates/customer/data.html:8
-msgid "Your Data"
-msgstr "Ihre Daten"
-
-#: templates/customer/data.html:23 templates/customer/email.html:23
-msgid "Save e-mail address"
-msgstr "E-Mail-Adresse speichern"
-
-#: templates/customer/data.html:27
-msgid "Addresses"
-msgstr "Adressen"
-
-#: templates/customer/data.html:29
-msgid "Address"
-msgstr "Addresse"
-
-#: templates/customer/data.html:89
-msgid "Save bank account"
-msgstr "Bankkonto speichern"
-
-#: templates/customer/email.html:8
-msgid "Change your e-mail address"
-msgstr "Ihre E-Mail-Adresse ändern"
-
-#: templates/customer/order.html:23
-msgid "Ordernumber:"
-msgstr "Bestellnummer:"
-
-#: templates/customer/orders.html:14
-msgid "Recent orders"
-msgstr "Neueste Bestellungen"
-
-#: templates/customer/orders.html:15
-msgid "2009"
-msgstr "2009"
-
-#: templates/customer/orders.html:18
-msgid "Filter"
-msgstr "Filter"
-
-#: templates/customer/orders.html:25
-#: templates/mail/order_received_mail.html:52
-#: templates/manage/order/order.html:48 templates/manage/order/orders.html:14
-#: templates/order/lfs_order_tmpl.html:17
-msgid "Date"
-msgstr "Datum"
-
-#: templates/customer/password.html:3 templates/customer/password.html.py:7
-msgid "Password change"
-msgstr "Passwort ändern"
-
-#: templates/customer/password.html:10
-msgid ""
-"Please enter your old password, for security's sake, and then enter your new "
-"password twice so we can verify you typed it in correctly."
-msgstr ""
-
-#: templates/customer/password.html:17
-msgid "Old password:"
-msgstr "Altes Passwort"
-
-#: templates/customer/password.html:19
-#: templates/registration/password_reset_confirm.html:16
-msgid "New password:"
-msgstr "Neues Passwort"
-
-#: templates/customer/password.html:21
-#: templates/registration/password_reset_confirm.html:18
-msgid "Confirm password:"
-msgstr "Passwort bestätigen"
-
-#: templates/mail/new_user_mail.html:7
-msgid "Welcome to"
-msgstr "Willkommen zu"
-
-#: templates/mail/order_received_mail.html:41
-#: templates/manage/order/order.html:37 templates/order/lfs_order_tmpl.html:6
-msgid "General"
-msgstr "Allgemein"
-
-#: templates/mail/order_received_mail.html:46
-#: templates/manage/order/order.html:42 templates/order/lfs_order_tmpl.html:11
-msgid "Customer name"
-msgstr "Kundenname"
-
-#: templates/mail/order_received_mail.html:97
-#: templates/manage/order/order.html:95 templates/order/lfs_order_tmpl.html:64
-msgid "Shipping method"
-msgstr "Liefermethod"
-
 #: templates/manage/dashboard.html:3
 msgid "Dashboard"
 msgstr "Dashboard"
+
+#: templates/manage/manage_base.html:57
+msgid "Logout"
+msgstr "Abmelden"
+
+#: templates/manage/manage_base.html:59
+msgid "Login"
+msgstr "Anmelden"
 
 #: templates/manage/manage_base.html:70 templates/manage/shop/shop.html:15
 #: templates/manage/shop/shop.html.py:20
@@ -1768,7 +1282,6 @@ msgid "Orders"
 msgstr "Bestellungen"
 
 #: templates/manage/manage_base.html:105
-#: templates/reviews/reviews_for_instance.html:3
 msgid "Reviews"
 msgstr "Bewertungen"
 
@@ -1780,13 +1293,16 @@ msgstr "Marketing"
 #: templates/manage/marketing/marketing.html:13
 #: templates/manage/marketing/marketing.html:18
 #: templates/manage/marketing/topseller_inline.html:76
-#: templates/marketing/topseller_portlet.html:8
 msgid "Topseller"
 msgstr "Topseller"
 
 #: templates/manage/manage_base.html:113
 msgid "Utils"
 msgstr "Werkzeuge"
+
+#: templates/manage/manage_base.html:136
+msgid "Powered by"
+msgstr "Powered by"
 
 #: templates/manage/manage_base.html:138
 msgid "is a product of"
@@ -1883,8 +1399,6 @@ msgstr "Kategorie löschen"
 
 #: templates/manage/category/manage_category.html:31
 #: templates/manage/static_block/static_block.html:27
-#: templates/reviews/review_form.html:107
-#: templates/reviews/review_preview.html:6
 msgid "Preview"
 msgstr "Vorschau"
 
@@ -1914,6 +1428,39 @@ msgstr "SEO"
 #: templates/manage/properties/pg_products_inline.html:13
 msgid "First"
 msgstr "Erstes"
+
+#: templates/manage/category/products_inline.html:16
+#: templates/manage/category/selected_products.html:12
+#: templates/manage/marketing/topseller_inline.html:11
+#: templates/manage/marketing/topseller_inline.html:14
+#: templates/manage/product/accessories_inline.html:14
+#: templates/manage/product/products_inline.html:14
+#: templates/manage/product/products_inline.html:17
+#: templates/manage/product/related_products_inline.html:14
+#: templates/manage/product/selectable_products_inline.html:15
+#: templates/manage/product/selectable_products_inline.html:16
+#: templates/manage/product/selectable_products_inline.html:26
+#: templates/manage/product/selectable_products_inline.html:27
+#: templates/manage/properties/pg_products_inline.html:14
+msgid "Previous"
+msgstr "Vorhergendes"
+
+#: templates/manage/category/products_inline.html:28
+#: templates/manage/category/selected_products.html:20
+#: templates/manage/category/selected_products.html:25
+#: templates/manage/marketing/topseller_inline.html:21
+#: templates/manage/marketing/topseller_inline.html:26
+#: templates/manage/product/accessories_inline.html:26
+#: templates/manage/product/products_inline.html:25
+#: templates/manage/product/products_inline.html:29
+#: templates/manage/product/related_products_inline.html:26
+#: templates/manage/product/selectable_products_inline.html:37
+#: templates/manage/product/selectable_products_inline.html:38
+#: templates/manage/product/selectable_products_inline.html:48
+#: templates/manage/product/selectable_products_inline.html:49
+#: templates/manage/properties/pg_products_inline.html:26
+msgid "Next"
+msgstr "Nächstes"
 
 #: templates/manage/category/products_inline.html:29
 #: templates/manage/category/selected_products.html:22
@@ -1953,7 +1500,6 @@ msgstr "Unterart"
 #: templates/manage/product/products_inline.html:119
 #: templates/manage/properties/pg_products_inline.html:97
 #: templates/manage/properties/pg_products_inline.html:120
-#: templates/reviews/review_preview.html:65
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -2032,8 +1578,51 @@ msgstr "Nocheinmal senden?"
 msgid "Resend order"
 msgstr "Bestellung senden"
 
+#: templates/manage/order/order.html:37
+msgid "General"
+msgstr "Allgemein"
+
+#: templates/manage/order/order.html:42
+msgid "Customer name"
+msgstr "Kundenname"
+
+#: templates/manage/order/order.html:48 templates/manage/order/orders.html:14
+msgid "Date"
+msgstr "Datum"
+
+#: templates/manage/order/order.html:78 templates/manage/order/order.html:186
+msgid "Total"
+msgstr "Summe"
+
+#: templates/manage/order/order.html:89
+msgid "Shipping address"
+msgstr "Lieferadresse"
+
+#: templates/manage/order/order.html:92
+msgid "Invoice address"
+msgstr "Rechnungsadresse"
+
+#: templates/manage/order/order.html:95
+msgid "Shipping method"
+msgstr "Liefermethod"
+
+#: templates/manage/order/order.html:180
+msgid "Amount"
+msgstr "Menge"
+
+#: templates/manage/order/order.html:218
+msgid "Shipping"
+msgstr "Liefermethode"
+
+#: templates/manage/order/order.html:233
+msgid "Payment"
+msgstr "Bezahlmethode"
+
+#: templates/manage/order/order.html:254
+msgid "Inclusive Taxes"
+msgstr "Inklusive MwSt."
+
 #: templates/manage/order/order.html:263
-#: templates/order/lfs_order_tmpl.html:232
 msgid "Message from the customer"
 msgstr "Nachricht vom Kunden"
 
@@ -2141,6 +1730,11 @@ msgstr "Kriterien bearbeiten für"
 msgid "Add to accessories"
 msgstr "Zu Zubehör hinzufügen"
 
+#: templates/manage/product/accessories_inline.html:77
+#: templates/manage/product/product.html:100
+msgid "Accessories"
+msgstr "Zubehör"
+
 #: templates/manage/product/accessories_inline.html:145
 msgid "Save accessories"
 msgstr "Zubehör speichern"
@@ -2226,6 +1820,16 @@ msgstr "Vorschau"
 #: templates/manage/product/product.html:78
 msgid "Change"
 msgstr "Ändern"
+
+#: templates/manage/product/product.html:97
+#: templates/manage/product/variants.html:82
+msgid "Variants"
+msgstr "Varianten"
+
+#: templates/manage/product/product.html:101
+#: templates/manage/product/related_products_inline.html:76
+msgid "Related Products"
+msgstr "Zugehörige Produkte"
 
 #: templates/manage/product/product.html:102
 msgid "Stock"
@@ -2489,7 +2093,6 @@ msgstr "Schritte aktualisieren"
 
 #: templates/manage/reviews/add_review.html:20
 #: templates/manage/reviews/add_review.html:30
-#: templates/reviews/reviews_for_instance.html:37
 msgid "Add review"
 msgstr "Bewertung hinzufügen"
 
@@ -2498,7 +2101,6 @@ msgid "View product"
 msgstr "Produkte ansehen"
 
 #: templates/manage/reviews/manage_reviews.html:38
-#: templates/reviews/already_rated.html:5
 msgid "Review"
 msgstr "Bewertung"
 
@@ -2590,162 +2192,3 @@ msgstr "Mehrwertsteuer löschen"
 #: templates/manage/tax/tax.html:42
 msgid "Save tax"
 msgstr "Mehrwertsteuer speichern"
-
-#: templates/page/pages_portlet.html:4
-msgid "Information"
-msgstr "Information"
-
-#: templates/registration/password_reset_complete.html:4
-#: templates/registration/password_reset_complete.html:8
-msgid "Password reset complete"
-msgstr "Passwortreset ist komplett"
-
-#: templates/registration/password_reset_complete.html:10
-msgid "Your password has been set. You may go ahead and log in now."
-msgstr "Ihr passwort wurde gesetzt. Sie können sich nun anmelden"
-
-#: templates/registration/password_reset_complete.html:12
-msgid "Log in"
-msgstr "Anmelden"
-
-#: templates/registration/password_reset_confirm.html:4
-#: templates/registration/password_reset_done.html:4
-#: templates/registration/password_reset_form.html:4
-#: templates/registration/password_reset_form.html:6
-#: templates/registration/password_reset_form.html:10
-msgid "Password reset"
-msgstr "Passwort zurücksetzen"
-
-#: templates/registration/password_reset_confirm.html:10
-msgid "Enter new password"
-msgstr "Neues Passwort eintragen"
-
-#: templates/registration/password_reset_confirm.html:12
-msgid ""
-"Please enter your new password twice so we can verify you typed it in "
-"correctly."
-msgstr ""
-
-#: templates/registration/password_reset_confirm.html:19
-msgid "Change my password"
-msgstr ""
-
-#: templates/registration/password_reset_confirm.html:24
-msgid "Password reset unsuccessful"
-msgstr ""
-
-#: templates/registration/password_reset_confirm.html:26
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used.  Please request a new password reset."
-msgstr ""
-
-#: templates/registration/password_reset_done.html:6
-#: templates/registration/password_reset_done.html:10
-msgid "Password reset successful"
-msgstr ""
-
-#: templates/registration/password_reset_done.html:12
-msgid ""
-"We've e-mailed you instructions for setting your password to the e-mail "
-"address you submitted. You should be receiving it shortly."
-msgstr ""
-
-#: templates/registration/password_reset_email.html:2
-msgid "You're receiving this e-mail because you requested a password reset"
-msgstr ""
-
-#: templates/registration/password_reset_email.html:3
-#, python-format
-msgid "for your user account at %(site_name)s"
-msgstr ""
-
-#: templates/registration/password_reset_email.html:5
-msgid "Please go to the following page and choose a new password:"
-msgstr ""
-
-#: templates/registration/password_reset_email.html:9
-msgid "Your username, in case you've forgotten:"
-msgstr ""
-
-#: templates/registration/password_reset_email.html:11
-msgid "Thanks for using our site!"
-msgstr ""
-
-#: templates/registration/password_reset_email.html:13
-#, python-format
-msgid "The %(site_name)s team"
-msgstr ""
-
-#: templates/registration/password_reset_form.html:12
-msgid ""
-"Forgotten your password? Enter your e-mail address below, and we'll e-mail "
-"instructions for setting a new one."
-msgstr ""
-
-#: templates/registration/password_reset_form.html:16
-msgid "E-mail address:"
-msgstr "E-Mail-Adresse:"
-
-#: templates/registration/password_reset_form.html:16
-msgid "Reset my password"
-msgstr ""
-
-#: templates/reviews/already_rated.html:6
-msgid "You have already rated for this product."
-msgstr "Sie haben für dieses Produkt bereits rezensiert."
-
-#: templates/reviews/review_form.html:6
-msgid "Add Review"
-msgstr "Bewertung hinzufügen"
-
-#: templates/reviews/review_preview.html:11
-msgid "Your name"
-msgstr "Ihr Name"
-
-#: templates/reviews/review_preview.html:17
-msgid "Your email"
-msgstr "Ihre E-Mail"
-
-#: templates/reviews/review_preview.html:23
-msgid "Your score"
-msgstr "Ihre Bewertung"
-
-#: templates/reviews/review_preview.html:34
-msgid "Your comment"
-msgstr "Ihr Kommentar"
-
-#: templates/reviews/review_preview.html:69
-msgid "Submit"
-msgstr "Absenden"
-
-#: templates/reviews/reviews_for_instance.html:31
-msgid "You have already rated"
-msgstr "Sie haben bereits bewertet"
-
-#: templates/reviews/thank_you.html:8
-msgid "Close Window"
-msgstr "Fenster schließen"
-
-#: templates/search/livesearch_results.html:27
-msgid "All results"
-msgstr "Alle Ergebnisse"
-
-#: templates/search/livesearch_results.html:33
-msgid "No products found"
-msgstr "Keine Produkte gefunden"
-
-#: templates/search/search_results.html:6
-msgid "Search results"
-msgstr "Suchergebnisse"
-
-#: templates/search/search_results.html:8
-msgid "You searched for"
-msgstr "Sie suchten nach"
-
-#: templates/search/search_results.html:9
-#, python-format
-msgid "There has been found 1 product."
-msgid_plural "There has been found %(counter)s products."
-msgstr[0] "Es wurde 1 Produkt gefunden."
-msgstr[1] "Es wuden %(counter)s Produkte gefunden."

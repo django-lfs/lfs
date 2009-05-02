@@ -12,9 +12,9 @@ from tagging.models import Tag
 # lfs imports
 from lfs.catalog.models import Product
 from lfs.tagging import utils as tagging_utils
+from lfs.tagging.settings import RE_STOP_WORDS
+from lfs.tagging.settings import RE_SEPARATORS
 
-STOP_WORDS = re.compile("(und|was|u\.|&|\d|mit|das|gehört|\ber|wohin|\?)", re.IGNORECASE)
-SEPARATORS = re.compile("[\-_]")
 def tag_products(request, source="description"):
     """Auto tags product on base of product description.
     """
@@ -35,8 +35,8 @@ def tag_products(request, source="description"):
         for product in Product.objects.all():
             Tag.objects.update_tags(product, "")
 
-            data, amount = STOP_WORDS.subn("", product.name)
-            data, amount = SEPARATORS.subn(" ", data)
+            data, amount = RE_STOP_WORDS.subn("", product.name)
+            data, amount = RE_SEPARATORS.subn(" ", data)
 
             tags = re.split("\s*", data)
             

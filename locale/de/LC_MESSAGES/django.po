@@ -1196,7 +1196,7 @@ msgstr "Produkte für Tag"
 
 #: tagging/templates/catalog/related_products_by_tags.html:2
 msgid "Related products by tag"
-msgstr "Zugehörige Produkte für Tag"
+msgstr "Zugehörige Produkte auf Basis von Tags"
 
 #: tagging/templates/catalog/related_products_by_tags_portlet.html:4
 msgid "Products with same Tags"

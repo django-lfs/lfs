@@ -99,7 +99,7 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
-    (r'^tagging', include('lfs.tagging.urls')),
+    (r'^tagging/', include('lfs.tagging.urls')),
 )
 
 urlpatterns += patterns('',

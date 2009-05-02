@@ -10,13 +10,13 @@ from tagging.models import TaggedItem
 
 register = template.Library()
 
-@register.inclusion_tag('catalog/related_products_by_tags.html', takes_context=True)
+@register.inclusion_tag('tagging/related_products_by_tags.html', takes_context=True)
 def related_products_by_tags(context, product_id, num=None):
     """Inclusion tag for a list of related products by tags.
     """
     return _get_related_products_by_tags(product_id, num=None)
     
-@register.inclusion_tag('catalog/related_products_by_tags_portlet.html', takes_context=True)
+@register.inclusion_tag('tagging/related_products_by_tags_portlet.html', takes_context=True)
 def related_products_by_tags_portlet(context, product_id, num=None):
     """Inclusion tag for a related products by tags portlet.
     """

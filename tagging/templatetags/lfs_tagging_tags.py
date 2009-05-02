@@ -14,7 +14,7 @@ register = template.Library()
 def related_products_by_tags(context, product_id, num=None):
     """Inclusion tag for a list of related products by tags.
     """
-    return _get_related_products_by_tags(product_id, num=None)
+    return _get_related_products_by_tags(product_id, num)
     
 @register.inclusion_tag('tagging/related_products_by_tags_portlet.html', takes_context=True)
 def related_products_by_tags_portlet(context, product_id, num=None):

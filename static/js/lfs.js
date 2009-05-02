@@ -33,8 +33,8 @@ $(function() {
     
     $("a.product-image").lightBox({
         "txtImage" : "Bild",
-        "txtOf" : " von ",
-    })
+        "txtOf" : " von "
+    });
     
     // Cart ###################################################################
     $(".add-accessory-link").livequery("click", function() {

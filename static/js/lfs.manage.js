@@ -54,7 +54,6 @@ $(function() {
     $('ul.sf-menu').superfish({
         speed: "fast", 
         delay: "200",
-        animation: {"color" : "show"},
     });
     
     $('#manage-tabs > ul').tabs({ cookie: { expires: 30 } });
@@ -67,8 +66,8 @@ $(function() {
         height: 400,
         overlay: {
             opacity: 0.7, 
-            background: "black",
-        },
+            background: "black"
+        }
     });
     
     // Criteria
@@ -343,7 +342,7 @@ $(function() {
     
     $("#product-images-save-button").livequery("click", function() {
         $("#product-images-form").ajaxSubmit({
-            target : "#images",
+            target : "#images"
         });
         return false;
     });

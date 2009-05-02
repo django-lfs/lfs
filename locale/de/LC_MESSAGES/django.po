@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-01 10:33+0200\n"
+"POT-Creation-Date: 2009-05-02 14:59+0200\n"
 "PO-Revision-Date: 2009-02-22 07:20+0100\n"
 "Last-Translator: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
 "Language-Team: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
@@ -29,7 +29,6 @@ msgstr "Warenkorb"
 
 #: cart/models.py:62 catalog/models.py:756 catalog/models.py:931
 #: catalog/models.py:985 marketing/models.py:11
-#: tagging/templates/catalog/product_list.html:10
 #: templates/manage/product/product.html:87
 msgid "Product"
 msgstr "Produkt"
@@ -100,7 +99,6 @@ msgstr "Beschreibung"
 
 #: catalog/models.py:52 catalog/models.py:1034 core/models.py:122
 #: payment/models.py:53 shipping/models.py:57
-#: tagging/templates/catalog/product_list.html:9
 #: templates/manage/product/images.html:28
 msgid "Image"
 msgstr "Bild"
@@ -162,7 +160,6 @@ msgstr "Artikelnummer"
 #: catalog/models.py:257 catalog/models.py:258 catalog/models.py:959
 #: criteria/models.py:144 order/models.py:25 payment/models.py:56
 #: payment/models.py:93 shipping/models.py:60 shipping/models.py:105
-#: tagging/templates/catalog/product_list.html:12
 #: templates/manage/category/products_inline.html:48
 #: templates/manage/category/selected_products.html:48
 #: templates/manage/marketing/topseller_inline.html:43
@@ -1190,18 +1187,6 @@ msgstr "Notiz"
 msgid "shipping_method"
 msgstr "Liefermethode"
 
-#: tagging/templates/catalog/product_list.html:6
-msgid "Products for tag"
-msgstr "Produkte für Tag"
-
-#: tagging/templates/catalog/related_products_by_tags.html:2
-msgid "Related products by tag"
-msgstr "Zugehörige Produkte auf Basis von Tags"
-
-#: tagging/templates/catalog/related_products_by_tags_portlet.html:4
-msgid "Products with same Tags"
-msgstr "Produkte mit gleichen Tags"
-
 #: tax/models.py:8 templates/manage/tax/tax.html:20
 msgid "Rate"
 msgstr "Satz"
@@ -1311,6 +1296,10 @@ msgstr "ist ein Produkt von"
 #: templates/manage/manage_base.html:139
 msgid "by"
 msgstr "bei"
+
+#: templates/manage/manage_base.html:139
+msgid "All rights reserved"
+msgstr "Alle Rechte vorbehalten"
 
 #: templates/manage/manage_base.html:141
 msgid "Distributed under the"
@@ -2192,3 +2181,12 @@ msgstr "Mehrwertsteuer löschen"
 #: templates/manage/tax/tax.html:42
 msgid "Save tax"
 msgstr "Mehrwertsteuer speichern"
+
+#~ msgid "Products for tag"
+#~ msgstr "Produkte für Tag"
+
+#~ msgid "Related products by tag"
+#~ msgstr "Zugehörige Produkte auf Basis von Tags"
+
+#~ msgid "Products with same Tags"
+#~ msgstr "Produkte mit gleichen Tags"

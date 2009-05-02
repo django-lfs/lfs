@@ -35,4 +35,9 @@ def update_effective_price(request):
         url = reverse("lfs_manage_utils"),
         msg = _(u"Effective prices have been set."),
     )
+    
+def create_tags_from_title(request):
+    """Creates product tags from products title
+    """
+    for product in lfs.catalog.models.Product.objects.all():
         

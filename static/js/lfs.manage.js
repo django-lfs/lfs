@@ -53,7 +53,7 @@ $(function() {
     
     $('ul.sf-menu').superfish({
         speed: "fast", 
-        delay: "200",
+        delay: "200"
     });
     
     $('#manage-tabs > ul').tabs({ cookie: { expires: 30 } });

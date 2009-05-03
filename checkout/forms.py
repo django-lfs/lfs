@@ -32,6 +32,8 @@ class OnePageCheckoutForm(forms.Form):
     bank_name = forms.CharField(label=_(u"Bankname"), required=False, max_length=100)
     depositor = forms.CharField(label=_(u"Depositor"), required=False, max_length=100)
     
+    payment_method = forms.CharField(required=False, max_length=1)
+    
     # credit_card_type = forms.CharField(required=False, max_length=30)
     # credit_card_owner = forms.CharField(required=False, max_length=100)
     # credit_card_number = forms.CharField(required=False, max_length=30)
@@ -77,7 +79,7 @@ class OnePageCheckoutForm(forms.Form):
                 self._errors["shipping_country"] = ErrorList([msg])
                 
         # 1 == Direct Debit
-        if self.data.get("payment-method") == "1":
+        if self.data.get("payment_method") == "1":
             if self.cleaned_data.get("account_number", "") == "":
                 self._errors["account_number"] = ErrorList([msg])
             

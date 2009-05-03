@@ -20,8 +20,10 @@ from lfs.customer import utils as customer_utils
 from lfs.customer.models import Address
 from lfs.customer.models import BankAccount
 from lfs.customer.forms import RegisterForm
+from lfs.payment.models import PaymentMethod
 from lfs.shipping import utils as shipping_utils
 from lfs.payment import utils as payment_utils
+from lfs.payment.settings import DIRECT_DEBIT
 
 def login(request, template_name="checkout/login.html"):
     """Displays a form to login or register/login the user within the check out 
@@ -130,7 +132,8 @@ def cart_inline(request, template_name="checkout/checkout_cart_inline.html"):
         "selected_payment_method" : selected_payment_method,
     }))
     
-def one_page_checkout(request, template_name="checkout/one_page_checkout.html"):
+def one_page_checkout(request, checkout_form = OnePageCheckoutForm, 
+    template_name="checkout/one_page_checkout.html"):
     """One page checkout form.
     """
     # If the user is not authenticated and the if only authenticate checkout 
@@ -142,8 +145,7 @@ def one_page_checkout(request, template_name="checkout/one_page_checkout.html"):
         
     customer = customer_utils.get_or_create_customer(request)
     if request.method == "POST":
-        form = OnePageCheckoutForm(request.POST)
-
+        form = checkout_form(request.POST)
         if form.is_valid():            
             # Create or update invoice address
             if customer.selected_invoice_address is None:
@@ -195,18 +197,21 @@ def one_page_checkout(request, template_name="checkout/one_page_checkout.html"):
                     selected_shipping_address.country_id = form.cleaned_data.get("shipping_country")
                     selected_shipping_address.phone = form.cleaned_data.get("shipping_phone")
                     selected_shipping_address.save()
+
+            # Payment method
+            customer.selected_payment_method_id = request.POST.get("payment_method")
             
             # 1 = Direct Debit
-            if form.data.get("payment-method") == "1":
+            if form.data.get("payment_method") == "1":
                 bank_account = BankAccount.objects.create(
                     account_number = form.cleaned_data.get("account_number"),
                     bank_identification_code = form.cleaned_data.get("bank_identification_code"),
                     bank_name = form.cleaned_data.get("bank_name"),
                     depositor = form.cleaned_data.get("depositor"),
                 )
-                
-                customer.selected_bank_account = bank_account
 
+                customer.selected_bank_account = bank_account
+            
             # Save the selected information to the customer
             customer.save()
             
@@ -251,19 +256,27 @@ def one_page_checkout(request, template_name="checkout/one_page_checkout.html"):
         country = shipping_utils.get_selected_shipping_country(request)
         initial["shipping_country"] = country.id
         initial["invoice_country"] = country.id
-        form = OnePageCheckoutForm(initial=initial)
+        form = checkout_form(initial=initial)
 
     cart = cart_utils.get_cart(request)
     
-    # Payment
-    selected_payment_method = payment_utils.get_selected_payment_method(request)
+    # Payment    
+    try:
+        selected_payment_method_id = request.POST.get("payment_method")
+        selected_payment_method = PaymentMethod.objects.get(pk=selected_payment_method_id)
+    except PaymentMethod.DoesNotExist:        
+        selected_payment_method = payment_utils.get_selected_payment_method(request)
+        
+    valid_payment_methods = payment_utils.get_valid_payment_methods(request)
+    display_bank_account = DIRECT_DEBIT in [m["id"] for m in valid_payment_methods]
     
     return render_to_response(template_name, RequestContext(request, {
         "form" : form,
         "cart_inline" : cart_inline(request),
         "shipping_inline" : shipping_inline(request),
-        "payment_methods" : payment_utils.get_valid_payment_methods(request),        
-        "selected_payment_method" : selected_payment_method,        
+        "payment_methods" : valid_payment_methods,        
+        "selected_payment_method" : selected_payment_method,
+        "display_bank_account" : display_bank_account,
     }))
 
 def empty_page_checkout(request, template_name="checkout/empty_page_checkout.html"):
@@ -347,6 +360,6 @@ def _save_customer(request, customer):
     customer.selected_shipping_method_id = shipping_method
     customer.save()
     
-    payment_method = request.POST.get("payment-method")
+    payment_method = request.POST.get("payment_method")
     customer.selected_payment_method_id = payment_method
     customer.save()

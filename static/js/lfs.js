@@ -144,7 +144,7 @@ $(function() {
         table.hide();
     }
 
-    $(".payment-methods").livequery("change", function() {
+    $(".payment-methods").livequery("click", function() {
         var table = $('#bank-account');
         if ($("#payment-method-1:checked").val() != null) {
             table.slideDown("fast");
@@ -154,7 +154,7 @@ $(function() {
         }        
     })    
     
-    $(".update-checkout").livequery("change", function() {
+    $(".update-checkout").livequery("click", function() {
         var data = $(".checkout-form").ajaxSubmit({
             "url": "/changed-checkout/", 
             "success" : function(data) {

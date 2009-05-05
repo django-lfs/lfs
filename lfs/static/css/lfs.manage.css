@@ -1,0 +1,379 @@
+/* Defaults */
+body {
+    font-size: 85%;
+    background-color: #fff !important;
+}
+
+
+a {
+    color: black;
+    text-decoration:none;
+}
+
+a:visited {
+    color: black;
+}
+
+a:hover {
+    color: black;
+}
+
+h2 {
+    color: #58585a;
+    margin-top: 0;
+    border-bottom: 1px solid #ccc;
+}
+
+img {
+    border:none;
+}
+
+fieldset {
+    border:1px solid #ccc;
+    padding:20px;
+    margin-bottom:10px;
+}
+
+textarea {
+    width: 600px;
+}
+
+/* Headings */
+h2.heading-middle {
+    margin-top: 20px;
+}
+
+/* Images */
+img.icon-padding {
+    position:relative; top:3px;
+}
+
+.logo {
+    float:left;
+    padding: 0 0 15px 60px;
+    height: 93px;
+}
+
+/* Tables */
+table.main {
+    width: 100%;
+    padding: 0 20px;    
+}
+
+table.main td {
+    vertical-align: top;
+}
+
+table.lfs-manage-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+table.lfs-manage-table th {
+    min-height: 20px;
+    height: 20px;
+    background-color: #ede9e8;
+}
+
+table.middle {
+    margin-top: 10px;
+}
+
+td.left-slot {
+  padding: 0 20px 0 0;
+  width: 200px;
+}
+
+th, td {
+    text-align:left
+}
+
+.checkbox {
+    width: 1px;
+}
+
+tr.odd {
+    background-color: #eee;
+}
+
+
+/* General formats */
+.label {
+    font-weight: bold;
+    color: #58585a;
+}
+
+.number-with-padding {
+    text-align:right;
+    padding-right: 20px;
+}
+
+.right,
+.number {
+    text-align:right;
+}
+
+.lfs-header {
+    background: url("../img/header_bg.jpg") repeat-x;
+}
+
+.username {
+    float:right;
+    padding-right: 30px;
+    padding-top: 30px;
+}
+
+.navigation-pages {
+    padding:2px 0;    
+    margin: 6px 0;
+    background-color: #ede9e8;
+    border: 1px solid #aaa;
+    text-align:center;
+}
+
+.navigation-pages img {
+    position:relative; top:3px;
+}
+
+#selectable-products-filter-input,
+#selectable-products-category-filter {
+    width: 170px;
+}
+
+/* Links */
+a.selectable {
+    color: black;
+    text-decoration:none;
+    display:block;
+}
+
+a.selectable:hover {
+    background-color: #ede9e8;
+}
+
+a.selectable.selected {
+    font-weight: bold;    
+    background-color: #ede9e8;
+}
+
+a.selectable.variant {
+    padding-left: 10px;
+}
+
+a.criterion-add-first-button {
+    text-decoration: None;
+}
+
+a.button {
+    border: 1px solid #aaa;
+}
+
+a.add {
+    margin: 0 10px;
+    padding-left: 18px;
+    background: url(/media/lfs/icons/add.png) no-repeat;
+}
+
+a.delete {
+    margin: 0 10px;
+    padding-left: 20px;
+    background: url(/media/lfs/icons/delete.png) no-repeat;
+}
+
+a.preview {
+    margin: 0 10px;
+    padding-left: 18px;
+    background: url(/media/lfs/icons/zoom.png) no-repeat;
+}
+
+a.send {
+    margin: 0 10px;
+    padding-left: 22px;
+    background: url(/media/lfs/icons/email.png) no-repeat;
+}
+
+a.first {
+    padding-left: 15px;
+    background: url(/media/lfs/icons/resultset_first.png) no-repeat;
+}
+
+a.previous {
+    padding-left: 15px;
+    background: url(/media/lfs/icons/resultset_previous.png) no-repeat;
+}
+
+a.next {
+    padding-left: 15px;
+    background: url(/media/lfs/icons/resultset_next.png) no-repeat;
+}
+
+a.last {
+    padding-left: 15px;
+    background: url(/media/lfs/icons/resultset_last.png) no-repeat;
+}
+
+a.view {
+    padding-left: 20px;
+    background: url(/media/lfs/icons/zoom.png) no-repeat;
+}
+
+a.edit {
+    margin-right:10px;
+    padding-left: 20px;
+    background: url(/media/lfs/icons/pencil.png) no-repeat;
+}
+
+
+/* Forms */
+.top-buttons {
+    padding-bottom: 8px;
+}
+
+/* Accessories */
+.selectable-products {
+    min-height: 200px;
+    margin: 6px 0;
+}
+
+.selected-accessories {
+    height: 200px;
+    overflow: auto;
+    margin: 6px 0 20px 0;    
+}
+
+div.manage-form-buttons {
+    padding-top: 20px;
+}
+
+#message {
+    border: 1px solid red;
+    display: none;
+}
+
+body.manage-product .image-item {
+    padding: 10px 0;
+}
+
+body.manage-product ul.manage-categories {
+    list-style-type: none;
+    padding-left: 20px;    
+}
+
+body.manage-product ul.manage-categories.root {
+    padding: 0;
+}
+
+.droppable-hover {
+    background-color: yellow;
+    height: 23px;
+}
+
+/* criteria */
+.criterion-value {
+    text-align:right;
+    width: 80px;
+}
+
+div.site-actions {
+    margin: 20px 0;
+}
+
+div.site-actions img {
+    position: relative; top: 3px;
+}
+
+span.delete {
+    margin: 0 0 0 10px;
+    padding-left: 20px;
+    background: url(/media/lfs/icons/delete.png) no-repeat;    
+}
+
+/* Forms */
+.field {
+    margin-bottom:10px;
+}
+
+.field .error input {
+    border-color: red;
+}
+
+.field li {
+    display: inline;    
+    color: red;
+}
+
+.field ul {
+    display: inline;
+    list-style-type: none;
+    padding: 0;
+}
+
+select.categories {
+    width: 200px;
+}
+
+/* input fields */
+#id_name, #id_slug, #id_sku, #id_shop_owner, #id_from_email, #id_title {
+    width: 300px;
+}
+
+/* portlets */
+.portlet ul {
+    list-style-type: none;
+}
+
+.portlet ul.root {
+    padding: 0;
+    margin: 0;
+}
+
+.portlet ul {
+    margin: 0;
+    padding-left:20px;
+}
+
+.portlet {
+    margin-bottom:15px;
+}
+
+.portlet li {
+    font-weight: normal;
+}
+
+.portlet li.current-item {
+    font-weight: bold;
+    background-color: #ede9e8;
+}
+
+.portlet a {
+    display: block;
+}
+
+.portlet a:hover {
+    background-color: #ede9e8;
+}
+
+.portlet li.current-item ul {
+    background-color: white;
+}
+
+div.footer {
+    color: #58585a;
+    background-color: #f5f5f5;
+    margin-top: 50px;
+    padding: 10px 0;
+}
+
+div.footer a {
+    color: #58585a;
+}
+
+div.footer p {
+    text-align: center;
+   	line-height: 0.5em;    
+}
+
+.attention {
+    color: #ef2c38;
+} 

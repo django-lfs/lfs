@@ -1,0 +1,31 @@
+{% load i18n %}
+{% load lfs_manage_tags %}
+
+{% if product.is_variant %}
+    <form id="accessories-update-form"
+          action="{% url lfs_manage_update_accessories product.id %}"
+          method="post">
+        <input type="checkbox" 
+               name="active_accessories" 
+               {% if product.active_accessories %}checked="checked"{% endif %} />                   
+        <label for="active_accessories">
+            {% trans 'Active accessories' %}
+        </label>
+        <input class="accessories-update-button"
+               type="submit" value="Update" />
+    </form>
+{% endif %}    
+
+<h2 class="heading-middle">{% trans 'Products' %}</h2>
+
+<form id="filter-accessories-form"
+      action="{% url lfs.manage.views.manage_accessories_inline product.id %}"
+      onsubmit="return false">
+    <input class="filter-accessories-input" type="text" name="filter"/>
+    
+    {% category_filter "accessories-categories-filter" "accessories_category_filter" %}
+</form>
+
+<div id="accessories-inline">
+    {{accessories_inline}}
+</div>

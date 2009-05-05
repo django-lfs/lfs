@@ -1,0 +1,35 @@
+{% extends "manage/manage_base.html" %}
+{% load i18n %}
+
+{% block left_slot %}
+    <div id="reviews">
+        {% for review in reviews %}
+            <div>
+                <a href="{% url lfs_manage_review review.id %}">
+                    {{review.name}} ({{review.get_score_display}})
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    
+{% endblock %}
+
+{% block content %}
+    <div id="manage-tabs">
+        <ul>
+            <li class="ui-tabs-nav-item"><a href="#review">{% trans 'Add review' %}</a></li>
+        </ul>
+
+        <div id="review">
+            <form action="{% url lfs_add_review  %}"
+                  method="post">
+                <table>
+                    {% include "manage/lfs_form.html" %}
+                </table>
+                <input type="submit"
+                       value="{% trans 'Add review' %}" />
+            </form>
+        </div>
+    </div>
+    
+{% endblock %}

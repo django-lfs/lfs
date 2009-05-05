@@ -1,0 +1,44 @@
+{% extends "manage/manage_base.html" %}
+
+{% load i18n %}
+{% load lfs_tags %}
+
+{% block left-slot-wrapper %}{% endblock %}
+
+{% block content %}
+    <div class="site-actions"></div>
+    
+    <table class="lfs-manage-table">
+        <tr>
+            <th>
+                {% trans 'Date' %}
+            </th>
+            <th class="number">
+                {% trans 'Price' %}
+            </th>
+            <th class="number">
+                {% trans 'Message' %}
+            </th>
+        </tr>
+        {% for order in orders %}
+            <tr>
+                <td>
+                    <a href="{% url lfs.manage.views.order_view order.id %}">
+                        {{order.created}}
+                    </a>
+                    
+                </td>
+                <td class="number">
+                    {{order.price|currency}}
+                </td>
+                <td class="number">
+                    {% if order.message %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

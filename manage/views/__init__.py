@@ -1,6 +1,5 @@
 from product.accessories import *
 from product.categories import *
-from product.images import *
 from product.product import *
 from product.properties import *
 from product.variants import *

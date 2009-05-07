@@ -1,13 +1,16 @@
 # django imports
 from django.contrib.auth.decorators import permission_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.utils import simplejson
 
 # lfs.imports
+import lfs.core.utils
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.catalog.models import Image
 from lfs.catalog.models import Product
@@ -19,7 +22,7 @@ def manage_images(request, product_id, template_name="manage/product/images.html
     """
     """
     product = lfs_get_object_or_404(Product, pk=product_id)
-
+    
     return render_to_string(template_name, RequestContext(request, {
         "product" : product,
     }))
@@ -62,13 +65,6 @@ def update_images(request, product_id):
 
     elif action == "update":
         message = _(u"Images has been updated.")
-        if product.is_variant():
-            if request.POST.get("active_images"):
-                product.active_images = True
-            else:
-                product.active_images = False
-            product.save()
-            
         for key, value in request.POST.items():
             if key.startswith("title-"):
                 id = key.split("-")[1]
@@ -103,3 +99,19 @@ def update_images(request, product_id):
     }, cls = LazyEncoder)
     
     return HttpResponse(result)
+    
+@permission_required("manage_shop", login_url="/login/")
+def update_active_images(request, product_id):
+    """Updates the images activity state for product variants.
+    """
+    product = Product.objects.get(pk=product_id)
+    if request.POST.get("active_images"):
+        product.active_images = True
+    else:
+        product.active_images = False
+    product.save()
+
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_product", kwargs={"product_id": product.id}),
+        msg = _(u"Active images has been updated."),
+    )            

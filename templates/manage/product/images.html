@@ -1,23 +1,27 @@
 {% load i18n %}
 
-<h2>{% trans 'Images' %}</h2>
+{% if product.is_variant %}
+    <form id="active-images-update-form"
+          action="{% url lfs_manage_update_active_images product.id %}"
+          method="post">
+        <input type="checkbox" 
+               name="active_images"
+               {% if product.active_images %}checked="checked"{% endif %} />                   
+        <label for="active_accessories">
+            {% trans 'Active images' %}
+        </label>
+        <input class="images-update-button"
+               type="submit" value="Update" />
+    </form>
+{% endif %}    
 
-{% if product.get_images %}
+<h2 class="heading-middle">{% trans 'Images' %}</h2>
+        
+{% if product.images.all %}
     <form id="product-images-update-form"
           action="{% url lfs_manage_update_images product.id %}"
           method="post">
-        
-        {% if product.is_variant %}
-            <input type="checkbox" 
-                   name="active_images" 
-                   {% if product.active_images %}checked="checked"{% endif %} />
-                   
-            <label for="active_images">
-                {% trans 'Active images' %}
-            </label>
 
-        {% endif %}
-        
         <table class="lfs-manage-table">
             <tr>
                 <th>

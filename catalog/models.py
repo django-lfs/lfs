@@ -442,7 +442,7 @@ class Product(models.Model):
         """
         cache_key = "product-images-%s" % self.id
         images = cache.get(cache_key)
-
+        
         if images is None:
             images = []
             if self.is_variant() and not self.active_images:

@@ -46,10 +46,11 @@ urlpatterns += patterns('lfs.manage.views',
     url(r'^change-product-categories/(?P<product_id>\d*)$', "change_categories", name="lfs_manage_product_categories"),
 )
 
-# Product images
-urlpatterns += patterns('lfs.manage.views',
+# Product Images
+urlpatterns += patterns('lfs.manage.views.product.images',
     url(r'^add-image/(?P<product_id>\d*)$', "add_image", name="lfs_manage_add_image"),
     url(r'^update-images/(?P<product_id>\d*)$', "update_images", name="lfs_manage_update_images"),
+    url(r'^update-active-images/(?P<product_id>\d*)$', "update_active_images", name="lfs_manage_update_active_images"),
 )
 
 # Product SEO

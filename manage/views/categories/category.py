@@ -150,10 +150,10 @@ def add_category(request, category_id="", template_name="manage/category/add_cat
     }))
 
 @permission_required("manage_shop", login_url="/login/")
-def delete_category(request, slug):
+def delete_category(request, id):
     """Deletes category with given id.
     """
-    category = lfs_get_object_or_404(Category, slug=slug)
+    category = lfs_get_object_or_404(Category, pk=id)
     category.delete()
     
     url = reverse("lfs_manage_categories")

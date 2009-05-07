@@ -418,7 +418,10 @@ class Product(models.Model):
         if self.is_variant() and not self.active_description:
             return self.parent.description
         else:
-            return self.description
+            description = self.description
+            description = description.replace("%P", self.parent.description)
+            
+            return description
 
     def get_short_description(self):
         """Returns the short description of the product. Takes care whether the 

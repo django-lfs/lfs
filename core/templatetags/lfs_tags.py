@@ -95,6 +95,8 @@ def recent_products_portlet(context, instance=None):
         except Product.DoesNotExist:
             pass
         else:
+            if product.is_product_with_variants() and product.has_variants():
+                product = product.get_default_variant()
             products.append(product)
 
     return { "products": products }

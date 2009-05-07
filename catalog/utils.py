@@ -485,23 +485,39 @@ def get_filtered_products_for_category(category, filters, price_filter, sorting)
         products = lfs.catalog.models.Product.objects.filter(categories__in=categories)
     
     if price_filter:
-        # Get all variants of the products
+        # Get all variants of the products        
         all_variants = lfs.catalog.models.Product.objects.filter(parent__in=products)
         
-        # Filter the variants by price
-        all_variants = all_variants.filter(effective_price__range=[price_filter["min"], price_filter["max"]])
+        # Filter the variants by price        
+        all_variants = all_variants.filter(effective_price__range=[price_filter["min"], price_filter["max"]])        
         
-        # Filter the products themselves
+        # Filter the products themselves        
         products = products.filter(effective_price__range=[price_filter["min"], price_filter["max"]])
-        
-        # Merge the results
+
+        # Merge the results        
+        matched_product_ids = [p.id for p in products]
         result = []
         result.extend(products)
         result.extend(all_variants)
+
+        variant_ids = [str(r.id) for r in result]
         
+        # Get the parent ids of the variants as the "product with variants" 
+        # should be displayed and not the variants.            
+        if variant_ids:            
+            variant_ids = ", ".join(variant_ids)
+            
+            cursor = connection.cursor()
+            cursor.execute("""
+                SELECT parent_id
+                FROM catalog_product
+                WHERE id IN (%s)""" % variant_ids)
+    
+            parent_ids = [str(row[0]) for row in cursor.fetchall()]        
+            matched_product_ids.extend(parent_ids)
+
         # And get a new query set of all products
-        ids = [r.id for r in result]
-        products = lfs.catalog.models.Product.objects.filter(pk__in=ids)
+        products = lfs.catalog.models.Product.objects.filter(pk__in=matched_product_ids)
     
     if sorting:
         products = products.order_by(sorting)

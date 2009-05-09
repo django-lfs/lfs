@@ -485,15 +485,11 @@ def get_filtered_products_for_category(category, filters, price_filter, sorting)
         products = lfs.catalog.models.Product.objects.filter(categories__in=categories)
     
     if price_filter:
-        # Filter the products
-        products = products.filter(effective_price__range=[price_filter["min"], price_filter["max"]])
-
-        # Merge the results
-        matched_product_ids = [p.id for p in products]
-
+        matched_product_ids = []
+        
         # Get all variants of the products        
         variants = lfs.catalog.models.Product.objects.filter(parent__in=products)
-        
+
         # Filter the variants by price        
         variants = variants.filter(effective_price__range=[price_filter["min"], price_filter["max"]])
         
@@ -511,6 +507,12 @@ def get_filtered_products_for_category(category, filters, price_filter, sorting)
             
             parent_ids = [str(row[0]) for row in cursor.fetchall()]        
             matched_product_ids.extend(parent_ids)
+                
+        # Filter the products
+        products = products.filter(effective_price__range=[price_filter["min"], price_filter["max"]])
+
+        # Merge the results
+        matched_product_ids.extend([p.id for p in products])
         
         # And get a new query set of all products
         products = lfs.catalog.models.Product.objects.filter(pk__in=matched_product_ids)

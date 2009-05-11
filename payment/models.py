@@ -54,6 +54,7 @@ class PaymentMethod(models.Model):
     active = models.BooleanField(_(u"Active"), default=False)
     tax = models.ForeignKey(Tax, verbose_name=_(u"Tax"), blank=True, null=True)
     price = models.FloatField(_(u"Price"), default=0.0)
+    deletable = models.BooleanField(default=True)
     
     criteria_objects = generic.GenericRelation(CriteriaObjects, 
         object_id_field="content_id", content_type_field="content_type")

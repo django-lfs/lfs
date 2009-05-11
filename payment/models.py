@@ -21,6 +21,9 @@ class PaymentMethod(models.Model):
     - name
        The name of the payment method. This is displayed to the customer to 
        choose the payment method.
+    - active
+       A flag which decides whether a payment method is displayed to the 
+       customer or not.
     - description
        A longer description of the payment method. This could be displayed to 
        the customer to describe the payment method in detail.
@@ -32,9 +35,6 @@ class PaymentMethod(models.Model):
     - image
        An image of the payment method, which is displayed to customer within 
        the checkout process.
-    - active
-       A flag which decides whether a payment method is displayed to the 
-       customer or not.
     - tax
        The tax of the payment method.
     - price
@@ -47,11 +47,11 @@ class PaymentMethod(models.Model):
     and valid payment methods are provided to the shop customer.
     """    
     name = models.CharField(_(u"Name"), blank=True, max_length=50)
+    active = models.BooleanField(_(u"Active"), default=False)
     description = models.TextField(_(u"Description"), blank=True)
     note = models.TextField(_(u"note"), blank=True)
     priority = models.IntegerField(_(u"Priority"), default=0)
     image = models.ImageField(_(u"Image"), upload_to="images", blank=True, null=True)
-    active = models.BooleanField(_(u"Active"), default=False)
     tax = models.ForeignKey(Tax, verbose_name=_(u"Tax"), blank=True, null=True)
     price = models.FloatField(_(u"Price"), default=0.0)
     deletable = models.BooleanField(default=True)

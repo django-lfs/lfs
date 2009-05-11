@@ -32,6 +32,7 @@ class PaymentForm(ModelForm):
 
     class Meta:
         model = PaymentMethod
+        exclude = ("deletable", )
 
 # Starting pages. This pages are called directly via a request
 @permission_required("manage_shop", login_url="/login/")

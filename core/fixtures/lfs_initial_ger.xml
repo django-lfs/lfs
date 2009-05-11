@@ -74,6 +74,17 @@
         <field to="tax.tax" name="tax" rel="ManyToOneRel">1</field>
         <field type="FloatField" name="price">0.0</field>
     </object>    
+    <object pk="5" model="payment.paymentmethod">
+        <field type="CharField" name="name">Per Rechnung</field>
+        <field type="TextField" name="description"></field>
+        <field type="TextField" name="note"></field>
+        <field type="IntegerField" name="priority">5</field>
+        <field type="FileField" name="image"></field>
+        <field type="BooleanField" name="active">1</field>
+        <field type="BooleanField" name="deletable">0</field>
+        <field to="tax.tax" name="tax" rel="ManyToOneRel">1</field>
+        <field type="FloatField" name="price">0.0</field>
+    </object>    
     
     <!-- Taxes -->
     <object pk="1" model="tax.tax">

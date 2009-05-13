@@ -270,4 +270,25 @@
             </tr>
         </table>
     {% endif %}
+    {% if current_order.paypalordertransaction_set.all %}
+    <table class="lfs-manage-table">
+            <tr>
+                <th colspan="5">
+                    {% trans 'Paypal Transaction ID' %}
+                </th>
+            </tr>
+            {% for ppt in current_order.paypalordertransaction_set.all %}
+            {% for ipn in ppt.ipn.all %}
+            <tr>
+                <td colspan="5">
+                    {{ipn.txn_id}}
+                </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </table>
+    
+    {% endif %}
+    
+    
 {% endblock %}

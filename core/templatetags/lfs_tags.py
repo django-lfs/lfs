@@ -489,13 +489,17 @@ def currency(price, arg=None):
     """
     """
     # TODO: optimize
-    price = lfs.utils.misc.FormatWithCommas("%.2f", price)
-    
-    # replace . and , for german format
-    a, b = price.split(".")
-    a = a.replace(",", ".")
-    price = "%s,%s EUR" % (a, b)
-    
+    price = lfs.utils.misc.FormatWithCommas("%.2f", price)    
+    shop = lfs_get_object_or_404(Shop, pk=1)
+        
+    if shop.default_country.code == "de":
+        # replace . and , for german format
+        a, b = price.split(".")
+        a = a.replace(",", ".")
+        price = "%s,%s EUR" % (a, b)
+    else:
+        price = "%s %s" % (price, shop.default_currency)
+        
     return price
 
 @register.filter
@@ -505,10 +509,14 @@ def number(price, arg=None):
     # TODO: optimize
     price = lfs.utils.misc.FormatWithCommas("%.2f", price)
     
-    # replace . and , for german format
-    a, b = price.split(".")
-    a = a.replace(",", ".")
-    price = "%s,%s" % (a, b)
+    
+    shop = lfs_get_object_or_404(Shop, pk=1)
+        
+    if shop.default_country.code == "de":
+        # replace . and , for german format
+        a, b = price.split(".")
+        a = a.replace(",", ".")
+        price = "%s,%s" % (a, b)
     
     return price
 

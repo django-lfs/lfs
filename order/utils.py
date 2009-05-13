@@ -1,3 +1,6 @@
+# django imports
+from django.core.urlresolvers import reverse
+
 # lfs imports
 from lfs.cart import utils as cart_utils
 from lfs.core.signals import order_submitted
@@ -14,6 +17,7 @@ def add_order(request):
     is within the responsibility of the checkout form.
     """
     customer = customer_utils.get_customer(request)
+    order = None
 
     invoice_address = customer.selected_invoice_address
     if customer.selected_shipping_address:
@@ -22,6 +26,8 @@ def add_order(request):
         shipping_address = customer.selected_invoice_address
     
     cart = cart_utils.get_cart(request)
+    if cart is None:
+        return order
     cart_costs = cart_utils.get_cart_costs(request, cart, total=False)
     
     shipping_method = shipping_utils.get_selected_shipping_method(request)
@@ -122,3 +128,5 @@ def add_order(request):
     request.session["order"] = order
     
     return order
+
+                               

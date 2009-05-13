@@ -114,5 +114,5 @@ from lfs.order.models import Order
     
 class PayPalOrderTransaction(models.Model):
     order = models.ForeignKey(Order, unique=True)
-    ipn = models.ManyToManyField(PayPalIPN, editable=False)
+    ipn = models.ManyToManyField(PayPalIPN)
         

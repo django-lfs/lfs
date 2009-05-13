@@ -239,171 +239,174 @@ def get_product_filters(category, product_filter, price_filter, sorting):
 
     result = []        
 
-    ########## Number Fields ###################################################
-
-    cursor = connection.cursor()
-    cursor.execute("""SELECT property_id, min(value_as_float), max(value_as_float)
-                      FROM catalog_productpropertyvalue
-                      WHERE product_id IN (%s)
-                      AND property_id IN (%s)
-                      GROUP BY property_id""" % (product_ids, property_ids))
-
-
-    for row in cursor.fetchall():
-        
-        property = properties_mapping[row[0]]        
-
-        if property.is_number_field == False:
-            continue
+    if property_ids:
+        ########## Number Fields ###################################################
+    
+        cursor = connection.cursor()
+        sql = """SELECT property_id, min(value_as_float), max(value_as_float)
+                          FROM catalog_productpropertyvalue
+                          WHERE product_id IN (%s)
+                          AND property_id IN (%s)
+                          GROUP BY property_id""" % (product_ids, property_ids)
+        print sql
+        cursor.execute(sql)
+    
+    
+        for row in cursor.fetchall():
             
-        if property.filterable == False:
-            continue
+            property = properties_mapping[row[0]]        
+    
+            if property.is_number_field == False:
+                continue
+                
+            if property.filterable == False:
+                continue
+                
+            # If the filter for a property is already set, we display only the 
+            # set filter.
+            if str(row[0]) in set_filters.keys():
+                values = set_filters[str(row[0])]
+                result.append({
+                    "id" : row[0],
+                    "position" : property.position,                
+                    "object" : property,
+                    "name" : property.name,
+                    "unit" : property.unit,
+                    "items" : [{"min" : float(values[0]), "max" : float(values[1])}],
+                    "show_reset" : True,
+                    "show_quantity" : False,
+                })
+                continue
             
-        # If the filter for a property is already set, we display only the 
-        # set filter.
-        if str(row[0]) in set_filters.keys():
-            values = set_filters[str(row[0])]
+            # Otherwise we display all steps.
+            items = calculate_steps(product_ids, property, row[1], row[2])
+    
             result.append({
                 "id" : row[0],
-                "position" : property.position,                
+                "position" : property.position,
                 "object" : property,
                 "name" : property.name,
                 "unit" : property.unit,
-                "items" : [{"min" : float(values[0]), "max" : float(values[1])}],
-                "show_reset" : True,
-                "show_quantity" : False,
+                "show_reset" : False,
+                "show_quantity" : True,            
+                "items" : items,
             })
-            continue
         
-        # Otherwise we display all steps.
-        items = calculate_steps(product_ids, property, row[1], row[2])
-
-        result.append({
-            "id" : row[0],
-            "position" : property.position,
-            "object" : property,
-            "name" : property.name,
-            "unit" : property.unit,
-            "show_reset" : False,
-            "show_quantity" : True,            
-            "items" : items,
-        })
-    
-    
-    ########## Select Fields ###################################################
-    # Count entries for current filter
-    cursor = connection.cursor()
-    cursor.execute("""SELECT property_id, value, parent_id
-                      FROM catalog_productpropertyvalue
-                      WHERE product_id IN (%s)
-                      AND property_id IN (%s)""" % (product_ids, property_ids))
-
-    already_count = {}
-    amount = {}
-    for row in cursor.fetchall():        
-        # We count a property/value pair just one time per *product*. For 
-        # "products with variants" this could be stored several times within the 
-        # catalog_productpropertyvalue. Imagine a variant with two properties
-        # color and size:
-        #   v1 = color:red / size: s
-        #   v2 = color:red / size: l
-        # But we want to count color:red just one time. As the product with 
-        # variants is displayed at not the variants.
         
-        if already_count.has_key("%s%s%s" % (row[2], row[0], row[1])):
-            continue
-        already_count["%s%s%s" % (row[2], row[0], row[1])] = 1
+        ########## Select Fields ###################################################
+        # Count entries for current filter
+        cursor = connection.cursor()
+        cursor.execute("""SELECT property_id, value, parent_id
+                          FROM catalog_productpropertyvalue
+                          WHERE product_id IN (%s)
+                          AND property_id IN (%s)""" % (product_ids, property_ids))
     
-        if not amount.has_key(row[0]):
-            amount[row[0]] = {}
-
-        if not amount[row[0]].has_key(row[1]):
-            amount[row[0]][row[1]] = 0
-    
-        amount[row[0]][row[1]] += 1    
-    
-    cursor.execute("""SELECT property_id, value
-                      FROM catalog_productpropertyvalue
-                      WHERE product_id IN (%s)
-                      AND property_id IN (%s)
-                      GROUP BY property_id, value""" % (product_ids, property_ids))
-
-    # Group properties and values (for displaying)
-    set_filters = dict(product_filter)
-    properties = {}
-    for row in cursor.fetchall():
-
-        property = properties_mapping[row[0]]
-
-        if property.is_number_field:
-            continue
+        already_count = {}
+        amount = {}
+        for row in cursor.fetchall():        
+            # We count a property/value pair just one time per *product*. For 
+            # "products with variants" this could be stored several times within the 
+            # catalog_productpropertyvalue. Imagine a variant with two properties
+            # color and size:
+            #   v1 = color:red / size: s
+            #   v2 = color:red / size: l
+            # But we want to count color:red just one time. As the product with 
+            # variants is displayed at not the variants.
             
-        if property.filterable == False:
-            continue
+            if already_count.has_key("%s%s%s" % (row[2], row[0], row[1])):
+                continue
+            already_count["%s%s%s" % (row[2], row[0], row[1])] = 1
+        
+            if not amount.has_key(row[0]):
+                amount[row[0]] = {}
+    
+            if not amount[row[0]].has_key(row[1]):
+                amount[row[0]][row[1]] = 0
+        
+            amount[row[0]][row[1]] += 1    
+        
+        cursor.execute("""SELECT property_id, value
+                          FROM catalog_productpropertyvalue
+                          WHERE product_id IN (%s)
+                          AND property_id IN (%s)
+                          GROUP BY property_id, value""" % (product_ids, property_ids))
+    
+        # Group properties and values (for displaying)
+        set_filters = dict(product_filter)
+        properties = {}
+        for row in cursor.fetchall():
+    
+            property = properties_mapping[row[0]]
+    
+            if property.is_number_field:
+                continue
                 
-        if properties.has_key(row[0]) == False:
-            properties[row[0]] = []
-
-        # If the property is a select field we want to display the name of the 
-        # option instead of the id.
-        if properties_mapping[row[0]].is_select_field:
-            try:
-                name = options_mapping[row[1]].name
-            except KeyError:
+            if property.filterable == False:
+                continue
+                    
+            if properties.has_key(row[0]) == False:
+                properties[row[0]] = []
+    
+            # If the property is a select field we want to display the name of the 
+            # option instead of the id.
+            if properties_mapping[row[0]].is_select_field:
+                try:
+                    name = options_mapping[row[1]].name
+                except KeyError:
+                    name = row[1]
+            else:
                 name = row[1]
-        else:
-            name = row[1]
-        
-        # Transform to float for later sorting, see below
-        property = properties_mapping[row[0]]
-        if property.type == PROPERTY_NUMBER_FIELD:
-            value = float(row[1])
-        else:
-            value = row[1]
-        
-        # if the property within the set filters we just show the selected value
-        if str(row[0]) in set_filters.keys():
-            if str(row[1]) in set_filters.values():
-                properties[row[0]] = [{
+            
+            # Transform to float for later sorting, see below
+            property = properties_mapping[row[0]]
+            if property.type == PROPERTY_NUMBER_FIELD:
+                value = float(row[1])
+            else:
+                value = row[1]
+            
+            # if the property within the set filters we just show the selected value
+            if str(row[0]) in set_filters.keys():
+                if str(row[1]) in set_filters.values():
+                    properties[row[0]] = [{
+                        "id"       : row[0],
+                        "value"    : value,
+                        "name"     : name,
+                        "quantity" : amount[row[0]][row[1]],
+                        "show_quantity" : False,
+                    }]
+                continue
+            else:
+                properties[row[0]].append({
                     "id"       : row[0],
                     "value"    : value,
                     "name"     : name,
                     "quantity" : amount[row[0]][row[1]],
-                    "show_quantity" : False,
-                }]
-            continue
-        else:
-            properties[row[0]].append({
-                "id"       : row[0],
-                "value"    : value,
-                "name"     : name,
-                "quantity" : amount[row[0]][row[1]],
-                "show_quantity" : True,
-            })
-    
-    # Transform the group properties into a list of dicts
-    set_filter_keys = set_filters.keys()
-    
-    for property_id, values in properties.items():
+                    "show_quantity" : True,
+                })
         
-        property = properties_mapping[property_id]
+        # Transform the group properties into a list of dicts
+        set_filter_keys = set_filters.keys()
         
-        # Sort the values. NOTE: This has to be done here (and not via SQL) as 
-        # the value field of the property is a char field and can't ordered
-        # properly for numbers.        
-        values.sort(lambda a, b: cmp(a["value"], b["value"]))
+        for property_id, values in properties.items():
             
-        result.append({
-            "id"    : property_id,
-            "position" : property.position,
-            "unit" : property.unit,            
-            "show_reset" : str(property_id) in set_filter_keys,
-            "name"  : property.name,
-            "items" : values
-        })
-    
-    result.sort(lambda a, b: cmp(a["position"], b["position"]))    
-    cache.set(cache_key, result)
+            property = properties_mapping[property_id]
+            
+            # Sort the values. NOTE: This has to be done here (and not via SQL) as 
+            # the value field of the property is a char field and can't ordered
+            # properly for numbers.        
+            values.sort(lambda a, b: cmp(a["value"], b["value"]))
+                
+            result.append({
+                "id"    : property_id,
+                "position" : property.position,
+                "unit" : property.unit,            
+                "show_reset" : str(property_id) in set_filter_keys,
+                "name"  : property.name,
+                "items" : values
+            })
+        
+        result.sort(lambda a, b: cmp(a["position"], b["position"]))    
+        cache.set(cache_key, result)
 
     return result
 

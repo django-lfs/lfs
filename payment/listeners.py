@@ -16,7 +16,7 @@ def mark_payment(pp_obj, payment=True):
         if order is not None:
             order.paid = payment
         order.save()
-    except ObjectDoesNotExist, e:
+    except Order.DoesNotExist, e:
         logging.error(e)
     return order
 
@@ -25,7 +25,7 @@ def successful_payment(sender, **kwargs):
     ipn_obj = sender    
     order = mark_payment(ipn_obj, True)
     if order is not None:
-        transaction = PayPalOrderTransaction.objects.get_or_create(order=order)
+        transaction, created = PayPalOrderTransaction.objects.get_or_create(order=order)
         transaction.ipn.add(ipn_obj)
         transaction.save()
     else:
@@ -36,7 +36,7 @@ def unsuccessful_payment(sender, **kwargs):
     ipn_obj = sender    
     order = mark_payment(ipn_obj, False)    
     if order is not None:
-        transaction = PayPalOrderTransaction.objects.get_or_create(order=order)
+        transaction, created = PayPalOrderTransaction.objects.get_or_create(order=order)
         transaction.ipn.add(ipn_obj)
         transaction.save()
     else:

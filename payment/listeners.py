@@ -1,5 +1,6 @@
 # lfs imports
 from lfs.order.models import Order
+from lfs.order.settings import PAID, PAYMENT_FAILED
 from models import PayPalOrderTransaction
 
 # other imports
@@ -7,14 +8,14 @@ import logging
 from paypal.standard.ipn.signals import payment_was_successful, payment_was_flagged
 from paypal.standard.pdt.signals import pdt_failed, pdt_successful
 
-def mark_payment(pp_obj, payment=True):
+def mark_payment(pp_obj, order_state=PAID):
     order = None
     try:
         logging.info("getting order for uuid %s"%pp_obj.custom)
         order_uuid = pp_obj.custom
         order = Order.objects.get(uuid=order_uuid)
         if order is not None:
-            order.paid = payment
+            order.state = order_state
         order.save()
     except Order.DoesNotExist, e:
         logging.error(e)
@@ -23,7 +24,7 @@ def mark_payment(pp_obj, payment=True):
 def successful_payment(sender, **kwargs):
     logging.info("successful ipn payment")    
     ipn_obj = sender    
-    order = mark_payment(ipn_obj, True)
+    order = mark_payment(ipn_obj, PAID)
     if order is not None:
         transaction, created = PayPalOrderTransaction.objects.get_or_create(order=order)
         transaction.ipn.add(ipn_obj)
@@ -34,7 +35,7 @@ def successful_payment(sender, **kwargs):
 def unsuccessful_payment(sender, **kwargs):
     logging.info("unsuccessful ipn payment")    
     ipn_obj = sender    
-    order = mark_payment(ipn_obj, False)    
+    order = mark_payment(ipn_obj, PAYMENT_FAILED)    
     if order is not None:
         transaction, created = PayPalOrderTransaction.objects.get_or_create(order=order)
         transaction.ipn.add(ipn_obj)

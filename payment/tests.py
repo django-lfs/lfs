@@ -7,6 +7,7 @@ from django.test.client import Client
 # lfs imports
 from lfs.core.models import Country
 from lfs.order.models import Order
+from lfs.order.settings import PAID, PAYMENT_FAILED, SUBMITTED
 from lfs.payment.models import PayPalOrderTransaction
 
 # other imports
@@ -59,21 +60,24 @@ class PayPalPaymentTestCase(TestCase):
             "quantity":"1",}
         
 
+        
+        
+        # Every test needs a client.
+        self.client = Client()        
+    
+    def test_successful_order_transaction_created(self):
+        """Tests the shop values right after creation of an instance
+        """
         def fake_postback(self, test=True):
             """Perform a Fake PayPal IPN Postback request."""
             return 'VERIFIED'
 
         PayPalIPN._postback = fake_postback
         
-        # Every test needs a client.
-        self.client = Client()        
-    
-    def test_order_transaction_created(self):
-        """Tests the shop values right after creation of an instance
-        """
         country = Country(code="ie", name="Ireland")
         country.save()
         order = Order(invoice_country=country, shipping_country=country, uuid=self.uuid)
+        self.assertEqual(order.state, SUBMITTED)
         order.save()
         self.assertEqual(len(PayPalIPN.objects.all()), 0)
         self.assertEqual(len(PayPalOrderTransaction.objects.all()), 0)
@@ -82,6 +86,34 @@ class PayPalPaymentTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(PayPalIPN.objects.all()), 1)
         self.assertEqual(len(PayPalOrderTransaction.objects.all()), 1)        
-        ipn_obj = PayPalIPN.objects.all()[0]
-        
+        ipn_obj = PayPalIPN.objects.all()[0]        
         self.assertEqual(ipn_obj.flag, False)
+        order = Order.objects.all()[0]
+        self.assertEqual(order.state, PAID)
+
+
+    def test_failed_order_transaction_created(self):
+        """Tests the shop values right after creation of an instance
+        """
+        def fake_postback(self, test=True):
+            """Perform a Fake PayPal IPN Postback request."""
+            return 'INVALID'
+
+        PayPalIPN._postback = fake_postback
+        
+        country = Country(code="ie", name="Ireland")
+        country.save()
+        order = Order(invoice_country=country, shipping_country=country, uuid=self.uuid)
+        self.assertEqual(order.state, SUBMITTED)
+        order.save()
+        self.assertEqual(len(PayPalIPN.objects.all()), 0)
+        self.assertEqual(len(PayPalOrderTransaction.objects.all()), 0)
+        post_params = self.IPN_POST_PARAMS        
+        response = self.client.post(reverse('paypal-ipn'), post_params)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(PayPalIPN.objects.all()), 1)
+        self.assertEqual(len(PayPalOrderTransaction.objects.all()), 1)        
+        ipn_obj = PayPalIPN.objects.all()[0]        
+        self.assertEqual(ipn_obj.flag, True)
+        order = Order.objects.all()[0]
+        self.assertEqual(order.state, PAYMENT_FAILED)

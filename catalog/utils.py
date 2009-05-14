@@ -248,7 +248,6 @@ def get_product_filters(category, product_filter, price_filter, sorting):
                           WHERE product_id IN (%s)
                           AND property_id IN (%s)
                           GROUP BY property_id""" % (product_ids, property_ids)
-        print sql
         cursor.execute(sql)
     
     

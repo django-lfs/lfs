@@ -70,7 +70,6 @@ class Order(models.Model):
     message = models.TextField(_(u"Message"), blank=True)
     
     uuid = models.CharField(max_length=50, editable=False,unique=True, default=get_unique_id_str)
-    paid = models.BooleanField(default=False)
     
     class Meta:
         ordering = ("-created", )

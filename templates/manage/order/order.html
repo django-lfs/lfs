@@ -7,7 +7,7 @@
         <div>            
             <a href="{% url lfs.manage.views.order_view order.id %}"
                class="selectable {% ifequal order.id current_order.id %}selected{% endifequal %}">
-                {{order.created}}
+                {{order.created|date:_("DATETIME_FORMAT")}}
             </a>
         </div>
     {% endfor %}
@@ -18,7 +18,7 @@
 
     <div class="site-actions">
         
-        <span class="label">{{current_order.created}}</span>
+        <span class="label">{{current_order.created|date:_("DATETIME_FORMAT")}}</span>
         <a class="delete confirmation-link"
            data="{% trans 'Delete?' %}" 
            href="{% url lfs_delete_order current_order.id %}">
@@ -48,7 +48,7 @@
                 {% trans 'Date' %}:
             </td>
             <td>
-                {{current_order.created}}
+                {{current_order.created|date:_("DATETIME_FORMAT")}}
             </td>
         </tr>
         <tr>

@@ -283,7 +283,7 @@ class Product(models.Model):
     order_time = models.ForeignKey("DeliveryTime", verbose_name=_(u"Order time"), blank=True, null=True, related_name="products_order_time")    
     ordered_at = models.DateField(_(u"Ordered at"), blank=True, null=True)
     manage_stock_amount = models.BooleanField(_(u"Manage stock amount"), default=True)
-    stock_amount = models.DecimalField(_(u"Stock amount"), max_digits=3, decimal_places=1, default=0)
+    stock_amount = models.FloatField(_(u"Stock amount"), default=0)
     
     # Dimension
     weight = models.FloatField(_(u"Weight"), default=0.0)

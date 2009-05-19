@@ -90,18 +90,10 @@ urlpatterns += patterns('lfs.utils.generator',
 )
 
 # 3rd party
-urlpatterns += patterns("",
-    (r'^contact', include('contact_form.urls')),
-)
-
 urlpatterns += patterns('',
     (r'^utils', include('lfs.utils.urls')),
 )
 
 urlpatterns += patterns('',
     (r'^tagging/', include('lfs.tagging.urls')),
-)
-
-urlpatterns += patterns('',
-    (r'^reviews', include('reviews.urls')),
 )

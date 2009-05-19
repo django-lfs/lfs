@@ -77,7 +77,7 @@ def manage_related_products_inline(
             categories.extend(category.get_all_children())    
             filters &= Q(categories__in = categories)
     
-    products = Product.objects.filter(filters).exclude(pk__in = related_products_ids)        
+    products = Product.objects.filter(filters).exclude(pk__in=related_products_ids).exclude(pk=product.pk)
     paginator = Paginator(products, 6)
     
     total = products.count()

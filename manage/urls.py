@@ -21,6 +21,13 @@ urlpatterns += patterns('lfs.manage.views.marketing',
     url(r'^topseller-inline$', "topseller.manage_topseller_inline", name="lfs_manage_topseller_inline"),
 )
 
+# Portlets 
+urlpatterns += patterns('lfs.manage.views.product.product_portlets',
+    url(r'^add-portlet/(?P<object_id>\d+)$', "add_portlet", name="lfs_add_portlet"),
+    url(r'^delete-portlet/(?P<slot_id>\d+)/(?P<object_id>\d+)/(?P<portlet_id>\d+)$', "delete_portlet", name="lfs_delete_portlet"),
+    url(r'^edit-portlet/(?P<portletassignment_id>\d+)$', "edit_portlet", name="lfs_edit_portlet"),
+)
+
 # Product
 urlpatterns += patterns('lfs.manage.views',
     url(r'^product-dispatcher$', "product_dispatcher", name="lfs_manage_product_dispatcher"),

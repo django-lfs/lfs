@@ -62,8 +62,8 @@ $(function() {
         autoOpen: false,
         closeOnEscape: true,
         modal: true, 
-        width: 500,
-        height: 400,
+        width: 800,
+        height: 600,
         overlay: {
             opacity: 0.7, 
             background: "black"
@@ -755,6 +755,39 @@ $(function() {
         return false;
     });
     
+    // Portlets
+    $(".portlet-edit-button").livequery("click", function() {
+        var url = $(this).attr("href");
+        $.get(url, function(data) {
+            $("#dialog").html(data);
+            $("#dialog").dialog("open");
+            tinyMCE.execCommand('mceAddControl', true, 'id_portlet-text');
+        });        
+        return false;        
+    });
+
+    $(".portlet-add-button").livequery("click", function() {
+        $(this).parents("form:first").ajaxSubmit({
+            success : function(data) {
+                $("#dialog").html(data);
+                $("#dialog").dialog("open");
+                tinyMCE.execCommand('mceAddControl', true, 'id_portlet-text');
+        }});
+        return false;        
+    });
+
+    $(".ajax-portlet-save-button").livequery("click", function() {
+        tinyMCE.execCommand('mceRemoveControl', false, 'id_portlet-text');
+        $(this).parents("form:first").ajaxSubmit({
+            success : function(data) {
+                $("#dialog").dialog("close");
+                data = JSON.parse(data);
+                $("#portlets").html(data["html"])
+                $.jGrowl(data["message"]);
+            }
+        })
+        return false;
+    });
     
     // Marketing / Topseller
     $("#add-topseller-button").livequery("click", function() {
@@ -815,5 +848,5 @@ $(function() {
         });
         return false;
     })
-    
+
 })

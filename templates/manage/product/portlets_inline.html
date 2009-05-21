@@ -1,0 +1,64 @@
+{% load i18n %}
+
+{% for slot in slots %}
+    <h2 {% if forloop.first %}class="first-heading"{% endif %}>
+        {% trans 'Slot' %}: {{ slot.name }}
+    </h2>
+    {% if slot.portlets %}
+        <table class="lfs-manage-table">
+            <tr>
+                <th>
+                    {% trans 'Type' %}
+                </th>
+                <th>
+                    {% trans 'Title' %}
+                </th>
+                <th>
+                    {% trans 'Modify' %}
+                </th>
+            </tr>
+            {% for portlet in slot.portlets %}
+                <tr>
+                    <td>
+                        {{ portlet.type }}
+                    </td>
+                    <td>
+                        {{ portlet.title }}
+                    </td>
+                    <td>
+                        <a class="confirmation-link"
+                           data="{% trans 'Delete?' %}"
+                           href="{% url lfs_delete_portlet slot.id product.id portlet.id %}">{% trans 'Delete' %}</a>
+                        </a> /
+                        <a class="edit portlet-edit-button"
+                           href="{% url lfs_edit_portlet portlet.id %}">{% trans 'Edit' %}</a>                        
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        {% trans 'There are no portlets assigned.' %}    
+    {% endif %}
+{% endfor %}
+
+<h2>
+    {% trans 'Add new portlet' %}
+</h2>  
+
+<form class="portlet-add-form" 
+      action="{% url lfs_add_portlet product.id %}"
+      method="get">
+    <select name="portlet_type">
+        {% for portlet_type in portlet_types %}
+            <option value="{{ portlet_type.type }}">
+                {{ portlet_type.name }}
+            </option>
+        {% endfor %}
+    </select>
+        
+    <input class="portlet-add-button"
+           type="submit"
+           value="{% trans 'Add portlet' %}" />
+</form>
+

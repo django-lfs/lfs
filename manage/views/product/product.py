@@ -27,6 +27,7 @@ from lfs.manage.views.product.variants import manage_variants
 from lfs.manage.views.product.related_products import manage_related_products
 from lfs.manage.views.product.seo import manage_seo
 from lfs.manage.views.product.properties import manage_properties
+from lfs.manage.views.product.product_portlets import portlets_inline
 
 class ProductSubTypeForm(ModelForm):
     """Form to change the sub type.
@@ -100,6 +101,7 @@ def manage_product(request, product_id, template_name="manage/product/product.ht
         "selectable_products" : selectable_products_inline(request, as_string=True),
         "seo" : manage_seo(request, product_id),
         "stock" : stock(request, product_id),
+        "portlets" : portlets_inline(request, product),
         "properties" : manage_properties(request, product_id),
         "form" : ProductSubTypeForm(instance=product)
     }))

@@ -82,7 +82,7 @@ def add_portlet(request, object_type_id, object_id, template_name="manage/portle
             pass
     else:
         try:
-            ct = ContentType.objects.get(model=portlet_type)
+            ct = ContentType.objects.get(model=portlet_type.lower())
             mc = ct.model_class()
             form = mc().form(prefix="portlet", data=request.POST)
             portlet = form.save()

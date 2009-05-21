@@ -1,7 +1,7 @@
 {% load i18n %}
 
 {% for slot in slots %}
-    <h2 {% if forloop.first %}class="first-heading"{% endif %}>
+    <h2 {% if not forloop.first %}class="heading-middle"{% endif %}>
         {% trans 'Slot' %}: {{ slot.name }}
     </h2>
     {% if slot.portlets %}
@@ -28,9 +28,9 @@
                     <td>
                         <a class="confirmation-link"
                            data="{% trans 'Delete?' %}"
-                           href="{% url lfs_delete_portlet slot.id product.id portlet.id %}">{% trans 'Delete' %}</a>
+                           href="{% url lfs_delete_portlet portlet.id %}">{% trans 'Delete' %}</a>
                         </a> /
-                        <a class="edit portlet-edit-button"
+                        <a class="portlet-edit-button"
                            href="{% url lfs_edit_portlet portlet.id %}">{% trans 'Edit' %}</a>                        
                         </a>
                     </td>

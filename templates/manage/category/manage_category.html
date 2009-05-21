@@ -38,16 +38,20 @@
             <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Category' %}</a></li>
             <li class="ui-tabs-nav-item"><a href="#products">{% trans 'Products' %}</a></li>            
             <li class="ui-tabs-nav-item"><a href="#seo">{% trans 'SEO' %}</a></li>            
+            <li class="ui-tabs-nav-item"><a href="#portlets">{% trans 'Portlets' %}</a></li>            
         </ul>
     
         <div id="data">
-            {{data|safe}}
+            {{ data|safe }}
         </div>
         <div id="products">
-            {{products|safe}}
+            {{ products|safe }}
         </div>
         <div id="seo">
-            {{seo|safe}}
+            {{ seo|safe }}
+        </div>
+        <div id="portlets">
+            {{ portlets|safe }}
         </div>
     </div>
 <script>

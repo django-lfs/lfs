@@ -63,12 +63,12 @@ def add_portlet(request, object_type_id, object_id, template_name="manage/portle
     object = object_ct.get_object_for_this_type(pk=object_id)
     
     # Get the portlet type
-    portlet_type = request.REQUEST.get("portlet_type")
+    portlet_type = request.REQUEST.get("portlet_type", "")
 
     if request.method == "GET":
 
         try:
-            portlet_ct = ContentType.objects.get(model=portlet_type)
+            portlet_ct = ContentType.objects.get(model=portlet_type.lower())
             mc = portlet_ct.model_class()
             form = mc().form(prefix="portlet")
             return render_to_response(template_name, RequestContext(request, {

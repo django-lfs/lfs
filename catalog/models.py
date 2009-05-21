@@ -242,6 +242,12 @@ class Category(models.Model):
 
         return block
 
+    # 3rd party contracts        
+    def get_parent_for_portlets(self):
+        """Returns the parent for portlets.
+        """
+        return self.parent
+
 # TODO: Add attributes to the doc string.
 class Product(models.Model):
     """A product is sold within a shop.

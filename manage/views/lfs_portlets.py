@@ -37,7 +37,7 @@ def portlets_inline(request, object, template_name="manage/portlets/portlets_inl
             temp.append({
                 "pa_id" : pa.id,
                 "title" : pa.portlet.title,
-                "type" : portlet_types.get(pa.portlet.__class__.__name__, ""),
+                "type" : portlet_types.get(pa.portlet.__class__.__name__.lower(), ""),
             })
 
         slots.append({

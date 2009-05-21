@@ -13,6 +13,12 @@
         </field>
     </object>    
 
+    <!-- Portlets -->
+    <object pk="1" model="portlets.portletregistration">
+        <field type="CharField" name="type">TextPortlet</field>
+        <field type="CharField" name="name">Text</field>
+    </object>
+
     <!-- Countries -->
     <object pk="1" model="core.country">
       <field type="CharField" name="code">us</field>

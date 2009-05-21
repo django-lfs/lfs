@@ -22,18 +22,18 @@ from lfs.catalog.models import Product
 from lfs.core.utils import LazyEncoder
 
 @login_required
-def portlets_inline(request, product, template_name="manage/product/portlets_inline.html"):
-    """Displays the assigned portlets for given product.
+def portlets_inline(request, object, template_name="manage/portlets/portlets_inline.html"):
+    """Displays the assigned portlets for given object.
     """
     portlet_types = get_registered_portlets()
-    ct = ContentType.objects.get_for_model(product)
+    ct = ContentType.objects.get_for_model(object)
 
     slots = []
     for slot in Slot.objects.all():
 
         temp = []
         for pa in PortletAssignment.objects.filter(
-            slot=slot, content_id=product.id, content_type=ct.id):
+            slot=slot, content_id=object.id, content_type=ct.id):
             temp.append({
                 "pa_id" : pa.id,
                 "title" : pa.portlet.title,
@@ -49,26 +49,32 @@ def portlets_inline(request, product, template_name="manage/product/portlets_inl
     return render_to_string(template_name, RequestContext(request, {
         "slots" : slots,
         "portlet_types" : PortletRegistration.objects.all(),
-        "product" : product,
+        "object" : object,
+        "object_type_id" : ct.id,
     }))
 
 
 @login_required
-def add_portlet(request, object_id, template_name="manage/product/portlet_add.html"):
-    """Form and logic to add a new portlet to a product.
-    """
-    product = Product.objects.get(pk=object_id)
+def add_portlet(request, object_type_id, object_id, template_name="manage/portlets/portlet_add.html"):
+    """Form and logic to add a new portlet to the object with given type and id.
+    """    
+    # Get content type to which the portlet should be added
+    object_ct = ContentType.objects.get(pk=object_type_id)
+    object = object_ct.get_object_for_this_type(pk=object_id)
+    
+    # Get the portlet type
     portlet_type = request.REQUEST.get("portlet_type")
 
     if request.method == "GET":
 
         try:
-            ct = ContentType.objects.get(model=portlet_type)
-            mc = ct.model_class()
+            portlet_ct = ContentType.objects.get(model=portlet_type)
+            mc = portlet_ct.model_class()
             form = mc().form(prefix="portlet")
             return render_to_response(template_name, RequestContext(request, {
                 "form" : form,
-                "page_id" : object_id,
+                "object_id" : object_id,
+                "object_type_id" : object_ct.id,
                 "portlet_type" : portlet_type,
                 "slots" : Slot.objects.all(),
             }))
@@ -84,9 +90,9 @@ def add_portlet(request, object_id, template_name="manage/product/portlet_add.ht
             slot_id = request.POST.get("slot")
             position = request.POST.get("position")
             PortletAssignment.objects.create(
-                slot_id=slot_id, content=product, portlet=portlet, position=position)
+                slot_id=slot_id, content=object, portlet=portlet, position=position)
 
-            html = portlets_inline(request, product)
+            html = portlets_inline(request, object)
 
             result = simplejson.dumps({
                 "html" : html,
@@ -97,8 +103,6 @@ def add_portlet(request, object_id, template_name="manage/product/portlet_add.ht
 
         except ContentType.DoesNotExist:
             pass
-
-    return HttpResponseRedirect(reverse("lfs_manage_product", kwargs={"product_id" : product.id}))
 
 @login_required
 def delete_portlet(request, portletassignment_id):
@@ -115,7 +119,7 @@ def delete_portlet(request, portletassignment_id):
             msg = _(u"Portlet has been deleted."))
 
 @login_required
-def edit_portlet(request, portletassignment_id, template_name="manage/product/portlet_edit.html"):
+def edit_portlet(request, portletassignment_id, template_name="manage/portlets/portlet_edit.html"):
     """Form and logic to edit the portlet of the given portlet assignment.
     """
     try:
@@ -150,8 +154,7 @@ def edit_portlet(request, portletassignment_id, template_name="manage/product/po
         pa.position = request.POST.get("position")
         pa.save()
 
-        page = Product.objects.get(pk=pa.content_id)
-        html = portlets_inline(request, product)
+        html = portlets_inline(request, pa.content)
 
         result = simplejson.dumps({
             "html" : html,

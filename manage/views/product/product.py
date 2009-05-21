@@ -27,7 +27,7 @@ from lfs.manage.views.product.variants import manage_variants
 from lfs.manage.views.product.related_products import manage_related_products
 from lfs.manage.views.product.seo import manage_seo
 from lfs.manage.views.product.properties import manage_properties
-from lfs.manage.views.product.product_portlets import portlets_inline
+from lfs.manage.views.lfs_portlets import portlets_inline
 
 class ProductSubTypeForm(ModelForm):
     """Form to change the sub type.

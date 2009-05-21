@@ -22,8 +22,8 @@ urlpatterns += patterns('lfs.manage.views.marketing',
 )
 
 # Portlets 
-urlpatterns += patterns('lfs.manage.views.product.product_portlets',
-    url(r'^add-portlet/(?P<object_id>\d+)$', "add_portlet", name="lfs_add_portlet"),
+urlpatterns += patterns('lfs.manage.views.lfs_portlets',
+    url(r'^add-portlet/(?P<object_type_id>\d+)/(?P<object_id>\d+)$', "add_portlet", name="lfs_add_portlet"),
     url(r'^delete-portlet/(?P<portletassignment_id>\d+)$', "delete_portlet", name="lfs_delete_portlet"),
     url(r'^edit-portlet/(?P<portletassignment_id>\d+)$', "edit_portlet", name="lfs_edit_portlet"),
 )

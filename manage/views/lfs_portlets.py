@@ -127,8 +127,6 @@ def edit_portlet(request, portletassignment_id, template_name="manage/portlets/p
     except PortletAssignment.DoesNotExist:
         return ""
 
-    product = Product.objects.get(pk=pa.content_id)
-
     if request.method == "GET":
         slots = []
         for slot in Slot.objects.all():

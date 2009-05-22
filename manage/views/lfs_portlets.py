@@ -115,7 +115,7 @@ def delete_portlet(request, portletassignment_id):
     else:
         pa.delete()
         return lfs.core.utils.set_message_cookie(
-            reverse("lfs_manage_product", kwargs={"product_id" : pa.content_id}),
+            request.META.get("HTTP_REFERER"),
             msg = _(u"Portlet has been deleted."))
 
 @login_required

@@ -15,6 +15,7 @@ from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.models import Shop
 from lfs.core.utils import LazyEncoder
 from lfs.core.widgets.image import LFSImageInput
+from lfs.manage.views.lfs_portlets import portlets_inline
 
 class ShopForm(ModelForm):
     """Form to edit shop data.
@@ -58,6 +59,7 @@ def manage_shop(request, template_name="manage/shop/shop.html"):
         "shop" : shop,
         "form" : form,
         "default_values" : default_values_part(request),
+        "portlets" : portlets_inline(request, shop),
     }))
 
 @permission_required("manage_shop", login_url="/login/")    

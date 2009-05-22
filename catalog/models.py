@@ -7,6 +7,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+import lfs.catalog.utils
 from lfs.core.fields.thumbs import ImageWithThumbsField
 from lfs.core.managers import ActiveManager
 from lfs.catalog.settings import PRODUCT_TYPE_CHOICES
@@ -30,7 +31,6 @@ from lfs.catalog.settings import PROPERTY_STEP_TYPE_CHOICES
 from lfs.catalog.settings import PROPERTY_STEP_TYPE_AUTOMATIC
 from lfs.catalog.settings import PROPERTY_STEP_TYPE_MANUAL_STEPS
 from lfs.catalog.settings import PROPERTY_STEP_TYPE_FIXED_STEP
-import lfs.catalog.utils
 from lfs.tax.models import Tax
 
 # TODO: Add attributes to the doc string.
@@ -242,11 +242,13 @@ class Category(models.Model):
 
         return block
 
-    # 3rd party contracts        
+    # 3rd party contracts
     def get_parent_for_portlets(self):
         """Returns the parent for portlets.
         """
-        return self.parent
+        # TODO: Circular imports
+        import lfs.core.utils
+        return self.parent or lfs.core.utils.get_default_shop()
 
 # TODO: Add attributes to the doc string.
 class Product(models.Model):

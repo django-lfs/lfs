@@ -14,11 +14,6 @@
     </object>    
 
     <!-- Portlets -->
-    <object pk="1" model="portlets.portletregistration">
-        <field type="CharField" name="type">TextPortlet</field>
-        <field type="CharField" name="name">Text</field>
-    </object>
-
     <object pk="1" model="portlets.slot">
         <field type="CharField" name="name">Left</field>
     </object>

@@ -72,5 +72,5 @@ class TextPortletForm(forms.ModelForm):
     class Meta:
         model = TextPortlet        
 
-register_portlet("CartPortlet", "Cart")
-register_portlet("TextPortlet", "Text")        
+register_portlet(CartPortlet, "Cart")
+register_portlet(TextPortlet, "Text")        

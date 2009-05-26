@@ -21,6 +21,21 @@ def get_current_category_id(request):
     """
     pass
 
+# TODO: Add unit test
+def get_current_top_category(request, obj):
+    """Returns the current top category of a product.
+    """
+    
+    if obj.__class__.__name__.lower() == "product":
+        category = get_current_product_category(request, obj)
+    else:
+        category = obj
+        
+    while category.parent is not None:
+        category = category.parent
+
+    return category
+
 def get_current_category(request):
     """Returns the current category.
     """

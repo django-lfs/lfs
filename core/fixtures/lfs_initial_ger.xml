@@ -15,6 +15,14 @@
         </field>
     </object>    
 
+    <!-- Portlets -->
+    <object pk="1" model="portlets.slot">
+        <field type="CharField" name="name">Left</field>
+    </object>
+    <object pk="2" model="portlets.slot">
+        <field type="CharField" name="name">Right</field>
+    </object>
+
     <!-- Countries -->
     <object pk="1" model="core.country">
       <field type="CharField" name="code">de</field>

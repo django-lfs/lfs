@@ -24,7 +24,7 @@
             <tr>
                 <td>
                     <a href="{% url lfs.manage.views.order_view order.id %}">
-                        {{order.created}}
+                        {{order.created|date:_("DATETIME_FORMAT")}}
                     </a>
                     
                 </td>

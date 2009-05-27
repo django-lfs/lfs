@@ -74,6 +74,9 @@ class Order(models.Model):
     class Meta:
         ordering = ("-created", )
      
+    def __unicode__(self):
+        return "%s (%s %s)" % (self.created.strftime("%x %X"), self.customer_firstname, self.customer_lastname)
+
     def get_pay_link(self):
         """Returns a pay link for the selected payment method
         """
@@ -114,3 +117,6 @@ class OrderItem(models.Model):
     product_price_net = models.FloatField(_(u"Product price net"), default=0.0)
     product_price_gross = models.FloatField(_(u"Product price gross"), default=0.0)
     product_tax = models.FloatField(_(u"Product tax"), default=0.0)
+
+    def __unicode__(self):
+        return "%s" % self.product_name

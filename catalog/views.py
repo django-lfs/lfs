@@ -117,10 +117,14 @@ def category_view(request, slug, start=0, template_name="catalog/category.html")
     # Set last visited category for later use, e.g. Display breadcrumbs, 
     # selected menu points, etc.
     request.session["last_category"] = category
+
+    # TODO: Factor top_category out to a inclusion tag, so that people can
+    # omit if they don't need it.
     
     return render_to_response(template_name, RequestContext(request, {
         "category" : category,
-        "category_inline" : inline
+        "category_inline" : inline,
+        "top_category" : lfs.catalog.utils.get_current_top_category(request, category),
     }))
 
 def category_categories(request, slug, template_name="catalog/category_categories.html"):
@@ -274,11 +278,16 @@ def product_view(request, slug, template_name="catalog/product.html"):
     request.session["RECENT_PRODUCTS"] = recent
     
     # TODO: Factor current_category out to a inclusion tag, so that people can
-    # let it away if they don't need it.
+    # omit it if they don't need it.
+    
+    # TODO: Factor top_category out to a inclusion tag, so that people can
+    # omit if they don't need it.
+    
     return render_to_response(template_name, RequestContext(request, {
         "product_inline" : product_inline(request, product.id),
         "product" : product,
         "current_category" : lfs.catalog.utils.get_current_product_category(request, product),
+        "top_category" : lfs.catalog.utils.get_current_top_category(request, product),
     }))
 
 def product_inline(request, id, template_name="catalog/product_inline.html"):

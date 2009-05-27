@@ -98,6 +98,25 @@ class UtilsTestCase(TestCase):
         ts = lfs.marketing.utils.get_topseller(2)
         self.assertEqual(ts[0], self.p4)
         self.assertEqual(ts[1], self.p5)  # has to be on pasition 2
+    
+    def test_topseller_3(self):
+        """Tests general topseller with explicitly assigned products which
+        are also in calculated topsellers.
+        """
+        ts = lfs.marketing.utils.get_topseller(2)
+
+        self.assertEqual(len(ts), 2)
+
+        self.assertEqual(ts[0], self.p4)    
+        self.assertEqual(ts[1], self.p3)
+        
+        # Explicit topseller P4, which is already a topseller
+        t = Topseller.objects.create(product=self.p4, position=1)
+        
+        # P4 should only displayed once
+        ts = lfs.marketing.utils.get_topseller(2)
+        self.assertEqual(ts[0], self.p4)
+        self.assertEqual(ts[1], self.p3)
         
     def test_topseller_for_category_1(self):
         """Tests topseller for specific categories.
@@ -177,3 +196,32 @@ class UtilsTestCase(TestCase):
         self.assertEqual(len(ts), 2)        
         self.assertEqual(ts[0], self.p4)
         self.assertEqual(ts[1], self.p3)
+        
+    def test_topseller_for_category_3(self):
+        """Tests the top seller for specific categories. With explicitly
+        selected products and ca
+        """
+        # Tests the top level category
+        ts = lfs.marketing.utils.get_topseller_for_category(self.c1, limit=2)
+        self.assertEqual(len(ts), 2)
+
+        self.assertEqual(ts[0], self.p4)
+        self.assertEqual(ts[1], self.p3)
+
+        # Explicit topseller P4 for c1, which is already a topseller
+        t = Topseller.objects.create(product=self.p4, position=1)
+        
+        # Tests the top level category
+        ts = lfs.marketing.utils.get_topseller_for_category(self.c1, limit=2)
+        self.assertEqual(len(ts), 2)
+                
+        self.assertEqual(ts[0], self.p4)
+        self.assertEqual(ts[1], self.p3)
+
+        # Tests the direct categories
+        ts = lfs.marketing.utils.get_topseller_for_category(self.c12, limit=2)
+        self.assertEqual(len(ts), 2)
+                
+        self.assertEqual(ts[0], self.p4)
+        self.assertEqual(ts[1], self.p3)
+                

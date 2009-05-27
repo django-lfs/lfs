@@ -538,6 +538,27 @@ class PropertiesTestCase(TestCase):
         products = lfs.catalog.utils.get_filtered_products_for_category(self.c1, filters, None, sorting)
         self.assertEqual(len(products), 1)
         self.assertEqual(products[0].id, self.p3.id)
+
+class PropertiesTestCaseWithoutProperties(TestCase):
+    """Test the filter methods without added properties.
+    """
+    def setUp(self):
+        """
+        """
+        self.p1 = Product.objects.create(name="Product 1", slug="product-1", price=5)
+        self.p2 = Product.objects.create(name="Product 2", slug="product-2", price=3)        
+        self.p3 = Product.objects.create(name="Product 3", slug="product-3", price=1)
+
+        self.c1 = Category.objects.create(name="Category 1", slug="category-1")
+        self.c1.products = [self.p1, self.p2, self.p3]
+        self.c1.save()
+    
+    def test_get_product_filters(self):
+        """
+        """
+        # This tests the according SQL within get_product_filters
+        f = lfs.catalog.utils.get_product_filters(self.c1, [], None, None)
+        self.assertEqual(f, [])
         
 class CategoryTestCase(TestCase):
     """Tests the Category of the lfs.catalog.

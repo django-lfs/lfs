@@ -18,6 +18,7 @@ from lfs.manage import utils as manage_utils
 from lfs.manage.views.categories.products import manage_products
 from lfs.manage.views.categories.seo import edit_seo
 from lfs.manage.views.categories.portlet import manage_categories_portlet
+from lfs.manage.views.lfs_portlets import portlets_inline
 
 class CategoryForm(ModelForm):
     """Process form to add/edit categories options.
@@ -66,6 +67,7 @@ def manage_category(request, category_id, template_name="manage/category/manage_
         "products" : manage_products(request, category.id),
         "data" : category_data(request, category_id),
         "seo" : edit_seo(request, category_id),
+        "portlets" : portlets_inline(request, category),
     }))
 
 @permission_required("manage_shop", login_url="/login/")

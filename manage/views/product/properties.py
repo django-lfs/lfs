@@ -1,4 +1,5 @@
 # django imports
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
@@ -84,9 +85,9 @@ def update_property_groups(request, product_id):
         # otherwise we try do delete it
         if str(property_group.id) in selected_group_ids:
             try:
+                property_group.products.get(pk=product_id)
+            except ObjectDoesNotExist:
                 property_group.products.add(product_id)
-            except IntegrityError:
-                pass
         else:
             property_group.products.remove(product_id)
             product = Product.objects.get(pk=product_id)

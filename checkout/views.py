@@ -202,7 +202,7 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
             customer.selected_payment_method_id = request.POST.get("payment_method")
             
             # 1 = Direct Debit
-            if form.data.get("payment_method") == "1":
+            if int(form.data.get("payment_method")) == DIRECT_DEBIT:
                 bank_account = BankAccount.objects.create(
                     account_number = form.cleaned_data.get("account_number"),
                     bank_identification_code = form.cleaned_data.get("bank_identification_code"),
@@ -259,6 +259,8 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
         form = checkout_form(initial=initial)
 
     cart = cart_utils.get_cart(request)
+    if cart is None:
+        return HttpResponseRedirect(reverse('lfs_cart'))
     
     # Payment    
     try:

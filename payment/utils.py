@@ -1,4 +1,6 @@
 # django imports
+from django.conf import settings
+from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 
 # lfs imports
@@ -11,6 +13,9 @@ from lfs.payment.models import PaymentMethod
 from lfs.payment.settings import DIRECT_DEBIT
 from lfs.payment.settings import CASH_ON_DELIVERY
 from lfs.payment.settings import PAYPAL
+
+# other imports
+from paypal.standard.conf import POSTBACK_ENDPOINT, SANDBOX_POSTBACK_ENDPOINT
 
 def update_to_valid_payment_method(request, customer, save=False):
     """After this method has been called the current customer has a valid
@@ -95,39 +100,18 @@ def process_payment(request):
     # TODO: Check dependencies
     from lfs.order import utils as order_utils
     payment_method = get_selected_payment_method(request)
-    
+    #import ipdb; ipdb.set_trace()
     shop = lfs_get_object_or_404(Shop, pk=1)
 
-    # # PayPal (Website Payments Standard)
-    # if payment_method.id == PAYPAL:        
-    #     order = order_utils.add_order(request)        
-    #     info = {
-    #         "cmd" : "_xclick",
-    #         "upload" : "1",
-    #         "business" : "paypal@demmelhuber.net",
-    #         "currency_code" : "EUR",
-    #         "notify_url" : "/",
-    #         "return" : reverse("lfs_thank_you"),
-    #         "first_name" : order.invoice_firstname,
-    #         "last_name" : order.invoice_lastname,
-    #         "address1" : order.invoice_street,
-    #         "address2" : "",
-    #         "city" : order.invoice_city,
-    #         "state" : "Germany",
-    #         "zip" : order.invoice_zip_code,
-    #         "no_shipping" : "1",
-    #         "item_name" : shop.shop_owner,
-    #         "amount" : order.price - float("%.2f" % order.tax),
-    #         "tax" : "%.2f" % order.tax,
-    #     }
-    #     
-    #     parameters = "&".join(["%s=%s" % (k, v) for (k, v) in info.items()])
-    #     url = "https://www.paypal.com/cgi-bin/webscr" + "?" + parameters
-    # else:
-    
-    order_utils.add_order(request)
-    url = reverse("lfs_thank_you")
-        
+    order = order_utils.add_order(request)
+    if order is None:
+        url = reverse("lfs_cart")
+    else:
+        if payment_method.id == PAYPAL and order is not None:
+            url = create_paypal_link(order)
+        else:
+            url = reverse("lfs_thank_you")
+            
     return {
         "success" : True,
         "next-url" : url,
@@ -135,30 +119,36 @@ def process_payment(request):
     
 def create_paypal_link(order):
     """Creates paypal link for given order.
-    """
+    """    
     shop = lfs_get_object_or_404(Shop, pk=1)
+    current_site = Site.objects.get(id=settings.SITE_ID)
     
     info = {
         "cmd" : "_xclick",
         "upload" : "1",
-        "business" : "paypal@demmelhuber.net",
-        "currency_code" : "EUR",
-        "notify_url" : "/",
-        "return" : reverse("lfs_thank_you"),
+        "business" : settings.PAYPAL_RECEIVER_EMAIL,
+        "currency_code" : shop.default_currency,
+        "notify_url" : "http://" + current_site.domain + reverse('paypal-ipn'),
+        "return" : "http://" + current_site.domain + reverse('paypal-pdt'),
         "first_name" : order.invoice_firstname,
         "last_name" : order.invoice_lastname,
         "address1" : order.invoice_street,
         "address2" : "",
         "city" : order.invoice_city,
-        "state" : "Germany",
+        "state" : order.invoice_state,
         "zip" : order.invoice_zip_code,
         "no_shipping" : "1",
-        "item_name" : shop.shop_owner,
+        "custom": order.uuid,
+        "invoice": order.uuid,
+        "item_name" : order.get_name(),
         "amount" : order.price - float("%.2f" % order.tax),
         "tax" : "%.2f" % order.tax,
     }
     
     parameters = "&".join(["%s=%s" % (k, v) for (k, v) in info.items()])
-    url = "https://www.paypal.com/cgi-bin/webscr" + "?" + parameters
+    if settings.DEBUG:
+        url = SANDBOX_POSTBACK_ENDPOINT + "?" + parameters
+    else:
+        url = POSTBACK_ENDPOINT + "?" + parameters
     
     return url

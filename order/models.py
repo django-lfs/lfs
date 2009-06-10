@@ -12,9 +12,16 @@ from lfs.shipping.models import ShippingMethod
 from lfs.payment.models import PaymentMethod
 from lfs.payment.settings import PAYPAL
 import lfs.payment.utils
+
+# other imports
+import uuid
+
+
+def get_unique_id_str():
+    return str(uuid.uuid4())
         
 class Order(models.Model):
-    """An order is created when products has been sold.
+    """An order is created when products have been sold.
     """
     user = models.ForeignKey(User, verbose_name=_(u"User"), blank=True, null=True)
     session = models.CharField(_(u"Session"), blank=True, max_length=100)
@@ -34,6 +41,7 @@ class Order(models.Model):
     invoice_street = models.CharField(_(u"Invoice street"), blank=True, max_length=100)
     invoice_zip_code = models.CharField(_(u"Invoice zip code"), max_length=10)    
     invoice_city = models.CharField(_(u"Invoice city"), max_length=50)
+    invoice_state = models.CharField(_(u"Invoice state"), max_length=50)
     invoice_country = models.ForeignKey(Country, related_name="orders_invoice_country")
     invoice_phone = models.CharField(_(u"Invoice phone"), blank=True, max_length=20)
 
@@ -42,6 +50,7 @@ class Order(models.Model):
     shipping_street = models.CharField(_(u"Shipping street"), blank=True, max_length=100)
     shipping_zip_code = models.CharField(_(u"Shipping zip code"), max_length=10)    
     shipping_city = models.CharField(_(u"Shipping city"), max_length=50)
+    shipping_state = models.CharField(_(u"Shipping state"), max_length=50)
     shipping_country = models.ForeignKey(Country, related_name="orders_shipping_country")
     shipping_phone = models.CharField(_(u"Shipping phone"), blank=True, max_length=20)
     
@@ -60,6 +69,8 @@ class Order(models.Model):
     
     message = models.TextField(_(u"Message"), blank=True)
     
+    uuid = models.CharField(max_length=50, editable=False,unique=True, default=get_unique_id_str)
+    
     class Meta:
         ordering = ("-created", )
      
@@ -75,6 +86,15 @@ class Order(models.Model):
             pay_link = None
             
         return pay_link
+    
+    def get_name(self):
+        order_name = ""
+        for order_item in self.items.all():
+            if order_item.product is not None:
+                order_name = order_name + order_item.product.name + ", "
+                
+        order_name.strip(', ')        
+        return order_name
         
 class OrderItem(models.Model):
     """An order items holds the sold product, its amount and some other relevant 

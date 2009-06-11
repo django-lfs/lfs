@@ -94,7 +94,7 @@ def manage_product(request, product_id, template_name="manage/product/product.ht
         "product" : product,
         "product_data" : product_data_form(request, product_id),
         "categories" : manage_categories(request, product_id),
-        "images" : manage_images(request, product_id),
+        "images" : manage_images(request, product_id, as_string=True),
         "variants" : manage_variants(request, product.id),
         "accessories" : manage_accessories(request, product.id),
         "related_products" : manage_related_products(request, product.id),

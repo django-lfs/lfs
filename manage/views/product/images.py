@@ -18,17 +18,27 @@ from lfs.core.signals import product_changed
 from lfs.core.utils import LazyEncoder
 
 @permission_required("manage_shop", login_url="/login/")
-def manage_images(request, product_id, template_name="manage/product/images.html"):
+def manage_images(request, product_id, as_string=False, template_name="manage/product/images.html"):
     """
     """
     product = lfs_get_object_or_404(Product, pk=product_id)
-    
-    return render_to_string(template_name, RequestContext(request, {
+
+    result = render_to_string(template_name, RequestContext(request, {
         "product" : product,
     }))
-    
+
+    if as_string:
+        return result
+    else:
+        result = simplejson.dumps({
+            "images" : result,
+            "message" : _(u"Images has been added."),
+        }, cls = LazyEncoder)
+
+        return HttpResponse(result)
+
 # Actions
-@permission_required("manage_shop", login_url="/login/")
+# @permission_required("manage_shop", login_url="/login/")
 def add_image(request, product_id):
     """Adds an image to product with passed product_id.
     """
@@ -37,16 +47,16 @@ def add_image(request, product_id):
         for file_content in request.FILES.values():
             image = Image(content=product, title=file_content.name)
             image.image.save(file_content.name, file_content, save=True)
-    
+
     # Refresh positions
     for i, image in enumerate(product.images.all()):
         image.position = i+1
         image.save()
-    
-    product_changed.send(product, request=request)    
-    return HttpResponse(manage_images(request, product_id))
 
-@permission_required("manage_shop", login_url="/login/")    
+    product_changed.send(product, request=request)
+    return HttpResponse(manage_images(request, product_id, as_string=True))
+
+@permission_required("manage_shop", login_url="/login/")
 def update_images(request, product_id):
     """Saves/deletes images with given ids (passed by request body).
     """
@@ -56,7 +66,7 @@ def update_images(request, product_id):
     if action == "delete":
         message = _(u"Images has been deleted.")
         for key in request.POST.keys():
-            if key.startswith("delete-"):                
+            if key.startswith("delete-"):
                 try:
                     id = key.split("-")[1]
                     image = Image.objects.get(pk=id).delete()
@@ -75,31 +85,31 @@ def update_images(request, product_id):
                 else:
                     image.title = value
                     image.save()
-                
+
             elif key.startswith("position-"):
                 try:
                     id = key.split("-")[1]
                     image = Image.objects.get(pk=id)
                 except (IndexError, ObjectDoesNotExist):
                     pass
-                else:                    
-                    image.position = value            
+                else:
+                    image.position = value
                     image.save()
-    
-    # Refresh positions    
+
+    # Refresh positions
     for i, image in enumerate(product.images.all()):
         image.position = i+1
         image.save()
-    
+
     product_changed.send(product, request=request)
-    
+
     result = simplejson.dumps({
-        "images" : manage_images(request, product_id),
+        "images" : manage_images(request, product_id, as_string=True),
         "message" : message,
     }, cls = LazyEncoder)
-    
+
     return HttpResponse(result)
-    
+
 @permission_required("manage_shop", login_url="/login/")
 def update_active_images(request, product_id):
     """Updates the images activity state for product variants.
@@ -114,4 +124,4 @@ def update_active_images(request, product_id):
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_product", kwargs={"product_id": product.id}),
         msg = _(u"Active images has been updated."),
-    )            
+    )

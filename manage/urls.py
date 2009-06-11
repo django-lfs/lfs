@@ -58,6 +58,7 @@ urlpatterns += patterns('lfs.manage.views',
 urlpatterns += patterns('lfs.manage.views.product.images',
     url(r'^add-image/(?P<product_id>\d*)$', "add_image", name="lfs_manage_add_image"),
     url(r'^update-images/(?P<product_id>\d*)$', "update_images", name="lfs_manage_update_images"),
+    url(r'^product-images/(?P<product_id>\d*)$', "manage_images", name="lfs_manage_images"),
     url(r'^update-active-images/(?P<product_id>\d*)$', "update_active_images", name="lfs_manage_update_active_images"),
 )
 

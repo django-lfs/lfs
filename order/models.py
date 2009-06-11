@@ -78,14 +78,12 @@ class Order(models.Model):
         return "%s (%s %s)" % (self.created.strftime("%x %X"), self.customer_firstname, self.customer_lastname)
 
     def get_pay_link(self):
-        """Returns a pay link for the selected payment method
+        """Returns a pay link for the selected payment method.
         """
         if self.payment_method.id == PAYPAL:
-            pay_link = lfs.payment.utils.create_paypal_link(self)
-        else:
-            pay_link = None
+            return lfs.payment.utils.create_paypal_link(self)
             
-        return pay_link
+        return None
     
     def get_name(self):
         order_name = ""

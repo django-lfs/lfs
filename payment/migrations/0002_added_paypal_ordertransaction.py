@@ -63,6 +63,10 @@ class Migration:
             '_stub': True,
             'id': ('models.AutoField', [], {'primary_key': 'True'})
         },
+        'criteria.criteriaobjects': {
+            '_stub': True,
+            'id': ('models.AutoField', [], {'primary_key': 'True'})
+        },
         'payment.paymentmethodprice': {
             'Meta': {'ordering': '("priority",)'},
             'active': ('models.BooleanField', ['_(u"Active")'], {'default': 'False'}),

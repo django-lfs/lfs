@@ -30,7 +30,10 @@ def get_current_top_category(request, obj):
         category = get_current_product_category(request, obj)
     else:
         category = obj
-        
+    
+    if category is None:
+        return category
+
     while category.parent is not None:
         category = category.parent
 

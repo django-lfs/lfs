@@ -69,6 +69,23 @@ $(function() {
             background: "black"
         }
     });
+
+    // Generic ajax save button
+    $(".ajax-save-button").livequery("click", function() {
+        var action = $(this).attr("name")
+        tinyMCE.execCommand('mceRemoveControl', false, 'id_text');
+        $(this).parents("form:first").ajaxSubmit({
+            data : {"action" : action},
+            success : function(data) {
+                data = JSON.parse(data);
+                for (var html in data["html"])
+                    $(data["html"][html][0]).html(data["html"][html][1]);
+                tinyMCE.execCommand('mceAddControl', true, 'id_text');
+                $.jGrowl(data["message"]);
+            }
+        })
+        return false;
+    });
     
     // Criteria
     $(".edit-price-criteria-button").livequery("click", function() {

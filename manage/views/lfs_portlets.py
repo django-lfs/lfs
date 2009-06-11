@@ -1,8 +1,7 @@
 # django imports
-from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponseRedirect
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -12,47 +11,72 @@ from django.utils.translation import ugettext_lazy as _
 
 # portlets imports
 from portlets.utils import get_registered_portlets
+from portlets.utils import get_slots
 from portlets.models import PortletAssignment
+from portlets.models import PortletBlocking
 from portlets.models import PortletRegistration
 from portlets.models import Slot
 
 # lfs imports
 import lfs.core.utils
-from lfs.catalog.models import Product
 from lfs.core.utils import LazyEncoder
 
 @login_required
-def portlets_inline(request, object, template_name="manage/portlets/portlets_inline.html"):
+def portlets_inline(request, obj, template_name="manage/portlets/portlets_inline.html"):
     """Displays the assigned portlets for given object.
     """
     portlet_types = get_registered_portlets()
-    ct = ContentType.objects.get_for_model(object)
+    ct = ContentType.objects.get_for_model(obj)
 
-    slots = []
-    for slot in Slot.objects.all():
-
-        temp = []
-        for pa in PortletAssignment.objects.filter(
-            slot=slot, content_id=object.id, content_type=ct.id):
-            temp.append({
-                "pa_id" : pa.id,
-                "title" : pa.portlet.title,
-                "type" : portlet_types.get(pa.portlet.__class__.__name__.lower(), ""),
-            })
-
-        slots.append({
-            "id"   : slot.id,
-            "name" : slot.name,
-            "portlets" : temp,
-        })
+    parent_for_portlets = obj.get_parent_for_portlets()
+    if parent_for_portlets:
+        parent_slots = get_slots(parent_for_portlets)
+    else:
+        parent_slots = None
 
     return render_to_string(template_name, RequestContext(request, {
-        "slots" : slots,
+        "slots" : get_slots(obj),
+        "parent_slots" : parent_slots,
+        "parent_for_portlets" : parent_for_portlets,
         "portlet_types" : PortletRegistration.objects.all(),
-        "object" : object,
+        "object" : obj,
         "object_type_id" : ct.id,
     }))
 
+@login_required
+def update_portlets(request, object_type_id, object_id):
+    """Update portlets blocking.
+    """
+    # Get content type to which the portlet should be added
+    object_ct = ContentType.objects.get(pk=object_type_id)
+    object = object_ct.get_object_for_this_type(pk=object_id)
+    
+    blocked_slots = request.POST.getlist("block_slot")
+
+    for slot in Slot.objects.all():
+        if str(slot.id) in blocked_slots:
+            try:
+                PortletBlocking.objects.create(
+                    slot_id=slot.id, content_type_id=object_type_id, content_id=object_id)
+            except IntegrityError:
+                pass
+                
+        else:
+            try:
+                pb = PortletBlocking.objects.get(
+                    slot=slot, content_type=object_type_id, content_id=object_id)
+                pb.delete()
+            except PortletBlocking.DoesNotExist:
+                pass
+
+        html = portlets_inline(request, object)
+
+    result = simplejson.dumps({
+        "html" : html,
+        "message" : _(u"Portlet has been updated.")},
+        cls = LazyEncoder
+    )
+    return HttpResponse(result)
 
 @login_required
 def add_portlet(request, object_type_id, object_id, template_name="manage/portlets/portlet_add.html"):

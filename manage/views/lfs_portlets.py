@@ -10,8 +10,7 @@ from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 
 # portlets imports
-from portlets.utils import get_registered_portlets
-from portlets.utils import get_slots
+import portlets.utils
 from portlets.models import PortletAssignment
 from portlets.models import PortletBlocking
 from portlets.models import PortletRegistration
@@ -25,17 +24,17 @@ from lfs.core.utils import LazyEncoder
 def portlets_inline(request, obj, template_name="manage/portlets/portlets_inline.html"):
     """Displays the assigned portlets for given object.
     """
-    portlet_types = get_registered_portlets()
+    portlet_types = portlets.utils.get_registered_portlets()
     ct = ContentType.objects.get_for_model(obj)
 
     parent_for_portlets = obj.get_parent_for_portlets()
     if parent_for_portlets:
-        parent_slots = get_slots(parent_for_portlets)
+        parent_slots = portlets.utils.get_slots(parent_for_portlets)
     else:
         parent_slots = None
 
     return render_to_string(template_name, RequestContext(request, {
-        "slots" : get_slots(obj),
+        "slots" : portlets.utils.get_slots(obj),
         "parent_slots" : parent_slots,
         "parent_for_portlets" : parent_for_portlets,
         "portlet_types" : PortletRegistration.objects.all(),
@@ -50,7 +49,7 @@ def update_portlets(request, object_type_id, object_id):
     # Get content type to which the portlet should be added
     object_ct = ContentType.objects.get(pk=object_type_id)
     object = object_ct.get_object_for_this_type(pk=object_id)
-    
+
     blocked_slots = request.POST.getlist("block_slot")
 
     for slot in Slot.objects.all():
@@ -60,7 +59,7 @@ def update_portlets(request, object_type_id, object_id):
                     slot_id=slot.id, content_type_id=object_type_id, content_id=object_id)
             except IntegrityError:
                 pass
-                
+
         else:
             try:
                 pb = PortletBlocking.objects.get(
@@ -81,11 +80,11 @@ def update_portlets(request, object_type_id, object_id):
 @login_required
 def add_portlet(request, object_type_id, object_id, template_name="manage/portlets/portlet_add.html"):
     """Form and logic to add a new portlet to the object with given type and id.
-    """    
+    """
     # Get content type to which the portlet should be added
     object_ct = ContentType.objects.get(pk=object_type_id)
     object = object_ct.get_object_for_this_type(pk=object_id)
-    
+
     # Get the portlet type
     portlet_type = request.REQUEST.get("portlet_type", "")
 

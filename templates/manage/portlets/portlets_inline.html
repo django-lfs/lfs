@@ -44,29 +44,30 @@
 {#     {% endfor %} #}
 {# </div> #}
 
-<form class="portlets-form"
-      action="{% url lfs_update_portlets object_type_id, object.id %}"
-      method="post">
-    <h2>{% trans 'Blocked parent slots' %}</h2>
-    {% for slot in slots.items %}
-        <div>
-            <input type="checkbox"
-                   name="block_slot"
-                   value="{{ slot.id }}"
-                   {% if slot.is_blocked %}checked="checked"{% endif %} />
-            <label class="middle">{{ slot.name }}</label>            
-        </div>
-    {% endfor %}
+{% if parent_for_portlets %}
+    <form class="portlets-form"
+          action="{% url lfs_update_portlets object_type_id, object.id %}"
+          method="post">
+        <h2>{% trans 'Blocked parent slots' %}</h2>
+        {% for slot in slots.items %}
+            <div>
+                <input type="checkbox"
+                       name="block_slot"
+                       value="{{ slot.id }}"
+                       {% if slot.is_blocked %}checked="checked"{% endif %} />
+                <label class="middle">{{ slot.name }}</label>            
+            </div>
+        {% endfor %}
     
-    <div class="middle">
-        <input type="submit"
-               class="ajax-save-button"
-               value="{% trans 'Save blocked parent slots' %}" />
-    </div>           
-</form>
+        <div class="middle">
+            <input type="submit"
+                   class="ajax-save-button"
+                   value="{% trans 'Save blocked parent slots' %}" />
+        </div>           
+    </form>
+{% endif %}
         
 <h2 class="heading-middle">{% trans 'Slots' %}</h2>
-
 {% for slot in slots.items %}
     <h3 {% if forloop.first %}class="first-heading"{% endif %}>
         {% trans 'Slot' %}: {{ slot.name }}

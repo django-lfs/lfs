@@ -107,7 +107,7 @@ def process_payment(request):
     if order is None:
         url = reverse("lfs_cart")
     else:
-        if payment_method.id == PAYPAL and order is not None:
+        if payment_method.id == PAYPAL and settings.LFS_PAYPAL_REDIRECT and order is not None:
             url = create_paypal_link(order)
         else:
             url = reverse("lfs_thank_you")

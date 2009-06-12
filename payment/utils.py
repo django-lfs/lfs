@@ -100,9 +100,7 @@ def process_payment(request):
     # TODO: Check dependencies
     from lfs.order import utils as order_utils
     payment_method = get_selected_payment_method(request)
-    #import ipdb; ipdb.set_trace()
     shop = lfs_get_object_or_404(Shop, pk=1)
-
     order = order_utils.add_order(request)
     if order is None:
         url = reverse("lfs_cart")

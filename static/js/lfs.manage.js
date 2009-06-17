@@ -5,6 +5,7 @@ tinyMCE.init({
     tab_focus : ":prev,:next",
     button_tile_map : true,
     plugins : "safari, fullscreen",
+    convert_urls : false,
     theme_advanced_buttons1 : "bold, italic, underline, |, justifyleft," +  
                               "justifycenter, justifyright, justifyfull, |," + 
                               "bullist,numlist, |, outdent, indent, |, image, |, undo," +  

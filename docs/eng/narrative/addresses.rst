@@ -22,7 +22,6 @@ Adresses
   each other (no reference to the address objects of the customer) even if they
   don't differ. This data are kept forever even if the addresses of the customer
   changed later.
-
 * The customer object stores references to addresses. If there is no shipping
   address the field will be let empty.
 

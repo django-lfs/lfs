@@ -1,4 +1,4 @@
-Adressenverwaltung
+Address management
 ==================
 
 Allgemein

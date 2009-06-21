@@ -1,25 +1,24 @@
 Checkout
 ========
 
-Allgemein
----------
+General
+-------
 
-* Die Art des Checkouts ist auswählbar:
+* The kind of checkout is choosable.
 
-    Nur Anonym:
-       Shopkunden haben keine Möglichkeit sich anzumelden und werden
-       direkt zur Checkout-Seite weitergeleitet.
-       
-    Nur Angemeldet:
-       Shopkunden müssen sich registrieren zu begin des Checkout-Prozess
-       registrieren oder anmelden.
-       
-    Anonmym und angemeldet:
-       Shopkunden haben zu Begin des Checkout-Prozesses die Möglichkeit sich
-       anzumelden (falls schon ein Kundenkonto vorhanden ist), sich zu 
-       registerieren oder den Prozess ohne Registrierung zu beenden.
-       
-Weitere Informationen
-----------------------
+    Only as guest:
+       Shop customer have no possibility to login and are redirected directly
+       to the checkout page.
+
+    Only logged in:
+       Shop customer have to login or register at the beginning of the checkout
+       process.
+
+    As guest and logged in:
+       Shop customer can choose at the beginning of the checkout process whether
+       they login, register or checkout without registration/login
+
+Further infomation
+------------------
 * :doc:`../developer/customer`
 * :doc:`addresses`

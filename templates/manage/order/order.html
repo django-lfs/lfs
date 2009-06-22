@@ -183,6 +183,9 @@
                 {% trans 'Price' %}
             </th>
             <th class="number">
+                {% trans 'Included Tax' %}
+            </th>
+            <th class="number">
                 {% trans 'Total' %}
             </th>
         </tr>
@@ -208,6 +211,9 @@
                    {{item.product_price_gross|currency}} 
                 </td>
                 <td class="number">
+                   ({{item.product_tax|currency}}) 
+                </td>
+                <td class="number">
                    {{item.price_gross|currency}}
                 </td>
             </tr>
@@ -223,6 +229,7 @@
             <td class="number">
                 {{current_order.shipping_price|currency}}
             </td>
+            <td></td>
             <td class="number">
                 {{current_order.shipping_price|currency}}
             </td>
@@ -238,18 +245,19 @@
             <td class="number">
                 {{current_order.payment_price|currency}}
             </td>
+            <td></td>
             <td class="number">
                 {{current_order.payment_price|currency}}
             </td>
         </tr>
         <tr class="total">
-            <td colspan="5"
+            <td colspan="6"
                 class="number total">
                 {{current_order.price|currency}}
             </td>
         </tr>
         <tr>
-            <td colspan="5"
+            <td colspan="6"
                 class="number tax">
                 <span class="total-label">{% trans 'Inclusive Taxes' %}:</span>
                 {{current_order.tax|currency}}

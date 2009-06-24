@@ -345,6 +345,9 @@ def _save_country(request, customer):
     """
     # Update shipping country
     country = request.POST.get("shipping_country")
+    if request.POST.get("no_shipping") == "on":
+        country = request.POST.get("invoice_country")
+    
     if customer.selected_shipping_address:
         customer.selected_shipping_address.country_id = country
         customer.selected_shipping_address.save()

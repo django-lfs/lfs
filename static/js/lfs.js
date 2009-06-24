@@ -120,7 +120,7 @@ $(function() {
     // Checkout ##################################################################
     var table = $('.shipping-address');
     if ($("#id_no_shipping:checked").val() != null) {
-        table.hide();
+        table.hide();        
     }
     else {
         table.show();
@@ -133,7 +133,16 @@ $(function() {
         }
         else {
             table.slideDown("fast");
-        }        
+        }       
+        var data = $(".checkout-form").ajaxSubmit({
+            "url": "/changed-country/",
+            "success" : function(data) {
+                var data = JSON.parse(data);
+                $("#cart-inline").html(data["cart"]);
+                $("#shipping-inline").html(data["shipping"]);
+            }
+        });
+        
     })    
     
     var table = $("#bank-account");
@@ -165,6 +174,17 @@ $(function() {
     });
 
     $("#id_shipping_country").livequery("change", function() {
+        var data = $(".checkout-form").ajaxSubmit({
+            "url": "/changed-country/",
+            "success" : function(data) {
+                var data = JSON.parse(data);
+                $("#cart-inline").html(data["cart"]);
+                $("#shipping-inline").html(data["shipping"]);
+            }
+        });
+    });
+    
+    $("#id_invoice_country").livequery("change", function() {
         var data = $(".checkout-form").ajaxSubmit({
             "url": "/changed-country/",
             "success" : function(data) {

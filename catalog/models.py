@@ -63,6 +63,8 @@ class Category(models.Model):
     meta_keywords = models.TextField(_(u"Meta keywords"), blank=True)
     meta_description = models.TextField(_(u"Meta description"), blank=True)
 
+    uid = models.CharField(max_length=50)
+
     class Meta:
         ordering = ("position", )
         verbose_name_plural = 'Categories'
@@ -321,6 +323,8 @@ class Product(models.Model):
     active_accessories = models.BooleanField(_(u"Active accessories"), default=False)
     active_meta_description = models.BooleanField(_(u"Active meta description"), default=False)
     active_meta_keywords = models.BooleanField(_(u"Active meta keywords"), default=False)
+
+    uid = models.CharField(max_length=50)
 
     objects = ActiveManager()
 
@@ -857,6 +861,8 @@ class Property(models.Model):
     step_type = models.PositiveSmallIntegerField(_(u"Step type"), choices=PROPERTY_STEP_TYPE_CHOICES, default=PROPERTY_STEP_TYPE_AUTOMATIC)
     step = models.IntegerField(_(u"Step"), blank=True, null=True)
 
+    uid = models.CharField(max_length=50)
+
     class Meta:
         verbose_name_plural = _(u"Properties")
         ordering = ["position"]
@@ -979,10 +985,10 @@ class PropertyOption(models.Model):
           The position of the option within the property
     """
     property = models.ForeignKey(Property, verbose_name=_(u"Property"), related_name="options")
-
-    name = models.CharField( _(u"Name"), max_length=30)
+    name = models.CharField( _(u"Name"), max_length=100)
     price = models.FloatField(_(u"Price"), blank=True, null=True, default=0.0)
     position = models.IntegerField(_(u"Position"), default=99)
+    uid = models.CharField(max_length=50)
 
     class Meta:
         ordering = ["position"]

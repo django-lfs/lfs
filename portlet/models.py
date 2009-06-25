@@ -5,7 +5,6 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
 from portlets.models import Portlet
-from portlets.utils import register_portlet
 
 class CartPortlet(Portlet):
     """A portlet to display news.
@@ -72,5 +71,4 @@ class TextPortletForm(forms.ModelForm):
     class Meta:
         model = TextPortlet        
 
-register_portlet(CartPortlet, "Cart")
-register_portlet(TextPortlet, "Text")        
+   

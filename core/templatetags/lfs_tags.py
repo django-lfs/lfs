@@ -15,6 +15,8 @@ import lfs.utils.misc
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.cart import utils as cart_utils
 from lfs.catalog.models import Category
+from lfs.catalog.settings import PRODUCT_WITH_VARIANTS
+from lfs.catalog.settings import STANDARD_PRODUCT
 from lfs.page.models import Page
 from lfs.catalog.models import Product
 from lfs.catalog.models import PropertyOption
@@ -247,9 +249,15 @@ def product_navigation(context, product):
             categories.extend(category.get_all_children())
 
         if sorting is not None:
-            products = Product.objects.filter(categories__in = categories).order_by(sorting)
+            products = Product.objects.filter(
+                categories__in = categories,
+                sub_type__in =(STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS),
+            ).order_by(sorting)
         else:
-            products = Product.objects.filter(categories__in = categories)
+            products = Product.objects.filter(
+                categories__in = categories,
+                sub_type__in =(STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS)
+            )
 
         product_slugs = [p.slug for p in products]
         product_index = product_slugs.index(slug)
@@ -329,7 +337,7 @@ def tabs(context, obj=None):
         "tabs" : tabs,
         "MEDIA_URL" : context.get("MEDIA_URL"),
     }
-    
+
 @register.inclusion_tag('shop/menu.html', takes_context=True)
 def menu(context):
     """
@@ -506,9 +514,9 @@ def currency(price, arg=None):
     """
     """
     # TODO: optimize
-    price = lfs.utils.misc.FormatWithCommas("%.2f", price)    
+    price = lfs.utils.misc.FormatWithCommas("%.2f", price)
     shop = lfs_get_object_or_404(Shop, pk=1)
-        
+
     if shop.default_country.code == "de":
         # replace . and , for german format
         a, b = price.split(".")
@@ -516,7 +524,7 @@ def currency(price, arg=None):
         price = "%s,%s EUR" % (a, b)
     else:
         price = "%s %s" % (price, shop.default_currency)
-        
+
     return price
 
 @register.filter
@@ -526,13 +534,13 @@ def number(price, arg=None):
     # TODO: optimize
     price = lfs.utils.misc.FormatWithCommas("%.2f", price)
     shop = lfs_get_object_or_404(Shop, pk=1)
-        
+
     if shop.default_country.code == "de":
         # replace . and , for german format
         a, b = price.split(".")
         a = a.replace(",", ".")
         price = "%s,%s" % (a, b)
-    
+
     return price
 
 @register.filter

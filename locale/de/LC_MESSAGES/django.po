@@ -1608,7 +1608,7 @@ msgid "Payment"
 msgstr "Bezahlmethode"
 
 #: templates/manage/order/order.html:254
-msgid "Inclusive Taxes"
+msgid "Inclusive VAT"
 msgstr "Inklusive MwSt."
 
 #: templates/manage/order/order.html:263

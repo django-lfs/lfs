@@ -183,7 +183,7 @@
                 {% trans 'Price' %}
             </th>
             <th class="number">
-                {% trans 'Included Tax' %}
+                {% trans 'Included VAT' %}
             </th>
             <th class="number">
                 {% trans 'Total' %}
@@ -259,7 +259,7 @@
         <tr>
             <td colspan="6"
                 class="number tax">
-                <span class="total-label">{% trans 'Inclusive Taxes' %}:</span>
+                <span class="total-label">{% trans 'Inclusive VAT' %}:</span>
                 {{current_order.tax|currency}}
             </td>
         </tr>        
@@ -297,6 +297,4 @@
         </table>
     
     {% endif %}
-    
-    
 {% endblock %}

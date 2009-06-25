@@ -8,6 +8,9 @@ from django.db import connection
 # import lfs
 import lfs.catalog.models
 from lfs.catalog.settings import PROPERTY_NUMBER_FIELD
+from lfs.catalog.settings import STANDARD_PRODUCT
+from lfs.catalog.settings import PRODUCT_WITH_VARIANTS
+
 
 # TODO implement this methods.
 # Category
@@ -504,7 +507,9 @@ def get_filtered_products_for_category(category, filters, price_filter, sorting)
         categories = [category]
         if category.show_all_products:
             categories.extend(category.get_all_children())
-        products = lfs.catalog.models.Product.objects.filter(categories__in=categories)
+        products = lfs.catalog.models.Product.objects.filter(
+            categories__in=categories, 
+            sub_type__in=[STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS])
 
     if price_filter:
         matched_product_ids = []

@@ -104,7 +104,7 @@ def set_sorting(request):
     # lfs_sorting_changed.send(category_id)
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
     
-def category_view(request, slug, start=0, template_name="catalog/category.html"):
+def category_view(request, slug, start=0, template_name="catalog/category_base.html"):
     """
     """
     category = lfs_get_object_or_404(Category, slug=slug)
@@ -263,7 +263,7 @@ def category_products(request, slug, start=0, template_name="catalog/category_pr
     cache.set(cache_key, temp)
     return result
     
-def product_view(request, slug, template_name="catalog/product.html"):
+def product_view(request, slug, template_name="catalog/product_base.html"):
     """Main view to display a product.
     """    
     product = lfs_get_object_or_404(Product, slug=slug)

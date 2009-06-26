@@ -75,35 +75,6 @@ def _get_shipping(context):
             "delivery_time" : shipping_utils.get_product_delivery_time(request, slug)
         }
 
-@register.inclusion_tag('catalog/recent_products_portlet.html', takes_context=True)
-def recent_products_portlet(context, instance=None):
-    """Displays recent visited products.
-    """
-    slug_not_to_display = ""
-    limit = settings.LFS_RECENT_PRODUCTS_LIMIT
-    if instance:
-        ctype = ContentType.objects.get_for_model(instance)
-        if ctype.name == u"product":
-            slug_not_to_display = instance.slug
-            limit = settings.LFS_RECENT_PRODUCTS_LIMIT + 1
-
-    request = context.get("request")
-
-    products = []
-    for slug in request.session.get("RECENT_PRODUCTS", [])[:limit]:
-        if slug == slug_not_to_display:
-            continue
-        try:
-            product = Product.objects.get(slug=slug)
-        except Product.DoesNotExist:
-            pass
-        else:
-            if product.is_product_with_variants() and product.has_variants():
-                product = product.get_default_variant()
-            products.append(product)
-
-    return { "products": products }
-
 @register.inclusion_tag('shipping/shipping_tag.html', takes_context=True)
 def shipping(context):
     return _get_shipping(context)
@@ -295,26 +266,6 @@ def sorting_portlet(context):
         "MEDIA_URL" : context.get("MEDIA_URL"),
     }
 
-@register.inclusion_tag('cart/cart_portlet.html', takes_context=True)
-def cart_portlet(context):
-    """
-    """
-    request = context.get("request")
-    cart = cart_utils.get_cart(request)
-    if cart is None:
-        amount_of_items = None
-        price = None
-    else:
-        amount_of_items = cart.amount_of_items
-        price = cart_utils.get_cart_price(request, cart, total=True)
-
-    return {
-        "amount_of_items" : amount_of_items,
-        "price" : price,
-        "MEDIA_URL" : context.get("MEDIA_URL"),
-    }
-
-
 @register.inclusion_tag('shop/tabs.html', takes_context=True)
 def tabs(context, obj=None):
     """
@@ -358,109 +309,6 @@ def menu(context):
         "categories" : categories,
         "MEDIA_URL" : context.get("MEDIA_URL"),
     }
-
-@register.inclusion_tag('catalog/related_products_portlet.html', takes_context=True)
-def related_products_portlet(context, product_id):
-    """
-    """
-    product = lfs_get_object_or_404(Product, pk=product_id)
-    return {
-        "product" : product,
-        "MEDIA_URL" : context.get("MEDIA_URL"),
-    }
-
-
-@register.inclusion_tag('catalog/categories_portlet.html', takes_context=True)
-def categories_portlet(context, object=None):
-    """Renders the categories portlet, which is actually the navigation of the
-    shop.
-
-    Parameters:
-    ===========
-
-    object  : The object for which the portlet should be rendered. This is
-              necessary to calculate current selected categories.
-
-              It makes only sense to be a product or a cateogry. For all
-              other objects the portlet is not affected.
-    """
-    if object:
-        cache_key = "categories-portlet-%s" % object.slug
-    else:
-        cache_key = "categories-portlet"
-
-    categories = cache.get(cache_key)
-    if categories is not None:
-        return categories
-
-    # Calculate current categories
-    request = context.get("request")
-    if object and object.content_type == "category":
-        parents = object.get_parents()
-        current_categories = [object]
-        current_categories.extend(parents)
-    elif object and object.content_type == "product":
-        current_categories = object.get_categories(with_parents=True)
-    else:
-        current_categories = []
-
-    categories = []
-    for category in Category.objects.filter(parent = None):
-
-        if category in current_categories:
-            children = _categories_portlet_children(request, current_categories, category)
-            is_current = True
-        else:
-            children = ""
-            is_current = False
-
-        categories.append({
-            "slug" : category.slug,
-            "name" : category.name,
-            "url"  : category.get_absolute_url(),
-            "is_current" : is_current,
-            "children" : children
-        })
-
-    result = {
-        "categories" : categories,
-        "MEDIA_URL" : context.get("MEDIA_URL"),
-    }
-    cache.set(cache_key, result)
-
-    return result
-
-# NOTE: The reason why not to use another inclusion_tag is that the request is
-# not available within an inclusion_tag if one inclusion_tag is called by
-# another. (Don't know why yet.)
-def _categories_portlet_children(request, current_categories, category, level=1):
-    """Returns the children of the given category as HTML. This is only called
-    by categories_portlet.
-    """
-    categories = []
-    for category in category.category_set.all():
-
-        if category in current_categories:
-            children = _categories_portlet_children(request, current_categories, category, level+1)
-            is_current = True
-        else:
-            children = ""
-            is_current = False
-
-        categories.append({
-            "slug" : category.slug,
-            "name" : category.name,
-            "url"  : category.get_absolute_url(),
-            "level" : level,
-            "is_current" : is_current,
-            "children" : children,
-        })
-
-    result = render_to_string("catalog/categories_portlet_children.html", RequestContext(request, {
-        "categories" : categories
-    }))
-
-    return result
 
 # TODO: Move this to shop utils or similar
 def get_current_categories(request):
@@ -579,4 +427,3 @@ def option_name(option_id):
         return option_id
     else:
         return option.name
-

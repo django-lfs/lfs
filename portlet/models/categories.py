@@ -9,6 +9,7 @@ from portlets.utils import register_portlet
 
 # lfs imports
 from lfs.catalog.models import Category
+from lfs.catalog.utils import get_current_product_category
 
 class CategoriesPortlet(Portlet):
     """A portlet to display categories.
@@ -30,7 +31,13 @@ class CategoriesPortlet(Portlet):
             current_categories = [object]
             current_categories.extend(parents)
         elif object and object.content_type == "product":
-            current_categories = object.get_categories(with_parents=True)
+            current_categories = []
+            category = get_current_product_category(request, object)
+            while category:
+                current_categories.append(category)
+                category = category.parent
+
+            # current_categories = object.get_categories(with_parents=True)
         else:
             current_categories = []
 
@@ -53,7 +60,7 @@ class CategoriesPortlet(Portlet):
                 "children" : children
             })
 
-        return render_to_string("portlets/categories_portlet.html", {
+        return render_to_string("portlets/categories.html", {
             "title" : self.title,
             "categories" : categories,
             "MEDIA_URL" : context.get("MEDIA_URL"),
@@ -82,7 +89,7 @@ class CategoriesPortlet(Portlet):
                 "children" : children,
             })
 
-        result = render_to_string("portlets/categories_portlet_children.html",
+        result = render_to_string("portlets/categories_children.html",
             RequestContext(request, {"categories" : categories }))
 
         return result

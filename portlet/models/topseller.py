@@ -10,7 +10,7 @@ from portlets.utils import register_portlet
 # lfs imports
 import lfs.marketing.utils
 
-class TopSellerPortlet(Portlet):
+class TopsellerPortlet(Portlet):
     """A portlet to display recent visited products.
     """
     limit = models.IntegerField(default=5)
@@ -40,12 +40,12 @@ class TopSellerPortlet(Portlet):
     def form(self, **kwargs):
         """
         """
-        return TopSellerForm(instance=self, **kwargs)
+        return TopsellerForm(instance=self, **kwargs)
 
-class TopSellerForm(forms.ModelForm):
+class TopsellerForm(forms.ModelForm):
     """
     """
     class Meta:
-        model = TopSellerPortlet
+        model = TopsellerPortlet
 
-register_portlet(TopSellerPortlet, "Topseller")
+register_portlet(TopsellerPortlet, "Topseller")

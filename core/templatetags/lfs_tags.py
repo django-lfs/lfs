@@ -289,6 +289,15 @@ def tabs(context, obj=None):
         "MEDIA_URL" : context.get("MEDIA_URL"),
     }
 
+@register.inclusion_tag('catalog/top_level_categories.html', takes_context=True)
+def top_level_categories(context):
+    """Displays the top level categories.
+    """
+    categories = Category.objects.filter(parent=None)[:4]
+    return {
+        "categories" : categories,
+    }
+
 @register.inclusion_tag('shop/menu.html', takes_context=True)
 def menu(context):
     """

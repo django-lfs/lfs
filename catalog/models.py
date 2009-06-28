@@ -545,7 +545,7 @@ class Product(models.Model):
 
         return options
 
-    def has_option(self, property_id, option_id):
+    def has_option(self, property, option):
         """Returns True if the variant has the given property / option
         combination.
         """
@@ -555,9 +555,9 @@ class Product(models.Model):
             for pvo in self.property_values.all():
                 options[pvo.property_id] = pvo.value
             cache.set("productpropertyvalue%s" % self.id, options)
-
+        
         try:
-            return options[property_id] == str(option_id)
+            return options[property.id] == str(option.id)
         except KeyError:
             return False
 

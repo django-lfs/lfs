@@ -73,7 +73,7 @@ def manage_variants(request, product_id, template_name="manage/product/variants.
             for property in product.get_properties():
                 options = []
                 for property_option in property.options.all():
-                    if variant.has_option(property.id, property_option.id):
+                    if variant.has_option(property, property_option):
                         selected = True
                     else:
                         selected = False

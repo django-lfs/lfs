@@ -147,8 +147,8 @@ def category_categories(request, slug, template_name="catalog/category_categorie
 
     categories = []
     row = []
-    for i, category in enumerate(category.get_children()):
-        row.append(category)
+    for i, children in enumerate(category.get_children()):
+        row.append(children)
         if (i+1) % amount_of_cols == 0:
             categories.append(row)
             row = []

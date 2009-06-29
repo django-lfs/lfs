@@ -6,6 +6,7 @@ from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from django.template import Library, Node, TemplateSyntaxError
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
@@ -319,6 +320,34 @@ def menu(context):
         "MEDIA_URL" : context.get("MEDIA_URL"),
     }
 
+class CartInformationNode(Node):
+    """
+    """
+    def render(self, context):
+        request = context.get("request")
+        cart = lfs.cart.utils.get_cart(request)
+        if cart is None:
+            amount_of_items = 0
+            price = 0.0
+        else:
+            amount_of_items = cart.amount_of_items
+            price = lfs.cart.utils.get_cart_price(request, cart, total=True)
+
+        context["cart_amount_of_items"] = amount_of_items
+        context["cart_price"] = price
+        return ''
+
+def do_cart_information(parser, token):
+    """Calculates some context variables based on displayed slots.
+    """
+    bits = token.contents.split()
+    len_bits = len(bits)
+    if len_bits != 1:
+        raise TemplateSyntaxError(_('%s tag needs no argument') % bits[0])
+
+    return CartInformationNode()
+
+register.tag('cart_information', do_cart_information)
 # TODO: Move this to shop utils or similar
 def get_current_categories(request):
     """Returns the current category based on the current path.

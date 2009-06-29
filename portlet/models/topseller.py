@@ -47,5 +47,3 @@ class TopsellerForm(forms.ModelForm):
     """
     class Meta:
         model = TopsellerPortlet
-
-register_portlet(TopsellerPortlet, "Topseller")

@@ -63,5 +63,3 @@ class RecentProductsForm(forms.ModelForm):
     """
     class Meta:
         model = RecentProductsPortlet
-
-register_portlet(RecentProductsPortlet, "Recent Products")

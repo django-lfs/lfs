@@ -46,5 +46,3 @@ class CartPortletForm(forms.ModelForm):
     """
     class Meta:
         model = CartPortlet
-
-register_portlet(CartPortlet, "Cart")

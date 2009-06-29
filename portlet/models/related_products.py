@@ -36,5 +36,3 @@ class RelatedProductsForm(forms.ModelForm):
     """
     class Meta:
         model = RelatedProductsPortlet
-
-register_portlet(RelatedProductsPortlet, "Related Products")

@@ -36,5 +36,3 @@ class TextPortletForm(forms.ModelForm):
     """
     class Meta:
         model = TextPortlet
-
-register_portlet(TextPortlet, "Text")

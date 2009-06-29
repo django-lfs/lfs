@@ -104,5 +104,3 @@ class CategoriesPortletForm(forms.ModelForm):
     """
     class Meta:
         model = CategoriesPortlet
-
-register_portlet(CategoriesPortlet, "Categories")

@@ -338,7 +338,7 @@ class CartInformationNode(Node):
         return ''
 
 def do_cart_information(parser, token):
-    """Calculates some context variables based on displayed slots.
+    """Calculates cart informations.
     """
     bits = token.contents.split()
     len_bits = len(bits)
@@ -348,6 +348,30 @@ def do_cart_information(parser, token):
     return CartInformationNode()
 
 register.tag('cart_information', do_cart_information)
+
+class CurrentCategoryNode(Node):
+    """
+    """
+    def render(self, context):
+        request = context.get("request")
+        product = context.get("product")
+
+        context["current_category"] = \
+            lfs.catalog.utils.get_current_product_category(request, product)
+        return ''
+
+def do_current_category(parser, token):
+    """Calculates current category.
+    """
+    bits = token.contents.split()
+    len_bits = len(bits)
+    if len_bits != 2:
+        raise TemplateSyntaxError(_('%s tag needs product as argument') % bits[0])
+
+    return CurrentCategoryNode()
+
+register.tag('current_category', do_current_category)
+
 # TODO: Move this to shop utils or similar
 def get_current_categories(request):
     """Returns the current category based on the current path.

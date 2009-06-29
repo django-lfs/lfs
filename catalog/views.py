@@ -279,16 +279,12 @@ def product_view(request, slug, template_name="catalog/product_base.html"):
         recent = recent[:settings.LFS_RECENT_PRODUCTS_LIMIT+1]
     request.session["RECENT_PRODUCTS"] = recent
 
-    # TODO: Factor current_category out to a inclusion tag, so that people can
-    # omit it if they don't need it.
-
     # TODO: Factor top_category out to a inclusion tag, so that people can
     # omit if they don't need it.
 
     return render_to_response(template_name, RequestContext(request, {
         "product_inline" : product_inline(request, product.id),
         "product" : product,
-        "current_category" : lfs.catalog.utils.get_current_product_category(request, product),
         "top_category" : lfs.catalog.utils.get_current_top_category(request, product),
     }))
 
@@ -377,7 +373,7 @@ def product_form_dispatcher(request):
             variant = product.get_default_variant()
 
             return lfs.core.utils.set_message_cookie(
-                variant.get_absolute_url(), 
+                variant.get_absolute_url(),
                 msg = _(u"The choosen combination is not deliverable"))
 
         return HttpResponseRedirect(variant.get_absolute_url())

@@ -63,6 +63,8 @@ class Category(models.Model):
     meta_keywords = models.TextField(_(u"Meta keywords"), blank=True)
     meta_description = models.TextField(_(u"Meta description"), blank=True)
 
+    uid = models.CharField(max_length=50)
+
     class Meta:
         ordering = ("position", )
         verbose_name_plural = 'Categories'
@@ -324,6 +326,8 @@ class Product(models.Model):
 
     objects = ActiveManager()
 
+    uid = models.CharField(max_length=50)
+
     class Meta:
         ordering = ("name", )
 
@@ -502,12 +506,18 @@ class Product(models.Model):
 
     def get_name(self):
         """Returns the name of the product. Takes care whether the product is a
-        variant and sku is active or not.
+        variant and name is active or not.
         """
-        if self.is_variant() and not self.active_name:
-            return self.parent.name
+        if self.is_variant():
+            if self.active_name:
+                name = self.name
+                name = name.replace("%P", self.parent.name)
+            else:
+                name = self.parent.name
         else:
-            return self.name
+            name = self.name
+
+        return name
 
     def get_option(self, property_id):
         """Returns the id of the selected option for property with passed id.
@@ -555,7 +565,7 @@ class Product(models.Model):
             for pvo in self.property_values.all():
                 options[pvo.property_id] = pvo.value
             cache.set("productpropertyvalue%s" % self.id, options)
-        
+
         try:
             return options[property.id] == str(option.id)
         except KeyError:
@@ -843,7 +853,7 @@ class Property(models.Model):
         - step
            manuel step for filtering
     """
-    name = models.CharField( _(u"Name"), max_length=50)
+    name = models.CharField( _(u"Name"), max_length=100)
     groups = models.ManyToManyField(PropertyGroup, verbose_name=_(u"Group"), blank=True, null=True, through="GroupsPropertiesRelation", related_name="properties")
     products = models.ManyToManyField(Product, verbose_name=_(u"Products"), blank=True, null=True, through="ProductsPropertiesRelation", related_name="properties")
     position = models.IntegerField(_(u"Position"), blank=True, null=True)
@@ -856,6 +866,8 @@ class Property(models.Model):
 
     step_type = models.PositiveSmallIntegerField(_(u"Step type"), choices=PROPERTY_STEP_TYPE_CHOICES, default=PROPERTY_STEP_TYPE_AUTOMATIC)
     step = models.IntegerField(_(u"Step"), blank=True, null=True)
+
+    uid = models.CharField(max_length=50)
 
     class Meta:
         verbose_name_plural = _(u"Properties")
@@ -980,9 +992,11 @@ class PropertyOption(models.Model):
     """
     property = models.ForeignKey(Property, verbose_name=_(u"Property"), related_name="options")
 
-    name = models.CharField( _(u"Name"), max_length=30)
+    name = models.CharField( _(u"Name"), max_length=100)
     price = models.FloatField(_(u"Price"), blank=True, null=True, default=0.0)
     position = models.IntegerField(_(u"Position"), default=99)
+
+    uid = models.CharField(max_length=50)
 
     class Meta:
         ordering = ["position"]

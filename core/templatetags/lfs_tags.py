@@ -294,7 +294,19 @@ def tabs(context, obj=None):
 def top_level_categories(context):
     """Displays the top level categories.
     """
-    categories = Category.objects.filter(parent=None)[:4]
+    request = context.get("request")
+    obj = context.get("product") or context.get("category")
+
+    categories = []
+    top_category = lfs.catalog.utils.get_current_top_category(request, obj)
+
+    for category in Category.objects.filter(parent=None)[:4]:
+        categories.append({
+            "url" : category.get_absolute_url(),
+            "name" : category.name,
+            "current" : top_category.id == category.id,
+        })
+
     return {
         "categories" : categories,
     }

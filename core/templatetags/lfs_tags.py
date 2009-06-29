@@ -301,10 +301,16 @@ def top_level_categories(context):
     top_category = lfs.catalog.utils.get_current_top_category(request, obj)
 
     for category in Category.objects.filter(parent=None)[:4]:
+
+        if top_category:
+            current = top_category.id == category.id
+        else:
+            current = False
+
         categories.append({
             "url" : category.get_absolute_url(),
             "name" : category.name,
-            "current" : top_category.id == category.id,
+            "current" : current,
         })
 
     return {

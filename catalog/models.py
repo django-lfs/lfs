@@ -503,7 +503,8 @@ class Product(models.Model):
         md = md.replace("<name>", self.get_name())
         md = md.replace("<short-description>", self.get_short_description())
         return md
-
+    
+    # TODO: Check whether there is a test case for that and write one if not.
     def get_name(self):
         """Returns the name of the product. Takes care whether the product is a
         variant and name is active or not.

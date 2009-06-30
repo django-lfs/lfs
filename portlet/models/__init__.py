@@ -1,3 +1,4 @@
+from average_rating import *
 from cart import *
 from categories import *
 from pages import *

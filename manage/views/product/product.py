@@ -45,7 +45,7 @@ class ProductDataForm(ModelForm):
     """
     class Meta:
         model = Product
-        fields = ("name", "slug", "sku", "price", "tax", 
+        fields = ("active", "name", "slug", "sku", "price", "tax", 
             "short_description", "description", "for_sale", "for_sale_price")
 
 class VariantDataForm(ModelForm):

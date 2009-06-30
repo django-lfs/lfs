@@ -391,39 +391,6 @@ def do_current_category(parser, token):
 register.tag('current_category', do_current_category)
 
 # TODO: Move this to shop utils or similar
-def get_current_categories(request):
-    """Returns the current category based on the current path.
-    """
-    slug = get_slug_from_request(request)
-
-    if slug.find(settings.CATEGORY_PREFIX) != -1:
-        try:
-            slug = slug.replace(settings.CATEGORY_PREFIX, "")
-            category = Category.objects.get(slug=slug)
-        except ObjectDoesNotExist:
-            return []
-        else:
-            parents = category.get_parents()
-            categories = [category]
-            categories.extend(parents)
-
-            return categories
-    else:
-        try:
-            product = Product.objects.get(slug=slug)
-        except ObjectDoesNotExist:
-            return []
-        else:
-            category = lfs.catalog.utils.get_current_product_category(request, product)
-            if category is None:
-                return []
-
-            categories = [category]
-            categories.extend(category.get_parents())
-
-            return categories
-
-# TODO: Move this to shop utils or similar
 def get_slug_from_request(request):
     """Returns the slug of the currently displayed category.
     """

@@ -202,7 +202,7 @@ class Category(models.Model):
         if products is not None:
             return products
 
-        products = self.products.exclude(sub_type=VARIANT)
+        products = self.products.filter(active=True).exclude(sub_type=VARIANT)
         cache.set(cache_key, products)
 
         return products
@@ -219,6 +219,7 @@ class Category(models.Model):
         categories.extend(self.get_all_children())
 
         products = lfs.catalog.models.Product.objects.distinct().filter(
+            active=True,
             categories__in = categories).exclude(sub_type=VARIANT)
 
         cache.set(cache_key, products)
@@ -503,7 +504,7 @@ class Product(models.Model):
         md = md.replace("<name>", self.get_name())
         md = md.replace("<short-description>", self.get_short_description())
         return md
-    
+
     # TODO: Check whether there is a test case for that and write one if not.
     def get_name(self):
         """Returns the name of the product. Takes care whether the product is a

@@ -508,6 +508,7 @@ def get_filtered_products_for_category(category, filters, price_filter, sorting)
         if category.show_all_products:
             categories.extend(category.get_all_children())
         products = lfs.catalog.models.Product.objects.filter(
+            active=True,
             categories__in=categories, 
             sub_type__in=[STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS])
 

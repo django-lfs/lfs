@@ -4,7 +4,7 @@
     $(function() {
         tinyMCE.execCommand('mceAddControl', true, 'id_description');
         tinyMCE.execCommand('mceAddControl', true, 'id_short_description');
-    });    
+    });
 </script>
 
 <h2>{% trans 'Product data' %}</h2>
@@ -14,13 +14,22 @@
       method="post">
         <div class="field">
             <div class="label">
+                {{ form.active.label_tag }}:
+            </div>
+            <div>
+                {{ form.active }}
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="label">
                 {% if product.is_variant %}
                     {{ form.active_name }}
                 {% endif %}
-                                
+
                 {{ form.name.label_tag }}:
             </div>
-        
+
             {% if form.name.errors %}
                 <div class="error">
                     {{ form.name }}
@@ -31,7 +40,7 @@
                     {{ form.name }}
                     {% if product.is_variant %}
                         {{ product.parent.name }}
-                    {% endif %}                    
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
@@ -40,7 +49,7 @@
             <div class="label">
                 {{ form.slug.label_tag }}:
             </div>
-        
+
             {% if form.slug.errors %}
                 <div class="error">
                     {{ form.slug }}
@@ -61,10 +70,10 @@
                 {% if product.is_variant %}
                     {{ form.active_sku }}
                 {% endif %}
-                
+
                 {{ form.sku.label_tag }}:
             </div>
-        
+
             {% if form.sku.errors %}
                 <div class="error">
                     {{ form.sku }}
@@ -75,7 +84,7 @@
                     {{ form.sku }}
                     {% if product.is_variant %}
                         {{ product.parent.sku }}
-                    {% endif %}                    
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
@@ -84,11 +93,11 @@
             <div class="label">
                 {% if product.is_variant %}
                     {{ form.active_price }}
-                {% endif %}                    
-                
+                {% endif %}
+
                 {{ form.price.label_tag }}:
             </div>
-        
+
             {% if form.price.errors %}
                 <div class="error">
                     {{ form.price }}
@@ -99,24 +108,24 @@
                     {{ form.price }}
                     {% if product.is_variant %}
                         {{ product.parent.price|currency }}
-                    {% endif %}                    
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
-        
+
         {% if not product.is_variant %}
             <div class="field">
                 <div class="label">
                     {{ form.tax.label_tag }}:
                 </div>
-        
+
                 {% if form.tax.errors %}
                     <div class="error">
                         {{ form.tax }}
                         {{ form.tax.errors }}
                     </div>
                 {% else %}
-                    <div>                    
+                    <div>
                         {{ form.tax }}
                     </div>
                 {% endif %}
@@ -136,7 +145,7 @@
                     {{ form.for_sale_price.errors }}
                 </div>
             {% else %}
-                <div>                  
+                <div>
                     {{ form.for_sale_price }}
                 </div>
             {% endif %}
@@ -146,18 +155,18 @@
             <div class="label">
                 {% if product.is_variant %}
                     {{ form.active_short_description }}
-                {% endif %}                
+                {% endif %}
                 {{ form.short_description.label_tag }}:
             </div>
-        
+
             {% if form.short_description.errors %}
                 <div class="error">
                     {{ form.short_description }}
                     {{ form.short_description.errors }}
                 </div>
             {% else %}
-                <div>                    
-                    {{ form.short_description }}                    
+                <div>
+                    {{ form.short_description }}
                 </div>
             {% endif %}
         </div>
@@ -166,18 +175,18 @@
             <div class="label">
                 {% if product.is_variant %}
                     {{ form.active_description }}
-                {% endif %}                
+                {% endif %}
                 {{ form.description.label_tag }}:
             </div>
-        
+
             {% if form.description.errors %}
                 <div class="error">
                     {{ form.description }}
                     {{ form.description.errors }}
                 </div>
             {% else %}
-                <div>                    
-                    {{ form.description }}                    
+                <div>
+                    {{ form.description }}
                 </div>
             {% endif %}
         </div>

@@ -39,9 +39,9 @@ class PriceFilterTestCase(TestCase):
     def setUp(self):
         """
         """
-        self.p1 = Product.objects.create(slug="product-1", price=5)
-        self.p2 = Product.objects.create(slug="product-2", price=3)
-        self.p3 = Product.objects.create(slug="product-3", price=1)
+        self.p1 = Product.objects.create(slug="product-1", price=5, active=True)
+        self.p2 = Product.objects.create(slug="product-2", price=3, active=True)
+        self.p3 = Product.objects.create(slug="product-3", price=1, active=True)
 
         self.c1 = Category.objects.create(name="Category 1", slug="category-1")
         self.c1.products = [self.p1, self.p2, self.p3]
@@ -87,9 +87,9 @@ class PropertiesTestCase(TestCase):
     def setUp(self):
         """
         """
-        self.p1 = Product.objects.create(name="Product 1", slug="product-1", price=5)
-        self.p2 = Product.objects.create(name="Product 2", slug="product-2", price=3)
-        self.p3 = Product.objects.create(name="Product 3", slug="product-3", price=1)
+        self.p1 = Product.objects.create(name="Product 1", slug="product-1", price=5, active=True)
+        self.p2 = Product.objects.create(name="Product 2", slug="product-2", price=3, active=True)
+        self.p3 = Product.objects.create(name="Product 3", slug="product-3", price=1, active=True)
 
         self.c1 = Category.objects.create(name="Category 1", slug="category-1")
         self.c1.products = [self.p1, self.p2, self.p3]
@@ -469,14 +469,15 @@ class PropertiesTestCase(TestCase):
         self.assertEqual(pf["1"], ("10", "20"))
         self.assertEqual(pf["2"], "M")
 
-    def test_get_filter(self):
-        """
-        """
-        request = RequestFactory().get("/")
-        request.session = SessionStore()
-
-        f = lfs.catalog.utils.get_product_filters(self.c1, [], None, None)
-        self.assertEqual(1, 0)
+    # TODO implement this test case
+    # def test_get_filter(self):
+    #     """
+    #     """
+    #     request = RequestFactory().get("/")
+    #     request.session = SessionStore()
+    #
+    #     f = lfs.catalog.utils.get_product_filters(self.c1, [], None, None)
+    #     self.assertEqual(1, 0)
 
     def test_filter_products(self):
         """Tests various scenarious of filtering products.
@@ -581,9 +582,9 @@ class CategoryTestCase(TestCase):
         """
         """
         # Create some products
-        self.p1 = Product.objects.create(name="Product 1", slug="product-1", price=5)
-        self.p2 = Product.objects.create(name="Product 2", slug="product-2", price=3)
-        self.p3 = Product.objects.create(name="Product 3", slug="product-3", price=1)
+        self.p1 = Product.objects.create(name="Product 1", slug="product-1", price=5, active=True)
+        self.p2 = Product.objects.create(name="Product 2", slug="product-2", price=3, active=True)
+        self.p3 = Product.objects.create(name="Product 3", slug="product-3", price=1, active=True)
 
         # Create a category hierachy
         self.c1 = Category.objects.create(name="Category 1", slug="category-1",
@@ -1604,35 +1605,29 @@ class ProductTestCase(TestCase):
         """
         """
         # Variant 1 has color/red and size/m
-        result = self.v1.has_option(self.color.id, self.red.id)
+        result = self.v1.has_option(self.color, self.red)
         self.assertEqual(result, True)
 
-        result = self.v1.has_option(self.size.id, self.m.id)
+        result = self.v1.has_option(self.size, self.m)
         self.assertEqual(result, True)
 
-        result = self.v1.has_option(self.color.id, self.green.id)
+        result = self.v1.has_option(self.color, self.green)
         self.assertEqual(result, False)
 
-        result = self.v1.has_option(self.size.id, self.l.id)
-        self.assertEqual(result, False)
-
-        result = self.v1.has_option("foo", "bar")
+        result = self.v1.has_option(self.size, self.l)
         self.assertEqual(result, False)
 
         # Variant 2 has color/green and size/l
-        result = self.v2.has_option(self.color.id, self.green.id)
+        result = self.v2.has_option(self.color, self.green)
         self.assertEqual(result, True)
 
-        result = self.v2.has_option(self.size.id, self.l.id)
+        result = self.v2.has_option(self.size, self.l)
         self.assertEqual(result, True)
 
-        result = self.v2.has_option(self.color.id, self.red.id)
+        result = self.v2.has_option(self.color, self.red)
         self.assertEqual(result, False)
 
-        result = self.v2.has_option(self.size.id, self.m.id)
-        self.assertEqual(result, False)
-
-        result = self.v2.has_option("foo", "bar")
+        result = self.v2.has_option(self.size, self.m)
         self.assertEqual(result, False)
 
     def test_get_price(self):

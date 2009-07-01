@@ -24,7 +24,6 @@ from lfs.core.utils import LazyEncoder
 def portlets_inline(request, obj, template_name="manage/portlets/portlets_inline.html"):
     """Displays the assigned portlets for given object.
     """
-    portlet_types = portlets.utils.get_registered_portlets()
     ct = ContentType.objects.get_for_model(obj)
 
     parent_for_portlets = obj.get_parent_for_portlets()
@@ -37,7 +36,7 @@ def portlets_inline(request, obj, template_name="manage/portlets/portlets_inline
         "slots" : portlets.utils.get_slots(obj),
         "parent_slots" : parent_slots,
         "parent_for_portlets" : parent_for_portlets,
-        "portlet_types" : PortletRegistration.objects.all(),
+        "portlet_types" : PortletRegistration.objects.filter(active=True),
         "object" : obj,
         "object_type_id" : ct.id,
     }))

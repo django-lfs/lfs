@@ -147,7 +147,7 @@ def add_to_cart(request, product_id=None):
     is already within the cart the amount is increased.
     """
     if product_id is None:
-        product_id = request.POST.get("product_id")
+        product_id = request.REQUEST.get("product_id")
 
     product = lfs_get_object_or_404(Product, pk=product_id)
     

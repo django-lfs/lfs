@@ -360,7 +360,7 @@ def product_form_dispatcher(request):
          variants of of the product are displayed as select box. This may change
          in future, when the switch may made with an ajax request.)
     """
-    if request.POST.get("add-to-cart") is not None:
+    if request.REQUEST.get("add-to-cart") is not None:
         return add_to_cart(request)
     else:
         product_id = request.POST.get("product_id")

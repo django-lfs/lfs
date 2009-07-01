@@ -155,7 +155,6 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
                     street = form.cleaned_data.get("invoice_street"),
                     zip_code = form.cleaned_data.get("invoice_zip_code"),
                     city = form.cleaned_data.get("invoice_city"),
-                    state = form.cleaned_data.get("invoice_state"),
                     country_id = form.cleaned_data.get("invoice_country"),
                     phone = form.cleaned_data.get("invoice_phone"),
                     email = form.cleaned_data.get("invoice_email"),
@@ -168,7 +167,6 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
                 selected_invoice_address.street = form.cleaned_data.get("invoice_street")
                 selected_invoice_address.zip_code = form.cleaned_data.get("invoice_zip_code")
                 selected_invoice_address.city = form.cleaned_data.get("invoice_city")
-                selected_invoice_address.state = form.cleaned_data.get("invoice_state")
                 selected_invoice_address.country_id = form.cleaned_data.get("invoice_country")
                 selected_invoice_address.phone = form.cleaned_data.get("invoice_phone")
                 selected_invoice_address.email = form.cleaned_data.get("invoice_email")
@@ -184,7 +182,6 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
                         street = form.cleaned_data.get("shipping_street"),
                         zip_code = form.cleaned_data.get("shipping_zip_code"),
                         city = form.cleaned_data.get("shipping_city"),
-                        state = form.cleaned_data.get("shipping_state"),
                         country_id = form.cleaned_data.get("shipping_country"),
                         phone = form.cleaned_data.get("shipping_phone"),
                         email = form.cleaned_data.get("shipping_email"),
@@ -197,7 +194,6 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
                     selected_shipping_address.street = form.cleaned_data.get("shipping_street")
                     selected_shipping_address.zip_code = form.cleaned_data.get("shipping_zip_code")
                     selected_shipping_address.city = form.cleaned_data.get("shipping_city")
-                    selected_shipping_address.state = form.cleaned_data.get("shipping_state")                    
                     selected_shipping_address.country_id = form.cleaned_data.get("shipping_country")
                     selected_shipping_address.phone = form.cleaned_data.get("shipping_phone")
                     selected_shipping_address.save()
@@ -239,7 +235,6 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
                 "invoice_street" : invoice_address.street,
                 "invoice_zip_code" : invoice_address.zip_code,
                 "invoice_city" : invoice_address.city,
-                "invoice_state" : invoice_address.state,
                 "invoice_country" : invoice_address.country_id,
                 "invoice_phone" : invoice_address.phone,
                 "invoice_email" : invoice_address.email,
@@ -252,7 +247,6 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
                 "shipping_street" : shipping_address.street,
                 "shipping_zip_code" : shipping_address.zip_code,
                 "shipping_city" : shipping_address.city,
-                "shipping_state" : shipping_address.state,
                 "shipping_phone" : shipping_address.phone,
                 "shipping_email" : shipping_address.email,
                 "no_shipping" : False,

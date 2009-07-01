@@ -15,7 +15,6 @@ class OnePageCheckoutForm(forms.Form):
     invoice_street = forms.CharField(label=_(u"Street"), max_length=100)
     invoice_zip_code = forms.CharField(label=_(u"Zip Code"), max_length=10)
     invoice_city = forms.CharField(label=_(u"City"), max_length=50)
-    invoice_state = forms.CharField(label=_(u"State"), max_length=50)
     invoice_country = forms.ChoiceField(label=_(u"Country"))
     invoice_phone = forms.CharField(label=_(u"Phone"), max_length=20)
     invoice_email = forms.EmailField(label=_(u"E-mail"), required=False, max_length=50)
@@ -25,7 +24,6 @@ class OnePageCheckoutForm(forms.Form):
     shipping_street = forms.CharField(label=_(u"Street"), required=False, max_length=100)
     shipping_zip_code = forms.CharField(label=_(u"Zip Code"), required=False, max_length=10)
     shipping_city = forms.CharField(label=_(u"City"), required=False, max_length=50)
-    shipping_state = forms.CharField(label=_(u"State"), required=False, max_length=50)
     shipping_country = forms.ChoiceField(label=_(u"Country"), required=False)
     shipping_phone = forms.CharField(label=_(u"Phone"), required=False, max_length=20)
 

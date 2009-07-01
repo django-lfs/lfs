@@ -1,6 +1,7 @@
 from average_rating import *
 from cart import *
 from categories import *
+from delivery_time import *
 from pages import *
 from recent_products import *
 from related_products import *

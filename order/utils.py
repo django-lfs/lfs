@@ -76,6 +76,7 @@ def add_order(request):
         invoice_street = invoice_address.street,
         invoice_zip_code = invoice_address.zip_code,
         invoice_city = invoice_address.city,
+        invoice_state = invoice_address.state,
         invoice_country = invoice_address.country,
         invoice_phone = invoice_address.phone,
 
@@ -84,6 +85,7 @@ def add_order(request):
         shipping_street = shipping_address.street,
         shipping_zip_code = shipping_address.zip_code,
         shipping_city = shipping_address.city,
+        shipping_state= shipping_address.state,
         shipping_country = shipping_address.country,
         shipping_phone = shipping_address.phone,
 

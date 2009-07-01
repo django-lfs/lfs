@@ -11,3 +11,10 @@
            type="submit" 
            class="category-data-save-button"/>
 </form>
+<script>
+    $(function() {    
+        tinyMCE.execCommand('mceAddControl', true, 'id_description');
+        tinyMCE.execCommand('mceAddControl', true, 'id_short_description');
+    });    
+</script>    
+

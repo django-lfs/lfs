@@ -63,6 +63,7 @@ class Address(models.Model):
     street = models.CharField(_("Street"), max_length=100)
     zip_code = models.CharField(_("Zip code"), max_length=10)
     city = models.CharField(_("City"), max_length=50)
+    state = models.CharField(_("State"), max_length=50, blank=True, null=True)
     country = models.ForeignKey(Country, verbose_name=_("Country"))
     phone = models.CharField(_("Phone"), blank=True, max_length=20)
     email = models.EmailField(_("E-Mail"), blank=True, null=True, max_length=50)

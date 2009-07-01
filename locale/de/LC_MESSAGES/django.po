@@ -1961,7 +1961,7 @@ msgid "Delete"
 msgstr "Löschen"
 
 #: templates/manage/portlets/portlets_inline.html:111
-msgid "There are no portlets assigend"
+msgid "There are no portlets assigned"
 msgstr "Es sind keine Portlets zugewiesen"
 
 #: templates/manage/portlets/portlets_inline.html:116

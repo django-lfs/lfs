@@ -16,8 +16,7 @@ tinyMCE.init({
     theme_advanced_buttons4: "",
     theme_advanced_toolbar_location : "top",
     theme_advanced_toolbar_align : "left",    
-    content_css : "../css/tiny_mce_styleselect.css"
-    
+    content_css : "/media/tinymce_styles.css"
 })
 
 function update_positions() {

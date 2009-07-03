@@ -8,7 +8,7 @@ class Migration:
     def forwards(self, orm):
         
         # Adding field 'Address.state'
-        db.add_column('customer_address', 'state', models.CharField(_("State"), max_length=50, null=True, blank=True))
+        db.add_column('customer_address', 'state', models.CharField(_("State"), max_length=50, blank=True))
         
     
     

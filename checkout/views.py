@@ -270,7 +270,7 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
         selected_payment_method = payment_utils.get_selected_payment_method(request)
         
     valid_payment_methods = payment_utils.get_valid_payment_methods(request)
-    display_bank_account = DIRECT_DEBIT in [m["id"] for m in valid_payment_methods]
+    display_bank_account = DIRECT_DEBIT in [m.id for m in valid_payment_methods]
     
     return render_to_response(template_name, RequestContext(request, {
         "form" : form,

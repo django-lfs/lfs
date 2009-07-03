@@ -33,13 +33,9 @@ def get_valid_payment_methods(request):
     list.
     """
     result = []
-    for sm in PaymentMethod.objects.filter(active=True):
-        if criteria_utils.is_valid(request, sm):
-            result.append({
-                "id" : sm.id,
-                "name" : sm.name,
-                "price" : 0.0
-            })
+    for pm in PaymentMethod.objects.filter(active=True):
+        if criteria_utils.is_valid(request, pm):
+            result.append(pm)
     return result
     
 def get_default_payment_method(request):

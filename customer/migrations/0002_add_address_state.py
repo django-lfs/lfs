@@ -64,7 +64,7 @@ class Migration:
             'id': ('models.AutoField', [], {'primary_key': 'True'}),
             'lastname': ('models.CharField', ['_("Lastname")'], {'max_length': '50'}),
             'phone': ('models.CharField', ['_("Phone")'], {'max_length': '20', 'blank': 'True'}),
-            'state': ('models.CharField', ['_("State")'], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
+            'state': ('models.CharField', ['_("State")'], {'max_length': '50', 'blank': 'True'}),
             'street': ('models.CharField', ['_("Street")'], {'max_length': '100'}),
             'zip_code': ('models.CharField', ['_("Zip code")'], {'max_length': '10'})
         },

@@ -27,8 +27,7 @@
            href="{% url lfs_delete_review current_review.id %}">
             {% trans 'Delete' %}</a>
         | 
-        <a href="{% url lfs_product current_review.content.slug %}"
-           target="_blank">
+        <a href="{% url lfs_product current_review.content.slug %}">
             {% trans 'View product' %}
         </a>
     </div>    

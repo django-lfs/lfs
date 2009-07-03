@@ -33,10 +33,66 @@ from lfs.catalog.settings import PROPERTY_STEP_TYPE_MANUAL_STEPS
 from lfs.catalog.settings import PROPERTY_STEP_TYPE_FIXED_STEP
 from lfs.tax.models import Tax
 
-# TODO: Add attributes to the doc string.
 class Category(models.Model):
     """A category is used to browse through the shop products. A category can
     have one parent category and several child categories.
+
+    Parameters:
+
+        - name:
+            The name of the category.
+
+        - slug
+            Part of the URL
+
+        - parent
+            Parent of the category. This is used to create a category tree. If
+            it's None the category is a top level category.
+
+        - show_all_products
+           If True the category displays it's direct products as well as products
+           of it's sub categories. If False only direct products will be
+           displayed.
+
+         - products
+            The assigned products of the category.
+
+         - short_description
+            A short description of the category. This is used in overviews.
+
+         - description
+            The description of the category. This can be used in details views
+            of the category.
+
+        - image
+            The image of the category.
+
+        - position
+            The position of the category within the shop resp. the parent
+            category.
+
+        - static_block
+            A assigned static block to the category.
+
+        - content
+            decides which content will be displayed. At the moment this is either
+            sub categories or products.
+
+        - active_formats
+            If True product_rows, product_cols and category_cols are taken from
+            the category otherwise from the parent.
+
+        - product_rows, product_cols, category_cols
+            Format information for the category views
+
+        - meta_keywords
+            meta keywords of the category
+
+        - meta_description
+           meta_description of the category
+
+        - uuid
+           The unique id of the category
     """
     name = models.CharField(_(u"Name"), max_length=50)
     slug = models.SlugField(_(u"Slug"),unique=True)
@@ -253,13 +309,111 @@ class Category(models.Model):
         import lfs.core.utils
         return self.parent or lfs.core.utils.get_default_shop()
 
-# TODO: Add attributes to the doc string.
 class Product(models.Model):
     """A product is sold within a shop.
 
     Parameters:
+        - name
+            The name of the product
+
+        - slug
+            Part of the URL
+
+        - sku
+            The external unique id of the product
+
+        - price
+              The gross price of the product
+
         - effective_price:
             Only for internal usage (price filtering).
+
+        - short_description
+            The short description of the product. This is used within overviews.
+
+        - description
+            The description of the product. This is used within the detailed view
+            of the product.
+
+        - images
+            The images of the product.
+
+        - meta_keywords
+            the meta keywords of the product.
+
+        - meta_description
+            the meta description of the product.
+
+        - related_products
+            Related products for this products.
+
+        - accessories
+            Accessories for this products.
+
+        - for_sale
+            If True the product is for sale and the for sale price will be
+            displayed.
+
+        - for_sale_price
+            The for sale price for the product. Will be displayed if the product
+            is for sale.
+
+        - active
+            If False the product won't be displayed to shop users.
+
+        - creation_date
+            The creation date of the product
+
+        - deliverable
+            If True the product is deliverable. Otherwise not.
+
+        - manual_delivery_time
+            If True the delivery_time of the product is taken. Otherwise the
+            delivery time will be calculate on global delivery times and
+            selected shipping method.
+
+        - delivery_time
+            The delivery time of the product. This is only relevant if
+            manual_delivery_time is set to true.
+
+        - order_time
+            Order time of the product when no product is within the stock. This
+            is added to the product's delivery time.
+
+        - ordered_at
+            The date when the product has been ordered. To calculate the rest of
+            the order time since the product has been ordered.
+
+        - manage_stock_amount
+            If true the stock amount of the product will be decreased when a
+            product has been saled.
+
+        - weight, height, length, width
+            The dimensions of the product relevant for the the stock (IOW the
+            dimension of the product's box not the product itself).
+
+        - tax
+            Tax rate of the product.
+
+        - sub_type
+            Sub type of the product. At the moment that is standard, product with
+            variants, variant.
+
+        - default_variant
+            The default variant of a product with variants. This will be
+            displayed at first if the shop customer browses to a product with
+            variant.
+
+        - variants_display_type
+            This decides howt the variants of a product with variants are
+            displayed. This is select box of list.
+
+        - parent
+            The parent of a variant (only relevant for variants)
+
+        - active_xxx
+            If set to true the information will be taken from the variant.
+            Otherwise from the parent product (only relevant for variants)
     """
     # All products
     name = models.CharField(_(u"Name"), max_length=80)

@@ -7,6 +7,7 @@ import portlets.utils
 from portlets.models import Slot
 
 # lfs import
+import lfs.core.utils
 from lfs.portlet.models import CartPortlet
 from lfs.portlet.models import CategoriesPortlet
 from lfs.portlet.models import PagesPortlet
@@ -23,10 +24,9 @@ def lfs_portlet_slot(context, slot_name):
     implements the ``get_parent_for_portlets`` method the portlets of the
     parent of the instance are also added.
     """
-    instance = context.get("category") or context.get("product")
-
-    if instance is None:
-        return { "portlets" : [] }
+    instance = context.get("category") or \
+               context.get("product") or \
+               lfs.core.utils.get_default_shop()
 
     try:
         slot = Slot.objects.get(name=slot_name)

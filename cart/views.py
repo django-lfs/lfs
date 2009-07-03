@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.template import RequestContext
 
 # lfs imports
+import lfs.cart.utils
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.signals import cart_changed
 from lfs.core import utils as core_utils
@@ -29,11 +30,12 @@ def cart(request, template_name="cart/cart.html"):
 def cart_inline(request, template_name="cart/cart_inline.html"):
     """The actual content of the cart. This is factored out to be reused within 
     'normal' and ajax requests.
-    """
+    """    
     cart = cart_utils.get_cart(request)
+    shopping_url = lfs.cart.utils.get_go_on_shopping_url(request)
     if cart is None:
         return render_to_string(template_name, RequestContext(request, {
-            "shopping_url" : request.META.get("HTTP_REFERER") or reverse("lfs_shop_view"),
+            "shopping_url" : shopping_url,
         }))
         
     shop = core_utils.get_default_shop()
@@ -76,7 +78,7 @@ def cart_inline(request, template_name="cart/cart_inline.html"):
         "countries" : countries,
         "selected_country" : selected_country,
         "max_delivery_time" : max_delivery_time,
-        "shopping_url" : request.META.get("HTTP_REFERER") or reverse("lfs_shop_view"),
+        "shopping_url" : shopping_url,
     }))
 
 def added_to_cart(request, template_name="cart/added_to_cart.html"):

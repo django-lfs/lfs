@@ -1,6 +1,7 @@
 # django imports
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.cache import cache
+from django.core.urlresolvers import reverse
 
 # lfs imports
 from lfs.cart.models import CartItem
@@ -11,12 +12,12 @@ from lfs.shipping import utils as shipping_utils
 def get_cart_max_delivery_time(request, cart):
     """Returns the delivery time object with the maximal delivery time of all
     products within the cart. Takes the selected shipping method into account.
-    
+
     This is used within the cart to display the maximal delivery time.
     """
     max_delivery_time = None
     for item in cart.items():
-        # Calculate the delivery time of the product. Takes the selected 
+        # Calculate the delivery time of the product. Takes the selected
         # shipping method into account.
         delivery_time = shipping_utils.get_product_delivery_time(
             request, item.product.slug, for_cart=True)
@@ -29,23 +30,23 @@ def get_cart_price(request, cart, total=False):
     """Returns price of the given cart.
     """
     return get_cart_costs(request, cart, total)["price"]
-    
+
 def get_cart_costs(request, cart, total=False):
     """Returns price and tax of the given cart.
     """
     if cart is None:
         return {"price" : 0, "tax" : 0}
-    
+
     cache_key = "cart-costs-%s" % cart.id
     cart_costs = cache.get(cache_key)
-    
+
     if cart_costs is None:
         cart_price = 0
-        cart_tax = 0    
+        cart_tax = 0
         for item in cart.items():
             cart_price += item.get_price()
             cart_tax += item.get_tax()
-    
+
         if total:
             # Shipping
             shipping_method = shipping_utils.get_selected_shipping_method(request)
@@ -58,10 +59,10 @@ def get_cart_costs(request, cart, total=False):
             payment_costs = payment_utils.get_payment_costs(request, payment_method)
             cart_price += payment_costs["price"]
             cart_tax += payment_costs["tax"]
-        
-        cart_costs = {"price" : cart_price, "tax" : cart_tax} 
+
+        cart_costs = {"price" : cart_price, "tax" : cart_tax}
         cache.set(cache_key, cart_costs)
-        
+
     return cart_costs
 
 def get_or_create_cart(request):
@@ -71,12 +72,12 @@ def get_or_create_cart(request):
     cart = get_cart(request)
     if cart is None:
         cart = create_cart(request)
-    
+
     return cart
 
 def create_cart(request):
     """Creates a cart for the current session and/or user.
-    """    
+    """
     cart = Cart(session = request.session.session_key)
     if request.user.is_authenticated():
         cart.user = request.user
@@ -89,7 +90,7 @@ def get_cart(request):
     """
     session_key = request.session.session_key
     user = request.user
-        
+
     if user.is_authenticated():
         try:
             cart = cache.get("cart-%s" % user)
@@ -104,18 +105,24 @@ def get_cart(request):
             cart = cache.get("cart-%s" % session_key)
             if cart is None:
                 cart = Cart.objects.get(session = session_key)
-                cache.set("cart-%s" % session_key, cart)            
+                cache.set("cart-%s" % session_key, cart)
             return cart
         except ObjectDoesNotExist:
             return None
-            
+
+def get_go_on_shopping_url(request):
+    """Calculates the go on shopping url.
+    """
+    return request.session.get("last_category").get_absolute_url() or \
+           reverse("lfs_shop_view")
+
 def update_cart_after_login(request):
     """Updates the cart after login.
-    
+
     1. if there is no session cart, nothing has to be done.
     2. if there is a session cart and no user cart we assign the session cart
        to the current user.
-    3. if there is a session cart and a user cart we add the session cart items 
+    3. if there is a session cart and a user cart we add the session cart items
        to the user cart.
     """
     try:

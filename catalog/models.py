@@ -919,11 +919,14 @@ class Product(models.Model):
         """Returns the current category. This will add the portlets of the
         current category to the product portlets.
         """
-        # TODO Return the current category
-        try:
-            return self.categories.all()[0]
-        except:
-            return None
+        if self.is_variant():
+            return self.parent
+        else:
+            # TODO Return the current category
+            try:
+                return self.categories.all()[0]
+            except:
+                return None
 
 class ProductAccessories(models.Model):
     """Represents the relationship between products and accessories.

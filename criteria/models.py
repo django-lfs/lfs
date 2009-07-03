@@ -27,7 +27,7 @@ class Criterion(object):
         """Renders the criterion as html in order to displayed it within several
         forms.
         """
-        template = "criteria/%s_criterion.html" % self.content_type
+        template = "manage/criteria/%s_criterion.html" % self.content_type
 
         return render_to_string(template, RequestContext(request, {
             "id" : "ex%s" % self.id,
@@ -98,7 +98,7 @@ class CountryCriterion(models.Model, Criterion):
                 "selected" : selected,
             })
     
-        return render_to_string("criteria/country_criterion.html", RequestContext(request, {
+        return render_to_string("manage/criteria/country_criterion.html", RequestContext(request, {
             "id" : "ex%s" % self.id,
             "operator" : self.operator,
             "value" : self.value,

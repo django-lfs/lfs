@@ -27,7 +27,7 @@ class UserCriterionForm(ModelForm):
         model = UserCriterion
 
 @permission_required("manage_shop", login_url="/login/")
-def add_criterion(request, template_name="criteria/price_criterion.html"):
+def add_criterion(request, template_name="manage/criteria/price_criterion.html"):
     """Adds a new criterion form. By default it adds the form for the price 
     criterion. 
     
@@ -56,7 +56,7 @@ def change_criterion_form(request):
     countries = shop.countries.all()
     
     type = request.POST.get("type", "price")
-    template_name = "criteria/%s_criterion.html" % type
+    template_name = "manage/criteria/%s_criterion.html" % type
 
     # create a (pseudo) unique id for the the new criterion form fields. This
     # are the seconds since Epoch    

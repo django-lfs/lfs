@@ -55,7 +55,7 @@ class VariantDataForm(ModelForm):
         model = Product
         fields = ("active_name", "name", "slug", "active_sku", "sku",
             "active_price", "price", "active_short_description", "short_description", "active_description", 
-            "description", "for_sale", "for_sale_price", 
+            "description", "for_sale", "for_sale_price", "active_for_sale", "active_for_sale_price",
             "active_related_products")
 
 class ProductStockForm(ModelForm):

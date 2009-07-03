@@ -1,5 +1,14 @@
 from django.utils.translation import gettext_lazy as _
 
+ACTIVE_FOR_SALE_STANDARD = 0
+ACTIVE_FOR_SALE_YES = 2
+ACTIVE_FOR_SALE_NO = 3
+ACTIVE_FOR_SALE_CHOICES = [
+    (ACTIVE_FOR_SALE_STANDARD, _(u"Standard")),
+    (ACTIVE_FOR_SALE_YES, _(u"Yes")),
+    (ACTIVE_FOR_SALE_NO, _(u"No")),    
+]
+
 STANDARD_PRODUCT = "0"
 PRODUCT_WITH_VARIANTS = "1"
 VARIANT = "2"

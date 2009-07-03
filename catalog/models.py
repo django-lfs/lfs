@@ -10,9 +10,13 @@ from django.utils.translation import ugettext_lazy as _
 import lfs.catalog.utils
 from lfs.core.fields.thumbs import ImageWithThumbsField
 from lfs.core.managers import ActiveManager
+from lfs.catalog.settings import ACTIVE_FOR_SALE_CHOICES
+from lfs.catalog.settings import ACTIVE_FOR_SALE_STANDARD
+from lfs.catalog.settings import ACTIVE_FOR_SALE_YES
 from lfs.catalog.settings import PRODUCT_TYPE_CHOICES
 from lfs.catalog.settings import STANDARD_PRODUCT
-from lfs.catalog.settings import VARIANT, PRODUCT_WITH_VARIANTS
+from lfs.catalog.settings import VARIANT
+from lfs.catalog.settings import PRODUCT_WITH_VARIANTS
 from lfs.catalog.settings import VARIANTS_DISPLAY_TYPE_CHOICES
 from lfs.catalog.settings import CONTENT_PRODUCTS
 from lfs.catalog.settings import CONTENT_CHOICES
@@ -472,7 +476,9 @@ class Product(models.Model):
     active_sku = models.BooleanField(_(u"Active SKU"), default=True)
     active_short_description = models.BooleanField(_(u"Active short description"), default=False)
     active_description = models.BooleanField(_(u"Active description"), default=False)
-    active_price = models.BooleanField(_(u"Active Price"), default=True)
+    active_price = models.BooleanField(_(u"Active price"), default=False)
+    active_for_sale = models.PositiveSmallIntegerField(_("Active for sale"), choices=ACTIVE_FOR_SALE_CHOICES, default=ACTIVE_FOR_SALE_STANDARD)
+    active_for_sale_price = models.BooleanField(_(u"Active for sale price"), default=True)
     active_images = models.BooleanField(_(u"Active Images"), default=False)
     active_related_products = models.BooleanField(_(u"Active related products"), default=False)
     active_accessories = models.BooleanField(_(u"Active accessories"), default=False)
@@ -592,6 +598,21 @@ class Product(models.Model):
             description = self.description
 
         return description
+
+    # TODO: Check whether there is a test case for that and write one if not.
+    def get_for_sale(self):
+        """Returns true if the product is for sale. Takes care whether the
+        product is a variant.
+        """
+        if self.is_variant():
+            if self.active_for_sale == ACTIVE_FOR_SALE_STANDARD:
+                return self.parent.for_sale
+            elif self.active_for_sale == ACTIVE_FOR_SALE_YES:
+                return True
+            else:
+                return False
+        else:
+            return self.for_sale
 
     def get_short_description(self):
         """Returns the short description of the product. Takes care whether the
@@ -743,8 +764,8 @@ class Product(models.Model):
         else:
             object = self
 
-        if object.for_sale:
-            return object.for_sale_price
+        if object.get_for_sale():
+            return object.get_for_sale_price()
         else:
             return object.price
 
@@ -753,7 +774,19 @@ class Product(models.Model):
         product is for sale.
         """
         return self.get_price_gross() - self.get_tax()
-
+    
+    def get_for_sale_price(self):
+        """returns the sale price for the product. Takes care whether the product
+        is a variant and if so the for sale price is active.
+        """
+        if self.is_variant():
+            if self.active_for_sale_price:
+                return self.for_sale_price
+            else:
+                return self.parent.for_sale_price
+        else:
+            return self.for_sale_price
+            
     def get_global_properties(self):
         """Returns all global properties for the product.
         """

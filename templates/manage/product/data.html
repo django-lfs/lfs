@@ -12,6 +12,7 @@
 <form id="product-data-form"
       action="{% url lfs.manage.views.edit_product_data product.id %}"
       method="post">
+
         <div class="field">
             <div class="label">
                 {{ form.active.label_tag }}:
@@ -23,7 +24,7 @@
 
         <div class="field">
             <div class="label">
-                {% if product.is_variant %}
+                    {% if product.is_variant %}
                     {{ form.active_name }}
                 {% endif %}
 
@@ -131,25 +132,53 @@
                 {% endif %}
             </div>
         {% endif %}
-
-        <div class="field">
-
-            <div class="label">
-                {{ form.for_sale }}
-                {{ form.for_sale.label_tag }}:
-            </div>
-
-            {% if form.for_sale_price.errors %}
-                <div class="error">
-                    {{ form.for_sale_price }}
-                    {{ form.for_sale_price.errors }}
+        
+        {% if product.is_variant %}
+            <div class="field">
+                <div class="label">
+                    {{ form.for_sale.label_tag }}:
                 </div>
-            {% else %}
+                <div>
+                    {{ form.active_for_sale }}
+                    
+                    {% if product.parent.for_sale %}
+                        {% trans 'Yes' %}
+                    {% else %}                        
+                        {% trans 'No' %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="field">
+                <div class="label">
+                    {{ form.active_for_sale_price }}
+                    {{ form.for_sale_price.label_tag }}:
+                </div>
                 <div>
                     {{ form.for_sale_price }}
+                    {{ product.parent.for_sale_price|currency }}
                 </div>
-            {% endif %}
-        </div>
+                
+            </div>
+        {% else %}
+            <div class="field">
+
+                <div class="label">
+                    {{ form.for_sale }}
+                    {{ form.for_sale.label_tag }}:
+                </div>
+
+                {% if form.for_sale_price.errors %}
+                    <div class="error">
+                        {{ form.for_sale_price }}
+                        {{ form.for_sale_price.errors }}
+                    </div>
+                {% else %}
+                    <div>
+                        {{ form.for_sale_price }}
+                    </div>
+                {% endif %}
+            </div>            
+        {% endif %}
 
         <div class="field">
             <div class="label">

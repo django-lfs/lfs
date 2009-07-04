@@ -751,7 +751,7 @@ msgstr "Weniger als"
 
 #: criteria/settings.py:16
 msgid "Less than or equal to"
-msgstr "Wenige als oder gleich wie"
+msgstr "Weniger als oder gleich wie"
 
 #: criteria/settings.py:17
 msgid "Greater than"

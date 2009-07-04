@@ -35,7 +35,79 @@ class Criterion(object):
             "value" : self.value,
             "position" : position,
         }))
-    
+
+class CombinedLengthAndGirthCriterion(models.Model, Criterion):
+    """A criterion for the combined length and girth.
+    """
+    operator = models.PositiveIntegerField(_(u"Operator"), blank=True, null=True, choices=NUMBER_OPERATORS)
+    clag = models.FloatField(_(u"Width"), default=0.0)
+
+    def __unicode__(self):
+        return "CLAG: %s %s" % (self.get_operator_display(), self.clag)
+
+    @property
+    def content_type(self):
+        """Returns the content_type of the criterion as lower string.
+
+        This is for instance used to select the appropriate form for the
+        criterion.
+        """
+        return u"combinedlengthandgirth"
+
+    @property
+    def name(self):
+        """Returns the descriptive name of the criterion.
+        """
+        return _(u"Combined length and girth")
+
+    def is_valid(self, request, product=None):
+        """Returns True if the criterion is valid.
+
+        If product is given the combined length and girth is taken from the
+        product otherwise from the cart.
+        """
+        if product is not None:
+            clag = (2 * product.width) + (2 * product.height) + product.length
+        else:
+            from lfs.cart import utils as cart_utils
+            cart = cart_utils.get_cart(request)
+            if cart is None:
+                return False
+
+            cart_clag = 0
+            max_width = 0
+            max_length = 0
+            total_height = 0
+            for item in cart.items():
+                if max_length < item.product.length:
+                    max_length = item.product.length
+
+                if max_width < item.product.width:
+                    max_width = item.product.width
+
+                total_height += item.product.height
+
+            clag = (2 * max_width) +  (2 * total_height) + max_length
+
+        if self.operator == LESS_THAN and (clag < self.clag):
+            return True
+        if self.operator == LESS_THAN_EQUAL and (clag <= self.clag):
+            return True
+        if self.operator == GREATER_THAN and (clag > self.clag):
+            return True
+        if self.operator == GREATER_THAN_EQUAL and (clag >= self.clag):
+            return True
+        if self.operator == EQUAL and (clag == self.clag):
+            return True
+
+        return False
+
+    @property
+    def value(self):
+        """Returns the value of the criterion.
+        """
+        return self.clag
+
 class CountryCriterion(models.Model, Criterion):
     """A criterion for the shipping country.
     """
@@ -46,18 +118,18 @@ class CountryCriterion(models.Model, Criterion):
         values = []
         for value in self.value.all():
             values.append(value.name)
-            
+
         return "%s %s %s" % ("Country", self.get_operator_display(), ", ".join(values))
 
     @property
     def content_type(self):
         """Returns the content_type of the criterion as lower string.
-        
-        This is for instance used to select the appropriate form for the 
+
+        This is for instance used to select the appropriate form for the
         criterion.
         """
         return u"country"
-    
+
     @property
     def name(self):
         """Returns the descriptive name of the criterion.
@@ -66,7 +138,7 @@ class CountryCriterion(models.Model, Criterion):
 
     def is_valid(self, request, product=None):
         """Returns True if the criterion is valid.
-        """ 
+        """
         country = shipping.utils.get_selected_shipping_country(request)
         if self.operator == IS:
             return country in self.countries.all()
@@ -76,7 +148,7 @@ class CountryCriterion(models.Model, Criterion):
     @property
     def value(self):
         """Returns the value of the criterion.
-        """    
+        """
         return self.countries
 
     def as_html(self, request, position):
@@ -84,7 +156,7 @@ class CountryCriterion(models.Model, Criterion):
         forms.
         """
         shop = lfs_get_object_or_404(Shop, pk=1)
-        
+
         countries = []
         for country in shop.countries.all():
             if country in self.countries.all():
@@ -97,15 +169,15 @@ class CountryCriterion(models.Model, Criterion):
                 "name" : country.name,
                 "selected" : selected,
             })
-    
+
         return render_to_string("manage/criteria/country_criterion.html", RequestContext(request, {
             "id" : "ex%s" % self.id,
             "operator" : self.operator,
             "value" : self.value,
             "position" : position,
-            "countries" : countries,        
+            "countries" : countries,
         }))
-    
+
 class UserCriterion(models.Model, Criterion):
     """A criterion for user content objects
     """
@@ -113,14 +185,14 @@ class UserCriterion(models.Model, Criterion):
 
     @property
     def content_type(self):
-        """Returns the content_type of the criterion as lower string. 
-        
-        This is for instance used to select the appropriate form for the 
+        """Returns the content_type of the criterion as lower string.
+
+        This is for instance used to select the appropriate form for the
         criterion.
         """
         return u"user"
-    
-    @property    
+
+    @property
     def name(self):
         """Returns the descriptive name of the criterion.
         """
@@ -134,7 +206,7 @@ class UserCriterion(models.Model, Criterion):
     @property
     def value(self):
         """Returns the value of the criterion.
-        """    
+        """
         return self.users
 
 class CartPriceCriterion(models.Model, Criterion):
@@ -142,15 +214,15 @@ class CartPriceCriterion(models.Model, Criterion):
     """
     operator = models.PositiveIntegerField(_(u"Operator"), blank=True, null=True, choices=NUMBER_OPERATORS)
     price = models.FloatField(_(u"Price"), default=0.0)
-    
+
     def __unicode__(self):
         return "Cart Price %s %s" % (self.get_operator_display(), self.price)
 
-    @property    
+    @property
     def content_type(self):
-        """Returns the content_type of the criterion as lower string. 
-        
-        This is for instance used to select the appropriate form for the 
+        """Returns the content_type of the criterion as lower string.
+
+        This is for instance used to select the appropriate form for the
         criterion.
         """
         return u"price"
@@ -160,16 +232,16 @@ class CartPriceCriterion(models.Model, Criterion):
         """Returns the descriptive name of the criterion.
         """
         return _(u"Cart Price")
-            
+
     def is_valid(self, request, product=None):
         """Returns True if the criterion is valid.
 
         If product is given the price is taken from the product otherwise from
-        the cart.        
-        """        
+        the cart.
+        """
         from lfs.cart import utils as cart_utils
         cart = cart_utils.get_cart(request)
-                
+
         if cart is None:
             return False
 
@@ -177,7 +249,7 @@ class CartPriceCriterion(models.Model, Criterion):
             cart_price = product.get_price()
         else:
             cart_price = cart_utils.get_cart_price(request, cart)
-        
+
         if self.operator == LESS_THAN and (cart_price < self.price):
             return True
         if self.operator == LESS_THAN_EQUAL and (cart_price <= self.price):
@@ -188,13 +260,13 @@ class CartPriceCriterion(models.Model, Criterion):
             return True
         if self.operator == EQUAL and (cart_price == self.price):
             return True
-        
+
         return False
 
     @property
     def value(self):
         """Returns the value of the criterion.
-        """    
+        """
         return self.price
 
 class WeightCriterion(models.Model, Criterion):
@@ -202,30 +274,30 @@ class WeightCriterion(models.Model, Criterion):
     """
     operator = models.PositiveIntegerField(_(u"Operator"), blank=True, null=True, choices=NUMBER_OPERATORS)
     weight = models.FloatField(_(u"Weight"), default=0.0)
-    
+
     def __unicode__(self):
         return "Weight: %s %s" % (self.get_operator_display(), self.weight)
 
     @property
     def content_type(self):
         """Returns the content_type of the criterion as lower string.
-        
-        This is for instance used to select the appropriate form for the 
+
+        This is for instance used to select the appropriate form for the
         criterion.
         """
         return u"weight"
-        
+
     @property
     def name(self):
         """Returns the descriptive name of the criterion.
         """
         return _(u"Weight")
-            
+
     def is_valid(self, request, product=None):
         """Returns True if the criterion is valid.
-        
+
         If product is given the weight is taken from the product otherwise from
-        the cart.                
+        the cart.
         """
         if product is not None:
             cart_weight = product.weight
@@ -235,11 +307,11 @@ class WeightCriterion(models.Model, Criterion):
 
             if cart is None:
                 return False
-        
+
             cart_weight = 0
             for item in cart.items():
                 cart_weight += (item.product.weight * item.amount)
-        
+
         if self.operator == LESS_THAN and (cart_weight < self.weight):
             return True
         if self.operator == LESS_THAN_EQUAL and (cart_weight <= self.weight):
@@ -247,16 +319,16 @@ class WeightCriterion(models.Model, Criterion):
         if self.operator == GREATER_THAN and (cart_weight > self.weight):
             return True
         if self.operator == GREATER_THAN_EQUAL and (cart_weight >= self.weight):
-            return True            
+            return True
         if self.operator == EQUAL and (cart_weight == self.weight):
             return True
-        
+
         return False
 
     @property
     def value(self):
         """Returns the value of the criterion.
-        """    
+        """
         return self.weight
 
 class HeightCriterion(models.Model, Criterion):
@@ -264,31 +336,31 @@ class HeightCriterion(models.Model, Criterion):
     """
     operator = models.PositiveIntegerField(blank=True, null=True, choices=NUMBER_OPERATORS)
     height = models.FloatField(_(u"Height"), default=0.0)
-    
+
     def __unicode__(self):
         return "Height: %s %s" % (self.get_operator_display(), self.height)
 
     @property
     def content_type(self):
         """Returns the content_type of the criterion as lower string.
-        
-        This is for instance used to select the appropriate form for the 
+
+        This is for instance used to select the appropriate form for the
         criterion.
         """
         return u"height"
-        
+
     @property
     def name(self):
         """Returns the descriptive name of the criterion.
         """
         return _(u"Height")
-            
+
     def is_valid(self, request, product=None):
         """Returns True if the criterion is valid.
-        
+
         If product is given the height is taken from the product otherwise from
-        the cart.                
-        """        
+        the cart.
+        """
         from lfs.cart import utils as cart_utils
         cart = cart_utils.get_cart(request)
         if cart is None:
@@ -300,7 +372,7 @@ class HeightCriterion(models.Model, Criterion):
             cart_height = 0
             for item in cart.items():
                 cart_height += (item.product.height * item.amount)
-        
+
         if self.operator == LESS_THAN and (cart_height < self.height):
             return True
         if self.operator == LESS_THAN_EQUAL and (cart_height <= self.height):
@@ -308,16 +380,16 @@ class HeightCriterion(models.Model, Criterion):
         if self.operator == GREATER_THAN and (cart_height > self.height):
             return True
         if self.operator == GREATER_THAN_EQUAL and (cart_height >= self.height):
-            return True            
+            return True
         if self.operator == EQUAL and (cart_height == self.height):
             return True
-        
+
         return False
 
     @property
     def value(self):
         """Returns the value of the criterion.
-        """    
+        """
         return self.height
 
 class WidthCriterion(models.Model, Criterion):
@@ -325,31 +397,31 @@ class WidthCriterion(models.Model, Criterion):
     """
     operator = models.PositiveIntegerField(_(u"Operator"), blank=True, null=True, choices=NUMBER_OPERATORS)
     width = models.FloatField(_(u"Width"), default=0.0)
-    
+
     def __unicode__(self):
         return "Width: %s %s" % (self.get_operator_display(), self.width)
 
     @property
     def content_type(self):
         """Returns the content_type of the criterion as lower string.
-        
-        This is for instance used to select the appropriate form for the 
+
+        This is for instance used to select the appropriate form for the
         criterion.
         """
         return u"width"
-        
+
     @property
     def name(self):
         """Returns the descriptive name of the criterion.
         """
         return _(u"Height")
-            
+
     def is_valid(self, request, product=None):
         """Returns True if the criterion is valid.
-        
+
         If product is given the width is taken from the product otherwise from
-        the cart.        
-        """        
+        the cart.
+        """
         from lfs.cart import utils as cart_utils
         cart = cart_utils.get_cart(request)
         if cart is None:
@@ -361,7 +433,7 @@ class WidthCriterion(models.Model, Criterion):
             cart_width = 0
             for item in cart.items():
                 cart_width += (item.product.width * item.amount)
-        
+
         if self.operator == LESS_THAN and (cart_width < self.width):
             return True
         if self.operator == LESS_THAN_EQUAL and (cart_width <= self.width):
@@ -369,16 +441,16 @@ class WidthCriterion(models.Model, Criterion):
         if self.operator == GREATER_THAN and (cart_width > self.width):
             return True
         if self.operator == GREATER_THAN_EQUAL and (cart_width >= self.width):
-            return True            
+            return True
         if self.operator == EQUAL and (cart_width == self.width):
             return True
-        
+
         return False
 
     @property
     def value(self):
         """Returns the value of the criterion.
-        """    
+        """
         return self.width
 
 class LengthCriterion(models.Model, Criterion):
@@ -386,31 +458,31 @@ class LengthCriterion(models.Model, Criterion):
     """
     operator = models.PositiveIntegerField(_(u"Operator"), blank=True, null=True, choices=NUMBER_OPERATORS)
     length = models.FloatField(_(u"Length"), default=0.0)
-    
+
     def __unicode__(self):
         return "Length: %s %s" % (self.get_operator_display(), self.length)
 
     @property
     def content_type(self):
         """Returns the content_type of the criterion as lower string.
-        
-        This is for instance used to select the appropriate form for the 
+
+        This is for instance used to select the appropriate form for the
         criterion.
         """
         return u"length"
-        
+
     @property
     def name(self):
         """Returns the descriptive name of the criterion.
         """
         return _(u"Length")
-            
+
     def is_valid(self, request, product=None):
         """Returns True if the criterion is valid.
-        
+
         If product is given the length is taken from the product otherwise from
         the cart.
-        """        
+        """
         from lfs.cart import utils as cart_utils
         cart = cart_utils.get_cart(request)
         if cart is None:
@@ -422,7 +494,7 @@ class LengthCriterion(models.Model, Criterion):
             cart_length = 0
             for item in cart.items():
                 cart_length += (item.product.length * item.amount)
-        
+
         if self.operator == LESS_THAN and (cart_length < self.length):
             return True
         if self.operator == LESS_THAN_EQUAL and (cart_length <= self.length):
@@ -430,16 +502,16 @@ class LengthCriterion(models.Model, Criterion):
         if self.operator == GREATER_THAN and (cart_length > self.length):
             return True
         if self.operator == GREATER_THAN_EQUAL and (cart_length >= self.length):
-            return True            
+            return True
         if self.operator == EQUAL and (cart_length == self.length):
             return True
-        
+
         return False
 
     @property
     def value(self):
         """Returns the value of the criterion.
-        """    
+        """
         return self.length
 
 # TODO: Should this rather integrated as base class?
@@ -449,13 +521,13 @@ class CriteriaObjects(models.Model):
     class Meta:
         ordering = ["position"]
         verbose_name_plural = "Criteria objects"
-        
+
     criterion_type = models.ForeignKey(ContentType, verbose_name=_(u"Criterion type"), related_name="criterion")
     criterion_id = models.PositiveIntegerField(_(u"Content id"))
     criterion = generic.GenericForeignKey(ct_field="criterion_type", fk_field="criterion_id")
-    
+
     content_type = models.ForeignKey(ContentType, verbose_name=_(u"Content type"), related_name="content_type")
     content_id = models.PositiveIntegerField(_(u"Content id"))
     content = generic.GenericForeignKey(ct_field="content_type", fk_field="content_id")
-    
+
     position = models.PositiveIntegerField(_(u"Position"), default=999)

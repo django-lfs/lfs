@@ -1,6 +1,7 @@
 # lfs imports
 from lfs.criteria.models import CriteriaObjects
 from lfs.criteria.models import CountryCriterion
+from lfs.criteria.models import CombinedLengthAndGirthCriterion
 from lfs.criteria.models import CartPriceCriterion
 from lfs.criteria.models import LengthCriterion
 from lfs.criteria.models import HeightCriterion
@@ -57,6 +58,12 @@ def save_criteria(request, object):
                c = CountryCriterion.objects.create(operator=operator)
                c.countries = value
                c.save()
+           elif type_ == "combinedlengthandgirth":
+               try:
+                   value = float(value)
+               except (TypeError, ValueError):
+                   value = 0.0
+               c = CombinedLengthAndGirthCriterion.objects.create(operator=operator, clag=value)
            elif type_ == "price":
                try:
                    value = float(value)

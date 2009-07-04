@@ -6,6 +6,7 @@ from lfs.criteria.models.criteria import CartPriceCriterion
 from lfs.criteria.models.criteria import HeightCriterion
 from lfs.criteria.models.criteria import LengthCriterion
 from lfs.criteria.models.criteria import PaymentMethodCriterion
+from lfs.criteria.models.criteria import ShippingMethodCriterion
 from lfs.criteria.models.criteria import UserCriterion
 from lfs.criteria.models.criteria import WidthCriterion
 from lfs.criteria.models.criteria import WeightCriterion
@@ -63,6 +64,11 @@ def save_criteria(request, object):
                value = request.POST.getlist("value-%s" % id)
                c = PaymentMethodCriterion.objects.create(operator=operator)
                c.payment_methods = value
+               c.save()
+           elif type_ == "shipping_method":
+               value = request.POST.getlist("value-%s" % id)
+               c = ShippingMethodCriterion.objects.create(operator=operator)
+               c.shipping_methods = value
                c.save()
            elif type_ == "combinedlengthandgirth":
                try:

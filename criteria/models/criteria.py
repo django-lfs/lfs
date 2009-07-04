@@ -18,6 +18,7 @@ from lfs.criteria.settings import GREATER_THAN_EQUAL
 from lfs.criteria.settings import NUMBER_OPERATORS
 from lfs.criteria.settings import SELECT_OPERATORS, IS
 from lfs.payment.models import PaymentMethod
+from lfs.shipping.models import ShippingMethod
 
 class Criterion(object):
     """Base class for all lfs criteria.
@@ -430,6 +431,76 @@ class PaymentMethodCriterion(models.Model, Criterion):
             "value" : self.value,
             "position" : position,
             "payment_methods" : payment_methods,
+        }))
+
+class ShippingMethodCriterion(models.Model, Criterion):
+    """A criterion for the shipping method.
+    """
+    operator = models.PositiveIntegerField(_(u"Operator"), blank=True, null=True, choices=SELECT_OPERATORS)
+    shipping_methods = models.ManyToManyField(ShippingMethod, verbose_name=_(u"Shipping methods"))
+
+    def __unicode__(self):
+        values = []
+        for value in self.value.all():
+            values.append(value.name)
+
+        return "%s %s %s" % ("Shipping", self.get_operator_display(), ", ".join(values))
+
+    @property
+    def content_type(self):
+        """Returns the content_type of the criterion as lower string.
+
+        This is for instance used to select the appropriate form for the
+        criterion.
+        """
+        return u"shipping_method"
+
+    @property
+    def name(self):
+        """Returns the descriptive name of the criterion.
+        """
+        return _(u"Shipping method")
+
+    def is_valid(self, request, product=None):
+        """Returns True if the criterion is valid.
+        """
+        import lfs.shipping.utils
+        shipping_method = lfs.shipping.utils.get_selected_shipping_method(request)
+        if self.operator == IS:
+            return shipping_method in self.shipping_method.all()
+        else:
+            return shipping_method not in self.shipping_method.all()
+
+    @property
+    def value(self):
+        """Returns the value of the criterion.
+        """
+        return self.shipping_methods
+
+    def as_html(self, request, position):
+        """Renders the criterion as html in order to be displayed within several
+        forms.
+        """
+        selected_shipping_methods = self.shipping_methods.all()
+        shipping_methods = []
+        for sm in ShippingMethod.objects.filter(active=True):
+            if sm in selected_shipping_methods:
+                selected = True
+            else:
+                selected = False
+
+            shipping_methods.append({
+                "id" : sm.id,
+                "name" : sm.name,
+                "selected" : selected,
+            })
+
+        return render_to_string("manage/criteria/shipping_method_criterion.html", RequestContext(request, {
+            "id" : "ex%s" % self.id,
+            "operator" : self.operator,
+            "value" : self.value,
+            "position" : position,
+            "shipping_methods" : shipping_methods,
         }))
 
 class UserCriterion(models.Model, Criterion):

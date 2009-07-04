@@ -16,11 +16,11 @@
         </a>
     </div>
 
-    <div class="criteria">
+    <table class="criteria">
         {% for criterion in criteria %}
             {{criterion|safe}}
         {% endfor %}
-    </div>  
+    </table>
 
     <div class="manage-form-buttons">
         <input class="criterion-save-button" 

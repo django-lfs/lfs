@@ -356,7 +356,7 @@ class WidthCriterion(models.Model, Criterion):
             return False
 
         if product is not None:
-            cart_width = product.width()
+            cart_width = product.width
         else:
             cart_width = 0
             for item in cart.items():

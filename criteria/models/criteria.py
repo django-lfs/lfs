@@ -467,9 +467,9 @@ class ShippingMethodCriterion(models.Model, Criterion):
         import lfs.shipping.utils
         shipping_method = lfs.shipping.utils.get_selected_shipping_method(request)
         if self.operator == IS:
-            return shipping_method in self.shipping_method.all()
+            return shipping_method in self.shipping_methods.all()
         else:
-            return shipping_method not in self.shipping_method.all()
+            return shipping_method not in self.shipping_methods.all()
 
     @property
     def value(self):

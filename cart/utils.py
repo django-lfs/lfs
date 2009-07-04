@@ -113,8 +113,11 @@ def get_cart(request):
 def get_go_on_shopping_url(request):
     """Calculates the go on shopping url.
     """
-    return request.session.get("last_category").get_absolute_url() or \
-           reverse("lfs_shop_view")
+    lc = request.session.get("last_category")
+    if lc:
+        return lc.get_absolute_url()
+    else:
+        reverse("lfs_shop_view")
 
 def update_cart_after_login(request):
     """Updates the cart after login.

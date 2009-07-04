@@ -1,17 +1,23 @@
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+from django.template import RequestContext
+from django.template.loader import render_to_string
+
 # django imports
 from django.contrib.contenttypes import generic
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+from lfs.criteria.models.criteria_objects import CriteriaObjects
 from lfs.tax.models import Tax
-from lfs.criteria.models import CriteriaObjects
-from lfs.criteria import utils as criteria_utils
 
 # other imports
 from paypal.standard.ipn.models import PayPalIPN 
 from paypal.standard.pdt.models import PayPalPDT
-
 
 class ActivePaymentMethodManager(models.Manager):
     """A manager which return just valid (aka selectable) shipping methods.
@@ -108,6 +114,7 @@ class PaymentMethodPrice(models.Model):
         """Returns True if the payment method is valid. This is calculated via 
         the attached criteria.
         """
+        from lfs.criteria import utils as criteria_utils
         return criteria_utils.is_valid(self, request)
     
 from lfs.order.models import Order

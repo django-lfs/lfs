@@ -1,13 +1,14 @@
 # lfs imports
-from lfs.criteria.models import CriteriaObjects
-from lfs.criteria.models import CountryCriterion
-from lfs.criteria.models import CombinedLengthAndGirthCriterion
-from lfs.criteria.models import CartPriceCriterion
-from lfs.criteria.models import LengthCriterion
-from lfs.criteria.models import HeightCriterion
-from lfs.criteria.models import WidthCriterion
-from lfs.criteria.models import WeightCriterion
-from lfs.criteria.models import UserCriterion
+from lfs.criteria.models.criteria_objects import CriteriaObjects
+from lfs.criteria.models.criteria import CountryCriterion
+from lfs.criteria.models.criteria import CombinedLengthAndGirthCriterion
+from lfs.criteria.models.criteria import CartPriceCriterion
+from lfs.criteria.models.criteria import HeightCriterion
+from lfs.criteria.models.criteria import LengthCriterion
+from lfs.criteria.models.criteria import PaymentMethodCriterion
+from lfs.criteria.models.criteria import UserCriterion
+from lfs.criteria.models.criteria import WidthCriterion
+from lfs.criteria.models.criteria import WeightCriterion
 
 def is_valid(request, object, product=None):
     """Returns True if the given object is valid. This is calculated via the 
@@ -57,6 +58,11 @@ def save_criteria(request, object):
                value = request.POST.getlist("value-%s" % id)
                c = CountryCriterion.objects.create(operator=operator)
                c.countries = value
+               c.save()
+           elif type_ == "payment_method":
+               value = request.POST.getlist("value-%s" % id)
+               c = PaymentMethodCriterion.objects.create(operator=operator)
+               c.payment_methods = value
                c.save()
            elif type_ == "combinedlengthandgirth":
                try:

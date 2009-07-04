@@ -13,6 +13,7 @@ from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.models import Shop
 from lfs.criteria.models import CartPriceCriterion
 from lfs.criteria.models import UserCriterion
+from lfs.payment.models import PaymentMethod
 
 class CartPriceCriterionForm(ModelForm):
     """
@@ -64,4 +65,5 @@ def change_criterion_form(request):
     return HttpResponse(render_to_string(template_name, RequestContext(request, {
         "id" : "%s%s" % (now.strftime("%s"), now.microsecond),
         "countries" : countries,
+        "payment_methods" : PaymentMethod.objects.filter(active=True)
     })))

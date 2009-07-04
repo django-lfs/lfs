@@ -3,9 +3,9 @@ from django.contrib.contenttypes import generic
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from lfs.payment.models import CriteriaObjects
 from lfs.catalog.models import DeliveryTime
-from lfs.criteria import utils as criteria_utils
-from lfs.criteria.models import CriteriaObjects
+
 from lfs.tax.models import Tax
 
 class ActiveShippingMethodManager(models.Manager):
@@ -77,6 +77,7 @@ class ShippingMethod(models.Model):
         
         If product is given the product is tested otherwise the whole cart.
         """
+        from lfs.criteria import utils as criteria_utils
         return criteria_utils.is_valid(self, request, product)
                 
 class ShippingMethodPrice(models.Model):

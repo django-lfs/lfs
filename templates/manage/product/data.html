@@ -13,14 +13,16 @@
       action="{% url lfs.manage.views.edit_product_data product.id %}"
       method="post">
 
-        <div class="field">
-            <div class="label">
-                {{ form.active.label_tag }}:
+        {% if not product.is_variant %}
+            <div class="field">
+                <div class="label">
+                    {{ form.active.label_tag }}:
+                </div>
+                <div>
+                    {{ form.active }}
+                </div>
             </div>
-            <div>
-                {{ form.active }}
-            </div>
-        </div>
+        {% endif %}
 
         <div class="field">
             <div class="label">
@@ -132,7 +134,7 @@
                 {% endif %}
             </div>
         {% endif %}
-        
+
         {% if product.is_variant %}
             <div class="field">
                 <div class="label">
@@ -140,10 +142,10 @@
                 </div>
                 <div>
                     {{ form.active_for_sale }}
-                    
+
                     {% if product.parent.for_sale %}
                         {% trans 'Yes' %}
-                    {% else %}                        
+                    {% else %}
                         {% trans 'No' %}
                     {% endif %}
                 </div>
@@ -157,7 +159,7 @@
                     {{ form.for_sale_price }}
                     {{ product.parent.for_sale_price|currency }}
                 </div>
-                
+
             </div>
         {% else %}
             <div class="field">
@@ -177,7 +179,7 @@
                         {{ form.for_sale_price }}
                     </div>
                 {% endif %}
-            </div>            
+            </div>
         {% endif %}
 
         <div class="field">

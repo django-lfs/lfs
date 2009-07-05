@@ -6,6 +6,7 @@ from django.test import TestCase
 # lfs imports
 import lfs.catalog.utils
 from lfs.core.signals import property_type_changed
+from lfs.catalog.settings import ACTIVE_FOR_SALE_YES
 from lfs.catalog.settings import CONTENT_CATEGORIES
 from lfs.catalog.settings import PRODUCT_WITH_VARIANTS, VARIANT
 from lfs.catalog.settings import DELIVERY_TIME_UNIT_HOURS
@@ -1235,7 +1236,7 @@ class ProductTestCase(TestCase):
         self.assertEqual(p.active_sku, True)
         self.assertEqual(p.active_short_description, False)
         self.assertEqual(p.active_description, False)
-        self.assertEqual(p.active_price, True)
+        self.assertEqual(p.active_price, False)
         self.assertEqual(p.active_images, False)
         self.assertEqual(p.active_related_products, False)
         self.assertEqual(p.active_accessories, False)
@@ -1636,15 +1637,15 @@ class ProductTestCase(TestCase):
         # Test product
         self.assertEqual(self.p1.get_price(), 1.0)
 
-        # Test variant. By default the price of a variant is *not* inherited
-        self.assertEqual(self.v1.get_price(), 2.0)
+        # Test variant. By default the price of a variant is inherited
+        self.assertEqual(self.v1.get_price(), 1.0)
 
-        # Now we switch to deactive price.
-        self.v1.active_price = False
+        # Now we switch to active price.
+        self.v1.active_price = True
         self.v1.save()
 
         # Now we get the price of the parent product
-        self.assertEqual(self.v1.get_price(), 1.0)
+        self.assertEqual(self.v1.get_price(), 2.0)
 
     def test_get_price_gross(self):
         """Tests the gross price of a product and a variant. Takes active_price
@@ -1653,15 +1654,15 @@ class ProductTestCase(TestCase):
         # Test product
         self.assertEqual(self.p1.get_price_gross(), 1.0)
 
-        # Test variant. By default the price_gross of a variant is *not* inherited
-        self.assertEqual(self.v1.get_price_gross(), 2.0)
+        # Test variant. By default the price_gross of a variant is inherited
+        self.assertEqual(self.v1.get_price_gross(), 1.0)
 
-        # Now we switch to deactive price.
-        self.v1.active_price = False
+        # Now we switch to active price.
+        self.v1.active_price = True
         self.v1.save()
 
         # Now we get the price gross of the parent product
-        self.assertEqual(self.v1.get_price_gross(), 1.0)
+        self.assertEqual(self.v1.get_price_gross(), 2.0)
 
     def test_get_price_net(self):
         """Tests the net price of a product and a variant. Takes active_price of
@@ -1670,16 +1671,16 @@ class ProductTestCase(TestCase):
         # Test product
         self.assertEqual("%.2f" % self.p1.get_price_net(), "0.84")
 
-        # Test variant. By default the price_net of a variant is *not* inherited,
+        # Test variant. By default the price_net of a variant is inherited,
         # but the tax is.
-        self.assertEqual("%.2f" % self.v1.get_price_net(), "1.68")
+        self.assertEqual("%.2f" % self.v1.get_price_net(), "0.84")
 
-        # Now we switch to deactive price.
-        self.v1.active_price = False
+        # Now we switch to ctive price.
+        self.v1.active_price = True
         self.v1.save()
 
         # Now we get the price net of the parent product
-        self.assertEqual("%.2f" % self.v1.get_price_net(), "0.84")
+        self.assertEqual("%.2f" % self.v1.get_price_net(), "1.68")
 
     def test_get_standard_price_1(self):
         """Test the price vs. standard price for a product.
@@ -1704,12 +1705,16 @@ class ProductTestCase(TestCase):
         """Test the price vs. standard price for a variant. Takes ``active_price``
         into account.
         """
+        self.v1.active_price = True
+        self.v1.save()
+        
         # By default get_standard_price returns then normal price of the variant
         standard_price = self.v1.get_standard_price()
         self.assertEqual(standard_price, 2.0)
 
         # Switch to for sale
         self.v1.for_sale = True
+        self.v1.active_for_sale = ACTIVE_FOR_SALE_YES
         self.v1.save()
 
         # If the product is for sale ``get_price`` returns the for sale price

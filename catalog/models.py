@@ -799,7 +799,7 @@ class Product(models.Model):
     def get_local_properties(self):
         """Returns local properties of the product
         """
-        return self.properties.all()
+        return self.properties.order_by("productspropertiesrelation")
 
     def get_properties(self):
         """Returns local and global properties

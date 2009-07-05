@@ -94,7 +94,7 @@
             <th>
                 {% trans 'Price' %}
             </th>
-            {% for property in global_properties %}
+            {% for property in all_properties %}
                 <th>
                     {{property.name}}
                 </th>
@@ -111,7 +111,7 @@
             <td>
                 {{variant_simple_form.price}}
             </td>
-            {% for property in global_properties %}
+            {% for property in all_properties %}
                 <td>
                     <select name="property_{{property.id}}">
                         <option value="all">{% trans 'All' %}</option>
@@ -149,7 +149,7 @@
             <th>
                 {% trans 'Name' %}
             </th>
-            {% for property in global_properties %}
+            {% for property in all_properties %}
                 <th>
                     {{property.name}}
                 </th>

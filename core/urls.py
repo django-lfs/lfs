@@ -37,6 +37,7 @@ urlpatterns += patterns('lfs.catalog.views',
     url(r'^reset-price-filter/(?P<category_slug>[-\w]+)/$', "reset_price_filter", name="lfs_reset_price_filter"),
     url(r'^reset-product-filter/(?P<category_slug>[-\w]+)/(?P<property_id>\d+)', "reset_filter", name="lfs_reset_product_filter"),
     url(r'^reset-all-product-filter/(?P<category_slug>[-\w]+)', "reset_all_filter", name="lfs_reset_all_product_filter"),
+    url(r'^select-variant$', "select_variant", name="lfs_select_variant"),
 )
 
 # Checkout

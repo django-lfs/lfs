@@ -62,7 +62,8 @@ def google_analytics_ecommerce(context):
 
 def _get_shipping(context):
     request = context.get("request")
-    slug = request.path.split("/")[-1]
+    product = context.get("product")
+    slug = product.slug
 
     product = lfs_get_object_or_404(Product, slug=slug)
     if product.deliverable == False:

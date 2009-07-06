@@ -11,6 +11,7 @@ from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+import lfs.core.utils
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.cart.views import add_to_cart
 from lfs.catalog.models import Category
@@ -20,8 +21,33 @@ from lfs.catalog.settings import SELECT
 from lfs.catalog.settings import CONTENT_PRODUCTS
 import lfs.catalog.utils
 from lfs.core.signals import lfs_sorting_changed
+from lfs.core.utils import LazyEncoder
 from lfs.utils import misc as lfs_utils
-import lfs.core.utils
+
+def select_variant(request):
+    """This is called via an ajax call if the combination of properties are
+    changed.
+    """
+    import pdb; pdb.set_trace()
+    
+    product_id = request.POST.get("product_id")
+    product = Product.objects.get(pk = product_id)
+
+    options = lfs_utils.parse_properties(request)
+    variant = product.get_variant(options)
+
+    if variant is None:
+        msg = _(u"The choosen combination of properties is not deliverable.")
+        variant = product.get_default_variant()
+    else:
+        msg = _(u"The product has been changed according to your selection.")
+    
+    result = simplejson.dumps({
+        "product" : product_inline(request, variant.id),
+        "message" : msg,
+    }, cls = LazyEncoder)
+    
+    return HttpResponse(result)
 
 def set_filter(request, category_slug, property_id, value=None, min=None, max=None):
     """Saves the given filter to session. Redirects to the category with given
@@ -374,7 +400,8 @@ def product_form_dispatcher(request):
 
             return lfs.core.utils.set_message_cookie(
                 variant.get_absolute_url(),
-                msg = _(u"The choosen combination is not deliverable"))
+                msg = _(u"The choosen combination of properties is not deliverable.")
+            )
 
         return HttpResponseRedirect(variant.get_absolute_url())
 

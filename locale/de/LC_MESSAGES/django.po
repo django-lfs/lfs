@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-04 16:13-0500\n"
+"POT-Creation-Date: 2009-07-06 16:24-0500\n"
 "PO-Revision-Date: 2009-02-22 07:20+0100\n"
 "Last-Translator: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
 "Language-Team: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
@@ -42,7 +42,7 @@ msgstr "Produkt"
 
 #: cart/models.py:65 cart/migrations/0001_initial.py:12 catalog/models.py:986
 #: catalog/migrations/0001_initial.py:64
-#: templates/manage/product/accessories_inline.html:94
+#: templates/manage/product/accessories_inline.html:95
 msgid "Quantity"
 msgstr "Menge"
 
@@ -69,13 +69,13 @@ msgstr "Titel"
 #: templates/manage/marketing/topseller_inline.html:37
 #: templates/manage/marketing/topseller_inline.html:88
 #: templates/manage/order/order.html:177
-#: templates/manage/product/accessories_inline.html:38
-#: templates/manage/product/accessories_inline.html:88
+#: templates/manage/product/accessories_inline.html:39
+#: templates/manage/product/accessories_inline.html:89
 #: templates/manage/product/products_inline.html:44
-#: templates/manage/product/related_products_inline.html:37
-#: templates/manage/product/related_products_inline.html:87
-#: templates/manage/product/variants.html:92
-#: templates/manage/product/variants.html:150
+#: templates/manage/product/related_products_inline.html:38
+#: templates/manage/product/related_products_inline.html:88
+#: templates/manage/product/variants.html:94
+#: templates/manage/product/variants.html:152
 #: templates/manage/properties/options_inline.html:13
 #: templates/manage/properties/pg_product_values.html:11
 #: templates/manage/properties/pg_products_inline.html:38
@@ -88,7 +88,7 @@ msgstr "Name"
 #: catalog/models.py:102 catalog/models.py:424
 #: catalog/migrations/0001_initial.py:40 catalog/migrations/0001_initial.py:80
 #: page/models.py:14 page/migrations/0001_initial.py:19
-#: templates/manage/product/variants.html:89
+#: templates/manage/product/variants.html:91
 msgid "Slug"
 msgstr "Slug"
 
@@ -157,7 +157,7 @@ msgstr "Bild"
 #: templates/manage/marketing/topseller_inline.html:91
 #: templates/manage/portlets/portlet_add.html:7
 #: templates/manage/portlets/portlet_edit.html:7
-#: templates/manage/product/accessories_inline.html:91
+#: templates/manage/product/accessories_inline.html:92
 #: templates/manage/product/images.html:38
 #: templates/manage/properties/options_inline.html:10
 #: templates/manage/properties/properties_inline.html:55
@@ -209,7 +209,7 @@ msgstr "Meta Description"
 #: templates/manage/category/selected_products.html:42
 #: templates/manage/order/order.html:174
 #: templates/manage/product/products_inline.html:47
-#: templates/manage/product/variants.html:147
+#: templates/manage/product/variants.html:149
 msgid "SKU"
 msgstr "Artikelnummer"
 
@@ -238,13 +238,13 @@ msgstr "Artikelnummer"
 #: templates/manage/marketing/topseller_inline.html:97
 #: templates/manage/order/order.html:183 templates/manage/order/orders.html:17
 #: templates/manage/payment/payment_method_prices.html:24
-#: templates/manage/product/accessories_inline.html:44
-#: templates/manage/product/accessories_inline.html:100
+#: templates/manage/product/accessories_inline.html:45
+#: templates/manage/product/accessories_inline.html:101
 #: templates/manage/product/products_inline.html:59
-#: templates/manage/product/related_products_inline.html:43
-#: templates/manage/product/related_products_inline.html:93
-#: templates/manage/product/variants.html:95
-#: templates/manage/product/variants.html:158
+#: templates/manage/product/related_products_inline.html:44
+#: templates/manage/product/related_products_inline.html:94
+#: templates/manage/product/variants.html:97
+#: templates/manage/product/variants.html:160
 #: templates/manage/properties/pg_products_inline.html:44
 #: templates/manage/properties/pg_products_inline.html:94
 #: templates/manage/shipping/shipping_method_prices.html:24
@@ -547,11 +547,11 @@ msgstr "Max"
 msgid "Standard"
 msgstr "Standard"
 
-#: catalog/settings.py:8 templates/manage/product/data.html:145
+#: catalog/settings.py:8 templates/manage/product/data.html:147
 msgid "Yes"
 msgstr "Ja"
 
-#: catalog/settings.py:9 templates/manage/product/data.html:147
+#: catalog/settings.py:9 templates/manage/product/data.html:149
 msgid "No"
 msgstr "Nein"
 
@@ -635,9 +635,13 @@ msgstr "Feste Schritte"
 msgid "Manual steps"
 msgstr "Manuelle Schritte"
 
-#: catalog/views.py:377
-msgid "The choosen combination is not deliverable"
-msgstr "Die gewählte Kombination ist nicht lieferbar"
+#: catalog/views.py:40 catalog/views.py:403
+msgid "The choosen combination of properties is not deliverable."
+msgstr "Die gewählte Kombination von Eigenschaften ist nicht lieferbar"
+
+#: catalog/views.py:43
+msgid "The product has been changed according to your selection."
+msgstr "Das Produkt wurde gemäß Ihrer Auswahl geändert."
 
 #: catalog/migrations/0001_initial.py:112
 msgid "Active Price"
@@ -801,17 +805,17 @@ msgstr "Checkouttyp"
 msgid "Top Menu"
 msgstr "Topmenu"
 
-#: core/templatetags/lfs_tags.py:144
+#: core/templatetags/lfs_tags.py:145
 #: portlet/templatetags/lfs_portlets_tags.py:107
 msgid "Information"
 msgstr "Information"
 
-#: core/templatetags/lfs_tags.py:364
+#: core/templatetags/lfs_tags.py:365
 #, python-format
 msgid "%s tag needs no argument"
 msgstr ""
 
-#: core/templatetags/lfs_tags.py:387
+#: core/templatetags/lfs_tags.py:388
 #, python-format
 msgid "%s tag needs product as argument"
 msgstr ""
@@ -1170,7 +1174,7 @@ msgid "Shop default values have been saved."
 msgstr "Standardwerte Shop wurden gespeichert."
 
 #: manage/views/shop.py:91 manage/views/categories/category.py:99
-#: manage/views/categories/seo.py:40 manage/views/product/product.py:135
+#: manage/views/categories/seo.py:40 manage/views/product/product.py:131
 msgid "Please correct the indicated errors."
 msgstr "Bitte korrigieren Sie die angezeigten Fehler."
 
@@ -1243,7 +1247,7 @@ msgstr "Zubehör wurde gelöscht."
 msgid "Accessories have been updated."
 msgstr "Zubehör wurde aktualisiert."
 
-#: manage/views/product/categories.py:87
+#: manage/views/product/categories.py:90
 msgid "Categories have been saved."
 msgstr "Kategorien wurden gespeichert."
 
@@ -1263,11 +1267,11 @@ msgstr "Bilder wurden aktualisiert."
 msgid "Active images has been updated."
 msgstr "Bilderstatus wurden aktualisiert."
 
-#: manage/views/product/product.py:119
+#: manage/views/product/product.py:115
 msgid "Sub type has been changed."
 msgstr "Produkttyp wurden gespeichert."
 
-#: manage/views/product/product.py:133
+#: manage/views/product/product.py:129
 msgid "Product stock data has been saved."
 msgstr "Produkt-Lagerdaten wurden gespeichert."
 
@@ -1512,7 +1516,7 @@ msgstr "Kürzlich angesehene Produkte"
 
 #: portlet/templatetags/lfs_portlets_tags.py:135
 #: templates/manage/product/product.html:100
-#: templates/manage/product/related_products_inline.html:76
+#: templates/manage/product/related_products_inline.html:77
 msgid "Related Products"
 msgstr "Zugehörige Produkte"
 
@@ -1588,7 +1592,7 @@ msgstr "Produktübersicht"
 
 #: templates/manage/manage_base.html:97
 #: templates/manage/product/properties.html:2
-#: templates/manage/product/variants.html:2
+#: templates/manage/product/variants.html:4
 msgid "Property Groups"
 msgstr "Eigenschaftsgruppen"
 
@@ -1678,7 +1682,7 @@ msgstr "Abbrechen"
 
 #: templates/manage/category/category_filter.html:4
 #: templates/manage/category/category_select.html:4
-#: templates/manage/product/variants.html:117
+#: templates/manage/product/variants.html:119
 msgid "All"
 msgstr "Alle"
 
@@ -1752,10 +1756,10 @@ msgstr "Portlets"
 #: templates/manage/category/selected_products.html:11
 #: templates/manage/marketing/topseller_inline.html:9
 #: templates/manage/marketing/topseller_inline.html:13
-#: templates/manage/product/accessories_inline.html:13
+#: templates/manage/product/accessories_inline.html:14
 #: templates/manage/product/products_inline.html:11
 #: templates/manage/product/products_inline.html:16
-#: templates/manage/product/related_products_inline.html:13
+#: templates/manage/product/related_products_inline.html:14
 #: templates/manage/product/selectable_products_inline.html:9
 #: templates/manage/product/selectable_products_inline.html:10
 #: templates/manage/product/selectable_products_inline.html:21
@@ -1768,10 +1772,10 @@ msgstr "Erstes"
 #: templates/manage/category/selected_products.html:12
 #: templates/manage/marketing/topseller_inline.html:11
 #: templates/manage/marketing/topseller_inline.html:14
-#: templates/manage/product/accessories_inline.html:14
+#: templates/manage/product/accessories_inline.html:15
 #: templates/manage/product/products_inline.html:14
 #: templates/manage/product/products_inline.html:17
-#: templates/manage/product/related_products_inline.html:14
+#: templates/manage/product/related_products_inline.html:15
 #: templates/manage/product/selectable_products_inline.html:15
 #: templates/manage/product/selectable_products_inline.html:16
 #: templates/manage/product/selectable_products_inline.html:26
@@ -1785,10 +1789,10 @@ msgstr "Zurück"
 #: templates/manage/category/selected_products.html:25
 #: templates/manage/marketing/topseller_inline.html:21
 #: templates/manage/marketing/topseller_inline.html:26
-#: templates/manage/product/accessories_inline.html:26
+#: templates/manage/product/accessories_inline.html:27
 #: templates/manage/product/products_inline.html:25
 #: templates/manage/product/products_inline.html:29
-#: templates/manage/product/related_products_inline.html:26
+#: templates/manage/product/related_products_inline.html:27
 #: templates/manage/product/selectable_products_inline.html:37
 #: templates/manage/product/selectable_products_inline.html:38
 #: templates/manage/product/selectable_products_inline.html:48
@@ -1802,9 +1806,9 @@ msgstr "Vor"
 #: templates/manage/category/selected_products.html:26
 #: templates/manage/marketing/topseller_inline.html:23
 #: templates/manage/marketing/topseller_inline.html:27
-#: templates/manage/product/accessories_inline.html:27
+#: templates/manage/product/accessories_inline.html:28
 #: templates/manage/product/products_inline.html:30
-#: templates/manage/product/related_products_inline.html:27
+#: templates/manage/product/related_products_inline.html:28
 #: templates/manage/product/selectable_products_inline.html:43
 #: templates/manage/product/selectable_products_inline.html:44
 #: templates/manage/product/selectable_products_inline.html:51
@@ -1817,11 +1821,11 @@ msgstr "Letztes"
 #: templates/manage/category/selected_products.html:45
 #: templates/manage/marketing/topseller_inline.html:40
 #: templates/manage/marketing/topseller_inline.html:94
-#: templates/manage/product/accessories_inline.html:41
-#: templates/manage/product/accessories_inline.html:97
+#: templates/manage/product/accessories_inline.html:42
+#: templates/manage/product/accessories_inline.html:98
 #: templates/manage/product/products_inline.html:50
-#: templates/manage/product/related_products_inline.html:40
-#: templates/manage/product/related_products_inline.html:90
+#: templates/manage/product/related_products_inline.html:41
+#: templates/manage/product/related_products_inline.html:91
 #: templates/manage/properties/pg_products_inline.html:41
 #: templates/manage/properties/pg_products_inline.html:91
 msgid "Sub type"
@@ -2112,7 +2116,7 @@ msgstr "Ändern"
 
 #: templates/manage/portlets/portlets_inline.html:101
 #: templates/manage/product/images.html:69
-#: templates/manage/product/variants.html:202
+#: templates/manage/product/variants.html:204
 #: templates/manage/properties/options_inline.html:59
 #: templates/manage/properties/step_inline.html:72
 #: templates/manage/reviews/manage_reviews.html:28
@@ -2132,20 +2136,20 @@ msgstr "Neues Portlet hinzufügen"
 msgid "Add portlet"
 msgstr "Portlet hinzufügen"
 
-#: templates/manage/product/accessories_inline.html:73
+#: templates/manage/product/accessories_inline.html:74
 msgid "Add to accessories"
 msgstr "Zu Zubehör hinzufügen"
 
-#: templates/manage/product/accessories_inline.html:77
+#: templates/manage/product/accessories_inline.html:78
 #: templates/manage/product/product.html:99
 msgid "Accessories"
 msgstr "Zubehör"
 
-#: templates/manage/product/accessories_inline.html:145
+#: templates/manage/product/accessories_inline.html:146
 msgid "Save accessories"
 msgstr "Zubehör speichern"
 
-#: templates/manage/product/accessories_inline.html:150
+#: templates/manage/product/accessories_inline.html:151
 msgid "Remove from accessories"
 msgstr "Von Zubehör entfernen"
 
@@ -2171,7 +2175,7 @@ msgstr "Es gibt keine Kategorien"
 msgid "Product data"
 msgstr "Produktdaten"
 
-#: templates/manage/product/data.html:224
+#: templates/manage/product/data.html:226
 msgid "Save data"
 msgstr "Daten speichern"
 
@@ -2180,7 +2184,7 @@ msgid "Active images"
 msgstr "Zugewiesene Bilder"
 
 #: templates/manage/product/images.html:67
-#: templates/manage/product/variants.html:203
+#: templates/manage/product/variants.html:205
 msgid "Update"
 msgstr "Aktualisieren"
 
@@ -2215,7 +2219,7 @@ msgid "Change"
 msgstr "Ändern"
 
 #: templates/manage/product/product.html:96
-#: templates/manage/product/variants.html:82
+#: templates/manage/product/variants.html:84
 msgid "Variants"
 msgstr "Varianten"
 
@@ -2224,7 +2228,7 @@ msgid "Stock"
 msgstr "Lagerdaten"
 
 #: templates/manage/product/products_inline.html:41
-#: templates/manage/product/variants.html:144
+#: templates/manage/product/variants.html:146
 msgid "URL"
 msgstr "URL"
 
@@ -2242,7 +2246,7 @@ msgid "View"
 msgstr "Ansicht"
 
 #: templates/manage/product/properties.html:18
-#: templates/manage/product/variants.html:17
+#: templates/manage/product/variants.html:19
 msgid "Update property groups"
 msgstr "Eigenschaftsgruppen aktualisieren"
 
@@ -2255,11 +2259,11 @@ msgstr "Eigenschaftswerte"
 msgid "Update properties"
 msgstr "Eigenschaften aktualisieren"
 
-#: templates/manage/product/related_products_inline.html:72
+#: templates/manage/product/related_products_inline.html:73
 msgid "Add to related products"
 msgstr "Zu zugehörige Produkte hinzufügen"
 
-#: templates/manage/product/related_products_inline.html:123
+#: templates/manage/product/related_products_inline.html:124
 msgid "Remove from related products"
 msgstr "Von zugehörige Produkte entfernen"
 
@@ -2289,54 +2293,54 @@ msgstr "Lagerdaten"
 msgid "Save stock"
 msgstr "Lagerdaten sichern"
 
-#: templates/manage/product/variants.html:21
+#: templates/manage/product/variants.html:23
 msgid "Local properties"
 msgstr "Lokale Eigenschaften"
 
-#: templates/manage/product/variants.html:28
+#: templates/manage/product/variants.html:30
 #: templates/manage/properties/add_property.html:20
 #: templates/manage/properties/add_property.html:24
 #: templates/manage/properties/add_property.html:29
 msgid "Add property"
 msgstr "Eigenschaft hinzufügen"
 
-#: templates/manage/product/variants.html:36
-#: templates/manage/product/variants.html:37
+#: templates/manage/product/variants.html:38
+#: templates/manage/product/variants.html:39
 msgid "Up"
 msgstr "Hoch"
 
-#: templates/manage/product/variants.html:45
-#: templates/manage/product/variants.html:46
+#: templates/manage/product/variants.html:47
+#: templates/manage/product/variants.html:48
 msgid "Down"
 msgstr "Runter"
 
-#: templates/manage/product/variants.html:54
+#: templates/manage/product/variants.html:56
 msgid "Delete property"
 msgstr "Eigenschaft löschen"
 
-#: templates/manage/product/variants.html:64
+#: templates/manage/product/variants.html:66
 #: templates/manage/properties/options_inline.html:60
 msgid "Delete option"
 msgstr "Option löschen"
 
-#: templates/manage/product/variants.html:76
+#: templates/manage/product/variants.html:78
 #: templates/manage/properties/options_inline.html:31
 msgid "Add option"
 msgstr "Option hinzufügen"
 
-#: templates/manage/product/variants.html:128
+#: templates/manage/product/variants.html:130
 msgid "Add variant(s)"
 msgstr "Variant(en) hinzufügen"
 
-#: templates/manage/product/variants.html:195
+#: templates/manage/product/variants.html:197
 msgid "Edit variant"
 msgstr "Variante bearbeiten"
 
-#: templates/manage/product/variants.html:207
+#: templates/manage/product/variants.html:209
 msgid "Display type"
 msgstr "Ansichtsart"
 
-#: templates/manage/product/variants.html:212
+#: templates/manage/product/variants.html:214
 msgid "Change variant display type"
 msgstr "Ansichtsart für Varianten ändern"
 

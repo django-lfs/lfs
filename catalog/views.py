@@ -28,8 +28,6 @@ def select_variant(request):
     """This is called via an ajax call if the combination of properties are
     changed.
     """
-    import pdb; pdb.set_trace()
-    
     product_id = request.POST.get("product_id")
     product = Product.objects.get(pk = product_id)
 

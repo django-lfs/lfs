@@ -2182,7 +2182,7 @@ msgstr "Zugewiesene Bilder"
 #: templates/manage/product/images.html:67
 #: templates/manage/product/variants.html:203
 msgid "Update"
-msgstr "Aktualsieren"
+msgstr "Aktualisieren"
 
 #: templates/manage/product/images.html:73
 msgid "There are no images"

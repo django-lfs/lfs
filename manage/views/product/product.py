@@ -93,11 +93,7 @@ def manage_product(request, product_id, template_name="manage/product/product.ht
     return render_to_response(template_name, RequestContext(request, {
         "product" : product,
         "product_data" : product_data_form(request, product_id),
-        "categories" : manage_categories(request, product_id),
         "images" : manage_images(request, product_id, as_string=True),
-        "variants" : manage_variants(request, product.id),
-        "accessories" : manage_accessories(request, product.id),
-        "related_products" : manage_related_products(request, product.id),
         "selectable_products" : selectable_products_inline(request, as_string=True),
         "seo" : manage_seo(request, product_id),
         "stock" : stock(request, product_id),

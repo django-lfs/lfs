@@ -43,6 +43,13 @@ urlpatterns += patterns('lfs.manage.views',
     url(r'^change-product-subtype/(?P<product_id>\d*)$', "change_subtype", name="lfs_change_product_subtype"),
 )
 
+urlpatterns += patterns('lfs.manage.views',
+    url(r'^product-categories-tab/(?P<product_id>\d*)$', "manage_categories", name="lfs_product_categories_tab"),
+    url(r'^product-accessories-tab/(?P<product_id>\d*)$', "manage_accessories_inline", name="lfs_manage_product_accessories_tab"),
+    url(r'^product-relateds-tab/(?P<product_id>\d*)$', "manage_related_products_inline", name="lfs_manage_product_related_products_tab"),
+    url(r'^product-variants-tab/(?P<product_id>\d*)$', "manage_variants", name="lfs_manage_product_variants_tab"),
+)
+
 # Products
 urlpatterns += patterns('lfs.manage.views.product.products',
     url(r'^products$', "products", name="lfs_manage_products"),

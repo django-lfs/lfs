@@ -37,7 +37,7 @@ def get_cart_costs(request, cart, total=False):
     if cart is None:
         return {"price" : 0, "tax" : 0}
 
-    cache_key = "cart-costs-%s" % cart.id
+    cache_key = "cart-costs-%s-%s" % (total, cart.id)
     cart_costs = cache.get(cache_key)
 
     if cart_costs is None:

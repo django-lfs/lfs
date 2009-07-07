@@ -23,7 +23,7 @@ def property_option_deleted_listender(sender, instance, **kwargs):
     """
     property = instance.property
     for ppv in ProductPropertyValue.objects.filter(
-        property=property, value=instance.id):
+        property=property, value=str(instance.id)):
         ppv.delete()
 pre_delete.connect(property_option_deleted_listender, sender=PropertyOption)
 

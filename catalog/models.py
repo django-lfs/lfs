@@ -111,6 +111,7 @@ class Category(models.Model):
     description = models.TextField(_(u"Description"), blank=True)
     image = ImageWithThumbsField(_(u"Image"), upload_to="images", blank=True, null=True, sizes=((60, 60), (100, 100), (200, 200), (400, 400)))
     position = models.IntegerField(_(u"Position"), default=1000)
+    exclude_from_navigation = models.BooleanField(_(u"Exclude from navigation"), default=False)
 
     static_block = models.ForeignKey("StaticBlock", verbose_name=_(u"Static block"), blank=True, null=True, related_name="categories")
     content = models.IntegerField(_(u"Content"), default=CONTENT_PRODUCTS, choices=CONTENT_CHOICES)
@@ -774,7 +775,7 @@ class Product(models.Model):
         product is for sale.
         """
         return self.get_price_gross() - self.get_tax()
-    
+
     def get_for_sale_price(self):
         """returns the sale price for the product. Takes care whether the product
         is a variant and if so the for sale price is active.
@@ -786,7 +787,7 @@ class Product(models.Model):
                 return self.parent.for_sale_price
         else:
             return self.for_sale_price
-            
+
     def get_global_properties(self):
         """Returns all global properties for the product.
         """

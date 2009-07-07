@@ -43,7 +43,10 @@ class CategoriesPortlet(Portlet):
 
         categories = []
         for category in Category.objects.filter(parent = None):
-
+            
+            if category.exclude_from_navigation:
+                continue
+                
             if category in current_categories:
                 children = self._categories_portlet_children(
                     request, current_categories, category)
@@ -71,6 +74,9 @@ class CategoriesPortlet(Portlet):
         """
         categories = []
         for category in category.category_set.all():
+
+            if category.exclude_from_navigation:
+                continue
 
             if category in current_categories:
                 children = self._categories_portlet_children(

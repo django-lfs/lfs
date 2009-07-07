@@ -17,7 +17,7 @@ from lfs.catalog.models import DeliveryTime
 class CategoryAdmin(admin.ModelAdmin):
     """
     """
-    repopulated_fields = {"slug": ("name",)}
+    prepopulated_fields = {"slug": ("name",)}
 admin.site.register(Category, CategoryAdmin)
 
 class ProductAdmin(admin.ModelAdmin):

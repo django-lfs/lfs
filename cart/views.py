@@ -144,7 +144,8 @@ def add_accessory_to_cart(request, product_id, quantity=1):
                     session_cart_item.amount += quantity
 
     request.session["cart_items"] = session_cart_items
-
+    
+    cart_changed.send(cart, request=request)
     return HttpResponse(added_to_cart_items(request))
 
 def add_to_cart(request, product_id=None):

@@ -10,8 +10,8 @@
           method="post">
 
         <div class="top-buttons">
-            <a class="criterion-add-first-button"
-               href="{% url lfs_add_criterion %}">
+            <a href="{% url lfs_add_criterion %}"
+               class="criterion-add-first-button">
                 <img src="{{MEDIA_URL}}lfs/icons/add.png" /
                      alt="Add" />
                 
@@ -19,11 +19,11 @@
             </a>
         </div>
 
-        <div class="criteria">
+        <table class="criteria">
             {% for criterion in criteria %}
                 {{criterion|safe}}
             {% endfor %}
-        </div>  
+        </table>  
 
         <div class="manage-form-buttons">
             <input class="price-criterion-save-button" 

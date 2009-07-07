@@ -23,10 +23,6 @@
         <field type="CharField" name="name">Right</field>
     </object>
 
-    <object pk="1" model="portlet.categoriesportlet">
-        <field type="CharField" name="title">Navigation</field>
-    </object>
-
     <!-- Countries -->
     <object pk="1" model="core.country">
       <field type="CharField" name="code">de</field>

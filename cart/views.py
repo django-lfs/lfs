@@ -26,44 +26,44 @@ def cart(request, template_name="cart/cart.html"):
     return render_to_response(template_name, RequestContext(request, {
         "cart_inline" : cart_inline(request),
     }))
-        
+
 def cart_inline(request, template_name="cart/cart_inline.html"):
-    """The actual content of the cart. This is factored out to be reused within 
+    """The actual content of the cart. This is factored out to be reused within
     'normal' and ajax requests.
-    """    
+    """
     cart = cart_utils.get_cart(request)
     shopping_url = lfs.cart.utils.get_go_on_shopping_url(request)
     if cart is None:
         return render_to_string(template_name, RequestContext(request, {
             "shopping_url" : shopping_url,
         }))
-        
+
     shop = core_utils.get_default_shop()
     countries = shop.countries.all()
     selected_country = shipping_utils.get_selected_shipping_country(request)
-    
+
     # Get default shipping method, so that we have a one in any case.
     selected_shipping_method = shipping_utils.get_selected_shipping_method(request)
     selected_payment_method = payment_utils.get_selected_payment_method(request)
-        
+
     shipping_costs = shipping_utils.get_shipping_costs(request,
         selected_shipping_method)
-    
+
     payment_costs = payment_utils.get_payment_costs(request,
         selected_payment_method)
-    
+
     cart_costs = cart_utils.get_cart_costs(request, cart)
     cart_price = \
         cart_costs["price"] + shipping_costs["price"] + payment_costs["price"]
 
     cart_tax = \
         cart_costs["tax"] + shipping_costs["tax"] + payment_costs["tax"]
-    
+
     max_delivery_time = cart_utils.get_cart_max_delivery_time(request, cart)
-    
+
     # Calc delivery date for cart (which is the maximum of all cart items)
     max_delivery_date = cart_utils.get_cart_max_delivery_time(request, cart)
-    
+
     return render_to_string(template_name, RequestContext(request, {
         "cart" : cart,
         "max_delivery_date" : max_delivery_date,
@@ -71,7 +71,7 @@ def cart_inline(request, template_name="cart/cart_inline.html"):
         "cart_tax" : cart_tax,
         "shipping_methods" : shipping_utils.get_valid_shipping_methods(request),
         "selected_shipping_method" : selected_shipping_method,
-        "shipping_price" : shipping_costs["price"],        
+        "shipping_price" : shipping_costs["price"],
         "payment_methods" : payment_utils.get_valid_payment_methods(request),
         "selected_payment_method" : selected_payment_method,
         "payment_price" : payment_costs["price"],
@@ -85,7 +85,7 @@ def added_to_cart(request, template_name="cart/added_to_cart.html"):
     """Shows the product that has been added to the cart.
     """
     cart_items = request.session.get("cart_items", [])
-    
+
     return render_to_response(template_name, RequestContext(request, {
         "plural" : len(cart_items) > 1,
         "shopping_url" : request.META.get("HTTP_REFERER", "/"),
@@ -97,11 +97,11 @@ def added_to_cart_items(request, template_name="cart/added_to_cart_items.html"):
     """Displays the added items for the added-to-cart view.
     """
     cart_items = request.session.get("cart_items", [])
-    
+
     total = 0
     for cart_item in cart_items:
         total += (cart_item.product.get_price() * cart_item.amount)
-    
+
     return render_to_string(template_name, {
         "total" : total,
         "cart_items" : cart_items,
@@ -109,7 +109,7 @@ def added_to_cart_items(request, template_name="cart/added_to_cart_items.html"):
         "shopping_url" : request.META.get("HTTP_REFERER", "/"),
         "product_accessories" : cart_items[0].product.get_accessories(),
     })
-            
+
 # Actions
 def add_accessory_to_cart(request, product_id, quantity=1):
     """Adds an accessory to the cart and updates the added-to-cart view.
@@ -118,16 +118,16 @@ def add_accessory_to_cart(request, product_id, quantity=1):
         quantity = float(quantity)
     except TypeError:
         quantity = 1
-    
+
     product = lfs_get_object_or_404(Product, pk=product_id)
-    
+
     session_cart_items = request.session.get("cart_items", [])
     cart = cart_utils.get_cart(request)
 
     # Add product to cart
     try:
         cart_item = CartItem.objects.get(cart=cart, product=product)
-    except ObjectDoesNotExist:        
+    except ObjectDoesNotExist:
         cart_item = CartItem.objects.create(
             cart=cart, product=product, amount=quantity)
         session_cart_items.append(cart_item)
@@ -135,15 +135,18 @@ def add_accessory_to_cart(request, product_id, quantity=1):
         cart_item.amount += quantity
         cart_item.save()
         
-        # Update save cart item within session        
-        for session_cart_item in session_cart_items:
-            if cart_item.product == session_cart_item.product:
-                session_cart_item.amount += quantity
-    
+        if cart_item not in session_cart_items:
+            session_cart_items.append(cart_item)
+        else:    
+            # Update save cart item within session
+            for session_cart_item in session_cart_items:
+                if cart_item.product == session_cart_item.product:
+                    session_cart_item.amount += quantity
+
     request.session["cart_items"] = session_cart_items
 
     return HttpResponse(added_to_cart_items(request))
-    
+
 def add_to_cart(request, product_id=None):
     """Adds the amount of the product with given id to the cart. If the product
     is already within the cart the amount is increased.
@@ -152,29 +155,29 @@ def add_to_cart(request, product_id=None):
         product_id = request.REQUEST.get("product_id")
 
     product = lfs_get_object_or_404(Product, pk=product_id)
-    
+
     if product.sub_type == PRODUCT_WITH_VARIANTS:
         variant_id = request.POST.get("variant_id")
         product = lfs_get_object_or_404(Product, pk=variant_id)
-    
+
     try:
         quantity = float(request.POST.get("quantity", 1))
     except TypeError:
         quantity = 1
-    
+
     cart = cart_utils.get_or_create_cart(request)
 
     try:
         cart_item = CartItem.objects.get(cart = cart, product = product)
-    except ObjectDoesNotExist:        
+    except ObjectDoesNotExist:
         cart_item = CartItem(cart=cart, product=product, amount=quantity)
         cart_item.save()
     else:
         cart_item.amount += quantity
         cart_item.save()
-    
+
     cart_items = [cart_item]
-    
+
     # Add selected accessories to cart
     for key, value in request.POST.items():
         if key.startswith("accessory"):
@@ -183,29 +186,29 @@ def add_to_cart(request, product_id=None):
                 accessory = Product.objects.get(pk=accessory_id)
             except ObjectDoesNotExist:
                 continue
-            
+
             # Get quantity
             quantity = request.POST.get("quantity-%s" % accessory_id, 0)
             try:
                 quantity = float(quantity)
             except TypeError:
                 quantity = 1
-                
+
             try:
                 cart_item = CartItem.objects.get(cart = cart, product = accessory)
-            except ObjectDoesNotExist:        
+            except ObjectDoesNotExist:
                 cart_item = CartItem(cart=cart, product = accessory, amount=quantity)
                 cart_item.save()
             else:
                 cart_item.amount += quantity
                 cart_item.save()
-            
+
             cart_items.append(cart_item)
-    
+
     # Store cart items for retrieval within added_to_cart.
     request.session["cart_items"] = cart_items
     cart_changed.send(cart, request=request)
-    
+
     url = reverse("lfs.cart.views.added_to_cart")
     return HttpResponseRedirect(url)
 
@@ -216,16 +219,16 @@ def delete_cart_item(request, cart_item_id):
 
     cart = cart_utils.get_cart(request)
     cart_changed.send(cart, request=request)
-    
+
     return HttpResponse(cart_inline(request))
-    
+
 def refresh_cart(request):
-    """Refreshes the cart after some changes has been taken place: the amount 
+    """Refreshes the cart after some changes has been taken place: the amount
     of a product or shipping/payment method.
     """
     cart = cart_utils.get_cart(request)
     customer = customer_utils.get_or_create_customer(request)
-    
+
     # Update country
     country = request.POST.get("country")
     if customer.selected_shipping_address:
@@ -235,22 +238,22 @@ def refresh_cart(request):
         customer.selected_invoice_address.country_id = country
         customer.selected_invoice_address.save()
     customer.selected_country_id = country
-    
-    # NOTE: The customer has to be saved already here in order to calculate 
-    # a possible new valid shippig method below, which coulb be triggered by 
+
+    # NOTE: The customer has to be saved already here in order to calculate
+    # a possible new valid shippig method below, which coulb be triggered by
     # the changing of the shipping country.
     customer.save()
 
     # Update Amounts
     for item in cart.items():
-        amount = request.POST.get("amount-cart-item_%s" % item.id, 0) 
+        amount = request.POST.get("amount-cart-item_%s" % item.id, 0)
         item.amount = amount
         item.save()
-    
+
     # IMPORTANT: We have to send the signal already here, because the valid
     # shipping methods might be dependent on the price.
     cart_changed.send(cart, request=request)
-        
+
     # Update shipping method
     customer.selected_shipping_method_id = request.POST.get("shipping_method")
 
@@ -258,10 +261,10 @@ def refresh_cart(request):
     if customer.selected_shipping_method not in valid_shipping_methods:
         customer.selected_shipping_method = shipping_utils.get_default_shipping_method(request)
 
-    # Update payment method    
+    # Update payment method
     customer.selected_payment_method_id = request.POST.get("payment_method")
-    
+
     # Last but not least we save the customer ...
     customer.save()
-    
+
     return HttpResponse(cart_inline(request))

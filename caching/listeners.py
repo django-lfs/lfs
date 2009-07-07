@@ -174,7 +174,8 @@ def update_cart_cache(instance):
     cache.delete("cart-%s" % instance.user)
     cache.delete("cart-%s" % instance.session)
     cache.delete("cart-items-%s" % instance.id)
-    cache.delete("cart-costs-%s" % instance.id)
+    cache.delete("cart-costs-True-%s" % instance.id)
+    cache.delete("cart-costs-False-%s" % instance.id)
     cache.delete("shipping-delivery-time-cart")
     cache.delete("shipping-delivery-time")
         

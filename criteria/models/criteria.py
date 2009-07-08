@@ -408,10 +408,10 @@ class PaymentMethodCriterion(models.Model, Criterion):
         else:
             is_payment_method = False
 
-        if is_payment_method and self.operator == IS:
+        if not is_payment_method and self.operator == IS:
             payment_method = lfs.payment.utils.get_selected_payment_method(request)
             return payment_method in self.payment_methods.all()
-        elif is_payment_method and self.operator == IS_NOT:
+        elif not is_payment_method and self.operator == IS_NOT:
             payment_method = lfs.payment.utils.get_selected_payment_method(request)
             return payment_method not in self.payment_methods.all()
         elif self.operator == IS_VALID:

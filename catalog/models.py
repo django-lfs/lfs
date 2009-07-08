@@ -421,7 +421,7 @@ class Product(models.Model):
             Otherwise from the parent product (only relevant for variants)
     """
     # All products
-    name = models.CharField(_(u"Name"), max_length=80)
+    name = models.CharField(_(u"Name"), max_length=80, blank=True)
     slug = models.SlugField(_(u"Slug"), unique=True, max_length=80)
     sku = models.CharField(_(u"SKU"), blank=True, max_length=30)
     price = models.FloatField(_(u"Price"), default=0.0)

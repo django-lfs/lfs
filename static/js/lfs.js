@@ -41,10 +41,25 @@ $(function() {
         "txtImage" : "Bild",
         "txtOf" : " von "
     });
-
-    $("select.property").livequery("change", function() {
+    
+    //  TODO: take url to html
+    $("input.product").livequery("change", function() {
+        var variant_id = $(this).attr("value");
         $("#product-form").ajaxSubmit({
             url : "/select-variant",
+            data : {"variant_id" : variant_id},
+            success : function(data) {
+                var data = JSON.parse(data);
+                $("#product-inline").html(data["product"]);
+                $.jGrowl(data["message"]);
+            }
+        });
+    });
+
+    //  TODO: take url to html
+    $("select.property").livequery("change", function() {
+        $("#product-form").ajaxSubmit({
+            url : "/select-variant-from-properties",
             success : function(data) {
                 var data = JSON.parse(data);
                 $("#product-inline").html(data["product"]);

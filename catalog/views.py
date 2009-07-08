@@ -28,6 +28,20 @@ def select_variant(request):
     """This is called via an ajax call if the combination of properties are
     changed.
     """
+    variant_id = request.POST.get("variant_id")
+    msg = _(u"The product has been changed according to your selection.")
+
+    result = simplejson.dumps({
+        "product" : product_inline(request, variant_id),
+        "message" : msg,
+    }, cls = LazyEncoder)
+    
+    return HttpResponse(result)
+
+def select_variant_from_properties(request):
+    """This is called via an ajax call if the combination of properties are
+    changed.
+    """
     product_id = request.POST.get("product_id")
     product = Product.objects.get(pk = product_id)
 

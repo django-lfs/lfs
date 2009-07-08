@@ -26,9 +26,6 @@ from lfs.shipping.models import ShippingMethod
 class Criterion(object):
     """Base class for all lfs criteria.
     """
-    content_object = generic.GenericRelation(CriteriaObjects,
-        object_id_field="criterion_id", content_type_field="criterion_type")
-    
     class Meta:
         app_label = "criteria"
 
@@ -400,11 +397,19 @@ class PaymentMethodCriterion(models.Model, Criterion):
     def is_valid(self, request, product=None):
         """Returns True if the criterion is valid.
         """
-        import lfs.payment.utils
-        payment_method = lfs.payment.utils.get_selected_payment_method(request)
-        if self.operator == IS:
+        # see ShippingMethodCriterion for what's going on here
+        import lfs.shipping.utils
+        content_object = self.criteria_objects.filter()[0].content
+        if isinstance(content_object, PaymentMethod):
+            is_payment_method = True
+        else:
+            is_payment_method = False
+
+        if is_payment_method and self.operator == IS:
+            payment_method = lfs.payment.utils.get_selected_payment_method(request)
             return payment_method in self.payment_methods.all()
-        elif self.operator == IS_NOT:
+        elif is_payment_method and self.operator == IS_NOT:
+            payment_method = lfs.payment.utils.get_selected_payment_method(request)
             return payment_method not in self.payment_methods.all()
         elif self.operator == IS_VALID:
             for pm in self.payment_methods.all():
@@ -457,6 +462,9 @@ class ShippingMethodCriterion(models.Model, Criterion):
     operator = models.PositiveIntegerField(_(u"Operator"), blank=True, null=True, choices=SELECT_OPERATORS)
     shipping_methods = models.ManyToManyField(ShippingMethod, verbose_name=_(u"Shipping methods"))
 
+    criteria_objects = generic.GenericRelation(CriteriaObjects,
+        object_id_field="criterion_id", content_type_field="criterion_type")
+
     def __unicode__(self):
         values = []
         for value in self.value.all():
@@ -482,11 +490,26 @@ class ShippingMethodCriterion(models.Model, Criterion):
     def is_valid(self, request, product=None):
         """Returns True if the criterion is valid.
         """
+        # Check whether the criteria is part of a shipping method if so the
+        # operator IS and IS_NOT are not allowed. This will later exluded by the
+        # UID.
+
+        # The reason why we have to check this is that the get_selected_shipping_method
+        # checks for valid shipping methods and call this method again, so that
+        # we get an infinte recursion.
+
         import lfs.shipping.utils
-        shipping_method = lfs.shipping.utils.get_selected_shipping_method(request)
-        if self.operator == IS:
+        content_object = self.criteria_objects.filter()[0].content
+        if isinstance(content_object, ShippingMethod):
+            is_shipping_method = True
+        else:
+            is_shipping_method = False
+
+        if not is_shipping_method and self.operator == IS:
+            shipping_method = lfs.shipping.utils.get_selected_shipping_method(request)
             return shipping_method in self.shipping_methods.all()
-        elif self.operator == IS_NOT:
+        elif not is_shipping_method and self.operator == IS_NOT:
+            shipping_method = lfs.shipping.utils.get_selected_shipping_method(request)
             return shipping_method not in self.shipping_methods.all()
         elif self.operator == IS_VALID:
             for sm in self.shipping_methods.all():

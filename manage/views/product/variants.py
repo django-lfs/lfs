@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ModelForm
 from django.http import HttpResponse
 from django.template import RequestContext
+from django.template.defaultfilters import slugify
 from django.template.loader import render_to_string
 from django.utils import simplejson
 
@@ -259,35 +260,33 @@ def add_variants(request, product_id):
             if value == "all":
                 temp = []
                 for option in PropertyOption.objects.filter(property=property_id):
-                    temp.append("%s|%s" % (property_id, option.id))
+                    temp.append("%s|%s|%s" % (property_id, option.id, option.name))
                 properties.append(temp)
             else:
-                properties.append(["%s|%s" % (property_id, value)])
+                properties.append(["%s|%s|%s" % (property_id, value, option.name)])
 
     # Create a variant for every requested option combination
-    i = 0
-    for options in manage_utils.cartesian_product(*properties):
+    for i, options in enumerate(manage_utils.cartesian_product(*properties)):
 
         if product.has_variant(options):
             continue
 
         price = request.POST.get("price")
 
-        i+=1
-        while 1:
-            name = "%s-%s" % (product.name, i)
-            slug = "%s-%s" % (product.slug, i)
-            sku = "%s-%s" % (product.sku, i)
-            if not Product.objects.filter(slug=slug):
-                break
-            i+=1
+        slug = ""
+        for option in options:
+            name = option.split("|")[2]
+            slug += "-" + slugify(name)
 
-        variant = Product(slug=slug, sku=sku, name=name, parent=product, price=price, sub_type=VARIANT)
+        slug = "%s%s" % (product.slug, slug)
+        sku = "%s-%s" % (product.sku, i)
+
+        variant = Product(slug=slug, sku=sku, parent=product, price=price, sub_type=VARIANT)
         variant.save()
 
         # Save the value for this product and property
         for option in options:
-            property_id, option_id = option.split("|")
+            property_id, option_id, dummy = option.split("|")
             pvo = ProductPropertyValue(product = variant, property_id = property_id, value=option_id)
             pvo.save()
 

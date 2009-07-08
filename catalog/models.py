@@ -473,7 +473,7 @@ class Product(models.Model):
 
     # Product Variants
     parent = models.ForeignKey("self", blank=True, null=True, verbose_name=_(u"Parent"), related_name="variants")
-    active_name = models.BooleanField(_(u"Active name"), default=True)
+    active_name = models.BooleanField(_(u"Active name"), default=False)
     active_sku = models.BooleanField(_(u"Active SKU"), default=True)
     active_short_description = models.BooleanField(_(u"Active short description"), default=False)
     active_description = models.BooleanField(_(u"Active description"), default=False)

@@ -372,6 +372,9 @@ class PaymentMethodCriterion(models.Model, Criterion):
     operator = models.PositiveIntegerField(_(u"Operator"), blank=True, null=True, choices=SELECT_OPERATORS)
     payment_methods = models.ManyToManyField(PaymentMethod, verbose_name=_(u"Payment methods"))
 
+    criteria_objects = generic.GenericRelation(CriteriaObjects,
+        object_id_field="criterion_id", content_type_field="criterion_type")
+
     def __unicode__(self):
         values = []
         for value in self.value.all():

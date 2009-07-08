@@ -9,6 +9,8 @@ CONTAIN = 5
 
 IS = 10
 IS_NOT = 11
+IS_VALID = 12
+IS_NOT_VALID = 13
 
 NUMBER_OPERATORS = ( 
     (EQUAL, _(u"Equal to")),
@@ -26,4 +28,6 @@ STRING_OPERATORS = (
 SELECT_OPERATORS = (
     (IS, _(u"Is")),
     (IS_NOT, _(u"Is not")),
+    (IS_VALID, _(u"Is valid")),
+    (IS_NOT_VALID, _(u"Is not valid")),
 )

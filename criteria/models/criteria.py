@@ -1,5 +1,6 @@
 # django imports
 from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.template import RequestContext
@@ -10,19 +11,24 @@ from lfs import shipping
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.core.models import Country
 from lfs.core.models import Shop
+from lfs.criteria.models.criteria_objects import CriteriaObjects
 from lfs.criteria.settings import EQUAL
 from lfs.criteria.settings import LESS_THAN
 from lfs.criteria.settings import LESS_THAN_EQUAL
 from lfs.criteria.settings import GREATER_THAN
 from lfs.criteria.settings import GREATER_THAN_EQUAL
 from lfs.criteria.settings import NUMBER_OPERATORS
-from lfs.criteria.settings import SELECT_OPERATORS, IS
+from lfs.criteria.settings import SELECT_OPERATORS
+from lfs.criteria.settings import IS, IS_NOT, IS_VALID, IS_NOT_VALID
 from lfs.payment.models import PaymentMethod
 from lfs.shipping.models import ShippingMethod
 
 class Criterion(object):
     """Base class for all lfs criteria.
     """
+    content_object = generic.GenericRelation(CriteriaObjects,
+        object_id_field="criterion_id", content_type_field="criterion_type")
+    
     class Meta:
         app_label = "criteria"
 
@@ -398,8 +404,20 @@ class PaymentMethodCriterion(models.Model, Criterion):
         payment_method = lfs.payment.utils.get_selected_payment_method(request)
         if self.operator == IS:
             return payment_method in self.payment_methods.all()
-        else:
+        elif self.operator == IS_NOT:
             return payment_method not in self.payment_methods.all()
+        elif self.operator == IS_VALID:
+            for pm in self.payment_methods.all():
+                if not lfs.criteria.utils.is_valid(request, pm):
+                    return False
+            return True
+        elif self.operator == IS_NOT_VALID:
+            for pm in self.payment_methods.all():
+                if lfs.criteria.utils.is_valid(request, pm):
+                    return False
+            return True
+        else:
+            return False
 
     @property
     def value(self):
@@ -468,8 +486,20 @@ class ShippingMethodCriterion(models.Model, Criterion):
         shipping_method = lfs.shipping.utils.get_selected_shipping_method(request)
         if self.operator == IS:
             return shipping_method in self.shipping_methods.all()
-        else:
+        elif self.operator == IS_NOT:
             return shipping_method not in self.shipping_methods.all()
+        elif self.operator == IS_VALID:
+            for sm in self.shipping_methods.all():
+                if not lfs.criteria.utils.is_valid(request, sm):
+                    return False
+            return True
+        elif self.operator == IS_NOT_VALID:
+            for sm in self.shipping_methods.all():
+                if lfs.criteria.utils.is_valid(request, sm):
+                    return False
+            return True
+        else:
+            return False
 
     @property
     def value(self):

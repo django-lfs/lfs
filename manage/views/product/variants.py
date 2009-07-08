@@ -122,7 +122,7 @@ def manage_variants(request, product_id, as_string=False, template_name="manage/
         "variant_simple_form" : variant_simple_form,
         "display_type_form" : display_type_form,
     }))
-    
+
     if as_string:
         return result
     else:
@@ -260,10 +260,10 @@ def add_variants(request, product_id):
             if value == "all":
                 temp = []
                 for option in PropertyOption.objects.filter(property=property_id):
-                    temp.append("%s|%s|%s" % (property_id, option.id, option.name))
+                    temp.append("%s|%s" % (property_id, option.id))
                 properties.append(temp)
             else:
-                properties.append(["%s|%s|%s" % (property_id, value, option.name)])
+                properties.append(["%s|%s" % (property_id, value)])
 
     # Create a variant for every requested option combination
     for i, options in enumerate(manage_utils.cartesian_product(*properties)):
@@ -275,18 +275,19 @@ def add_variants(request, product_id):
 
         slug = ""
         for option in options:
-            name = option.split("|")[2]
-            slug += "-" + slugify(name)
+            property_id, option_id = option.split("|")
+            o = PropertyOption.objects.get(pk=option_id)
+            slug += "-" + slugify(o.name)
 
         slug = "%s%s" % (product.slug, slug)
-        sku = "%s-%s" % (product.sku, i)
+        sku = "%s-%s" % (product.sku, i+1)
 
         variant = Product(slug=slug, sku=sku, parent=product, price=price, sub_type=VARIANT)
         variant.save()
 
         # Save the value for this product and property
         for option in options:
-            property_id, option_id, dummy = option.split("|")
+            property_id, option_id = option.split("|")
             pvo = ProductPropertyValue(product = variant, property_id = property_id, value=option_id)
             pvo.save()
 

@@ -387,8 +387,12 @@ def _save_customer(request, customer):
     """
     shipping_method = request.POST.get("shipping-method")
     customer.selected_shipping_method_id = shipping_method
-    customer.save()
 
     payment_method = request.POST.get("payment_method")
     customer.selected_payment_method_id = payment_method
+
+    customer.save()
+    
+    shipping_utils.update_to_valid_shipping_method(request, customer)
+    payment_utils.update_to_valid_payment_method(request, customer)
     customer.save()

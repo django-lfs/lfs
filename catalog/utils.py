@@ -463,11 +463,11 @@ def get_filtered_products_for_category(category, filters, price_filter, sorting)
         # a "product property value" the product matches.
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT product_id, count(*) as amount
+            SELECT product_id, count(*)
             FROM catalog_productpropertyvalue
             WHERE product_id IN (%s) and %s
             GROUP BY product_id
-            HAVING amount=%s""" % (product_ids, fstr, len(filters)))
+            HAVING count(*)=%s""" % (product_ids, fstr, len(filters)))
 
         matched_product_ids = [row[0] for row in cursor.fetchall()]
 
@@ -480,11 +480,11 @@ def get_filtered_products_for_category(category, filters, price_filter, sorting)
 
             # Variants with matching filters
             cursor.execute("""
-                SELECT product_id, count(*) as amount
+                SELECT product_id, count(*)
                 FROM catalog_productpropertyvalue
                 WHERE product_id IN (%s) and %s
                 GROUP BY product_id
-                HAVING amount=%s""" % (all_variant_ids, fstr, len(filters)))
+                HAVING count(*)=%s""" % (all_variant_ids, fstr, len(filters)))
 
             # Get the parent ids of the variants as the "product with variants"
             # should be displayed and not the variants.

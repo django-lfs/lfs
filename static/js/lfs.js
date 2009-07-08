@@ -186,6 +186,8 @@ $(function() {
             "success" : function(data) {
                 var data = JSON.parse(data);
                 $("#cart-inline").html(data["cart"]);
+                $("#shipping-inline").html(data["shipping"]);
+                $("#payment-inline").html(data["payment"]);
             }
         });
     });

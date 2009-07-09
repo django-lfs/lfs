@@ -152,6 +152,7 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
                 invoice_address = Address.objects.create(
                     firstname = form.cleaned_data.get("invoice_firstname"),
                     lastname = form.cleaned_data.get("invoice_lastname"),
+                    company_name = form.cleaned_data.get("invoice_company_name"),
                     street = form.cleaned_data.get("invoice_street"),
                     zip_code = form.cleaned_data.get("invoice_zip_code"),
                     city = form.cleaned_data.get("invoice_city"),
@@ -164,6 +165,7 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
                 selected_invoice_address = customer.selected_invoice_address
                 selected_invoice_address.firstname = form.cleaned_data.get("invoice_firstname")
                 selected_invoice_address.lastname = form.cleaned_data.get("invoice_lastname")
+                selected_invoice_address.lastname = form.cleaned_data.get("invoice_company_name")
                 selected_invoice_address.street = form.cleaned_data.get("invoice_street")
                 selected_invoice_address.zip_code = form.cleaned_data.get("invoice_zip_code")
                 selected_invoice_address.city = form.cleaned_data.get("invoice_city")
@@ -179,6 +181,7 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
                     shipping_address = Address.objects.create(
                         firstname = form.cleaned_data.get("shipping_firstname"),
                         lastname = form.cleaned_data.get("shipping_lastname"),
+                        company_name = form.cleaned_data.get("shipping_company_name"),
                         street = form.cleaned_data.get("shipping_street"),
                         zip_code = form.cleaned_data.get("shipping_zip_code"),
                         city = form.cleaned_data.get("shipping_city"),
@@ -191,6 +194,7 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
                     selected_shipping_address = customer.selected_shipping_address
                     selected_shipping_address.firstname = form.cleaned_data.get("shipping_firstname")
                     selected_shipping_address.lastname = form.cleaned_data.get("shipping_lastname")
+                    selected_shipping_address.company_name = form.cleaned_data.get("shipping_company_name")
                     selected_shipping_address.street = form.cleaned_data.get("shipping_street")
                     selected_shipping_address.zip_code = form.cleaned_data.get("shipping_zip_code")
                     selected_shipping_address.city = form.cleaned_data.get("shipping_city")
@@ -257,7 +261,7 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
         initial["shipping_country"] = country.id
         initial["invoice_country"] = country.id
         form = checkout_form(initial=initial)
-
+    
     cart = cart_utils.get_cart(request)
     if cart is None:
         return HttpResponseRedirect(reverse('lfs_cart'))

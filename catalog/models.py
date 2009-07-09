@@ -474,17 +474,18 @@ class Product(models.Model):
     # Product Variants
     parent = models.ForeignKey("self", blank=True, null=True, verbose_name=_(u"Parent"), related_name="variants")
     active_name = models.BooleanField(_(u"Active name"), default=False)
-    active_sku = models.BooleanField(_(u"Active SKU"), default=True)
+    active_sku = models.BooleanField(_(u"Active SKU"), default=False)
     active_short_description = models.BooleanField(_(u"Active short description"), default=False)
     active_description = models.BooleanField(_(u"Active description"), default=False)
     active_price = models.BooleanField(_(u"Active price"), default=False)
     active_for_sale = models.PositiveSmallIntegerField(_("Active for sale"), choices=ACTIVE_FOR_SALE_CHOICES, default=ACTIVE_FOR_SALE_STANDARD)
-    active_for_sale_price = models.BooleanField(_(u"Active for sale price"), default=True)
+    active_for_sale_price = models.BooleanField(_(u"Active for sale price"), default=False)
     active_images = models.BooleanField(_(u"Active Images"), default=False)
     active_related_products = models.BooleanField(_(u"Active related products"), default=False)
     active_accessories = models.BooleanField(_(u"Active accessories"), default=False)
     active_meta_description = models.BooleanField(_(u"Active meta description"), default=False)
     active_meta_keywords = models.BooleanField(_(u"Active meta keywords"), default=False)
+    active_dimensions = models.BooleanField(_(u"Active dimensions"), default=False)
 
     objects = ActiveManager()
 
@@ -932,6 +933,43 @@ class Product(models.Model):
             return False
         else:
             return True
+
+    # Dimensions
+    def get_weight(self):
+        """Returns weight of the product. Takes care whether the product is a
+        variant and meta description are active or not.
+        """
+        if self.is_variant() and not self.active_dimensions:
+            return self.parent.weight
+        else:
+            return self.weight
+
+    def get_width(self):
+        """Returns width of the product. Takes care whether the product is a
+        variant and meta description are active or not.
+        """
+        if self.is_variant() and not self.active_dimensions:
+            return self.parent.width
+        else:
+            return self.width
+
+    def get_length(self):
+        """Returns length of the product. Takes care whether the product is a
+        variant and meta description are active or not.
+        """
+        if self.is_variant() and not self.active_dimensions:
+            return self.parent.length
+        else:
+            return self.length
+
+    def get_height(self):
+        """Returns height of the product. Takes care whether the product is a
+        variant and meta description are active or not.
+        """
+        if self.is_variant() and not self.active_dimensions:
+            return self.parent.height
+        else:
+            return self.height
 
     def is_standard(self):
         """Returns True if product is standard product.

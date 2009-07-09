@@ -3,9 +3,14 @@
 <form id="product-stock-form"
       action="{% url lfs_save_product_stock product.id %}"
       method="post">
-    
+
     <fieldset>
-        <legend>{% trans 'Dimension' %}</legend>
+        
+        <legend>
+            {% if product.is_variant %}{{ form.active_dimensions }}{% endif %}
+            {% trans 'Dimension' %}
+        </legend>
+
         <div class="field">
             <div class="label">
                 {{ form.weight.label_tag }}:
@@ -74,7 +79,7 @@
             {% endif %}
         </div>
     </fieldset>
-    
+
     <fieldset>
         <legend>{% trans 'Stock data' %}</legend>
 
@@ -180,10 +185,10 @@
                 </div>
             {% endif %}
         </div>
-        
+
     </fieldset>
 
     <input class="product-stock-button"
-           type="submit" 
+           type="submit"
            value="{% trans 'Save stock' %}" />
-</form>        
+</form>

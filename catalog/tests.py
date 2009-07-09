@@ -1109,7 +1109,11 @@ class ProductTestCase(TestCase):
             tax=self.t1,
             price=1.0,
             for_sale_price=0.5,
-            stock_amount=2)
+            stock_amount=2,
+            width = 1.0,
+            height = 2.0,
+            length = 3.0,
+            weight = 4.0)
 
         # Products without properties and variants
         self.p2 = Product.objects.create(name=u"Product 2", slug=u"product-2")
@@ -1140,7 +1144,11 @@ class ProductTestCase(TestCase):
             sub_type=VARIANT,
             price=2.0,
             for_sale_price = 1.5,
-            parent=self.p1)
+            parent=self.p1,
+            width = 11.0,
+            height = 12.0,
+            length = 13.0,
+            weight = 14.0)
 
         self.ppv_color_red = ProductPropertyValue.objects.create(product=self.v1, property=self.color, value=self.red.id)
         self.ppv_size_m = ProductPropertyValue.objects.create(product=self.v1, property=self.size, value=self.m.id)
@@ -1232,8 +1240,8 @@ class ProductTestCase(TestCase):
         self.assertEqual(p.variants_display_type, LIST)
 
         self.assertEqual(p.parent, None)
-        self.assertEqual(p.active_name, True)
-        self.assertEqual(p.active_sku, True)
+        self.assertEqual(p.active_name, False)
+        self.assertEqual(p.active_sku, False)
         self.assertEqual(p.active_short_description, False)
         self.assertEqual(p.active_description, False)
         self.assertEqual(p.active_price, False)
@@ -1560,15 +1568,15 @@ class ProductTestCase(TestCase):
         # Test product
         self.assertEqual(self.p1.get_name(), u"Product 1")
 
-        # Test variant. By default the name of a variant is *not* inherited
-        self.assertEqual(self.v1.get_name(), u"Variant 1")
+        # Test variant. By default the name of a variant is inherited
+        self.assertEqual(self.v1.get_name(), u"Product 1")
 
-        # Now we switch to deactive name.
-        self.v1.active_name = False
+        # Now we switch to active name.
+        self.v1.active_name = True
         self.v1.save()
 
         # Now we get the description of the parent product
-        self.assertEqual(self.v1.get_name(), u"Product 1")
+        self.assertEqual(self.v1.get_name(), u"Variant 1")
 
     def test_get_option(self):
         """
@@ -1715,6 +1723,7 @@ class ProductTestCase(TestCase):
         # Switch to for sale
         self.v1.for_sale = True
         self.v1.active_for_sale = ACTIVE_FOR_SALE_YES
+        self.v1.active_for_sale_price = True
         self.v1.save()
 
         # If the product is for sale ``get_price`` returns the for sale price
@@ -1767,14 +1776,14 @@ class ProductTestCase(TestCase):
         self.assertEqual(self.p1.get_sku(), u"SKU P1")
 
         # Test variant. By default the sku of a variant is *not* inherited
-        self.assertEqual(self.v1.get_sku(), "SKU V1")
+        self.assertEqual(self.v1.get_sku(), "SKU P1")
 
-        # Now we switch to deactive sku.
-        self.v1.active_sku = False
+        # Now we switch to active sku.
+        self.v1.active_sku = True
         self.v1.save()
 
         # Now we get the sku of the parent product
-        self.assertEqual(self.v1.get_sku(), "SKU P1")
+        self.assertEqual(self.v1.get_sku(), "SKU V1")
 
     def test_get_tax_rate(self):
         """
@@ -1952,7 +1961,71 @@ class ProductTestCase(TestCase):
         self.assertEqual(self.v1.is_standard(), False)
         self.assertEqual(self.v1.is_product_with_variants(), False)
         self.assertEqual(self.v1.is_variant(), True)
+    
+    def test_get_width(self):
+        """Tests the width of product and variant.
+        """
+        # Test product
+        self.assertEqual(self.p1.get_width(), 1.0)
 
+        # Test variant. By default the width of a variant is inherited
+        self.assertEqual(self.v1.get_width(), 1.0)
+
+        # Now we switch to active dimensions.
+        self.v1.active_dimensions = True
+        self.v1.save()
+
+        # Now we get the width of the variant itself
+        self.assertEqual(self.v1.get_width(), 11.0)
+
+    def test_get_height(self):
+        """Tests the height of product and variant.
+        """
+        # Test product
+        self.assertEqual(self.p1.get_height(), 2.0)
+
+        # Test variant. By default the height of a variant is inherited
+        self.assertEqual(self.v1.get_height(), 2.0)
+
+        # Now we switch to active dimensions.
+        self.v1.active_dimensions = True
+        self.v1.save()
+
+        # Now we get the height of the variant itself
+        self.assertEqual(self.v1.get_height(), 12.0)
+
+    def test_get_length(self):
+        """Tests the length of product and variant.
+        """
+        # Test product
+        self.assertEqual(self.p1.get_length(), 3.0)
+
+        # Test variant. By default the length of a variant is inherited
+        self.assertEqual(self.v1.get_length(), 3.0)
+
+        # Now we switch to active dimensions.
+        self.v1.active_dimensions = True
+        self.v1.save()
+
+        # Now we get the length of the variant itself
+        self.assertEqual(self.v1.get_length(), 13.0)
+
+    def test_get_weight(self):
+        """Tests the weight of product and variant.
+        """
+        # Test product
+        self.assertEqual(self.p1.get_weight(), 4.0)
+
+        # Test variant. By default the weight of a variant is inherited
+        self.assertEqual(self.v1.get_weight(), 4.0)
+
+        # Now we switch to active dimensions.
+        self.v1.active_dimensions = True
+        self.v1.save()
+
+        # Now we get the weight of the variant itself
+        self.assertEqual(self.v1.get_weight(), 14.0)
+        
 class ProductAccessoriesTestCase(TestCase):
     """Tests ProductAccessories (surprise, surprise).
     """

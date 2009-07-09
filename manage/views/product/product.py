@@ -65,7 +65,7 @@ class ProductStockForm(ModelForm):
         model = Product
         fields = ("weight", "width", "height", "length", "manage_stock_amount", 
                   "stock_amount", "manual_delivery_time", "delivery_time", 
-                  "deliverable", "order_time", "ordered_at")
+                  "deliverable", "order_time", "ordered_at", "active_dimensions")
     
     def __init__(self, *args, **kwargs):
         super(ProductStockForm, self).__init__(*args, **kwargs)

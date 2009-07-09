@@ -133,7 +133,7 @@ class CombinedLengthAndGirthCriterion(models.Model, Criterion):
         product otherwise from the cart.
         """
         if product is not None:
-            clag = (2 * product.width) + (2 * product.height) + product.length
+            clag = (2 * product.get_width()) + (2 * product.get_height()) + product.get_length()
         else:
             from lfs.cart import utils as cart_utils
             cart = cart_utils.get_cart(request)
@@ -145,13 +145,13 @@ class CombinedLengthAndGirthCriterion(models.Model, Criterion):
             max_length = 0
             total_height = 0
             for item in cart.items():
-                if max_length < item.product.length:
-                    max_length = item.product.length
+                if max_length < item.product.get_length():
+                    max_length = item.product.get_length()
 
-                if max_width < item.product.width:
-                    max_width = item.product.width
+                if max_width < item.product.get_width():
+                    max_width = item.product.get_width()
 
-                total_height += item.product.height
+                total_height += item.product.get_height()
 
             clag = (2 * max_width) +  (2 * total_height) + max_length
 
@@ -280,11 +280,11 @@ class HeightCriterion(models.Model, Criterion):
             return False
 
         if product is not None:
-            cart_height = product.height
+            cart_height = product.get_height()
         else:
             cart_height = 0
             for item in cart.items():
-                cart_height += (item.product.height * item.amount)
+                cart_height += (item.product.get_height() * item.amount)
 
         if self.operator == LESS_THAN and (cart_height < self.height):
             return True
@@ -341,11 +341,11 @@ class LengthCriterion(models.Model, Criterion):
             return False
 
         if product is not None:
-            cart_length = product.length
+            cart_length = product.get_length()
         else:
             cart_length = 0
             for item in cart.items():
-                cart_length += (item.product.length * item.amount)
+                cart_length += (item.product.get_length() * item.amount)
 
         if self.operator == LESS_THAN and (cart_length < self.length):
             return True
@@ -621,7 +621,7 @@ class WeightCriterion(models.Model, Criterion):
         the cart.
         """
         if product is not None:
-            cart_weight = product.weight
+            cart_weight = product.get_weight()
         else:
             from lfs.cart import utils as cart_utils
             cart = cart_utils.get_cart(request)
@@ -631,7 +631,7 @@ class WeightCriterion(models.Model, Criterion):
 
             cart_weight = 0
             for item in cart.items():
-                cart_weight += (item.product.weight * item.amount)
+                cart_weight += (item.product.get_weight() * item.amount)
 
         if self.operator == LESS_THAN and (cart_weight < self.weight):
             return True
@@ -688,11 +688,11 @@ class WidthCriterion(models.Model, Criterion):
             return False
 
         if product is not None:
-            cart_width = product.width
+            cart_width = product.get_width()
         else:
             cart_width = 0
             for item in cart.items():
-                cart_width += (item.product.width * item.amount)
+                cart_width += (item.product.get_width() * item.amount)
 
         if self.operator == LESS_THAN and (cart_width < self.width):
             return True

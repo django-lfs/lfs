@@ -60,6 +60,7 @@ class Address(models.Model):
 
     firstname = models.CharField(_("Firstname"), max_length=50)
     lastname = models.CharField(_("Lastname"), max_length=50)
+    company_name = models.CharField(_("Company name"), max_length=50)
     street = models.CharField(_("Street"), max_length=100)
     zip_code = models.CharField(_("Zip code"), max_length=10)
     city = models.CharField(_("City"), max_length=50)

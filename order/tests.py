@@ -58,6 +58,7 @@ class OrderTestCase(TestCase):
         address1 = Address.objects.create(
             firstname = "John",
             lastname = "Doe",
+            company_name = "Doe Ltd.",
             street = "Street 42",
             zip_code = "2342",
             city = "Gotham City",
@@ -69,6 +70,7 @@ class OrderTestCase(TestCase):
         address2 = Address.objects.create(
             firstname = "Jane",
             lastname = "Doe",
+            company_name = "Doe Ltd.",
             street = "Street 43",
             zip_code = "2443",
             city = "Smallville",
@@ -136,6 +138,7 @@ class OrderTestCase(TestCase):
         
         self.assertEqual(order.shipping_firstname, "John")
         self.assertEqual(order.shipping_lastname, "Doe")
+        self.assertEqual(order.shipping_company_name, "Doe Ltd.")
         self.assertEqual(order.shipping_street, "Street 42")
         self.assertEqual(order.shipping_zip_code, "2342")
         self.assertEqual(order.shipping_city, "Gotham City")
@@ -143,6 +146,7 @@ class OrderTestCase(TestCase):
 
         self.assertEqual(order.invoice_firstname, "Jane")
         self.assertEqual(order.invoice_lastname, "Doe")
+        self.assertEqual(order.invoice_company_name, "Doe Ltd.")
         self.assertEqual(order.invoice_street, "Street 43")
         self.assertEqual(order.invoice_zip_code, "2443")
         self.assertEqual(order.invoice_city, "Smallville")

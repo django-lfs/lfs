@@ -32,6 +32,11 @@
           
     </div>
     <table class="lfs-manage-table">
+        <td colspan="4">
+            <h1>
+                {% trans 'Ordernumber' %}: {{ current_order.uuid }}
+            </h1>
+        </td>
         <tr>
             <th colspan="4">
                 {% trans 'General' %}
@@ -107,6 +112,9 @@
                     {{current_order.shipping_lastname}}
                 </div>
                 <div>
+                    {{current_order.shipping_company_name}}
+                </div>
+                <div>
                     {{current_order.shipping_street}}
                 </div>
                 <div>
@@ -126,7 +134,9 @@
                 <div>
                     {{current_order.invoice_lastname}}
                 </div>
-    
+                <div>
+                    {{current_order.invoice_company_name}}
+                </div>    
                 <div>
                     {{current_order.invoice_street}}
                 </div>

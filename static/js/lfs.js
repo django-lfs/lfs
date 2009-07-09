@@ -42,11 +42,11 @@ $(function() {
         "txtOf" : " von "
     });
     
-    //  TODO: take url to html
-    $("input.product").livequery("change", function() {
+    $("input.variant").livequery("change", function() {
+        var url = $(this).parents("table.product-variants").attr("data");
         var variant_id = $(this).attr("value");
         $("#product-form").ajaxSubmit({
-            url : "/select-variant",
+            url : url,
             data : {"variant_id" : variant_id},
             success : function(data) {
                 var data = JSON.parse(data);

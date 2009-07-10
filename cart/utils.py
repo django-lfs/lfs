@@ -117,7 +117,7 @@ def get_go_on_shopping_url(request):
     if lc:
         return lc.get_absolute_url()
     else:
-        reverse("lfs_shop_view")
+        return reverse("lfs_shop_view")
 
 def update_cart_after_login(request):
     """Updates the cart after login.

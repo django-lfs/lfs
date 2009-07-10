@@ -22,7 +22,9 @@ def livesearch(request, template_name="search/livesearch_results.html"):
         })
     else:
         # Products
-        query = Q(name__icontains=phrase) & Q(sub_type__in = (STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS))
+        query = Q(active=True) & \
+                Q(name__icontains=phrase) & \
+                Q(sub_type__in = (STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS))
         products = Product.objects.filter(query)[0:5]
         
         products = render_to_string(template_name, RequestContext(request, {
@@ -43,7 +45,9 @@ def search(request, template_name="search/search_results.html"):
     phrase = request.GET.get("phrase", "")
     
     # Products
-    query = Q(name__icontains=phrase) & Q(sub_type__in = (STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS))
+    query = Q(active=True) & \
+            Q(name__icontains=phrase) & \
+            Q(sub_type__in = (STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS))
     products = Product.objects.filter(query)
 
     # Sorting

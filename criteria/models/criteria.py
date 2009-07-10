@@ -72,15 +72,15 @@ class CartPriceCriterion(models.Model, Criterion):
         If product is given the price is taken from the product otherwise from
         the cart.
         """
-        from lfs.cart import utils as cart_utils
-        cart = cart_utils.get_cart(request)
-
-        if cart is None:
-            return False
-
         if product is not None:
             cart_price = product.get_price()
         else:
+            from lfs.cart import utils as cart_utils
+            cart = cart_utils.get_cart(request)
+
+            if cart is None:
+                return False
+
             cart_price = cart_utils.get_cart_price(request, cart)
 
         if self.operator == LESS_THAN and (cart_price < self.price):
@@ -274,14 +274,14 @@ class HeightCriterion(models.Model, Criterion):
         If product is given the height is taken from the product otherwise from
         the cart.
         """
-        from lfs.cart import utils as cart_utils
-        cart = cart_utils.get_cart(request)
-        if cart is None:
-            return False
-
         if product is not None:
             cart_height = product.get_height()
         else:
+            from lfs.cart import utils as cart_utils
+            cart = cart_utils.get_cart(request)
+            if cart is None:
+                return False
+
             cart_height = 0
             for item in cart.items():
                 cart_height += (item.product.get_height() * item.amount)
@@ -335,14 +335,14 @@ class LengthCriterion(models.Model, Criterion):
         If product is given the length is taken from the product otherwise from
         the cart.
         """
-        from lfs.cart import utils as cart_utils
-        cart = cart_utils.get_cart(request)
-        if cart is None:
-            return False
-
         if product is not None:
             cart_length = product.get_length()
         else:
+            from lfs.cart import utils as cart_utils
+            cart = cart_utils.get_cart(request)
+            if cart is None:
+                return False
+
             cart_length = 0
             for item in cart.items():
                 cart_length += (item.product.get_length() * item.amount)
@@ -682,14 +682,14 @@ class WidthCriterion(models.Model, Criterion):
         If product is given the width is taken from the product otherwise from
         the cart.
         """
-        from lfs.cart import utils as cart_utils
-        cart = cart_utils.get_cart(request)
-        if cart is None:
-            return False
-
         if product is not None:
             cart_width = product.get_width()
         else:
+            from lfs.cart import utils as cart_utils
+            cart = cart_utils.get_cart(request)
+            if cart is None:
+                return False
+
             cart_width = 0
             for item in cart.items():
                 cart_width += (item.product.get_width() * item.amount)

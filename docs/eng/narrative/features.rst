@@ -59,11 +59,11 @@ Lieferung
 - Einfache Verwaltung von variablen Lieferpreisen pro Liefermethode, bspw. 
   basierend auf Lieferland, Gewicht, Größe oder Gurtmaß, etc.
 
-Bezahlweisen
+Zahlungsweisen
 --------------
 - Vorbereitet für die Bezahlung per Nachnahme, Bankkonto, PayPal und 
   Kreditkarte.
-- Variable Anzahl von weiteren Bezahlweisen
+- Variable Anzahl von weiteren Zahlungsweisen
 - Einfache Verwaltung von variablen Lieferpreisen pro Bezahlmethode, bspw. 
   basierend auf dem Gesamtpreis der Bestellung, Datum, etc.
   

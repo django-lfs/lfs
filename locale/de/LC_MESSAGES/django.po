@@ -878,7 +878,7 @@ msgstr "Gurtmaß"
 #: templates/manage/criteria/width_criterion.html:10
 #: templates/manage/order/order.html:98
 msgid "Payment method"
-msgstr "Bezahlweisen"
+msgstr "Zahlungsweisen"
 
 #: criteria/_models.py:305 criteria/models/criteria.py:67
 msgid "Cart Price"
@@ -933,7 +933,7 @@ msgstr "Ist nicht gültig"
 
 #: criteria/models/criteria.py:373
 msgid "Payment methods"
-msgstr "Bezahlweisen"
+msgstr "Zahlungsweisen"
 
 #: criteria/models/criteria.py:466
 msgid "Shipping methods"
@@ -1433,7 +1433,7 @@ msgstr "MwSt. Lieferung"
 
 #: order/models.py:61 order/migrations/0001_initial.py:31
 msgid "Payment Method"
-msgstr "Bezahlweise"
+msgstr "Zahlungsweise"
 
 #: order/models.py:62 order/migrations/0001_initial.py:60
 msgid "Payment Price"
@@ -1597,7 +1597,7 @@ msgstr "Lieferzeiten"
 
 #: templates/manage/manage_base.html:82
 msgid "Payment Methods"
-msgstr "Bezahlweisen"
+msgstr "Zahlungsweisen"
 
 #: templates/manage/manage_base.html:83
 msgid "Taxes"
@@ -2002,7 +2002,7 @@ msgstr "Lieferart"
 
 #: templates/manage/order/order.html:240
 msgid "Payment"
-msgstr "Bezahlweise"
+msgstr "Zahlungsweise"
 
 #: templates/manage/order/order.html:262
 msgid "Inclusive VAT"

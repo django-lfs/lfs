@@ -878,7 +878,7 @@ msgstr "Gurtmaß"
 #: templates/manage/criteria/width_criterion.html:10
 #: templates/manage/order/order.html:98
 msgid "Payment method"
-msgstr "Bezahlmethode"
+msgstr "Bezahlweisen"
 
 #: criteria/_models.py:305 criteria/models/criteria.py:67
 msgid "Cart Price"
@@ -933,11 +933,11 @@ msgstr "Ist nicht gültig"
 
 #: criteria/models/criteria.py:373
 msgid "Payment methods"
-msgstr "Bezahlmethoden"
+msgstr "Bezahlweisen"
 
 #: criteria/models/criteria.py:466
 msgid "Shipping methods"
-msgstr "Liefermethoden"
+msgstr "Lieferarten"
 
 #: criteria/models/criteria.py:491
 #: templates/manage/criteria/combinedlengthandgirth_criterion.html:14
@@ -952,7 +952,7 @@ msgstr "Liefermethoden"
 #: templates/manage/criteria/width_criterion.html:14
 #: templates/manage/order/order.html:95
 msgid "Shipping method"
-msgstr "Liefermethode"
+msgstr "Lieferart"
 
 #: customer/forms.py:34
 msgid "Password"
@@ -972,7 +972,7 @@ msgstr "Diese E-Mail Adresse existiert bereits."
 
 #: customer/models.py:25 customer/migrations/0001_initial.py:50
 msgid "Selected shipping method"
-msgstr "Ausgewählte Liefermethode"
+msgstr "Ausgewählte Lieferart"
 
 #: customer/models.py:26 customer/migrations/0001_initial.py:56
 msgid "Selected payment method"
@@ -1176,15 +1176,15 @@ msgstr "Optionen wurden aktualisiert."
 
 #: manage/views/shipping.py:174
 msgid "Shipping method has been added."
-msgstr "Liefermethode wurde hinzugefügt."
+msgstr "Lieferart wurde hinzugefügt."
 
 #: manage/views/shipping.py:322
 msgid "Shipping method has been saved."
-msgstr "Liefermethode wurde gespeichert."
+msgstr "Lieferart wurde gespeichert."
 
 #: manage/views/shipping.py:345
 msgid "Shipping method has been deleted."
-msgstr "Liefermethode wurde gelöscht."
+msgstr "Lieferart wurde gelöscht."
 
 #: manage/views/shop.py:53
 msgid "Shop data has been saved."
@@ -1421,7 +1421,7 @@ msgstr "Telefon Lieferadresse"
 
 #: order/models.py:57 order/migrations/0001_initial.py:29
 msgid "Shipping Method"
-msgstr "Liefermethoden"
+msgstr "Lieferartn"
 
 #: order/models.py:58 order/migrations/0001_initial.py:41
 msgid "Shipping Price"
@@ -1433,7 +1433,7 @@ msgstr "MwSt. Lieferung"
 
 #: order/models.py:61 order/migrations/0001_initial.py:31
 msgid "Payment Method"
-msgstr "Bezahlmethode"
+msgstr "Bezahlweise"
 
 #: order/models.py:62 order/migrations/0001_initial.py:60
 msgid "Payment Price"
@@ -1555,7 +1555,7 @@ msgstr "Notiz"
 
 #: shipping/models.py:105 shipping/migrations/0001_initial.py:13
 msgid "shipping_method"
-msgstr "Liefermethode"
+msgstr "Lieferart"
 
 #: tax/models.py:8 tax/migrations/0001_initial.py:12
 #: templates/manage/tax/tax.html:20
@@ -1589,7 +1589,7 @@ msgstr "Aktionen"
 
 #: templates/manage/manage_base.html:80
 msgid "Shipping Methods"
-msgstr "Liefermethoden"
+msgstr "Lieferartn"
 
 #: templates/manage/manage_base.html:81
 msgid "Delivery Times"
@@ -1597,7 +1597,7 @@ msgstr "Lieferzeiten"
 
 #: templates/manage/manage_base.html:82
 msgid "Payment Methods"
-msgstr "Bezahlmethoden"
+msgstr "Bezahlweisen"
 
 #: templates/manage/manage_base.html:83
 msgid "Taxes"
@@ -1998,11 +1998,11 @@ msgstr "Enthaltene MwSt."
 
 #: templates/manage/order/order.html:224
 msgid "Shipping"
-msgstr "Liefermethode"
+msgstr "Lieferart"
 
 #: templates/manage/order/order.html:240
 msgid "Payment"
-msgstr "Bezahlmethode"
+msgstr "Bezahlweise"
 
 #: templates/manage/order/order.html:262
 msgid "Inclusive VAT"
@@ -2535,11 +2535,11 @@ msgstr "Bewertung speichern"
 #: templates/manage/shipping/add_shipping_method.html:23
 #: templates/manage/shipping/manage_shipping.html:37
 msgid "Add shipping method"
-msgstr "Liefermethode hinzufügen"
+msgstr "Lieferart hinzufügen"
 
 #: templates/manage/shipping/manage_shipping.html:42
 msgid "Delete shipping method"
-msgstr "Liefermethode löschen"
+msgstr "Lieferart löschen"
 
 #: templates/manage/shipping/shipping_method_criteria.html:13
 msgid "Add"

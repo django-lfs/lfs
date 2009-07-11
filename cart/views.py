@@ -212,10 +212,10 @@ def add_to_cart(request, product_id=None):
     
     # Update the customer's shipping method (if appropriate)
     customer = customer_utils.get_or_create_customer(request)
-    shipping_utils.update_to_valid_shipping_method(request, customer)
+    shipping_utils.update_to_valid_shipping_method(request, customer, save=True)
 
     # Update the customer's shipping method (if appropriate)
-    payment_utils.update_to_valid_payment_method(request, customer)
+    payment_utils.update_to_valid_payment_method(request, customer, save=True)
     
     url = reverse("lfs.cart.views.added_to_cart")
     return HttpResponseRedirect(url)

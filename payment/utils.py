@@ -18,7 +18,7 @@ from lfs.payment.settings import PAYPAL
 from paypal.standard.conf import POSTBACK_ENDPOINT, SANDBOX_POSTBACK_ENDPOINT
 
 def update_to_valid_payment_method(request, customer, save=False):
-    """After this method has been called the current customer has a valid
+    """After this method has been called the given customer has a valid
     payment method.
     """
     valid_sms = get_valid_payment_methods(request)

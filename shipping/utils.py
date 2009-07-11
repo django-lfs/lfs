@@ -101,7 +101,7 @@ def get_product_delivery_time(request, product_slug, for_cart=False):
     return delivery_time
 
 def update_to_valid_shipping_method(request, customer, save=False):
-    """After this has been called the current customer has a valid shipping
+    """After this has been called the given customer has a valid shipping
     method in any case.
     """
     valid_sms = get_valid_shipping_methods(request)

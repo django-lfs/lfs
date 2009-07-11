@@ -209,7 +209,14 @@ def add_to_cart(request, product_id=None):
     # Store cart items for retrieval within added_to_cart.
     request.session["cart_items"] = cart_items
     cart_changed.send(cart, request=request)
+    
+    # Update the customer's shipping method (if appropriate)
+    customer = customer_utils.get_or_create_customer(request)
+    shipping_utils.update_to_valid_shipping_method(request, customer)
 
+    # Update the customer's shipping method (if appropriate)
+    payment_utils.update_to_valid_payment_method(request, customer)
+    
     url = reverse("lfs.cart.views.added_to_cart")
     return HttpResponseRedirect(url)
 

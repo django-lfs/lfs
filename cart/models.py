@@ -29,6 +29,8 @@ class Cart(models.Model):
     """
     user = models.ForeignKey(User, verbose_name=_(u"User"), blank=True, null=True)
     session = models.CharField(_(u"Session"), blank=True, max_length=100)
+    creation_date = models.DateTimeField(_(u"Creation date"), auto_now_add=True)
+    modification_date = models.DateTimeField(_(u"Modification date"), auto_now=True, auto_now_add=True)
 
     def items(self):
         """Returns the items of the cart.
@@ -63,6 +65,8 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, verbose_name=_(u"Cart"))
     product = models.ForeignKey(Product, verbose_name=_(u"Product"))
     amount = models.IntegerField(_(u"Quantity"), blank=True, null=True)
+    creation_date = models.DateTimeField(_(u"Creation date"), auto_now_add=True)
+    modification_date = models.DateTimeField(_(u"Modification date"), auto_now=True, auto_now_add=True)
 
     class Meta:
         ordering = ['id']

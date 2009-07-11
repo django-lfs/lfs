@@ -1,4 +1,5 @@
 # django imports
+from django.conf import settings
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -25,9 +26,15 @@ def robots(request, template_name="shop/robots.txt"):
 def server_error(request):
     """Own view in order to pass RequestContext and send an error message.
     """
-    # mail = EmailMessage(
-    #     subject="Error", body=request, from_email="usenet@diefenba.ch", to=["usenet@diefenba.ch"])
-    # mail.send(fail_silently=True)
+    try:
+        from_email = settings.ADMINS[0][1]
+        to_emails = [a[1] for a in settings.ADMINS]
+    except IndexError:
+        pass
+    else:
+        mail = EmailMessage(
+            subject="Error LFS", body=request, from_email=from_email, to=to_emails)
+        mail.send(fail_silently=True)
         
     t = loader.get_template('500.html')
     c = RequestContext(request)

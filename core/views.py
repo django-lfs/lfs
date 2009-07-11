@@ -17,12 +17,12 @@ def shop_view(request, template_name="shop/shop.html"):
     return render_to_response(template_name, RequestContext(request, {
         "shop" : shop
     }))
-    
+
 def robots(request, template_name="shop/robots.txt"):
     """Displays the robots.txt.
     """
     return render_to_response(template_name)
-        
+
 def server_error(request):
     """Own view in order to pass RequestContext and send an error message.
     """
@@ -35,7 +35,6 @@ def server_error(request):
         mail = EmailMessage(
             subject="Error LFS", body=request, from_email=from_email, to=to_emails)
         mail.send(fail_silently=True)
-        
+
     t = loader.get_template('500.html')
-    c = RequestContext(request)
-    return HttpResponse(t.render(c), status=500)
+    return HttpResponse(t.render(request), status=500)

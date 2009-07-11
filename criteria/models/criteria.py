@@ -336,26 +336,27 @@ class LengthCriterion(models.Model, Criterion):
         the cart.
         """
         if product is not None:
-            cart_length = product.get_length()
+            max_length = product.get_length()
         else:
             from lfs.cart import utils as cart_utils
             cart = cart_utils.get_cart(request)
             if cart is None:
                 return False
 
-            cart_length = 0
+            max_length = 0
             for item in cart.items():
-                cart_length += (item.product.get_length() * item.amount)
+                if max_length < item.product.get_length():
+                    max_length = item.product.get_length()
 
-        if self.operator == LESS_THAN and (cart_length < self.length):
+        if self.operator == LESS_THAN and (max_length < self.length):
             return True
-        if self.operator == LESS_THAN_EQUAL and (cart_length <= self.length):
+        if self.operator == LESS_THAN_EQUAL and (max_length <= self.length):
             return True
-        if self.operator == GREATER_THAN and (cart_length > self.length):
+        if self.operator == GREATER_THAN and (max_length > self.length):
             return True
-        if self.operator == GREATER_THAN_EQUAL and (cart_length >= self.length):
+        if self.operator == GREATER_THAN_EQUAL and (max_length >= self.length):
             return True
-        if self.operator == EQUAL and (cart_length == self.length):
+        if self.operator == EQUAL and (max_length == self.length):
             return True
 
         return False
@@ -683,26 +684,27 @@ class WidthCriterion(models.Model, Criterion):
         the cart.
         """
         if product is not None:
-            cart_width = product.get_width()
+            max_width = product.get_width()
         else:
             from lfs.cart import utils as cart_utils
             cart = cart_utils.get_cart(request)
             if cart is None:
                 return False
 
-            cart_width = 0
+            max_width = 0
             for item in cart.items():
-                cart_width += (item.product.get_width() * item.amount)
+                if max_width < item.product.get_width():
+                    max_width = item.product.get_width()
 
-        if self.operator == LESS_THAN and (cart_width < self.width):
+        if self.operator == LESS_THAN and (max_width < self.width):
             return True
-        if self.operator == LESS_THAN_EQUAL and (cart_width <= self.width):
+        if self.operator == LESS_THAN_EQUAL and (max_width <= self.width):
             return True
-        if self.operator == GREATER_THAN and (cart_width > self.width):
+        if self.operator == GREATER_THAN and (max_width > self.width):
             return True
-        if self.operator == GREATER_THAN_EQUAL and (cart_width >= self.width):
+        if self.operator == GREATER_THAN_EQUAL and (max_width >= self.width):
             return True
-        if self.operator == EQUAL and (cart_width == self.width):
+        if self.operator == EQUAL and (max_width == self.width):
             return True
 
         return False

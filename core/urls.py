@@ -1,8 +1,6 @@
 from django.conf.urls.defaults import *
 from lfs.core.sitemap import ProductSitemap
 
-handler500 = 'lfs.core.views.server_error'
-
 urlpatterns = patterns('lfs.core.views',
     url(r'^$', "shop_view", name="lfs_shop_view"),
     url(r'^robots\.txt/$',  "robots", name="lfs_robots"),

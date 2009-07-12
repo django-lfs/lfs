@@ -1,0 +1,39 @@
+{% extends "manage/manage_base.html" %}
+
+{% load i18n %}
+{% load lfs_tags %}
+
+{% block left-slot-wrapper %}{% endblock %}
+
+{% block content %}
+    <div class="site-actions"></div>
+    
+    <table class="lfs-manage-table">
+        <tr>
+            <th>
+                {% trans 'ID' %}
+            </th>
+            <th>
+                {% trans 'Date' %}
+            </th>
+            <th class="number">
+                {% trans 'Items' %}
+            </th>
+        </tr>
+        {% for cart in carts %}
+            <tr>
+                <td>
+                    {{ cart.id }}
+                </td>                
+                <td>
+                    <a href="{% url lfs_manage_cart cart.id %}">
+                        {{ cart.creation_date|date:_("DATETIME_FORMAT") }}
+                    </a>                    
+                </td>
+                <td class="number">
+                    {{ cart.amount_of_items }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

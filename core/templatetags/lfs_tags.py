@@ -221,7 +221,7 @@ def product_navigation(context, product):
         if category.show_all_products:
             categories.extend(category.get_all_children())
 
-        if sorting is not None:
+        if sorting:
             products = Product.objects.filter(
                 categories__in = categories,
                 sub_type__in =(STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS),

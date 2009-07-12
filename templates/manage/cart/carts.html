@@ -6,16 +6,16 @@
 
 {% block content %}
     <div class="site-actions">
-        {% if previous_url %}
-            <a href="{{ previous_url }}">{% trans 'Newer' %}</a>
-        {% else %}
-            <span>{% trans 'Newer' %}</span>
-        {% endif %}
         {% if next_url %}
             <a href="{{ next_url }}">{% trans 'Older' %}</a>
         {% else %}
             <span>{% trans 'Older' %}</span>
         {% endif %}        
+        {% if previous_url %}
+            <a href="{{ previous_url }}">{% trans 'Newer' %}</a>
+        {% else %}
+            <span>{% trans 'Newer' %}</span>
+        {% endif %}
     </div>
 
     <table class="lfs-manage-table">

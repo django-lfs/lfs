@@ -33,8 +33,7 @@ def carts_view(request, template_name="manage/cart/carts.html"):
         total = 0
         for item in cart.items():
             total += item.get_price_gross()
-            if item.product.name != "":
-                products.append(item.product.name)
+            products.append(item.product.get_name)
 
         if cart.user:
             if cart.user.first_name:

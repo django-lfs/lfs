@@ -10,14 +10,22 @@
     
     <table class="lfs-manage-table">
         <tr>
-            <th>
+            <th style="width:30px">
                 {% trans 'ID' %}
             </th>
-            <th>
+            <th style="width:150px">
                 {% trans 'Date' %}
             </th>
-            <th class="number">
+            <th class="number" 
+                style="width:100px; padding-right:20px">
+                {% trans 'Total' %}
+            </th>
+            <th class="number" 
+                style="width:40px; padding-right:20px">
                 {% trans 'Items' %}
+            </th>
+            <th>
+                {% trans 'Products' %}
             </th>
         </tr>
         {% for cart in carts %}
@@ -30,8 +38,14 @@
                         {{ cart.creation_date|date:_("DATETIME_FORMAT") }}
                     </a>                    
                 </td>
-                <td class="number">
+                <td class="number"  style="padding-right:20px">
+                    {{ cart.total|currency }}
+                </td>
+                <td class="number" style="padding-right:20px">
                     {{ cart.amount_of_items }}
+                </td>
+                <td>
+                    {{ cart.products }}
                 </td>
             </tr>
         {% endfor %}

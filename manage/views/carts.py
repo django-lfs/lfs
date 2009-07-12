@@ -13,10 +13,20 @@ def carts_view(request, template_name="manage/cart/carts.html"):
     """Displays all orders.
     """
     carts = []
-    for cart in Cart.objects.all():
+    for cart in Cart.objects.all().order_by("-creation_date"):
+        
+        products = []
+        total = 0
+        for item in cart.items():
+            total += item.get_price_gross()
+            if item.product.name != "":
+                products.append(item.product.name)
+
         carts.append({
             "id" : cart.id,
             "amount_of_items" : cart.amount_of_items,
+            "total" : total,
+            "products" : ", ".join(products),
             "creation_date" : cart.creation_date,
         })
 
@@ -30,8 +40,13 @@ def cart_view(request, cart_id, template_name="manage/cart/cart.html"):
     """
     cart = lfs_get_object_or_404(Cart, pk=cart_id)
     carts = Cart.objects.all()
+    
+    total = 0
+    for item in cart.items():
+        total += item.get_price_gross()
 
     return render_to_response(template_name, RequestContext(request, {
         "current_cart" : cart,
         "carts" : carts,
+        "total" : total,
     }))

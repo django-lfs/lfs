@@ -5,7 +5,7 @@
 {% block left_slot %}
     {% for c in carts %}
         <div>
-            <a href="{% url lfs_manage_cart cart.id %}"
+            <a href="{% url lfs_manage_cart c.id %}"
                class="selectable {% ifequal cart.id c.id %}selected{% endifequal %}">
                 {{ c.creation_date|date:_("DATETIME_FORMAT") }}
             </a>

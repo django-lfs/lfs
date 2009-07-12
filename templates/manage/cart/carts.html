@@ -1,13 +1,23 @@
 {% extends "manage/manage_base.html" %}
-
 {% load i18n %}
 {% load lfs_tags %}
 
 {% block left-slot-wrapper %}{% endblock %}
 
 {% block content %}
-    <div class="site-actions"></div>
-    
+    <div class="site-actions">
+        {% if previous_url %}
+            <a href="{{ previous_url }}">{% trans 'Newer' %}</a>
+        {% else %}
+            <span>{% trans 'Newer' %}</span>
+        {% endif %}
+        {% if next_url %}
+            <a href="{{ next_url }}">{% trans 'Older' %}</a>
+        {% else %}
+            <span>{% trans 'Older' %}</span>
+        {% endif %}        
+    </div>
+
     <table class="lfs-manage-table">
         <tr>
             <th style="width:30px">
@@ -16,11 +26,14 @@
             <th style="width:150px">
                 {% trans 'Date' %}
             </th>
-            <th class="number" 
+            <th style="width:100px; padding-right:20px">
+                {% trans 'User' %}
+            </th>
+            <th class="number"
                 style="width:100px; padding-right:20px">
                 {% trans 'Total' %}
             </th>
-            <th class="number" 
+            <th class="number"
                 style="width:40px; padding-right:20px">
                 {% trans 'Items' %}
             </th>
@@ -28,15 +41,23 @@
                 {% trans 'Products' %}
             </th>
         </tr>
+
         {% for cart in carts %}
             <tr>
                 <td>
                     {{ cart.id }}
-                </td>                
+                </td>
                 <td>
                     <a href="{% url lfs_manage_cart cart.id %}">
                         {{ cart.creation_date|date:_("DATETIME_FORMAT") }}
-                    </a>                    
+                    </a>
+                </td>
+                <td>
+                    {% if cart.user_name %}
+                        {{ cart.user_name }}
+                    {% else %}
+                        {{ cart.session }}
+                    {% endif %}
                 </td>
                 <td class="number"  style="padding-right:20px">
                     {{ cart.total|currency }}

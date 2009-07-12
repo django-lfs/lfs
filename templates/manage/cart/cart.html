@@ -3,11 +3,11 @@
 {% load i18n lfs_tags %}
 
 {% block left_slot %}
-    {% for cart in carts %}
+    {% for c in carts %}
         <div>
             <a href="{% url lfs_manage_cart cart.id %}"
-               class="selectable {% ifequal cart.id current_cart.id %}selected{% endifequal %}">
-                {{ cart.creation_date|date:_("DATETIME_FORMAT") }}
+               class="selectable {% ifequal cart.id c.id %}selected{% endifequal %}">
+                {{ c.creation_date|date:_("DATETIME_FORMAT") }}
             </a>
         </div>
     {% endfor %}
@@ -17,7 +17,7 @@
 {% block content %}
 
     <div class="site-actions">
-        <span class="label">{{current_cart.creation_date|date:_("DATETIME_FORMAT")}}</span> |
+        <span class="label">{{cart.creation_date|date:_("DATETIME_FORMAT")}}</span> |
         <a href="{% url lfs_manage_carts %}">{% trans 'Overview' %}</a>
     </div>
 
@@ -33,15 +33,26 @@
                 {% trans 'ID' %}:
             </td>
             <td>
-                {{ current_cart.id }}
+                {{ cart.id }}
             </td>
         </tr>
+        <tr>
+            <td class="label">
+                {% trans 'Customer' %}:
+            </td>
+            <td>
+                {% if user_name %}
+                    {{ user_name }} /
+                {% endif %}
+                {{ cart.session }}
+            </td>
+        </tr>        
         <tr>
             <td class="label">
                 {% trans 'Creation date' %}:
             </td>
             <td>
-                {{ current_cart.creation_date|date:_("DATETIME_FORMAT") }}
+                {{ cart.creation_date|date:_("DATETIME_FORMAT") }}
             </td>
         </tr>
         <tr>
@@ -49,7 +60,7 @@
                 {% trans 'Items' %}:
             </td>
             <td>
-                {{ current_cart.amount_of_items }}
+                {{ cart.amount_of_items }}
             </td>
         </tr>
         <tr>
@@ -62,7 +73,7 @@
         </tr>
     </table>
 
-    {% if current_cart.items %}
+    {% if cart.items %}
         <table class="lfs-manage-table">
             <tr>
                 <th>
@@ -78,7 +89,7 @@
                     {% trans 'Price' %}
                 </th>
             </tr>
-            {% for item in current_cart.items %}
+            {% for item in cart.items %}
                 <tr>
                     <td>
                         <a href="{{ item.product.get_absolute_url}}">

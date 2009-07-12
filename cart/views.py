@@ -85,11 +85,15 @@ def added_to_cart(request, template_name="cart/added_to_cart.html"):
     """Shows the product that has been added to the cart.
     """
     cart_items = request.session.get("cart_items", [])
+    try:
+        accessories = cart_items[0].product.get_accessories()
+    except IndexError:
+        accessories = []
 
     return render_to_response(template_name, RequestContext(request, {
         "plural" : len(cart_items) > 1,
         "shopping_url" : request.META.get("HTTP_REFERER", "/"),
-        "product_accessories" : cart_items[0].product.get_accessories(),
+        "product_accessories" : accessories,
         "cart_items" : added_to_cart_items(request),
     }))
 
@@ -105,9 +109,6 @@ def added_to_cart_items(request, template_name="cart/added_to_cart_items.html"):
     return render_to_string(template_name, {
         "total" : total,
         "cart_items" : cart_items,
-        "plural" : len(cart_items) > 1,
-        "shopping_url" : request.META.get("HTTP_REFERER", "/"),
-        "product_accessories" : cart_items[0].product.get_accessories(),
     })
 
 # Actions
@@ -134,17 +135,17 @@ def add_accessory_to_cart(request, product_id, quantity=1):
     else:
         cart_item.amount += quantity
         cart_item.save()
-        
+
         if cart_item not in session_cart_items:
             session_cart_items.append(cart_item)
-        else:    
+        else:
             # Update save cart item within session
             for session_cart_item in session_cart_items:
                 if cart_item.product == session_cart_item.product:
                     session_cart_item.amount += quantity
 
     request.session["cart_items"] = session_cart_items
-    
+
     cart_changed.send(cart, request=request)
     return HttpResponse(added_to_cart_items(request))
 
@@ -209,14 +210,14 @@ def add_to_cart(request, product_id=None):
     # Store cart items for retrieval within added_to_cart.
     request.session["cart_items"] = cart_items
     cart_changed.send(cart, request=request)
-    
+
     # Update the customer's shipping method (if appropriate)
     customer = customer_utils.get_or_create_customer(request)
     shipping_utils.update_to_valid_shipping_method(request, customer, save=True)
 
     # Update the customer's shipping method (if appropriate)
     payment_utils.update_to_valid_payment_method(request, customer, save=True)
-    
+
     url = reverse("lfs.cart.views.added_to_cart")
     return HttpResponseRedirect(url)
 

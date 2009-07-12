@@ -149,6 +149,12 @@ urlpatterns += patterns('lfs.manage.views',
     url(r'^manage-related-products/(?P<product_id>\d*)$', "update_related_products", name="lfs_manage_update_related_products"),
 )
 
+# Carts
+urlpatterns += patterns('lfs.manage.views',
+    url(r'^carts', "carts_view", name="lfs_manage_carts"),
+    url(r'^cart/(?P<cart_id>\d*)$', "cart_view", name="lfs_manage_cart"),
+)
+
 # Categories
 urlpatterns += patterns('lfs.manage.views.categories',
     url(r'^categories$', "manage_categories", name="lfs_manage_categories"),

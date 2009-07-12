@@ -39,7 +39,7 @@ def cart_view(request, cart_id, template_name="manage/cart/cart.html"):
     """Displays cart with provided cart id.
     """
     cart = lfs_get_object_or_404(Cart, pk=cart_id)
-    carts = Cart.objects.all()
+    carts = Cart.objects.all().order_by("-creation_date")
     
     total = 0
     for item in cart.items():

@@ -35,7 +35,7 @@ def select_variant(request):
         "product" : product_inline(request, variant_id),
         "message" : msg,
     }, cls = LazyEncoder)
-    
+
     return HttpResponse(result)
 
 def select_variant_from_properties(request):
@@ -53,12 +53,12 @@ def select_variant_from_properties(request):
         variant = product.get_default_variant()
     else:
         msg = _(u"The product has been changed according to your selection.")
-    
+
     result = simplejson.dumps({
         "product" : product_inline(request, variant.id),
         "message" : msg,
     }, cls = LazyEncoder)
-    
+
     return HttpResponse(result)
 
 def set_filter(request, category_slug, property_id, value=None, min=None, max=None):
@@ -243,7 +243,11 @@ def category_products(request, slug, start=0, template_name="catalog/category_pr
     category = lfs_get_object_or_404(Category, slug=slug)
 
     # Calculates parameters for display.
-    start = int(start)
+    try:
+        start = int(start)
+    except ValueError:
+        start = 0
+
     format_info = category.get_format_info()
     amount_of_rows = format_info["product_rows"]
     amount_of_cols = format_info["product_cols"]

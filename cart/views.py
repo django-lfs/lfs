@@ -256,7 +256,10 @@ def refresh_cart(request):
     # Update Amounts
     for item in cart.items():
         amount = request.POST.get("amount-cart-item_%s" % item.id, 0)
-        item.amount = amount
+        try:
+            item.amount = int(amount)
+        except ValueError:
+            item.amount = 1
         item.save()
 
     # IMPORTANT: We have to send the signal already here, because the valid

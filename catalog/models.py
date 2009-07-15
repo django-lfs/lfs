@@ -472,6 +472,7 @@ class Product(models.Model):
         choices=VARIANTS_DISPLAY_TYPE_CHOICES, default=LIST)
 
     # Product Variants
+    variant_position = models.IntegerField(default=999)
     parent = models.ForeignKey("self", blank=True, null=True, verbose_name=_(u"Parent"), related_name="variants")
     active_name = models.BooleanField(_(u"Active name"), default=False)
     active_sku = models.BooleanField(_(u"Active SKU"), default=False)
@@ -893,7 +894,7 @@ class Product(models.Model):
     def get_variants(self):
         """Returns the variants of the product.
         """
-        return self.variants.all()
+        return self.variants.order_by("variant_position")
 
     def has_variants(self):
         """Returns True if the product has variants.

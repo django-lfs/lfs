@@ -143,6 +143,9 @@
                     <input type="checkbox" class="delete-all" />
                 </th>
                 <th>        
+                    {% trans 'Pos.' %}
+                </th>
+                <th>        
                     {% trans 'URL' %}
                 </th>
                 <th>
@@ -165,6 +168,9 @@
                             <input type="hidden" name="variant-{{variant.id}}" />
                             <input type="checkbox" class="delete" name="delete-{{variant.id}}" />
                         </td>
+                        <td>
+                            <input type="text" name="position-{{variant.id}}" value="{{variant.position}}" size="3" />
+                        </td>             
                         <td>
                             <input type="text" name="slug-{{variant.id}}" value="{{variant.slug}}" />
                         </td>             

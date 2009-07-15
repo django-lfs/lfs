@@ -69,7 +69,7 @@ def manage_variants(request, product_id, as_string=False, template_name="manage/
     # in order to select the options of the current variant.
     if variants is None:
         variants = []
-        for variant in product.variants.all():
+        for variant in product.get_variants():
             properties = []
             for property in product.get_properties():
                 options = []
@@ -95,6 +95,7 @@ def manage_variants(request, product_id, as_string=False, template_name="manage/
                 "sku" : variant.sku,
                 "name" : variant.name,
                 "price" : variant.price,
+                "position" : variant.variant_position,
                 "properties" : properties
             })
 
@@ -282,7 +283,7 @@ def add_variants(request, product_id):
         slug = "%s%s" % (product.slug, slug)
         sku = "%s-%s" % (product.sku, i+1)
 
-        variant = Product(slug=slug, sku=sku, parent=product, price=price, sub_type=VARIANT)
+        variant = Product(slug=slug, sku=sku, parent=product, price=price, position=i+1, sub_type=VARIANT)
         variant.save()
 
         # Save the value for this product and property
@@ -330,7 +331,19 @@ def update_variants(request, product_id):
                         value = request.POST.get("%s-%s" % (name, id))
                         if value != "":
                             setattr(variant, name, value)
+                    position = request.POST.get("position-%s" % id)
+                    try:
+                        variant.variant_position = int(position)
+                    except ValueError:
+                        variant.variant_position = 1
+
                 variant.save()
+
+                # Refresh variant positions
+                for i, variant in enumerate(product.get_variants()):
+                    variant.variant_position = (i+1) * 10
+                    variant.save()
+
             elif key.startswith("property"):
                 # properties are marshalled as: property-variant_id|property_id
                 try:

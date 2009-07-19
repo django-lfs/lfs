@@ -417,12 +417,12 @@ class PaymentMethodCriterion(models.Model, Criterion):
             return payment_method not in self.payment_methods.all()
         elif self.operator == IS_VALID:
             for pm in self.payment_methods.all():
-                if not lfs.criteria.utils.is_valid(request, pm):
+                if not lfs.criteria.utils.is_valid(request, pm, product):
                     return False
             return True
         elif self.operator == IS_NOT_VALID:
             for pm in self.payment_methods.all():
-                if lfs.criteria.utils.is_valid(request, pm):
+                if lfs.criteria.utils.is_valid(request, pm, product):
                     return False
             return True
         else:
@@ -517,12 +517,12 @@ class ShippingMethodCriterion(models.Model, Criterion):
             return shipping_method not in self.shipping_methods.all()
         elif self.operator == IS_VALID:
             for sm in self.shipping_methods.all():
-                if not lfs.criteria.utils.is_valid(request, sm):
+                if not lfs.criteria.utils.is_valid(request, sm, product):
                     return False
             return True
         elif self.operator == IS_NOT_VALID:
             for sm in self.shipping_methods.all():
-                if lfs.criteria.utils.is_valid(request, sm):
+                if lfs.criteria.utils.is_valid(request, sm, product):
                     return False
             return True
         else:

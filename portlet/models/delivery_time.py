@@ -37,7 +37,7 @@ class DeliveryTimePortlet(Portlet):
                 "MEDIA_URL" : context.get("MEDIA_URL"),
             }
 
-        return render_to_string("portlets/delivery_time.html", d)
+        return render_to_string("lfs/portlets/delivery_time.html", d)
 
     def form(self, **kwargs):
         """

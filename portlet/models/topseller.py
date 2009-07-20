@@ -31,7 +31,7 @@ class TopsellerPortlet(Portlet):
             topseller = lfs.marketing.utils.get_topseller_for_category(
                 category, self.limit)
         
-        return render_to_string("portlets/topseller.html", {
+        return render_to_string("lfs/portlets/topseller.html", {
             "title" : self.title,
             "topseller" : topseller,
             "MEDIA_URL" : context.get("MEDIA_URL"),

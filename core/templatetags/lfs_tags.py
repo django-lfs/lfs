@@ -29,7 +29,7 @@ from lfs.shipping import utils as shipping_utils
 
 register = template.Library()
 
-@register.inclusion_tag('shop/google_analytics_tracking.html', takes_context=True)
+@register.inclusion_tag('lfs/shop/google_analytics_tracking.html', takes_context=True)
 def google_analytics_tracking(context):
     """Returns google analytics tracking code which has been entered to the
     shop.
@@ -40,7 +40,7 @@ def google_analytics_tracking(context):
         "google_analytics_id" : shop.google_analytics_id,
     }
 
-@register.inclusion_tag('shop/google_analytics_ecommerce.html', takes_context=True)
+@register.inclusion_tag('lfs/shop/google_analytics_ecommerce.html', takes_context=True)
 def google_analytics_ecommerce(context):
     """Returns google analytics e-commerce tracking code. This should be
     displayed on the thank-you page.
@@ -77,24 +77,24 @@ def _get_shipping(context):
             "delivery_time" : shipping_utils.get_product_delivery_time(request, slug)
         }
 
-@register.inclusion_tag('shipping/shipping_tag.html', takes_context=True)
+@register.inclusion_tag('lfs/shipping/shipping_tag.html', takes_context=True)
 def shipping(context):
     return _get_shipping(context)
 
-@register.inclusion_tag('shipping/shipping_portlet.html', takes_context=True)
+@register.inclusion_tag('lfs/shipping/shipping_portlet.html', takes_context=True)
 def shipping_portlet(context):
     """
     """
     return _get_shipping(context)
 
-@register.inclusion_tag('catalog/sorting.html', takes_context=True)
+@register.inclusion_tag('lfs/catalog/sorting.html', takes_context=True)
 def sorting(context):
     """
     """
     request = context.get("request")
     return {"current" : request.session.get("sorting")}
 
-@register.inclusion_tag('catalog/breadcrumbs.html', takes_context=True)
+@register.inclusion_tag('lfs/catalog/breadcrumbs.html', takes_context=True)
 def breadcrumbs(context, obj):
     """
     """
@@ -158,7 +158,7 @@ def breadcrumbs(context, obj):
 
     return result
 
-@register.inclusion_tag('catalog/filter_navigation.html', takes_context=True)
+@register.inclusion_tag('lfs/catalog/filter_navigation.html', takes_context=True)
 def filter_navigation(context, category):
     """Displays the filter navigation portlet.
     """
@@ -184,7 +184,7 @@ def filter_navigation(context, category):
         "price_filters" : price_filters,
     }
 
-@register.inclusion_tag('catalog/product_navigation.html', takes_context=True)
+@register.inclusion_tag('lfs/catalog/product_navigation.html', takes_context=True)
 def product_navigation(context, product):
     """Provides previous and next product links.
     """
@@ -260,7 +260,7 @@ def product_navigation(context, product):
 
         return result
 
-@register.inclusion_tag('catalog/sorting_portlet.html', takes_context=True)
+@register.inclusion_tag('lfs/catalog/sorting_portlet.html', takes_context=True)
 def sorting_portlet(context):
     request = context.get("request")
     return {
@@ -268,7 +268,7 @@ def sorting_portlet(context):
         "MEDIA_URL" : context.get("MEDIA_URL"),
     }
 
-@register.inclusion_tag('shop/tabs.html', takes_context=True)
+@register.inclusion_tag('lfs/shop/tabs.html', takes_context=True)
 def tabs(context, obj=None):
     """
     """
@@ -291,7 +291,7 @@ def tabs(context, obj=None):
         "MEDIA_URL" : context.get("MEDIA_URL"),
     }
 
-@register.inclusion_tag('catalog/top_level_categories.html', takes_context=True)
+@register.inclusion_tag('lfs/catalog/top_level_categories.html', takes_context=True)
 def top_level_categories(context):
     """Displays the top level categories.
     """
@@ -318,7 +318,7 @@ def top_level_categories(context):
         "categories" : categories,
     }
 
-@register.inclusion_tag('shop/menu.html', takes_context=True)
+@register.inclusion_tag('lfs/shop/menu.html', takes_context=True)
 def menu(context):
     """
     """

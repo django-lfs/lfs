@@ -19,12 +19,12 @@ def send_order_received_mail(order):
     bcc = shop.get_notification_emails()
     
     # text
-    text = render_to_string("mail/order_received_mail.txt", {"order" : order})    
+    text = render_to_string("lfs/mail/order_received_mail.txt", {"order" : order})    
     mail = EmailMultiAlternatives(
         subject=subject, body=text, from_email=from_email, to=to, bcc=bcc)
     
     # html    
-    html = render_to_string("mail/order_received_mail.html", {
+    html = render_to_string("lfs/mail/order_received_mail.html", {
         "order" : order
     })
     
@@ -42,14 +42,14 @@ def send_customer_added(user):
     bcc = shop.get_notification_emails()
 
     # text
-    text = render_to_string("mail/new_user_mail.txt", {
+    text = render_to_string("lfs/mail/new_user_mail.txt", {
         "user" : user, "shop" : shop})
         
     mail = EmailMultiAlternatives(
         subject=subject, body=text, from_email=from_email, to=to, bcc=bcc)
     
     # html    
-    html = render_to_string("mail/new_user_mail.html", {
+    html = render_to_string("lfs/mail/new_user_mail.html", {
         "user" : user, "shop" : shop,
     })
     

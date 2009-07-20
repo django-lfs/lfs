@@ -29,7 +29,7 @@ class CartPortlet(Portlet):
             amount_of_items = cart.amount_of_items
             price = lfs.cart.utils.get_cart_price(request, cart, total=True)
         
-        return render_to_string("portlets/cart.html", {
+        return render_to_string("lfs/portlets/cart.html", {
             "title" : self.title,
             "amount_of_items" : amount_of_items,
             "price" : price,

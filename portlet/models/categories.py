@@ -63,7 +63,7 @@ class CategoriesPortlet(Portlet):
                 "children" : children
             })
 
-        return render_to_string("portlets/categories.html", {
+        return render_to_string("lfs/portlets/categories.html", {
             "title" : self.title,
             "categories" : categories,
             "MEDIA_URL" : context.get("MEDIA_URL"),
@@ -95,7 +95,7 @@ class CategoriesPortlet(Portlet):
                 "children" : children,
             })
 
-        result = render_to_string("portlets/categories_children.html",
+        result = render_to_string("lfs/portlets/categories_children.html",
             RequestContext(request, {"categories" : categories }))
 
         return result

@@ -35,7 +35,7 @@ class AverageRatingPortlet(Portlet):
                 "MEDIA_URL" : context.get("MEDIA_URL"),
             }
 
-        return render_to_string("portlets/average_rating.html", d)
+        return render_to_string("lfs/portlets/average_rating.html", d)
 
     def form(self, **kwargs):
         """

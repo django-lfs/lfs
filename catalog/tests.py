@@ -758,8 +758,8 @@ class ViewsTestCase(TestCase):
         templates = [t.name for t in response.template]
 
         # By default the products of a category should be displayed
-        self.failIf("catalog/category_products.html" not in templates)
-        self.failIf("catalog/category_categories.html" in templates)
+        self.failIf("lfs/catalog/category_products.html" not in templates)
+        self.failIf("lfs/catalog/category_categories.html" in templates)
 
         # Switch to categories within a category
         self.c1.content = CONTENT_CATEGORIES
@@ -769,8 +769,8 @@ class ViewsTestCase(TestCase):
         templates = [t.name for t in response.template]
 
         # Now the categories template should be used
-        self.failIf("catalog/category_products.html" in templates)
-        self.failIf("catalog/category_categories.html" not in templates)
+        self.failIf("lfs/catalog/category_products.html" in templates)
+        self.failIf("lfs/catalog/category_categories.html" not in templates)
 
     def test_product_form_dispatcher(self):
         """Tests the product dispatcher. The product dispatcher decides where to

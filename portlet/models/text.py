@@ -21,7 +21,7 @@ class TextPortlet(Portlet):
     def render(self, context):
         """Renders the portlet as html.
         """
-        return render_to_string("portlets/text_portlet.html", {
+        return render_to_string("lfs/portlets/text_portlet.html", {
             "title" : self.title,
             "text" : self.text
         })

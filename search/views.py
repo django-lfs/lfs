@@ -11,7 +11,7 @@ from lfs.catalog.models import Category
 from lfs.catalog.models import Product
 from lfs.catalog.settings import STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS, VARIANT
 
-def livesearch(request, template_name="search/livesearch_results.html"):
+def livesearch(request, template_name="lfs/search/livesearch_results.html"):
     """
     """
     phrase = request.GET.get("phrase", "")
@@ -38,7 +38,7 @@ def livesearch(request, template_name="search/livesearch_results.html"):
         })
     return HttpResponse(result)
     
-def search(request, template_name="search/search_results.html"):
+def search(request, template_name="lfs/search/search_results.html"):
     """Returns the search result according to given phrase (via get request) 
     ordered by the globally set sorting.
     """

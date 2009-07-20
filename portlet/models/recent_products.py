@@ -47,7 +47,7 @@ class RecentProductsPortlet(Portlet):
                     product = product.get_default_variant()
                 products.append(product)
 
-        return render_to_string("portlets/recent_products.html", {
+        return render_to_string("lfs/portlets/recent_products.html", {
             "title" : self.title,
             "products" : products,
             "MEDIA_URL" : context.get("MEDIA_URL"),

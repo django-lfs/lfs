@@ -25,7 +25,7 @@ from lfs.shipping import utils as shipping_utils
 from lfs.payment import utils as payment_utils
 from lfs.payment.settings import DIRECT_DEBIT
 
-def login(request, template_name="checkout/login.html"):
+def login(request, template_name="lfs/checkout/login.html"):
     """Displays a form to login or register/login the user within the check out
     process.
 
@@ -100,7 +100,7 @@ def checkout_dispatcher(request):
     else:
         return HttpResponseRedirect(reverse("lfs_checkout_login"))
 
-def cart_inline(request, template_name="checkout/checkout_cart_inline.html"):
+def cart_inline(request, template_name="lfs/checkout/checkout_cart_inline.html"):
     """Displays the cart items of the checkout page.
 
     Factored out to be reusable for the starting request (which renders the
@@ -133,7 +133,7 @@ def cart_inline(request, template_name="checkout/checkout_cart_inline.html"):
     }))
 
 def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
-    template_name="checkout/one_page_checkout.html"):
+    template_name="lfs/checkout/one_page_checkout.html"):
     """One page checkout form.
     """
     # If the user is not authenticated and the if only authenticate checkout
@@ -285,14 +285,14 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
         "display_bank_account" : display_bank_account,
     }))
 
-def empty_page_checkout(request, template_name="checkout/empty_page_checkout.html"):
+def empty_page_checkout(request, template_name="lfs/checkout/empty_page_checkout.html"):
     """
     """
     return render_to_response(template_name, RequestContext(request, {
         "shopping_url" : reverse("lfs.core.views.shop_view"),
     }))
 
-def thank_you(request, template_name="checkout/thank_you_page.html"):
+def thank_you(request, template_name="lfs/checkout/thank_you_page.html"):
     """Displays a thank you page ot the customer
     """
     order = request.session.get("order")
@@ -300,7 +300,7 @@ def thank_you(request, template_name="checkout/thank_you_page.html"):
         "order" : order,
     }))
 
-def payment_inline(request, template_name="checkout/payment_inline.html"):
+def payment_inline(request, template_name="lfs/checkout/payment_inline.html"):
     """Displays the selectable payment methods of the checkout page.
 
     Factored out to be reusable for the starting request (which renders the
@@ -322,7 +322,7 @@ def payment_inline(request, template_name="checkout/payment_inline.html"):
         "selected_payment_method" : selected_payment_method,
     }))
 
-def shipping_inline(request, template_name="checkout/shipping_inline.html"):
+def shipping_inline(request, template_name="lfs/checkout/shipping_inline.html"):
     """Displays the selectable shipping methods of the checkout page.
 
     Factored out to be reusable for the starting request (which renders the

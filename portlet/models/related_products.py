@@ -20,7 +20,7 @@ class RelatedProductsPortlet(Portlet):
         """
         product = context.get("product")
 
-        return render_to_string("portlets/related_products.html", {
+        return render_to_string("lfs/portlets/related_products.html", {
             "title" : self.title,
             "product" : product,
             "MEDIA_URL" : context.get("MEDIA_URL"),

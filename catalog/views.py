@@ -144,7 +144,7 @@ def set_sorting(request):
     # lfs_sorting_changed.send(category_id)
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
-def category_view(request, slug, start=0, template_name="catalog/category_base.html"):
+def category_view(request, slug, start=0, template_name="lfs/catalog/category_base.html"):
     """
     """
     category = lfs_get_object_or_404(Category, slug=slug)
@@ -167,7 +167,7 @@ def category_view(request, slug, start=0, template_name="catalog/category_base.h
         "top_category" : lfs.catalog.utils.get_current_top_category(request, category),
     }))
 
-def category_categories(request, slug, template_name="catalog/category_categories.html"):
+def category_categories(request, slug, template_name="lfs/catalog/category_categories.html"):
     """Displays the child categories of the category with passed slug.
 
     This is displayed if the category's content attribute is set to categories".
@@ -202,7 +202,7 @@ def category_categories(request, slug, template_name="catalog/category_categorie
     cache.set(cache_key, result)
     return result
 
-def category_products(request, slug, start=0, template_name="catalog/category_products.html"):
+def category_products(request, slug, start=0, template_name="lfs/catalog/category_products.html"):
     """Displays the products of the category with passed slug.
 
     This is displayed if the category's content attribute is set to products.
@@ -307,7 +307,7 @@ def category_products(request, slug, start=0, template_name="catalog/category_pr
     cache.set(cache_key, temp)
     return result
 
-def product_view(request, slug, template_name="catalog/product_base.html"):
+def product_view(request, slug, template_name="lfs/catalog/product_base.html"):
     """Main view to display a product.
     """
     product = lfs_get_object_or_404(Product, slug=slug)
@@ -330,7 +330,7 @@ def product_view(request, slug, template_name="catalog/product_base.html"):
         "top_category" : lfs.catalog.utils.get_current_top_category(request, product),
     }))
 
-def product_inline(request, id, template_name="catalog/product_inline.html"):
+def product_inline(request, id, template_name="lfs/catalog/product_inline.html"):
     """Part of the prduct view, which displays the actual data of the product.
 
     This is factored out to be able to better cached and in might in future used

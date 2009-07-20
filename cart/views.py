@@ -1,4 +1,5 @@
-# django imports
+
+# # django imports
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -20,14 +21,14 @@ from lfs.shipping import utils as shipping_utils
 from lfs.payment import utils as payment_utils
 from lfs.customer import utils as customer_utils
 
-def cart(request, template_name="cart/cart.html"):
+def cart(request, template_name="lfs/cart/cart.html"):
     """The main view of the cart.
     """
     return render_to_response(template_name, RequestContext(request, {
         "cart_inline" : cart_inline(request),
     }))
 
-def cart_inline(request, template_name="cart/cart_inline.html"):
+def cart_inline(request, template_name="lfs/cart/cart_inline.html"):
     """The actual content of the cart. This is factored out to be reused within
     'normal' and ajax requests.
     """
@@ -81,7 +82,7 @@ def cart_inline(request, template_name="cart/cart_inline.html"):
         "shopping_url" : shopping_url,
     }))
 
-def added_to_cart(request, template_name="cart/added_to_cart.html"):
+def added_to_cart(request, template_name="lfs/cart/added_to_cart.html"):
     """Shows the product that has been added to the cart.
     """
     cart_items = request.session.get("cart_items", [])
@@ -97,7 +98,7 @@ def added_to_cart(request, template_name="cart/added_to_cart.html"):
         "cart_items" : added_to_cart_items(request),
     }))
 
-def added_to_cart_items(request, template_name="cart/added_to_cart_items.html"):
+def added_to_cart_items(request, template_name="lfs/cart/added_to_cart_items.html"):
     """Displays the added items for the added-to-cart view.
     """
     cart_items = request.session.get("cart_items", [])

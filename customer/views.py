@@ -20,7 +20,7 @@ from lfs.customer.forms import EmailForm
 from lfs.customer.forms import RegisterForm
 from lfs.order.models import Order
 
-def login(request, template_name="customer/login.html"):
+def login(request, template_name="lfs/customer/login.html"):
     """Custom view to login or register/login a user.
 
     The reason to use a custom login method are: 
@@ -120,7 +120,7 @@ def logout(request):
         msg = _(u"You have been logged out."))
     
 @login_required
-def orders(request, template_name="customer/orders.html"):
+def orders(request, template_name="lfs/customer/orders.html"):
     """Displays the orders of the current user
     """
     orders = Order.objects.filter(user=request.user)
@@ -130,7 +130,7 @@ def orders(request, template_name="customer/orders.html"):
     }))
 
 @login_required
-def order(request, id, template_name="customer/order.html"):
+def order(request, id, template_name="lfs/customer/order.html"):
     """
     """
     orders = Order.objects.filter(user=request.user)
@@ -142,7 +142,7 @@ def order(request, id, template_name="customer/order.html"):
     }))
 
 @login_required
-def account(request, template_name="customer/account.html"):
+def account(request, template_name="lfs/customer/account.html"):
     """Displays the main screen of the current user's account.
     """
     user = request.user
@@ -152,7 +152,7 @@ def account(request, template_name="customer/account.html"):
     }))
 
 @login_required
-def addresses(request, template_name="customer/addresses.html"):
+def addresses(request, template_name="lfs/customer/addresses.html"):
     """Provides a form to edit addresses and bank account.
     """
     user = request.user
@@ -192,7 +192,7 @@ def addresses(request, template_name="customer/addresses.html"):
         "invoice_address_form" : invoice_form,
     }))
 
-def email(request, template_name="customer/email.html"):
+def email(request, template_name="lfs/customer/email.html"):
     """Saves the email address from the data form.
     """
     if request.method == "POST":
@@ -208,7 +208,7 @@ def email(request, template_name="customer/email.html"):
         "email_form": email_form
     }))
 
-def password(request, template_name="customer/password.html"):
+def password(request, template_name="lfs/customer/password.html"):
     """Changes the password of current user.
     """
     if request.method == "POST":

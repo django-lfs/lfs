@@ -28,7 +28,7 @@ class PagesPortlet(Portlet):
             pages = Page.objects.active()
             cache.set(cache_key, pages)
         
-        return render_to_string("portlets/pages.html", {
+        return render_to_string("lfs/portlets/pages.html", {
             "title" : self.title,
             "pages" : pages,
             "MEDIA_URL" : context.get("MEDIA_URL"),

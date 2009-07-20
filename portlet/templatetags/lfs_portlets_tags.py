@@ -71,7 +71,7 @@ def lfs_portlet_slot(context, slot_name):
 
 # Inclusion tags to render portlets. This can be used if one wants to display
 # portlets without the possibility to manage them via the UI.
-@register.inclusion_tag('portlets/portlet.html', takes_context=True)
+@register.inclusion_tag('lfs/portlets/portlet.html', takes_context=True)
 def lfs_cart_portlet(context, title=None):
     """Tag to render the cart portlet.
     """
@@ -85,7 +85,7 @@ def lfs_cart_portlet(context, title=None):
         "html" : portlet.render(context)
     }
 
-@register.inclusion_tag('portlets/portlet.html', takes_context=True)
+@register.inclusion_tag('lfs/portlets/portlet.html', takes_context=True)
 def lfs_categories_portlet(context, title=None):
     """Tag to render the related products portlet.
     """
@@ -99,7 +99,7 @@ def lfs_categories_portlet(context, title=None):
         "html" : portlet.render(context)
     }
 
-@register.inclusion_tag('portlets/portlet.html', takes_context=True)
+@register.inclusion_tag('lfs/portlets/portlet.html', takes_context=True)
 def lfs_pages_portlet(context, title=None):
     """Tag to render the pages portlet.
     """
@@ -113,7 +113,7 @@ def lfs_pages_portlet(context, title=None):
         "html" : portlet.render(context)
     }
 
-@register.inclusion_tag('portlets/portlet.html', takes_context=True)
+@register.inclusion_tag('lfs/portlets/portlet.html', takes_context=True)
 def lfs_recent_products_portlet(context, title=None):
     """Tag to render the recent products portlet.
     """
@@ -127,7 +127,7 @@ def lfs_recent_products_portlet(context, title=None):
         "html" : portlet.render(context)
     }
 
-@register.inclusion_tag('portlets/portlet.html', takes_context=True)
+@register.inclusion_tag('lfs/portlets/portlet.html', takes_context=True)
 def lfs_related_products_portlet(context, title=None):
     """Tag to render the related products portlet.
     """
@@ -141,7 +141,7 @@ def lfs_related_products_portlet(context, title=None):
         "html" : portlet.render(context)
     }
 
-@register.inclusion_tag('portlets/portlet.html', takes_context=True)
+@register.inclusion_tag('lfs/portlets/portlet.html', takes_context=True)
 def lfs_topseller_portlet(context, title=None, limit=5):
     """Tag to render the related products portlet.
     """

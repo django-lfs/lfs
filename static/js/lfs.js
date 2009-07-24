@@ -41,7 +41,16 @@ $(function() {
         "txtImage" : "Bild",
         "txtOf" : " von "
     });
-    
+
+    // Hack to make the change event on radio buttons for IE working
+    // http://stackoverflow.com/questions/208471/getting-jquery-to-recognise-change-in-ie
+    if ($.browser.msie) {
+        $("input.variant").livequery("click", function() {
+            this.blur();
+            this.focus();
+        });
+    };
+
     $("input.variant").livequery("change", function() {
         var url = $(this).parents("table.product-variants").attr("data");
         var variant_id = $(this).attr("value");

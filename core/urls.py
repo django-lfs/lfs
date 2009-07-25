@@ -79,7 +79,7 @@ urlpatterns += patterns('django.contrib.auth.views',
 # Search
 urlpatterns += patterns('lfs.search.views',
     url(r'^search', "search", name="lfs_search"),
-    url(r'^livesearch', "livesearch"),
+    url(r'^livesearch', "livesearch", name="lfs_livesearch"),
 )
 
 urlpatterns += patterns('',

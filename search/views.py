@@ -25,16 +25,20 @@ def livesearch(request, template_name="lfs/search/livesearch_results.html"):
         query = Q(active=True) & \
                 Q(name__icontains=phrase) & \
                 Q(sub_type__in = (STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS))
-        products = Product.objects.filter(query)[0:5]
+        
+        temp = Product.objects.filter(query)
+        total = len(temp)
+        products = temp[0:5]
         
         products = render_to_string(template_name, RequestContext(request, {
             "products" : products,
             "phrase" : phrase,
+            "total" : total,
         }))
         
         result = simplejson.dumps({
             "state" : "success",
-            "products" : products
+            "products" : products,
         })
     return HttpResponse(result)
     

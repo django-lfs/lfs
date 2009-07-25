@@ -6,6 +6,29 @@ function popup(url, w, h) {
 
 $(function() {
 
+    // Delay plugin taken from ###############################################
+    // http://ihatecode.blogspot.com/2008/04/jquery-time-delay-event-binding-plugin.html
+
+   $.fn.delay = function(options) {
+        var timer;
+        var delayImpl = function(eventObj) {
+            if (timer != null) {
+                clearTimeout(timer);
+            }
+            var newFn = function() {
+                options.fn(eventObj);
+            };
+            timer = setTimeout(newFn, options.delay);
+        }
+
+        return this.each(function() {
+            var obj = $(this);
+            obj.bind(options.event, function(eventObj) {
+                 delayImpl(eventObj);
+            });
+        });
+    };
+
     // Message ################################################################
 
     var message = $.cookie("message");
@@ -138,23 +161,28 @@ $(function() {
         }, 200);
     });
 
-    $("#search-input").livequery("keyup", function(e) {
-        if (e.keyCode == 27) {
-            $("#livesearch-result").hide();
-        }
-        else {
-            var phrase = $(this).attr("value");
-            $.get("/livesearch", {"phrase" : phrase}, function(data) {
-                data = JSON.parse(data);
-                if (data["state"] == "success") {
-                    $("#livesearch-result").html(data["products"]);
-                    $("#livesearch-result").slideDown("fast");
-                }
-                else {
-                    $("#livesearch-result").html();
-                    $("#livesearch-result").hide();
-                }
-            });
+    $("#search-input").delay({
+        delay: 400,
+        event: "keyup",
+        fn: function(e) {
+            if (e.keyCode == 27) {
+                $("#livesearch-result").hide();
+            }
+            else {
+                var phrase = $("#search-input").attr("value");
+                var url = $("#search-input").attr("data");
+                $.get(url, {"phrase" : phrase}, function(data) {
+                    data = JSON.parse(data);
+                    if (data["state"] == "success") {
+                        $("#livesearch-result").html(data["products"]);
+                        $("#livesearch-result").slideDown("fast");
+                    }
+                    else {
+                        $("#livesearch-result").html();
+                        $("#livesearch-result").hide();
+                    }
+                })
+            }
         }
     });
 

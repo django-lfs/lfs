@@ -29,6 +29,14 @@ from lfs.shipping import utils as shipping_utils
 
 register = template.Library()
 
+@register.inclusion_tag('lfs/portlets/category_children.html', takes_context=True)
+def category_children(context, categories):
+    """
+    """
+    return {
+        "categories" : categories,
+    }
+
 @register.inclusion_tag('lfs/shop/google_analytics_tracking.html', takes_context=True)
 def google_analytics_tracking(context):
     """Returns google analytics tracking code which has been entered to the

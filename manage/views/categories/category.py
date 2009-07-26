@@ -99,6 +99,13 @@ def edit_category_data(request, category_id, template_name="manage/category/data
     else:
         message = _(u"Please correct the indicated errors.")
     
+    # Update category level
+    category.level = len(category.get_parents()) + 1
+    category.save()
+    for child in category.get_all_children():
+        child.level = len(child.get_parents()) + 1
+        child.save()
+    
     url = reverse("lfs_manage_category", kwargs={"category_id" : category_id})
     return HttpResponseRedirect(url)
     
@@ -137,6 +144,8 @@ def add_category(request, category_id="", template_name="manage/category/add_cat
             new_category = form.save(commit=False)
             new_category.parent = parent
             new_category.position = 999
+            if parent:
+                new_category.level = parent.level+1
             new_category.save()
 
             # Update positions

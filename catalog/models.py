@@ -97,6 +97,10 @@ class Category(models.Model):
 
         - uuid
            The unique id of the category
+           
+        - level 
+           The level of the category within the category hierachie, e.g. if it 
+           is a top level category the level is 1.
     """
     name = models.CharField(_(u"Name"), max_length=50)
     slug = models.SlugField(_(u"Slug"),unique=True)
@@ -123,7 +127,8 @@ class Category(models.Model):
 
     meta_keywords = models.TextField(_(u"Meta keywords"), blank=True)
     meta_description = models.TextField(_(u"Meta description"), blank=True)
-
+    
+    level = models.PositiveSmallIntegerField(default=1)
     uid = models.CharField(max_length=50)
 
     class Meta:
@@ -132,7 +137,7 @@ class Category(models.Model):
 
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.slug)
-
+    
     def get_absolute_url(self):
         """Returns the absolute_url.
         """

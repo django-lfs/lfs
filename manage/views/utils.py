@@ -24,6 +24,15 @@ def clear_cache(request):
         url = reverse("lfs_manage_utils"),
         msg = _(u"Cache has been cleared."),
     )
+
+def set_category_levels(request):
+    """Sets the category levels based on the position in category hierarchy.
+    """
+    lfs.core.utils.set_category_levels()
+    return lfs.core.utils.set_message_cookie(
+        url = reverse("lfs_manage_utils"),
+        msg = _(u"Categoy levels have been created."),
+    )
     
 def update_effective_price(request):
     """Saves the price or sale price to effective price.

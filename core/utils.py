@@ -128,7 +128,6 @@ class CategoryTree(object):
                 children = self._get_sub_tree(category, level+1)
                 is_current = True
             elif category.level <= self.expand_level:
-                print category.name, category.level
                 children = self._get_sub_tree(category, level+1)
                 is_current = False
             else:

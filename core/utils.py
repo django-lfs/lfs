@@ -86,11 +86,14 @@ class CategoryTree(object):
         """
         # NOTE: We don't use the level attribute of the category but calculate
         # actual position of a category based on the current tree. In this way
-        # the category tree always start with level 1 (even if we start with 
+        # the category tree always start with level 1 (even if we start with
         # category level 2) an the correct css is applied.
         level = 0
         categories = []
         for category in Category.objects.filter(level = self.start_level):
+
+            if category.exclude_from_navigation:
+                continue
 
             if (self.currents and category in self.currents):
                 children = self._get_sub_tree(category, level+1)
@@ -123,6 +126,9 @@ class CategoryTree(object):
     def _get_sub_tree(self, category, level):
         categories = []
         for category in Category.objects.filter(parent = category):
+
+            if category.exclude_from_navigation:
+                continue
 
             if (self.currents and category in self.currents):
                 children = self._get_sub_tree(category, level+1)

@@ -197,7 +197,7 @@ def product_navigation(context, product):
     """Provides previous and next product links.
     """
     request = context.get("request")
-    sorting = request.session.get("sorting")
+    sorting = request.session.get("sorting", "price")
 
     slug = product.slug
 
@@ -210,7 +210,7 @@ def product_navigation(context, product):
             pass
     else:
         temp = dict()
-
+    
     # To calculate the position we take only STANDARD_PRODUCT into account.
     # That means if the current product is a VARIANT we switch to its parent
     # product.
@@ -229,16 +229,10 @@ def product_navigation(context, product):
         if category.show_all_products:
             categories.extend(category.get_all_children())
 
-        if sorting:
-            products = Product.objects.filter(
-                categories__in = categories,
-                sub_type__in =(STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS),
-            ).order_by(sorting)
-        else:
-            products = Product.objects.filter(
-                categories__in = categories,
-                sub_type__in =(STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS)
-            )
+        products = Product.objects.filter(
+            categories__in = categories,
+            sub_type__in =(STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS),
+        ).order_by(sorting)
 
         product_slugs = [p.slug for p in products]
         product_index = product_slugs.index(slug)

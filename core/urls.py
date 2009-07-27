@@ -82,6 +82,7 @@ urlpatterns += patterns('lfs.search.views',
     url(r'^livesearch', "livesearch", name="lfs_livesearch"),
 )
 
+# Tagging
 urlpatterns += patterns('',
     (r'^tagging/', include('lfs.tagging.urls')),
 )

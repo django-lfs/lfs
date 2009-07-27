@@ -21,11 +21,6 @@ def shop_view(request, template_name="lfs/shop/shop.html"):
         "shop" : shop
     }))
 
-def robots(request, template_name="lfs/shop/robots.txt"):
-    """Displays the robots.txt.
-    """
-    return render_to_response(template_name)
-
 def server_error(request):
     """Own view in order to pass RequestContext and send an error message.
     """

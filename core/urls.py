@@ -1,14 +1,24 @@
+# django imports
 from django.conf.urls.defaults import *
-from lfs.core.sitemap import ProductSitemap
+from django.views.generic.simple import direct_to_template
 
-urlpatterns = patterns('lfs.core.views',
-    url(r'^$', "shop_view", name="lfs_shop_view"),
-    url(r'^robots\.txt/$',  "robots", name="lfs_robots"),
+# lfs imports
+from lfs.core.sitemap import ProductSitemap
+from lfs.core.sitemap import CategorySitemap
+
+# Robots
+urlpatterns = patterns('django.views.generic.simple',
+    (r'^robots.txt', 'direct_to_template', { 'template': 'lfs/shop/robots.txt' }),
 )
 
 # Sitemaps
 urlpatterns += patterns("django.contrib.sitemaps.views",
-    url(r'^sitemap.xml$', 'sitemap', {'sitemaps': {"products": ProductSitemap}})
+    url(r'^sitemap.xml$', 'sitemap', {'sitemaps': {"products": ProductSitemap, "categories" : CategorySitemap }})
+)
+
+# Shop
+urlpatterns += patterns('lfs.core.views',
+    url(r'^$', "shop_view", name="lfs_shop_view"),
 )
 
 # Cart

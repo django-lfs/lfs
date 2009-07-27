@@ -84,6 +84,12 @@ $(function() {
                 var data = JSON.parse(data);
                 $("#product-inline").html(data["product"]);
                 $.jGrowl(data["message"]);
+
+                // Re-bind lightbox
+                $("a.product-image").lightBox({
+                    "txtImage" : "Bild",
+                    "txtOf" : " von "
+                });
             }
         });
     });
@@ -96,6 +102,12 @@ $(function() {
                 var data = JSON.parse(data);
                 $("#product-inline").html(data["product"]);
                 $.jGrowl(data["message"]);
+
+                // Re-bind lightbox
+                $("a.product-image").lightBox({
+                    "txtImage" : "Bild",
+                    "txtOf" : " von "
+                });
             }
         });
     });

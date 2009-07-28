@@ -90,7 +90,7 @@ def add_portlet(request, object_type_id, object_id, template_name="manage/portle
     if request.method == "GET":
 
         try:
-            portlet_ct = ContentType.objects.get(model=portlet_type.lower())
+            portlet_ct = ContentType.objects.filter(model=portlet_type.lower())[0]
             mc = portlet_ct.model_class()
             form = mc().form(prefix="portlet")
             return render_to_response(template_name, RequestContext(request, {
@@ -104,7 +104,7 @@ def add_portlet(request, object_type_id, object_id, template_name="manage/portle
             pass
     else:
         try:
-            ct = ContentType.objects.get(model=portlet_type.lower())
+            ct = ContentType.objects.filter(model=portlet_type.lower())[0]
             mc = ct.model_class()
             form = mc().form(prefix="portlet", data=request.POST)
             portlet = form.save()

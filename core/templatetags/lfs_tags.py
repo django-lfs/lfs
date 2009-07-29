@@ -68,32 +68,22 @@ def google_analytics_ecommerce(context):
         "google_analytics_id" : shop.google_analytics_id,
     }
 
-def _get_shipping(context):
+def _get_shipping(context, product):
     request = context.get("request")
-    product = context.get("product")
-    slug = product.slug
-
-    product = lfs_get_object_or_404(Product, slug=slug)
     if product.deliverable == False:
         return {
             "deliverable" : False,
-            "delivery_time" : shipping_utils.get_product_delivery_time(request, slug)
+            "delivery_time" : shipping_utils.get_product_delivery_time(request, product.slug)
         }
     else:
         return {
             "deliverable" : True,
-            "delivery_time" : shipping_utils.get_product_delivery_time(request, slug)
+            "delivery_time" : shipping_utils.get_product_delivery_time(request, product.slug)
         }
 
 @register.inclusion_tag('lfs/shipping/shipping_tag.html', takes_context=True)
-def shipping(context):
-    return _get_shipping(context)
-
-@register.inclusion_tag('lfs/shipping/shipping_portlet.html', takes_context=True)
-def shipping_portlet(context):
-    """
-    """
-    return _get_shipping(context)
+def shipping(context, variant):
+    return _get_shipping(context, variant)
 
 @register.inclusion_tag('lfs/catalog/sorting.html', takes_context=True)
 def sorting(context):

@@ -9,6 +9,7 @@ from lfs.caching.utils import lfs_get_object_or_404
 from lfs.catalog.models import DeliveryTime
 from lfs.catalog.models import Product
 from lfs.catalog.settings import DELIVERY_TIME_UNIT_DAYS
+from lfs.catalog.settings import PRODUCT_WITH_VARIANTS
 from lfs.core.utils import get_default_shop
 from lfs.criteria import utils as criteria_utils
 from lfs.customer import utils as customer_utils
@@ -43,7 +44,13 @@ def get_product_delivery_time(request, product_slug, for_cart=False):
         return shipping
 
     product = lfs_get_object_or_404(Product, slug=product_slug)
-
+    
+    # if the product is a product with variants we switch to the default 
+    # variant to calculate the delivery time. Please note that in this case 
+    # the default variant is displayed.
+    if product.sub_type == PRODUCT_WITH_VARIANTS:
+        product = product.get_default_variant()
+    
     if product.manual_delivery_time:
         delivery_time = product.delivery_time
     else:

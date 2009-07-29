@@ -83,7 +83,6 @@ $(function() {
             success : function(data) {
                 var data = JSON.parse(data);
                 $("#product-inline").html(data["product"]);
-                $("div.delivery-time-portlet").replaceWith(data["delivery_time_portlet"]);
                 $.jGrowl(data["message"]);
 
                 // Re-bind lightbox
@@ -98,11 +97,10 @@ $(function() {
     //  TODO: take url to html
     $("select.property").livequery("change", function() {
         $("#product-form").ajaxSubmit({
-            url : "/shop/select-variant-from-properties",
+            url : "/select-variant-from-properties",
             success : function(data) {
                 var data = JSON.parse(data);
                 $("#product-inline").html(data["product"]);
-                $("div.delivery-time-portlet").replaceWith(data["delivery_time_portlet"]);                
                 $.jGrowl(data["message"]);
 
                 // Re-bind lightbox

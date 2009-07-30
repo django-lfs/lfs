@@ -44,13 +44,15 @@ def get_product_delivery_time(request, product_slug, for_cart=False):
         return shipping
 
     product = lfs_get_object_or_404(Product, slug=product_slug)
-    
-    # if the product is a product with variants we switch to the default 
-    # variant to calculate the delivery time. Please note that in this case 
-    # the default variant is displayed.
+
+    # if the product is a product with variants we switch to the default
+    # variant to calculate the delivery time. Please note that in this case
+    # the default variant is also displayed.
     if product.sub_type == PRODUCT_WITH_VARIANTS:
-        product = product.get_default_variant()
-    
+        variant = product.get_default_variant()
+        if variant is not None:
+            product = variant
+
     if product.manual_delivery_time:
         delivery_time = product.delivery_time
     else:

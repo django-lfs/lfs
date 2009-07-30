@@ -1,0 +1,178 @@
+{% load i18n lfs_tags %}
+<form action="{% url lfs_set_order_filter %}"
+      method="POST">
+
+	<div class="navigation">
+        {% if page.has_previous %}
+            <a class=""
+               href="{% url lfs_orders %}?page=1">First</a>
+            <a class=""
+               href="{% url lfs_orders %}?page={{ page.previous_page_number }}">Previous</a>
+        {% else %}
+            <span>{% trans 'First' %}</span>
+            <span>{% trans 'Previous' %}</span>
+        {% endif %}
+
+        {{ page.number }} / {{ paginator.num_pages }}
+
+        {% if page.has_next %}
+            <a class=""
+               href="{% url lfs_orders %}?page={{ page.next_page_number }}">Next</a>
+            <a class=""
+               href="{% url lfs_orders %}?page={{ paginator.num_pages }}">Last</a>
+
+        {% else %}
+            <span>{% trans 'Next' %}</span>
+            <span>{% trans 'Last' %}</span>
+        {% endif %}
+	</div>
+
+	{# <div class="filters" #}
+	{#      style="padding: 10px 0"> #}
+	{#  #}
+	{# 	<label for="date"> #}
+	{#     	{% trans "Date" %}: #}
+	{# 	</label> #}
+	{#  #}
+	{# 	<a href="{% url lfs_set_order_filters_date %}?start=0&amp;end=0" #}
+	{# 	   class="ajax-link">T</a> #}
+	{# 	<a href="{% url lfs_set_order_filters_date %}?start=1&amp;end=1" #}
+	{# 	   class="ajax-link">Y</a> #}
+	{# 	<a href="{% url lfs_set_order_filters_date %}?start=7&amp;end=0" #}
+	{# 	   class="ajax-link">W</a> #}
+	{#  #}
+	{# 	<input type="text" #}
+	{# 	       name="start" #}
+	{# 		   value="{{ start }}"> #}
+	{# 	<input type="text" #}
+	{# 	       name="end" #}
+	{# 		   value="{{ end }}"> #}
+	{#  #}
+	{# 	<label for="state"> #}
+	{#     	{% trans "State" %}: #}
+	{# 	</label> #}
+	{# 	<select id="states-filter" #}
+	{# 	        class="ajax-change" #}
+	{# 			name="state"> #}
+	{# 		<option value="">{% trans "All" %}</option> #}
+	{# 		{% for state in states %} #}
+	{# 			<option value="{{ state.id }}" #}
+	{# 			        {% if state.selected %}selected="selected"{% endif %}> #}
+	{# 				{{ state.name }} #}
+	{# 			</option> #}
+	{# 		{% endfor %} #}
+	{# 	</select> #}
+	{# 	 #}
+	{# 	<label for="name"> #}
+	{# 		{% trans "Name" %}: #}
+	{# 	</label> #}
+	{#  #}
+	{# 	<input type="text" #}
+	{# 	       name="name" #}
+	{# 		   value="{{ name }}"> #}
+	{# 	 #}
+	{# 	<input type="submit" #}
+	{# 	       class="ajax-save-button-2" /> #}
+	{#  #}
+	{# 	<a href="{% url lfs_reset_order_filters %}" #}
+	{# 	   class="ajax-link">[x]</a> #}
+	{#  #}
+	{# </div> #}
+
+    <table class="lfs-manage-table">
+		<tr>
+			<td>
+				<a href="{% url lfs_set_order_filters_date %}?start=0&amp;end=0"
+				   class="ajax-link">T</a>
+				<a href="{% url lfs_set_order_filters_date %}?start=1&amp;end=1"
+				   class="ajax-link">Y</a>
+				<a href="{% url lfs_set_order_filters_date %}?start=7&amp;end=0"
+				   class="ajax-link">W</a>
+
+				<input type="text"
+				       name="start"
+					   value="{{ start }}">
+				<input type="text"
+				       name="end"
+					   value="{{ end }}">				
+			</td>
+			<td>
+				<input type="text"
+				       name="name"
+					   value="{{ name }}">				
+			</td>
+			<td>
+				<select id="states-filter"
+				        class="ajax-change"
+						name="state">
+					<option value="">{% trans "All" %}</option>
+					{% for state in states %}
+						<option value="{{ state.id }}"
+						        {% if state.selected %}selected="selected"{% endif %}>
+							{{ state.name }}
+						</option>
+					{% endfor %}
+				</select>				
+
+				<input type="submit"
+				       class="ajax-save-button-2" />
+		
+				<a href="{% url lfs_reset_order_filters %}"
+				   class="ajax-link">[x]</a>		
+			</td>			
+		</tr>
+	
+        <tr>
+            <th style="width:400px">
+                {% trans 'Date' %}
+            </th>
+            <th style="width:200px">
+				{% trans "Name" %}
+			</th>
+            <th>
+                {% trans 'State' %}
+            </th>
+            <th class="number">
+                {% trans 'Price' %}
+            </th>
+            <th class="number">
+                {% trans 'Message' %}
+            </th>
+        </tr>
+		{% if page.object_list %}
+	        {% for order in page.object_list %}
+				<tr class="{% cycle 'even' 'odd' %}">
+	                <td>
+	                    <a href="{% url lfs.manage.views.order_view order.id %}">
+	                        {{order.created|date:_("DATETIME_FORMAT")}}
+	                    </a>
+
+	                </td>
+					<td>
+						{{ order.customer_firstname }} {{ order.customer_lastname }}
+					</td>
+					<td>
+						{{ order.get_state_display }}
+					</td>
+	                <td class="number">
+	                    {{order.price|currency}}
+	                </td>
+	                <td class="number">
+	                    {% if order.message %}
+	                        Yes
+	                    {% else %}
+	                        No
+	                    {% endif %}
+	                </td>
+	            </tr>
+	        {% endfor %}
+		{% else	%}
+			<tr>
+				<td colspan="4">
+					{% trans "There are no orders" %}
+				</td>
+			</tr>
+
+		{% endif %}
+    </table>
+</form>

@@ -219,6 +219,9 @@ urlpatterns += patterns('lfs.manage.views',
     url(r'^order/(?P<order_id>\d*)$', "order_view", name="lfs_manage_order"),
     url(r'^delete-order/(?P<order_id>\d*)$', "delete_order", name="lfs_delete_order"),
     url(r'^send-order/(?P<order_id>\d*)$', "send_order", name="lfs_send_order"),
+    url(r'^set-orders-filter$', "set_order_filters", name="lfs_set_order_filter"),
+    url(r'^set-orders-filter-date$', "set_order_filters_date", name="lfs_set_order_filters_date"),
+    url(r'^reset-order-filter$', "reset_order_filters", name="lfs_reset_order_filters"),
 )
 
 # Criteria

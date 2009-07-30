@@ -73,6 +73,22 @@ def set_category_levels():
         category.level = len(category.get_parents()) + 1
         category.save()
 
+def get_start_day(date):
+    """Takes a string such as "2009-07-23" and returns a range of this day.
+    """
+    year, month, day = date.split("-")
+    start = datetime.datetime(int(year), int(month), int(day))
+    return start
+
+def get_end_day(date):
+    """
+    """
+    year, month, day = date.split("-")
+    end = datetime.datetime(int(year), int(month), int(day))    
+    end = end + datetime.timedelta(1) - datetime.timedelta(microseconds=1)
+    
+    return end
+    
 class CategoryTree(object):
     """Represents a category tree.
     """

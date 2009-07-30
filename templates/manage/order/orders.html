@@ -1,5 +1,4 @@
 {% extends "manage/manage_base.html" %}
-
 {% load i18n %}
 {% load lfs_tags %}
 
@@ -7,38 +6,7 @@
 
 {% block content %}
     <div class="site-actions"></div>
-    
-    <table class="lfs-manage-table">
-        <tr>
-            <th>
-                {% trans 'Date' %}
-            </th>
-            <th class="number">
-                {% trans 'Price' %}
-            </th>
-            <th class="number">
-                {% trans 'Message' %}
-            </th>
-        </tr>
-        {% for order in orders %}
-            <tr>
-                <td>
-                    <a href="{% url lfs.manage.views.order_view order.id %}">
-                        {{order.created|date:_("DATETIME_FORMAT")}}
-                    </a>
-                    
-                </td>
-                <td class="number">
-                    {{order.price|currency}}
-                </td>
-                <td class="number">
-                    {% if order.message %}
-                        Yes
-                    {% else %}
-                        No
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+	<div id="orders-inline">
+		{{ orders_inline|safe }}
+	</div>
 {% endblock %}

@@ -86,6 +86,31 @@ $(function() {
         })
         return false;
     });
+
+    // Generic ajax save button
+    $(".ajax-save-button-2").livequery("click", function() {
+        $(this).parents("form:first").ajaxSubmit({
+            success : function(data) {
+                data = JSON.parse(data);
+                for (var html in data["html"])
+                    $(data["html"][html][0]).html(data["html"][html][1]);
+                $.jGrowl(data["message"]);
+            }
+        })
+        return false;
+    });
+    
+    // Generic ajax link
+    $(".ajax-link").livequery("click", function() {
+        var url = $(this).attr("href");
+        $.post(url, function(data) {
+            data = JSON.parse(data);
+            for (var html in data["html"])
+                $(data["html"][html][0]).html(data["html"][html][1]);
+            $.jGrowl(data["message"]);        
+        })
+        return false;
+    });
     
     // Criteria
     $(".edit-price-criteria-button").livequery("click", function() {

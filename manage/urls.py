@@ -214,8 +214,9 @@ urlpatterns += patterns('lfs.manage.views.payment',
 
 # Orders
 urlpatterns += patterns('lfs.manage.views',
-    url(r'^manage-orders', "manage_orders", name="lfs_manage_orders"),
-    url(r'^orders', "orders_view", name="lfs_orders"),
+    url(r'^manage-orders$', "manage_orders", name="lfs_manage_orders"),
+    url(r'^orders$', "orders_view", name="lfs_orders"),
+    url(r'^orders-inline$', "orders_inline", name="lfs_orders_inline"),
     url(r'^order/(?P<order_id>\d*)$', "order_view", name="lfs_manage_order"),
     url(r'^delete-order/(?P<order_id>\d*)$', "delete_order", name="lfs_delete_order"),
     url(r'^send-order/(?P<order_id>\d*)$', "send_order", name="lfs_send_order"),
@@ -223,8 +224,6 @@ urlpatterns += patterns('lfs.manage.views',
     url(r'^set-orders-filter-date$', "set_order_filters_date", name="lfs_set_order_filters_date"),
     url(r'^reset-order-filter$', "reset_order_filters", name="lfs_reset_order_filters"),
     url(r'^selectable-orders-inline$', "selectable_orders_inline", name="lfs_selectable_orders_inline"),
-    
-    
 )
 
 # Criteria

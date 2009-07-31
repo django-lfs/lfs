@@ -57,7 +57,7 @@ img.icon-padding {
 /* Tables */
 table.main {
     width: 100%;
-    padding: 0 20px;    
+    padding: 0 20px;
 }
 
 table.main td {
@@ -125,7 +125,7 @@ tr.odd {
 }
 
 .navigation-pages {
-    padding:2px 0;    
+    padding:2px 0;
     margin: 6px 0;
     background-color: #ede9e8;
     border: 1px solid #aaa;
@@ -153,7 +153,7 @@ a.selectable:hover {
 }
 
 a.selectable.selected {
-    font-weight: bold;    
+    font-weight: bold;
     background-color: #ede9e8;
 }
 
@@ -179,6 +179,12 @@ a.delete {
     margin: 0 10px;
     padding-left: 20px;
     background: url(/media/lfs/icons/delete.png) no-repeat;
+}
+
+a.overview {
+    margin: 0 10px;
+    padding-left: 20px;
+    background: url(/media/lfs/icons/arrow_up.png) no-repeat;
 }
 
 a.preview {
@@ -239,7 +245,7 @@ a.edit {
 .selected-accessories {
     height: 200px;
     overflow: auto;
-    margin: 6px 0 20px 0;    
+    margin: 6px 0 20px 0;
 }
 
 div.manage-form-buttons {
@@ -257,7 +263,7 @@ body.manage-product .image-item {
 
 body.manage-product ul.manage-categories {
     list-style-type: none;
-    padding-left: 20px;    
+    padding-left: 20px;
 }
 
 body.manage-product ul.manage-categories.root {
@@ -286,7 +292,7 @@ div.site-actions img {
 span.delete {
     margin: 0 0 0 10px;
     padding-left: 20px;
-    background: url(/media/lfs/icons/delete.png) no-repeat;    
+    background: url(/media/lfs/icons/delete.png) no-repeat;
 }
 
 /* Forms */
@@ -299,7 +305,7 @@ span.delete {
 }
 
 .field li {
-    display: inline;    
+    display: inline;
     color: red;
 }
 
@@ -371,9 +377,9 @@ div.footer a {
 
 div.footer p {
     text-align: center;
-   	line-height: 0.5em;    
+   	line-height: 0.5em;
 }
 
 .attention {
     color: #ef2c38;
-} 
+}

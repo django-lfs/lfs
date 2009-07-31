@@ -201,9 +201,28 @@ def selectable_orders_inline(request, as_string=False,
     quickly from one order to another.)
     """
     orders = Order.objects.all()
-    return render_to_string(template_name, RequestContext(request, {
-        "orders" : orders
+    paginator = Paginator(orders, 20)
+    
+    try:
+        page = int(request.REQUEST.get("page", 1))
+    except TypeError:
+        page = 1
+    page = paginator.page(page)
+
+    result = render_to_string(template_name, RequestContext(request, {
+        "orders" : orders,
+        "paginator" : paginator,
+        "page" : page,
     }))
+    
+    if as_string:
+        return result
+    else:
+        result = simplejson.dumps({
+            "html" : (("#selectable-orders", result),),
+        }, cls = LazyEncoder)
+        
+        return HttpResponse(result)
 
 # Actions
 @permission_required("manage_shop", login_url="/login/")

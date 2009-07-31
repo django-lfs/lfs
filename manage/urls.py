@@ -222,6 +222,9 @@ urlpatterns += patterns('lfs.manage.views',
     url(r'^set-orders-filter$', "set_order_filters", name="lfs_set_order_filter"),
     url(r'^set-orders-filter-date$', "set_order_filters_date", name="lfs_set_order_filters_date"),
     url(r'^reset-order-filter$', "reset_order_filters", name="lfs_reset_order_filters"),
+    url(r'^selectable-orders-inline$', "selectable_orders_inline", name="lfs_selectable_orders_inline"),
+    
+    
 )
 
 # Criteria

@@ -2,16 +2,16 @@
 {% load i18n lfs_tags %}
 
 {% block left_slot %}
-	{{ selectable_orders }}
+	<div id="selectable-orders">
+		{{ selectable_orders }}
+	</div>
 {% endblock %}
 
 {% block content %}
 
     <div class="site-actions">
         
-        <span class="label">{{current_order.created|date:_("DATETIME_FORMAT")}}</span>
-
-        <a class="delete"
+        <a class="overview"
            href="{% url lfs_orders %}">
            {% trans 'Overview' %}</a>
 

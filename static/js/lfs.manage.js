@@ -107,7 +107,10 @@ $(function() {
             data = JSON.parse(data);
             for (var html in data["html"])
                 $(data["html"][html][0]).html(data["html"][html][1]);
-            $.jGrowl(data["message"]);        
+                
+            if (data["message"]) {
+                $.jGrowl(data["message"]);
+            }
         })
         return false;
     });

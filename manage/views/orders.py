@@ -201,7 +201,6 @@ def order_view(request, order_id, template_name="manage/order/order.html"):
     """Displays order with provided order id.
     """
     order = lfs_get_object_or_404(Order, pk=order_id)
-    orders = Order.objects.all()
 
     return render_to_response(template_name, RequestContext(request, {
         "current_order" : order,
@@ -215,6 +214,36 @@ def selectable_orders_inline(request, as_string=False,
     quickly from one order to another.)
     """
     orders = Order.objects.all()
+    order_filters = request.session.get("order-filters", {})
+
+    # name
+    name = order_filters.get("name", "")
+    if name != "":
+        f  = Q(customer_lastname__icontains=name)
+        f |= Q(customer_firstname__icontains=name)
+        orders = orders.filter(f)
+
+    # state
+    state_id = order_filters.get("state")
+    if state_id is not None:
+        orders = orders.filter(state=state_id)
+
+    # start
+    start = order_filters.get("start", "")
+    if start != "":
+        s = lfs.core.utils.get_start_day(start)
+    else:
+        s = datetime.min
+
+    # end
+    end = order_filters.get("end", "")
+    if end != "":
+        e = lfs.core.utils.get_end_day(end)
+    else:
+        e = datetime.max
+
+    orders = orders.filter(created__range=(s, e))
+    
     paginator = Paginator(orders, 20)
 
     try:

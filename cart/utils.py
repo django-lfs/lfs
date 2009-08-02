@@ -26,6 +26,7 @@ def get_cart_max_delivery_time(request, cart):
             max_delivery_time = delivery_time
     return max_delivery_time
 
+# TODO: Remove cart from signature?
 def get_cart_price(request, cart, total=False):
     """Returns price of the given cart.
     """

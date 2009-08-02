@@ -1,9 +1,7 @@
 # django imports
-from django import forms
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.db import models
-from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
@@ -50,6 +48,15 @@ class Cart(models.Model):
         for item in self.items():
             amount += item.amount
         return amount
+
+    def get_name(self):
+        cart_name = ""
+        for cart_item in self.items.all():
+            if cart_name.product is not None:
+                cart_name = cart_name + cart_name.product.get_name() + ", "
+
+        cart_name.strip(', ')
+        return cart_name
 
 class CartItem(models.Model):
     """A cart item belongs to a cart. It stores the product and the amount of

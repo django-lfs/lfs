@@ -223,24 +223,34 @@ $(function() {
                 $("#shipping-inline").html(data["shipping"]);
             }
         });
-
     })
 
-    var table = $("#bank-account");
-    if ($("#payment-method-1:checked").val() != null) {
-        table.show();
+    if ($("#payment-method-6:checked").val() != null) {
+        $("#credit-card").show();
     }
     else {
-        table.hide();
+        $("#credit-card").hide();
+    }
+
+    if ($("#payment-method-1:checked").val() != null) {
+        $("#bank-account").show();
+    }
+    else {
+        $("#bank-account").hide();
     }
 
     $(".payment-methods").livequery("click", function() {
-        var table = $('#bank-account');
         if ($("#payment-method-1:checked").val() != null) {
-            table.slideDown("fast");
+            $("#bank-account").slideDown("fast");
         }
         else {
-            table.slideUp("fast");
+            $("#bank-account").slideUp("fast");
+        }
+        if ($("#payment-method-6:checked").val() != null) {
+            $('#credit-card').slideDown("fast");
+        }
+        else {
+            $('#credit-card').slideUp("fast");
         }
     })
 

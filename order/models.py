@@ -83,7 +83,7 @@ class Order(models.Model):
         """Returns a pay link for the selected payment method.
         """
         if self.payment_method.id == PAYPAL:
-            return lfs.payment.utils.create_paypal_link(self)
+            return lfs.payment.utils.create_paypal_link_for_order(self)
 
         return None
 
@@ -91,7 +91,7 @@ class Order(models.Model):
         order_name = ""
         for order_item in self.items.all():
             if order_item.product is not None:
-                order_name = order_name + order_item.product.name + ", "
+                order_name = order_name + order_item.product.get_name() + ", "
 
         order_name.strip(', ')
         return order_name

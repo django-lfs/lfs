@@ -1,11 +1,14 @@
+# python imports
+from datetime import datetime
+
 # django imports
 from django import forms
 from django.forms.util import ErrorList
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+from lfs.payment.settings import CREDIT_CARD_TYPE_CHOICES
 from lfs.core.utils import get_default_shop
-from lfs.customer.models import Address
 
 class OnePageCheckoutForm(forms.Form):
     """
@@ -36,11 +39,12 @@ class OnePageCheckoutForm(forms.Form):
     
     payment_method = forms.CharField(required=False, max_length=1)
     
-    # credit_card_type = forms.CharField(required=False, max_length=30)
-    # credit_card_owner = forms.CharField(required=False, max_length=100)
-    # credit_card_number = forms.CharField(required=False, max_length=30)
-    # credit_card_expiration_date_month = forms.IntegerField(required=False)
-    # credit_card_expiration_date_year = forms.IntegerField(required=False)
+    credit_card_type = forms.ChoiceField(choices=CREDIT_CARD_TYPE_CHOICES)
+    credit_card_owner = forms.CharField(max_length=100, required=False)
+    credit_card_number = forms.CharField(max_length=30, required=False)
+    credit_card_expiration_date_month = forms.ChoiceField()
+    credit_card_expiration_date_year = forms.ChoiceField()
+    credit_card_verification = forms.CharField(max_length=3, required=False)
     
     no_shipping = forms.BooleanField(label=_(u"Same as invoice"), initial=True, required=False)
     message = forms.CharField(label=_(u"Your message to us"), widget=forms.Textarea(attrs={'cols':'80;'}), required=False)
@@ -51,6 +55,10 @@ class OnePageCheckoutForm(forms.Form):
         shop = get_default_shop()
         self.fields["invoice_country"].choices = [(c.id, c.name) for c in shop.countries.all()]
         self.fields["shipping_country"].choices = [(c.id, c.name) for c in shop.countries.all()]
+        
+        year = datetime.now().year
+        self.fields["credit_card_expiration_date_month"].choices = [(i, i) for i in range(1, 13)]
+        self.fields["credit_card_expiration_date_year"].choices = [(i, i) for i in range(year, year+10)]
         
     def clean(self):
         """
@@ -93,5 +101,15 @@ class OnePageCheckoutForm(forms.Form):
 
             if self.cleaned_data.get("depositor", "") == "":
                 self._errors["depositor"] = ErrorList([msg])
+        # 6 == Credit Card
+        elif self.data.get("payment_method") == "6":
+            if self.cleaned_data.get("credit_card_owner", "") == "":
+                self._errors["credit_card_owner"] = ErrorList([msg])
+            
+            if self.cleaned_data.get("credit_card_number", "") == "":
+                self._errors["credit_card_number"] = ErrorList([msg])
+            
+            if self.cleaned_data.get("credit_card_verification", "") == "":
+                self._errors["credit_card_verification"] = ErrorList([msg])
         
         return self.cleaned_data

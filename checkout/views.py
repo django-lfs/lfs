@@ -12,6 +12,9 @@ from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
 import lfs.core.utils
+import lfs.order.utils
+import lfs.payment.utils
+import lfs.shipping.utils
 from lfs.cart import utils as cart_utils
 from lfs.checkout.forms import OnePageCheckoutForm
 from lfs.checkout.settings import CHECKOUT_TYPE_ANON
@@ -21,9 +24,9 @@ from lfs.customer.models import Address
 from lfs.customer.models import BankAccount
 from lfs.customer.forms import RegisterForm
 from lfs.payment.models import PaymentMethod
-from lfs.shipping import utils as shipping_utils
-from lfs.payment import utils as payment_utils
+from lfs.payment.settings import PAYPAL
 from lfs.payment.settings import DIRECT_DEBIT
+from lfs.payment.settings import CREDIT_CARD
 
 def login(request, template_name="lfs/checkout/login.html"):
     """Displays a form to login or register/login the user within the check out
@@ -110,12 +113,12 @@ def cart_inline(request, template_name="lfs/checkout/checkout_cart_inline.html")
     cart = cart_utils.get_cart(request)
 
     # Shipping
-    selected_shipping_method = shipping_utils.get_selected_shipping_method(request)
-    shipping_costs = shipping_utils.get_shipping_costs(request, selected_shipping_method)
+    selected_shipping_method = lfs.shipping.utils.get_selected_shipping_method(request)
+    shipping_costs = lfs.shipping.utils.get_shipping_costs(request, selected_shipping_method)
 
     # Payment
-    selected_payment_method = payment_utils.get_selected_payment_method(request)
-    payment_costs = payment_utils.get_payment_costs(request, selected_payment_method)
+    selected_payment_method = lfs.payment.utils.get_selected_payment_method(request)
+    payment_costs = lfs.payment.utils.get_payment_costs(request, selected_payment_method)
 
     # cart costs
     cart_costs = cart_utils.get_cart_costs(request, cart)
@@ -220,14 +223,25 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
             customer.save()
 
             # process the payment method ...
-            result = payment_utils.process_payment(request)
+            result = lfs.payment.utils.process_payment(request)
 
-            # and redirect the next url. This could be a payment method relevant (e.g.
-            # in case of PayPal or the the thank-you page.)
-            if result.get("success"):
-                return HttpResponseRedirect(result.get("next-url"))
+            payment_method = lfs.payment.utils.get_selected_payment_method(request)
+
+            # Only if the payment is succesful we create the order out of the
+            # cart.
+            if result.get("success") == True:
+                order = lfs.order.utils.add_order(request)
+
+                # TODO: Get rid of these payment specific payment stuff. This
+                # should be within payment utils.
+                if payment_method == PAYPAL:
+                    return HttpResponseRedirect(order.get_pay_link())
+                else:
+                    return HttpResponseRedirect(result.get("next-url"))
             else:
-                raise NotImplementedError
+                if result.has_key("message"):
+                    form._errors[result.get("message-key")] = result.get("message")
+
     else:
         # If there are addresses intialize the form.
         initial = {}
@@ -257,11 +271,11 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
             })
 
         # Set the addresses country to the current selected in any case.
-        country = shipping_utils.get_selected_shipping_country(request)
+        country = lfs.shipping.utils.get_selected_shipping_country(request)
         initial["shipping_country"] = country.id
         initial["invoice_country"] = country.id
         form = checkout_form(initial=initial)
-    
+
     cart = cart_utils.get_cart(request)
     if cart is None:
         return HttpResponseRedirect(reverse('lfs_cart'))
@@ -271,19 +285,28 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
         selected_payment_method_id = request.POST.get("payment_method")
         selected_payment_method = PaymentMethod.objects.get(pk=selected_payment_method_id)
     except PaymentMethod.DoesNotExist:
-        selected_payment_method = payment_utils.get_selected_payment_method(request)
+        selected_payment_method = lfs.payment.utils.get_selected_payment_method(request)
 
-    valid_payment_methods = payment_utils.get_valid_payment_methods(request)
-    display_bank_account = DIRECT_DEBIT in [m.id for m in valid_payment_methods]
+    valid_payment_methods = lfs.payment.utils.get_valid_payment_methods(request)
+    valid_payment_method_ids = [m.id for m in valid_payment_methods]
 
-    return render_to_response(template_name, RequestContext(request, {
+    display_bank_account = DIRECT_DEBIT in valid_payment_method_ids
+    display_credit_card = CREDIT_CARD in valid_payment_method_ids
+
+    response = render_to_response(template_name, RequestContext(request, {
         "form" : form,
         "cart_inline" : cart_inline(request),
         "shipping_inline" : shipping_inline(request),
         "payment_inline" : payment_inline(request),
         "selected_payment_method" : selected_payment_method,
         "display_bank_account" : display_bank_account,
+        "display_credit_card" : display_credit_card,
     }))
+
+    if form._errors:
+        return lfs.core.utils.set_message_to(response, _(u"An error has been occured."))
+    else:
+        return response
 
 def empty_page_checkout(request, template_name="lfs/checkout/empty_page_checkout.html"):
     """
@@ -312,9 +335,9 @@ def payment_inline(request, template_name="lfs/checkout/payment_inline.html"):
         selected_payment_method_id = request.POST.get("payment_method")
         selected_payment_method = PaymentMethod.objects.get(pk=selected_payment_method_id)
     except PaymentMethod.DoesNotExist:
-        selected_payment_method = payment_utils.get_selected_payment_method(request)
+        selected_payment_method = lfs.payment.utils.get_selected_payment_method(request)
 
-    valid_payment_methods = payment_utils.get_valid_payment_methods(request)
+    valid_payment_methods = lfs.payment.utils.get_valid_payment_methods(request)
     display_bank_account = DIRECT_DEBIT in [m.id for m in valid_payment_methods]
 
     return render_to_string(template_name, RequestContext(request, {
@@ -329,8 +352,8 @@ def shipping_inline(request, template_name="lfs/checkout/shipping_inline.html"):
     whole checkout page and subsequent ajax requests which refresh the
     selectable shipping methods.
     """
-    selected_shipping_method = shipping_utils.get_selected_shipping_method(request)
-    shipping_methods = shipping_utils.get_valid_shipping_methods(request)
+    selected_shipping_method = lfs.shipping.utils.get_selected_shipping_method(request)
+    shipping_methods = lfs.shipping.utils.get_valid_shipping_methods(request)
 
     return render_to_string(template_name, RequestContext(request, {
         "shipping_methods" : shipping_methods,
@@ -382,8 +405,8 @@ def _save_country(request, customer):
     customer.selected_country_id = country
     customer.save()
 
-    shipping_utils.update_to_valid_shipping_method(request, customer)
-    payment_utils.update_to_valid_payment_method(request, customer)
+    lfs.shipping.utils.update_to_valid_shipping_method(request, customer)
+    lfs.payment.utils.update_to_valid_payment_method(request, customer)
     customer.save()
 
 def _save_customer(request, customer):
@@ -396,7 +419,7 @@ def _save_customer(request, customer):
     customer.selected_payment_method_id = payment_method
 
     customer.save()
-    
-    shipping_utils.update_to_valid_shipping_method(request, customer)
-    payment_utils.update_to_valid_payment_method(request, customer)
+
+    lfs.shipping.utils.update_to_valid_shipping_method(request, customer)
+    lfs.payment.utils.update_to_valid_payment_method(request, customer)
     customer.save()

@@ -94,10 +94,9 @@ $(function() {
         });
     });
 
-    //  TODO: take url to html
     $("select.property").livequery("change", function() {
         $("#product-form").ajaxSubmit({
-            url : "/select-variant-from-properties",
+            url : $("#product-form").attr("data"),
             success : function(data) {
                 var data = JSON.parse(data);
                 $("#product-inline").html(data["product"]);
@@ -216,7 +215,6 @@ $(function() {
             table.slideDown("fast");
         }
         var data = $(".checkout-form").ajaxSubmit({
-            "url": "/changed-country/",
             "success" : function(data) {
                 var data = JSON.parse(data);
                 $("#cart-inline").html(data["cart"]);
@@ -253,39 +251,25 @@ $(function() {
             $('#credit-card').slideUp("fast");
         }
     })
-
-    $(".update-checkout").livequery("click", function() {
+    
+    // Update checkout
+    var update_checkout = function() {
         var data = $(".checkout-form").ajaxSubmit({
-            "url": "/changed-checkout/",
             "success" : function(data) {
                 var data = JSON.parse(data);
                 $("#cart-inline").html(data["cart"]);
                 $("#shipping-inline").html(data["shipping"]);
                 $("#payment-inline").html(data["payment"]);
             }
-        });
+        });        
+    }
+
+    $(".update-checkout").livequery("click", function() {
+        update_checkout()
     });
 
-    $("#id_shipping_country").livequery("change", function() {
-        var data = $(".checkout-form").ajaxSubmit({
-            "url": "/changed-country/",
-            "success" : function(data) {
-                var data = JSON.parse(data);
-                $("#cart-inline").html(data["cart"]);
-                $("#shipping-inline").html(data["shipping"]);
-            }
-        });
-    });
-
-    $("#id_invoice_country").livequery("change", function() {
-        var data = $(".checkout-form").ajaxSubmit({
-            "url": "/changed-country/",
-            "success" : function(data) {
-                var data = JSON.parse(data);
-                $("#cart-inline").html(data["cart"]);
-                $("#shipping-inline").html(data["shipping"]);
-            }
-        });
+    $("#id_shipping_country, #id_invoice_country").livequery("change", function() {
+        update_checkout()
     });
 
 })

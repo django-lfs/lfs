@@ -365,28 +365,12 @@ def changed_checkout(request):
     """
     customer = customer_utils.get_or_create_customer(request)
     _save_customer(request, customer)
-
+    _save_country(request, customer)
+    
     result = simplejson.dumps({
         "shipping" : shipping_inline(request),
         "payment" : payment_inline(request),
         "cart" : cart_inline(request),
-    })
-
-    return HttpResponse(result)
-
-def changed_country(request):
-    """Updates and saves the customer after the country has been chagend and
-    updates the involved parts of the checkout page.
-    """
-    customer = customer_utils.get_or_create_customer(request)
-    _save_country(request, customer)
-
-    cart = cart_inline(request)
-    shipping = shipping_inline(request)
-
-    result = simplejson.dumps({
-        "cart" : cart,
-        "shipping" : shipping
     })
 
     return HttpResponse(result)

@@ -39,11 +39,11 @@ class OnePageCheckoutForm(forms.Form):
     
     payment_method = forms.CharField(required=False, max_length=1)
     
-    credit_card_type = forms.ChoiceField(choices=CREDIT_CARD_TYPE_CHOICES)
+    credit_card_type = forms.ChoiceField(choices=CREDIT_CARD_TYPE_CHOICES, required=False)
     credit_card_owner = forms.CharField(max_length=100, required=False)
     credit_card_number = forms.CharField(max_length=30, required=False)
-    credit_card_expiration_date_month = forms.ChoiceField()
-    credit_card_expiration_date_year = forms.ChoiceField()
+    credit_card_expiration_date_month = forms.ChoiceField(required=False)
+    credit_card_expiration_date_year = forms.ChoiceField(required=False)
     credit_card_verification = forms.CharField(max_length=3, required=False)
     
     no_shipping = forms.BooleanField(label=_(u"Same as invoice"), initial=True, required=False)

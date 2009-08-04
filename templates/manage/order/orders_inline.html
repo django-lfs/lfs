@@ -2,60 +2,71 @@
 <form action="{% url lfs_set_order_filter %}"
       method="POST">
 	
-	<div class="navigation">
-	    {% if page.has_previous %}
-	        <a class="ajax-link"
-	           href="{% url lfs_orders_inline %}?page=1">
-	            <img src="{{MEDIA_URL}}lfs/icons/resultset_first.png"
-	                 alt="{% trans 'First' %}"
-	                 title="{% trans 'First' %}" />
-			</a>
-	        <a class="ajax-link"
-	           href="{% url lfs_orders_inline %}?page={{ page.previous_page_number }}">
-	            <img src="{{MEDIA_URL}}lfs/icons/resultset_previous.png"
-	                 alt="{% trans 'Previous' %}"
-	                 title="{% trans 'Previous' %}" />
-			</a>
-	    {% else %}
-	        <img src="{{MEDIA_URL}}lfs/icons/resultset_first.png"
-	             alt="{% trans 'First' %}"
-	             title="{% trans 'First' %}" />
-	        <img src="{{MEDIA_URL}}lfs/icons/resultset_previous.png"
-	             alt="{% trans 'Previous' %}"
-	             title="{% trans 'Previous' %}" />
-	    {% endif %}
-
-	    {{ page.number }} / {{ paginator.num_pages }}
-
-	    {% if page.has_next %}
-	        <a class="ajax-link"
-	           href="{% url lfs_orders_inline %}?page={{ page.next_page_number }}">
-	            <img src="{{MEDIA_URL}}lfs/icons/resultset_next.png"
-	                 alt="{% trans 'Next' %}"
-	                 title="{% trans 'Next' %}" />			
-			</a>
-	        <a class="ajax-link"
-	           href="{% url lfs_orders_inline %}?page={{ paginator.num_pages }}">
-	            <img src="{{MEDIA_URL}}lfs/icons/resultset_last.png"
-	                 alt="{% trans 'Last' %}"
-	                 title="{% trans 'Last' %}" />			
-			</a>
-
-	    {% else %}
-	        <span>
-	            <img src="{{MEDIA_URL}}lfs/icons/resultset_next.png"
-	                 alt="{% trans 'Next' %}"
-	                 title="{% trans 'Next' %}" />			
-	        </span>
-	        <span>            	
-	            <img src="{{MEDIA_URL}}lfs/icons/resultset_last.png"
-	                 alt="{% trans 'Last' %}"
-	                 title="{% trans 'Last' %}" />			
-	        </span>
-	    {% endif %}
-	</div>
-    <table class="lfs-manage-table">
+	<table class="filters">
 		<tr>
+			<td class="discreet">{% trans "Pages" %}</td>
+			<td></td>
+			<td class="discreet">{% trans "Start" %}</td>
+			<td class="discreet">{% trans "End" %}</td>
+			<td class="discreet">{% trans "Name" %}</td>
+			<td class="discreet">{% trans "State" %}</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="navigation-pages">
+				    {% if page.has_previous %}
+				        <a class="ajax-link"
+				           href="{% url lfs_orders_inline %}?page=1">
+				            <img src="{{MEDIA_URL}}lfs/icons/resultset_first.png"
+				                 alt="{% trans 'First' %}"
+				                 title="{% trans 'First' %}" />
+						</a>
+				        <a class="ajax-link"
+				           href="{% url lfs_orders_inline %}?page={{ page.previous_page_number }}">
+				            <img src="{{MEDIA_URL}}lfs/icons/resultset_previous.png"
+				                 alt="{% trans 'Previous' %}"
+				                 title="{% trans 'Previous' %}" />
+						</a>
+				    {% else %}
+				        <img src="{{MEDIA_URL}}lfs/icons/resultset_first.png"
+				             alt="{% trans 'First' %}"
+				             title="{% trans 'First' %}" />
+				        <img src="{{MEDIA_URL}}lfs/icons/resultset_previous.png"
+				             alt="{% trans 'Previous' %}"
+				             title="{% trans 'Previous' %}" />
+				    {% endif %}
+
+				    {{ page.number }} {% trans "of" %} {{ paginator.num_pages }}
+
+				    {% if page.has_next %}
+				        <a class="ajax-link"
+				           href="{% url lfs_orders_inline %}?page={{ page.next_page_number }}">
+				            <img src="{{MEDIA_URL}}lfs/icons/resultset_next.png"
+				                 alt="{% trans 'Next' %}"
+				                 title="{% trans 'Next' %}" />			
+						</a>
+				        <a class="ajax-link"
+				           href="{% url lfs_orders_inline %}?page={{ paginator.num_pages }}">
+				            <img src="{{MEDIA_URL}}lfs/icons/resultset_last.png"
+				                 alt="{% trans 'Last' %}"
+				                 title="{% trans 'Last' %}" />			
+						</a>
+
+				    {% else %}
+				        <span>
+				            <img src="{{MEDIA_URL}}lfs/icons/resultset_next.png"
+				                 alt="{% trans 'Next' %}"
+				                 title="{% trans 'Next' %}" />			
+				        </span>
+				        <span>            	
+				            <img src="{{MEDIA_URL}}lfs/icons/resultset_last.png"
+				                 alt="{% trans 'Last' %}"
+				                 title="{% trans 'Last' %}" />			
+				        </span>
+				    {% endif %}
+				</div>
+				
+			</td>
 			<td>
 				<a href="{% url lfs_set_order_filters_date %}?start=0&amp;end=0"
 				   class="ajax-link">T</a>
@@ -63,10 +74,14 @@
 				   class="ajax-link">Y</a>
 				<a href="{% url lfs_set_order_filters_date %}?start=7&amp;end=0"
 				   class="ajax-link">W</a>
-
+			</td>
+			<td>
 				<input type="text"
 				       name="start"
 					   value="{{ start }}">
+			</td>
+			<td>
+
 				<input type="text"
 				       name="end"
 					   value="{{ end }}">				
@@ -93,10 +108,11 @@
 				       class="ajax-save-button-2" />
 		
 				<a href="{% url lfs_reset_order_filters %}"
-				   class="ajax-link">[x]</a>		
+				   class="ajax-link reset">&nbsp;</a>		
 			</td>			
 		</tr>
-	
+	</table>
+    <table class="lfs-manage-table">	
         <tr>
             <th style="width:400px">
                 {% trans 'Date' %}

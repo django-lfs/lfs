@@ -48,37 +48,8 @@ def orders_inline(request, as_string=False, template_name="manage/order/orders_i
     """Displays the orders. This is factored out in order to reload it via
     ajax request.
     """
-    orders = Order.objects.all()
-
     order_filters = request.session.get("order-filters", {})
-
-    # name
-    name = order_filters.get("name", "")
-    if name != "":
-        f  = Q(customer_lastname__icontains=name)
-        f |= Q(customer_firstname__icontains=name)
-        orders = orders.filter(f)
-
-    # state
-    state_id = order_filters.get("state")
-    if state_id is not None:
-        orders = orders.filter(state=state_id)
-
-    # start
-    start = order_filters.get("start", "")
-    if start != "":
-        s = lfs.core.utils.get_start_day(start)
-    else:
-        s = datetime.min
-
-    # end
-    end = order_filters.get("end", "")
-    if end != "":
-        e = lfs.core.utils.get_end_day(end)
-    else:
-        e = datetime.max
-
-    orders = orders.filter(created__range=(s, e))
+    orders = _get_filtered_orders(order_filters)
 
     try:
         amount = int(request.REQUEST.get("amount", 20))
@@ -90,6 +61,7 @@ def orders_inline(request, as_string=False, template_name="manage/order/orders_i
     page = paginator.page(page)
 
     states = []
+    state_id = order_filters.get("state")
     for state in lfs.order.settings.ORDER_STATES:
         states.append({
             "id"   : state[0],
@@ -101,11 +73,11 @@ def orders_inline(request, as_string=False, template_name="manage/order/orders_i
         "paginator" : paginator,
         "page" : page,
         "states" : states,
-        "start" : start,
-        "end" : end,
-        "name" : name,
+        "start" : order_filters.get("start", ""),
+        "end" : order_filters.get("end", ""),
+        "name" : order_filters.get("name", ""),
     }))
-    
+
     if as_string:
         return result
     else:
@@ -148,7 +120,15 @@ def set_order_filters(request):
 
     request.session["order-filters"] = order_filters
 
-    html = (("#orders-inline", orders_inline(request, as_string=True)),)
+    if request.REQUEST.get("came-from") == "order":
+        order_id = request.REQUEST.get("order-id")
+        html = (
+            ("#selectable-orders", selectable_orders_inline(request, as_string=True)),
+            ("#order-inline", order_inline(request, order_id=order_id, as_string=True)),
+        )
+    else:
+        html = (("#orders-inline", orders_inline(request, as_string=True)),)
+
     msg = _(u"Filters has been set")
 
     result = simplejson.dumps({
@@ -170,7 +150,15 @@ def set_order_filters_date(request):
     order_filters["end"] = end.strftime("%Y-%m-%d")
     request.session["order-filters"] = order_filters
 
-    html = (("#orders-inline", orders_inline(request, as_string=True)),)
+    if request.REQUEST.get("came-from") == "order":
+        order_id = request.REQUEST.get("order-id")
+        html = (
+            ("#selectable-orders", selectable_orders_inline(request, as_string=True)),
+            ("#order-inline", order_inline(request, order_id=order_id, as_string=True)),
+        )
+    else:
+        html = (("#orders-inline", orders_inline(request, as_string=True)),)
+        
     msg = _(u"Filters has been set")
 
     result = simplejson.dumps({
@@ -186,26 +174,61 @@ def reset_order_filters(request):
     if request.session.has_key("order-filters"):
         del request.session["order-filters"]
 
-    html = (("#orders-inline", orders_inline(request, as_string=True)),)
+    if request.REQUEST.get("came-from") == "order":
+        order_id = request.REQUEST.get("order-id")
+        html = (
+            ("#selectable-orders", selectable_orders_inline(request, as_string=True)),
+            ("#order-inline", order_inline(request, order_id=order_id, as_string=True)),
+        )
+    else:
+        html = (("#orders-inline", orders_inline(request, as_string=True)),)
+        
     msg = _(u"Filters has been reset")
 
     result = simplejson.dumps({
         "html" : html,
         "message" : msg,
     }, cls = LazyEncoder)
-
+    
     return HttpResponse(result)
 
 @permission_required("manage_shop", login_url="/login/")
 def order_view(request, order_id, template_name="manage/order/order.html"):
     """Displays order with provided order id.
     """
+    return render_to_response(template_name, RequestContext(request, {
+        "order_inline" : order_inline(request, order_id, as_string=True),
+        "selectable_orders" : selectable_orders_inline(request, as_string=True),
+    }));
+
+def order_inline(request, order_id, as_string=False, template_name="manage/order/order_inline.html"):
+    """
+    """
+    order_filters = request.session.get("order-filters", {})
     order = lfs_get_object_or_404(Order, pk=order_id)
 
-    return render_to_response(template_name, RequestContext(request, {
+    states = []
+    state_id = order_filters.get("state")
+    for state in lfs.order.settings.ORDER_STATES:
+        states.append({
+            "id"   : state[0],
+            "name" : state[1],
+            "selected_filter" : state_id == str(state[0]),
+            "selected_order" : order.state == state[0],
+        })
+
+    result = render_to_string(template_name, RequestContext(request, {
         "current_order" : order,
-        "selectable_orders" : selectable_orders_inline(request, as_string=True),
+        "start" : order_filters.get("start", ""),
+        "end" : order_filters.get("end", ""),
+        "name" : order_filters.get("name", ""),
+        "states" : states,
     }))
+
+    if as_string:
+        return result
+    else:
+        return HttpResponse(result)
 
 @permission_required("manage_shop", login_url="/login/")
 def selectable_orders_inline(request, as_string=False,
@@ -213,37 +236,9 @@ def selectable_orders_inline(request, as_string=False,
     """Displays the selectable orders for the order view. (Used to switch
     quickly from one order to another.)
     """
-    orders = Order.objects.all()
     order_filters = request.session.get("order-filters", {})
+    orders = _get_filtered_orders(order_filters)
 
-    # name
-    name = order_filters.get("name", "")
-    if name != "":
-        f  = Q(customer_lastname__icontains=name)
-        f |= Q(customer_firstname__icontains=name)
-        orders = orders.filter(f)
-
-    # state
-    state_id = order_filters.get("state")
-    if state_id is not None:
-        orders = orders.filter(state=state_id)
-
-    # start
-    start = order_filters.get("start", "")
-    if start != "":
-        s = lfs.core.utils.get_start_day(start)
-    else:
-        s = datetime.min
-
-    # end
-    end = order_filters.get("end", "")
-    if end != "":
-        e = lfs.core.utils.get_end_day(end)
-    else:
-        e = datetime.max
-
-    orders = orders.filter(created__range=(s, e))
-    
     paginator = Paginator(orders, 20)
 
     try:
@@ -294,3 +289,62 @@ def send_order(request, order_id):
         url = reverse("lfs_manage_order", kwargs={"order_id" : order.id}),
         msg = _(u"Order has been sent."),
     )
+
+def change_order_state(request):
+    """
+    """
+    order_id = request.POST.get("order-id")
+    state_id = request.POST.get("new-state")    
+    order = lfs_get_object_or_404(Order, pk=order_id)
+    
+    order.state = state_id
+    order.save()
+
+    msg = _(u"State has been changed")
+
+    html = (
+        ("#selectable-orders", selectable_orders_inline(request, as_string=True)),
+        ("#order-inline", order_inline(request, order_id=order_id, as_string=True)),
+    )
+
+    result = simplejson.dumps({
+        "html" : html,
+        "message" : msg,
+    }, cls = LazyEncoder)
+    
+    return HttpResponse(result)
+    
+def _get_filtered_orders(order_filters):
+    """
+    """
+    orders = Order.objects.all()
+
+    # name
+    name = order_filters.get("name", "")
+    if name != "":
+        f  = Q(customer_lastname__icontains=name)
+        f |= Q(customer_firstname__icontains=name)
+        orders = orders.filter(f)
+
+    # state
+    state_id = order_filters.get("state")
+    if state_id is not None:
+        orders = orders.filter(state=state_id)
+
+    # start
+    start = order_filters.get("start", "")
+    if start != "":
+        s = lfs.core.utils.get_start_day(start)
+    else:
+        s = datetime.min
+
+    # end
+    end = order_filters.get("end", "")
+    if end != "":
+        e = lfs.core.utils.get_end_day(end)
+    else:
+        e = datetime.max
+
+    orders = orders.filter(created__range=(s, e))
+
+    return orders

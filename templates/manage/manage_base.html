@@ -40,7 +40,7 @@
         {% block javascript %}{% endblock %}
         
     </head>
-    <body class="{% block body_class %}{% endblock %}">
+    <body class="{% block section %}{% endblock %}">
         
         {# {% dbinfo %} #}
         
@@ -128,7 +128,6 @@
             <tr>
                 {% block left-slot-wrapper %}
                     <td class="left-slot">
-                        <div style="height:20px"></div>
                         {% block left_slot %}{% endblock %}
                     </td>
                 {% endblock %}

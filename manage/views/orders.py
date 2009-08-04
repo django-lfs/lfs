@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.utils import simplejson
@@ -295,7 +296,7 @@ def change_order_state(request):
     """
     order_id = request.POST.get("order-id")
     state_id = request.POST.get("new-state")    
-    order = lfs_get_object_or_404(Order, pk=order_id)
+    order = get_object_or_404(Order, pk=order_id)
     
     order.state = state_id
     order.save()

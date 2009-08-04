@@ -544,8 +544,8 @@ class Product(models.Model):
             product = self.parent
         else:
             product = self
-
-        return ProductAccessories.objects.filter(product=product)
+            
+        return ProductAccessories.objects.filter(product=product, accessory__active=True)
 
     def has_accessories(self):
         """Returns True if the product has accessories.

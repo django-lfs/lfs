@@ -215,6 +215,7 @@ $(function() {
             table.slideDown("fast");
         }
         var data = $(".checkout-form").ajaxSubmit({
+            url : $(".checkout-form").attr("data"),
             "success" : function(data) {
                 var data = JSON.parse(data);
                 $("#cart-inline").html(data["cart"]);
@@ -251,17 +252,18 @@ $(function() {
             $('#credit-card').slideUp("fast");
         }
     })
-    
+
     // Update checkout
     var update_checkout = function() {
         var data = $(".checkout-form").ajaxSubmit({
+            url : $(".checkout-form").attr("data"),
             "success" : function(data) {
                 var data = JSON.parse(data);
                 $("#cart-inline").html(data["cart"]);
                 $("#shipping-inline").html(data["shipping"]);
                 $("#payment-inline").html(data["payment"]);
             }
-        });        
+        });
     }
 
     $(".update-checkout").livequery("click", function() {

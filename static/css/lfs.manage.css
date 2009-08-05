@@ -145,6 +145,7 @@ tr.odd {
     position:relative; top:3px;
 }
 
+.manage-cart .navigation-pages,
 .manage-order .navigation-pages {
     margin: 20px 0;
 }

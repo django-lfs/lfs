@@ -5,70 +5,7 @@
 {% block left-slot-wrapper %}{% endblock %}
 
 {% block content %}
-    <div class="site-actions">
-        {% if next_url %}
-            <a href="{{ next_url }}">{% trans 'Older' %}</a>
-        {% else %}
-            <span>{% trans 'Older' %}</span>
-        {% endif %}        
-        {% if previous_url %}
-            <a href="{{ previous_url }}">{% trans 'Newer' %}</a>
-        {% else %}
-            <span>{% trans 'Newer' %}</span>
-        {% endif %}
-    </div>
-
-    <table class="lfs-manage-table">
-        <tr>
-            <th style="width:30px">
-                {% trans 'ID' %}
-            </th>
-            <th style="width:150px">
-                {% trans 'Date' %}
-            </th>
-            <th style="width:100px; padding-right:20px">
-                {% trans 'User' %}
-            </th>
-            <th class="number"
-                style="width:100px; padding-right:20px">
-                {% trans 'Total' %}
-            </th>
-            <th class="number"
-                style="width:40px; padding-right:20px">
-                {% trans 'Items' %}
-            </th>
-            <th>
-                {% trans 'Products' %}
-            </th>
-        </tr>
-
-        {% for cart in carts %}
-            <tr>
-                <td>
-                    {{ cart.id }}
-                </td>
-                <td>
-                    <a href="{% url lfs_manage_cart cart.id %}">
-                        {{ cart.creation_date|date:_("DATETIME_FORMAT") }}
-                    </a>
-                </td>
-                <td>
-                    {% if cart.user_name %}
-                        {{ cart.user_name }}
-                    {% else %}
-                        {{ cart.session }}
-                    {% endif %}
-                </td>
-                <td class="number"  style="padding-right:20px">
-                    {{ cart.total|currency }}
-                </td>
-                <td class="number" style="padding-right:20px">
-                    {{ cart.amount_of_items }}
-                </td>
-                <td>
-                    {{ cart.products }}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+	<div id="carts-inline">
+		{{ carts_inline|safe }}
+	</div>
 {% endblock %}

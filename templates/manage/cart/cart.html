@@ -1,117 +1,18 @@
 {% extends "manage/manage_base.html" %}
+{% load i18n %}
 
-{% load i18n lfs_tags %}
+{% block section %}manage-cart{% endblock %}
 
 {% block left_slot %}
-    {% for c in carts %}
-        <div>
-            <a href="{% url lfs_manage_cart c.id %}"
-               class="selectable {% ifequal cart.id c.id %}selected{% endifequal %}">
-                {{ c.creation_date|date:_("DATETIME_FORMAT") }}
-            </a>
-        </div>
-    {% endfor %}
-
+	<div id="selectable-carts-inline">
+		{{ selectable_carts_inline|safe }}
+	</div>
 {% endblock %}
 
 {% block content %}
 
-    <div class="site-actions">
-        <span class="label">{{cart.creation_date|date:_("DATETIME_FORMAT")}}</span> |
-        <a href="{% url lfs_manage_carts %}">{% trans 'Overview' %}</a>
-    </div>
-
-    <table class="lfs-manage-table">
-        <tr>
-            <th colspan="2">
-                {% trans 'General' %}
-            </th>
-        </tr>
-        <tr>
-            <td class="label"
-                style="width:150px">
-                {% trans 'ID' %}:
-            </td>
-            <td>
-                {{ cart.id }}
-            </td>
-        </tr>
-        <tr>
-            <td class="label">
-                {% trans 'Customer' %}:
-            </td>
-            <td>
-                {% if user_name %}
-                    {{ user_name }} /
-                {% endif %}
-                {{ cart.session }}
-            </td>
-        </tr>        
-        <tr>
-            <td class="label">
-                {% trans 'Creation date' %}:
-            </td>
-            <td>
-                {{ cart.creation_date|date:_("DATETIME_FORMAT") }}
-            </td>
-        </tr>
-        <tr>
-            <td class="label">
-                {% trans 'Items' %}:
-            </td>
-            <td>
-                {{ cart.amount_of_items }}
-            </td>
-        </tr>
-        <tr>
-            <td class="label">
-                {% trans 'Total' %}:
-            </td>
-            <td>
-                {{ total|currency }}
-            </td>
-        </tr>
-    </table>
-
-    {% if cart.items %}
-        <table class="lfs-manage-table">
-            <tr>
-                <th>
-                    {% trans 'ID' %}
-                </th>
-                <th>
-                    {% trans 'Creation date' %}
-                </th>
-                <th>
-                    {% trans 'Product' %}
-                </th>
-                <th>
-                    {% trans 'Price' %}
-                </th>
-            </tr>
-            {% for item in cart.items %}
-                <tr>
-                    <td>
-                        <a href="{{ item.product.get_absolute_url}}">
-                            {{ item.id }}
-                        </a>
-                    </td>
-                    <td>
-                        {{ item.creation_date|date:_("DATETIME_FORMAT") }}
-                    </td>
-                    <td>
-                        <a href="{{ item.product.get_absolute_url}}">
-                            {{ item.product.get_name }}
-                        </a>
-                    </td>
-                    <td>
-                        {{ item.product.get_price|currency }}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        {% trans 'This cart has no items' %}
-    {% endif %}
+	<div id="cart-inline">
+		{{ cart_inline|safe }}
+	</div>
 
 {% endblock %}

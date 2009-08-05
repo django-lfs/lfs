@@ -98,7 +98,7 @@
 </form>
 <table class="lfs-manage-table">
     <tr>
-        <th style="width:30px">
+        <th style="width:50px">
             {% trans 'ID' %}
         </th>
         <th style="width:150px">
@@ -133,11 +133,9 @@
             <td>
                 {% if cart.user_name %}
                     {{ cart.user_name }}
-                {% else %}
-                    {{ cart.session }}
                 {% endif %}
             </td>
-            <td class="number"  style="padding-right:20px">
+            <td class="number" style="padding-right:20px" nowrap="nowrap">
                 {{ cart.total|currency }}
             </td>
             <td class="number" style="padding-right:20px">

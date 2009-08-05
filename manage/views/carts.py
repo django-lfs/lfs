@@ -17,6 +17,7 @@ import lfs.core.utils
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.cart.models import Cart
 from lfs.core.utils import LazyEncoder
+from lfs.customer.models import Customer
 
 @permission_required("manage_shop", login_url="/login/")
 def carts_view(request, template_name="manage/cart/carts.html"):
@@ -32,7 +33,7 @@ def carts_inline(request, as_string=False, template_name="manage/cart/carts_inli
     cart_filters = request.session.get("cart-filters", {})
     temp = _get_filtered_carts(cart_filters)
 
-    paginator = Paginator(temp, 20)
+    paginator = Paginator(temp, 30)
 
     page = request.REQUEST.get("page", 1)
     page = paginator.page(page)
@@ -51,7 +52,16 @@ def carts_inline(request, as_string=False, template_name="manage/cart/carts_inli
             if cart.user.last_name:
                 user_name += cart.user.last_name
         else:
-            user_name = None
+            try:
+                customer = Customer.objects.get(session=cart.session)
+            except Customer.DoesNotExist:
+                user_name = None
+            else:
+                if customer.selected_invoice_address:
+                    user_name = customer.selected_invoice_address.firstname + " " + \
+                                customer.selected_invoice_address.lastname
+                else:
+                    user_name = None
 
         carts.append({
             "id" : cart.id,
@@ -107,16 +117,36 @@ def cart_inline(request, cart_id, as_string=False, template_name="manage/cart/ca
         if cart.user.last_name:
             user_name += cart.user.last_name
     else:
-        user_name = None
+        try:
+            customer = Customer.objects.get(session=cart.session)
+        except Customer.DoesNotExist:
+            user_name = None
+        else:
+            if customer.selected_invoice_address:
+                user_name = customer.selected_invoice_address.firstname + " " + \
+                            customer.selected_invoice_address.lastname
+            else:
+                user_name = None
 
     cart_filters = request.session.get("cart-filters", {})
-    return render_to_string(template_name, RequestContext(request, {
+    result = render_to_string(template_name, RequestContext(request, {
         "cart" : cart,
         "user_name" : user_name,
         "total" : total,
         "start" : cart_filters.get("start", ""),
         "end" : cart_filters.get("end", ""),
     }))
+    
+    if as_string:
+        return result
+    else:
+        html = (("#cart-inline", result),)
+
+        result = simplejson.dumps({
+            "html" : html,
+        }, cls = LazyEncoder)
+
+        return HttpResponse(result)
 
 def selectable_carts_inline(request, as_string=False,
     template_name="manage/cart/selectable_carts_inline.html"):
@@ -125,7 +155,7 @@ def selectable_carts_inline(request, as_string=False,
     cart_filters = request.session.get("cart-filters", {})
     carts = _get_filtered_carts(cart_filters)
 
-    paginator = Paginator(carts, 20)
+    paginator = Paginator(carts, 30)
 
     try:
         page = int(request.REQUEST.get("page", 1))

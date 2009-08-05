@@ -220,11 +220,11 @@ def reset_cart_filters(request):
     if request.session.has_key("cart-filters"):
         del request.session["cart-filters"]
 
-    if request.REQUEST.get("came-from") == "order":
-        order_id = request.REQUEST.get("order-id")
+    if request.REQUEST.get("came-from") == "cart":
+        cart_id = request.REQUEST.get("cart-id")
         html = (
-            ("#selectable-orders", selectable_orders_inline(request, as_string=True)),
-            ("#order-inline", order_inline(request, order_id=order_id, as_string=True)),
+            ("#selectable-carts-inline", selectable_carts_inline(request, as_string=True)),
+            ("#cart-inline", cart_inline(request, cart_id=cart_id, as_string=True)),
         )
     else:
         html = (("#carts-inline", carts_inline(request, as_string=True)),)

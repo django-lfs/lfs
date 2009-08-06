@@ -87,6 +87,14 @@
     </tr>
     <tr>
         <td class="label">
+            {% trans 'Modification date' %}:
+        </td>
+        <td>
+            {{ cart.modification_date|date:_("DATETIME_FORMAT") }}
+        </td>
+    </tr>
+    <tr>
+        <td class="label">
             {% trans 'Items' %}:
         </td>
         <td>

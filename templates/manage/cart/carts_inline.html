@@ -102,7 +102,10 @@
             {% trans 'ID' %}
         </th>
         <th style="width:150px">
-            {% trans 'Date' %}
+            {% trans 'Creation date' %}
+        </th>
+        <th style="width:150px">
+            {% trans 'Modification date' %}
         </th>
         <th style="width:100px; padding-right:20px">
             {% trans 'User' %}
@@ -128,6 +131,11 @@
             <td>
                 <a href="{% url lfs_manage_cart cart.id %}">
                     {{ cart.creation_date|date:_("DATETIME_FORMAT") }}
+                </a>
+            </td>
+            <td>
+                <a href="{% url lfs_manage_cart cart.id %}">
+                    {{ cart.modification_date|date:_("DATETIME_FORMAT") }}
                 </a>
             </td>
             <td>

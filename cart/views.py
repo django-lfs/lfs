@@ -218,7 +218,10 @@ def add_to_cart(request, product_id=None):
 
     # Update the customer's shipping method (if appropriate)
     payment_utils.update_to_valid_payment_method(request, customer, save=True)
-
+    
+    # Save the cart to update modification date
+    cart.save()
+    
     url = reverse("lfs.cart.views.added_to_cart")
     return HttpResponseRedirect(url)
 

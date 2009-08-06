@@ -71,6 +71,7 @@ def carts_inline(request, as_string=False, template_name="manage/cart/carts_inli
             "total" : total,
             "products" : ", ".join(products),
             "creation_date" : cart.creation_date,
+            "modification_date" : cart.modification_date,
             "user_name" : user_name,
         })
 
@@ -271,7 +272,7 @@ def reset_cart_filters(request):
 def _get_filtered_carts(cart_filters):
     """
     """
-    carts = Cart.objects.all().order_by("-creation_date")
+    carts = Cart.objects.all().order_by("-modification_date")
 
     # start
     start = cart_filters.get("start", "")

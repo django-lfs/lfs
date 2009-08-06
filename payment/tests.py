@@ -119,9 +119,7 @@ class PayPalPaymentTestCase(TestCase):
         
     def test_succesful_order_with_flagged_payment_invalid_receiver_email(self):
         """Tests a succesful paypal transaction that is flagged with an invalide receiver email
-        """
-        """Tests we have a transaction associated with an order after payment
-        """
+        """        
         def fake_postback(self, test=True):
             """Perform a Fake PayPal IPN Postback request."""
             return 'VERIFIED'

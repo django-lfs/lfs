@@ -288,6 +288,6 @@ def _get_filtered_carts(cart_filters):
     else:
         e = datetime.max
 
-    carts = carts.filter(creation_date__range=(s, e))
+    carts = carts.filter(modification_date__range=(s, e))
 
     return carts

@@ -124,6 +124,14 @@ tr.odd {
     text-align:right;
 }
 
+.small {
+    width: 100px;
+}
+
+.middle {
+    width: 200px;
+}
+
 .lfs-header {
     background: url("../img/header_bg.jpg") repeat-x;
 }

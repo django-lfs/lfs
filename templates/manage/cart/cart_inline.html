@@ -71,10 +71,24 @@
             {% trans 'Customer' %}:
         </td>
         <td>
-            {% if user_name %}
-                {{ user_name }} /
-            {% endif %}
-            {{ cart.session }}
+			{% if customer.selected_invoice_address %}
+				<div>
+					{{ customer.selected_invoice_address.firstname }}
+					{{ customer.selected_invoice_address.lastname }}
+					(<a href="mailto:{{ customer.selected_invoice_address.email }}">{{ customer.selected_invoice_address.email }}</a>)
+				</div>
+				<div>
+					{{ customer.selected_invoice_address.street }}				
+				</div>
+				<div>
+					{{ customer.selected_invoice_address.zip_code }} {{ customer.selected_invoice_address.city }}				
+				</div>
+				<div>
+					{{ customer.selected_invoice_address.phone }}
+				</div>
+			{% else %}
+				---
+			{% endif %}
         </td>
     </tr>        
     <tr>
@@ -114,36 +128,48 @@
 {% if cart.items %}
     <table class="lfs-manage-table">
         <tr>
-            <th>
+            <th class="small">
                 {% trans 'ID' %}
             </th>
-            <th>
+            <th class="middle">
                 {% trans 'Creation date' %}
             </th>
             <th>
                 {% trans 'Product' %}
             </th>
-            <th>
+            <th class="number middle">
                 {% trans 'Price' %}
+            </th>
+            <th class="number middle">
+                {% trans 'Amount' %}
+            </th>
+            <th class="number middle">
+                {% trans 'Total' %}
             </th>
         </tr>
         {% for item in cart.items %}
             <tr>
-                <td>
+                <td class="small-right">
                     <a href="{{ item.product.get_absolute_url}}">
                         {{ item.id }}
                     </a>
                 </td>
                 <td>
-                    {{ item.creation_date|date:_("DATETIME_FORMAT") }}
-                </td>
+					{{ item.creation_date|date:_("DATETIME_FORMAT") }}
+			    </td>
                 <td>
                     <a href="{{ item.product.get_absolute_url}}">
                         {{ item.product.get_name }}
                     </a>
                 </td>
-                <td>
+                <td class="number">
                     {{ item.product.get_price|currency }}
+                </td>
+                <td class="number">
+                    {{ item.amount }}
+                </td>
+                <td class="number">
+                    {{ item.get_price|currency }}
                 </td>
             </tr>
         {% endfor %}

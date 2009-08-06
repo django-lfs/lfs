@@ -112,27 +112,15 @@ def cart_inline(request, cart_id, as_string=False, template_name="manage/cart/ca
     for item in cart.items():
         total += item.get_price_gross()
 
-    if cart.user:
-        if cart.user.first_name:
-            user_name = cart.user.first_name + " "
-        if cart.user.last_name:
-            user_name += cart.user.last_name
-    else:
-        try:
-            customer = Customer.objects.get(session=cart.session)
-        except Customer.DoesNotExist:
-            user_name = None
-        else:
-            if customer.selected_invoice_address:
-                user_name = customer.selected_invoice_address.firstname + " " + \
-                            customer.selected_invoice_address.lastname
-            else:
-                user_name = None
+    try:
+        customer = Customer.objects.get(session=cart.session)
+    except Customer.DoesNotExist:
+        customer = None
 
     cart_filters = request.session.get("cart-filters", {})
     result = render_to_string(template_name, RequestContext(request, {
         "cart" : cart,
-        "user_name" : user_name,
+        "customer" : customer,
         "total" : total,
         "start" : cart_filters.get("start", ""),
         "end" : cart_filters.get("end", ""),

@@ -14,7 +14,7 @@ def get_or_create_customer(request):
     return customer
 
 def create_customer(request):
-    """Creates an user for the given request (which means for the current 
+    """Creates a customer for the given request (which means for the current 
     logged in user/or the session user).
     
     This shouldn't be called directly. Instead get_or_create_customer should be
@@ -28,7 +28,7 @@ def create_customer(request):
     return customer
 
 def get_customer(request):
-    """Returns the user for the given request (which means for the current 
+    """Returns the customer for the given request (which means for the current 
     logged in user/or the session user).
     """
     session_key = request.session.session_key

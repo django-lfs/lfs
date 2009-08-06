@@ -204,7 +204,7 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
                     selected_shipping_address.country_id = form.cleaned_data.get("shipping_country")
                     selected_shipping_address.phone = form.cleaned_data.get("shipping_phone")
                     selected_shipping_address.save()
-
+                    
             # Payment method
             customer.selected_payment_method_id = request.POST.get("payment_method")
 
@@ -241,6 +241,79 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
             else:
                 if result.has_key("message"):
                     form._errors[result.get("message-key")] = result.get("message")
+        
+        else: # form is not valid
+            # Create or update invoice address
+            if customer.selected_invoice_address is None:
+                invoice_address = Address.objects.create(
+                    firstname = form.data.get("invoice_firstname"),
+                    lastname = form.data.get("invoice_lastname"),
+                    company_name = form.data.get("invoice_company_name"),
+                    street = form.data.get("invoice_street"),
+                    zip_code = form.data.get("invoice_zip_code"),
+                    city = form.data.get("invoice_city"),
+                    country_id = form.data.get("invoice_country"),
+                    phone = form.data.get("invoice_phone"),
+                    email = form.data.get("invoice_email"),
+                )
+                customer.selected_invoice_address = invoice_address
+            else:
+                selected_invoice_address = customer.selected_invoice_address
+                selected_invoice_address.firstname = form.data.get("invoice_firstname")
+                selected_invoice_address.lastname = form.data.get("invoice_lastname")
+                selected_invoice_address.company_name = form.data.get("invoice_company_name")
+                selected_invoice_address.street = form.data.get("invoice_street")
+                selected_invoice_address.zip_code = form.data.get("invoice_zip_code")
+                selected_invoice_address.city = form.data.get("invoice_city")
+                selected_invoice_address.country_id = form.data.get("invoice_country")
+                selected_invoice_address.phone = form.data.get("invoice_phone")
+                selected_invoice_address.email = form.data.get("invoice_email")
+                selected_invoice_address.save()
+
+            # If the shipping address differs from invoice firstname we create
+            # or update the shipping address.
+            if not form.data.get("no_shipping"):
+                if customer.selected_shipping_address is None:
+                    shipping_address = Address.objects.create(
+                        firstname = form.data.get("shipping_firstname"),
+                        lastname = form.data.get("shipping_lastname"),
+                        company_name = form.data.get("shipping_company_name"),
+                        street = form.data.get("shipping_street"),
+                        zip_code = form.data.get("shipping_zip_code"),
+                        city = form.data.get("shipping_city"),
+                        country_id = form.data.get("shipping_country"),
+                        phone = form.data.get("shipping_phone"),
+                        email = form.data.get("shipping_email"),
+                    )
+                    customer.selected_shipping_address = shipping_address
+                else:
+                    selected_shipping_address = customer.selected_shipping_address
+                    selected_shipping_address.firstname = form.data.get("shipping_firstname")
+                    selected_shipping_address.lastname = form.data.get("shipping_lastname")
+                    selected_shipping_address.company_name = form.data.get("shipping_company_name")
+                    selected_shipping_address.street = form.data.get("shipping_street")
+                    selected_shipping_address.zip_code = form.data.get("shipping_zip_code")
+                    selected_shipping_address.city = form.data.get("shipping_city")
+                    selected_shipping_address.country_id = form.data.get("shipping_country")
+                    selected_shipping_address.phone = form.data.get("shipping_phone")
+                    selected_shipping_address.save()
+                    
+            # Payment method
+            customer.selected_payment_method_id = request.POST.get("payment_method")
+
+            # 1 = Direct Debit
+            if int(form.data.get("payment_method")) == DIRECT_DEBIT:
+                bank_account = BankAccount.objects.create(
+                    account_number = form.data.get("account_number"),
+                    bank_identification_code = form.data.get("bank_identification_code"),
+                    bank_name = form.data.get("bank_name"),
+                    depositor = form.data.get("depositor"),
+                )
+
+                customer.selected_bank_account = bank_account
+
+            # Save the selected information to the customer
+            customer.save()
 
     else:
         # If there are addresses intialize the form.

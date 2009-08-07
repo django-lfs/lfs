@@ -46,22 +46,13 @@ def carts_inline(request, as_string=False, template_name="manage/cart/carts_inli
             total += item.get_price_gross()
             products.append(item.product.get_name())
 
-        if cart.user:
-            if cart.user.first_name:
-                user_name = cart.user.first_name + " "
-            if cart.user.last_name:
-                user_name += cart.user.last_name
-        else:
-            try:
-                customer = Customer.objects.get(session=cart.session)
-            except Customer.DoesNotExist:
-                user_name = None
+        try:
+            if cart.user:
+                customer = Customer.objects.get(user=cart.user)
             else:
-                if customer.selected_invoice_address:
-                    user_name = customer.selected_invoice_address.firstname + " " + \
-                                customer.selected_invoice_address.lastname
-                else:
-                    user_name = None
+                customer = Customer.objects.get(session=cart.session)
+        except Customer.DoesNotExist:
+            customer = None
 
         carts.append({
             "id" : cart.id,
@@ -72,7 +63,7 @@ def carts_inline(request, as_string=False, template_name="manage/cart/carts_inli
             "products" : ", ".join(products),
             "creation_date" : cart.creation_date,
             "modification_date" : cart.modification_date,
-            "user_name" : user_name,
+            "customer" : customer,
         })
 
     result = render_to_string(template_name, RequestContext(request, {
@@ -113,7 +104,10 @@ def cart_inline(request, cart_id, as_string=False, template_name="manage/cart/ca
         total += item.get_price_gross()
 
     try:
-        customer = Customer.objects.get(session=cart.session)
+        if cart.user:
+            customer = Customer.objects.get(user=cart.user)
+        else:
+            customer = Customer.objects.get(session=cart.session)
     except Customer.DoesNotExist:
         customer = None
 

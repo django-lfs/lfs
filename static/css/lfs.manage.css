@@ -124,6 +124,10 @@ tr.odd {
     text-align:right;
 }
 
+.tiny {
+    width: 50px;
+}
+
 .small {
     width: 100px;
 }
@@ -153,6 +157,7 @@ tr.odd {
     position:relative; top:3px;
 }
 
+.manage-customer .navigation-pages,
 .manage-cart .navigation-pages,
 .manage-order .navigation-pages {
     margin: 20px 0;
@@ -174,6 +179,7 @@ a.selectable:hover {
     background-color: #ede9e8;
 }
 
+a.selected,
 a.selectable.selected {
     font-weight: bold;
     background-color: #ede9e8;

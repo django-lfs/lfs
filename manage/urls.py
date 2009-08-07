@@ -174,12 +174,22 @@ urlpatterns += patterns('lfs.manage.views.categories',
     url(r'^products-inline/(?P<category_id>\d*)$', "products_inline", name="lfs_manage_category_products_inline"),
     url(r'^edit-category-data/(?P<category_id>\d*)$', "edit_category_data", name="lfs_manage_category_edit_data"),
     url(r'^selected-products/(?P<category_id>\d*)$', "selected_products", name="lfs_selected_products"),
-
 )
 
 # Categories / SEO
 urlpatterns += patterns('lfs.manage.views.categories.seo',
     url(r'^edit-category-seo/(?P<category_id>\d*)$', "edit_seo", name="lfs_manage_category_seo"),
+)
+
+# Customers 
+urlpatterns += patterns('lfs.manage.views.customer',
+    url(r'^customers$', "customers", name="lfs_manage_customers"),
+    url(r'^customers-inline$', "customers_inline", name="lfs_customers_inline"),
+    url(r'^customer/(?P<customer_id>\d*)$', "customer", name="lfs_manage_customer"),
+    url(r'^customer-inline/(?P<customer_id>\d*)$', "customer_inline", name="lfs_customer_inline"),
+    url(r'^set-customer-filters$', "set_customer_filters", name="lfs_set_customer_filters"),
+    url(r'^reset-customer-filters$', "reset_customer_filters", name="lfs_reset_customer_filters"),
+    url(r'^selectable-customers-inline$', "selectable_customers_inline", name="lfs_selectable_customers_inline"),
 )
 
 # Shipping

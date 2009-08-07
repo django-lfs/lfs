@@ -98,7 +98,7 @@
 </form>
 <table class="lfs-manage-table">
     <tr>
-        <th style="width:50px">
+        <th class="tiny">
             {% trans 'ID' %}
         </th>
         <th style="width:150px">
@@ -139,8 +139,11 @@
                 </a>
             </td>
             <td>
-                {% if cart.user_name %}
-                    {{ cart.user_name }}
+                {% if cart.customer.selected_invoice_address %}
+                    {{ cart.customer.selected_invoice_address.firstname }}
+                    {{ cart.customer.selected_invoice_address.lastname }}
+				{% else %}	
+					---
                 {% endif %}
             </td>
             <td class="number" style="padding-right:20px" nowrap="nowrap">

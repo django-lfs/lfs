@@ -40,7 +40,7 @@ class Customer(models.Model):
         if self.user:
             return self.user.email
         else:
-            return self.selected_shipping_address.email
+            return self.selected_invoice_address.email
 
     def set_email_address(self, email):
         """Returns the email address of the customer dependend on the user is
@@ -50,8 +50,8 @@ class Customer(models.Model):
             self.user.email = email
             self.user.save()
         else:
-            self.selected_shipping_address.email = email
-            self.selected_shipping_address.save()
+            self.selected_invoice_address.email = email
+            self.selected_invoice_address.save()
 
 class Address(models.Model):
     """An address which can be used as shipping and/or invoice address.

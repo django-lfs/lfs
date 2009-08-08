@@ -131,7 +131,7 @@ def cart_inline(request, cart_id, as_string=False, template_name="manage/cart/ca
 
         return HttpResponse(result)
 
-def selectable_carts_inline(request, cart_id, as_string=False,
+def selectable_carts_inline(request, cart_id=0, as_string=False,
     template_name="manage/cart/selectable_carts_inline.html"):
     """Display selectable carts.
     """

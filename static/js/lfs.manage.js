@@ -115,11 +115,6 @@ $(function() {
         return false;
     });
 
-    $("a.selectable").livequery("click", function() {
-        $("a").removeClass("selected");
-        $(this).addClass("selected");
-    });
-        
     // Criteria
     $(".edit-price-criteria-button").livequery("click", function() {
         var url = $(this).attr("href");

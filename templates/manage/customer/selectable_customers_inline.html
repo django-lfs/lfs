@@ -54,8 +54,8 @@
 
 {% for c in page.object_list %}
     <div>
-        <a href="{% url lfs_customer_inline c.id %}"
-           class="ajax-link selectable {% ifequal customer_id c.id %}selected{% endifequal %}">
+        <a href="{% url lfs_manage_customer c.id %}"
+           class="selectable {% ifequal customer_id c.id %}selected{% endifequal %}">
 			{% if c.selected_invoice_address %}
 	            {{ c.selected_invoice_address.firstname }}
 	            {{ c.selected_invoice_address.lastname }}

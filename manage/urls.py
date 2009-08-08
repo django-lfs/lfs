@@ -155,7 +155,7 @@ urlpatterns += patterns('lfs.manage.views.carts',
     url(r'^carts-inline$', "carts_inline", name="lfs_carts_inline"),
     url(r'^cart-inline/(?P<cart_id>\d*)$', "cart_inline", name="lfs_cart_inline"),
     url(r'^cart/(?P<cart_id>\d*)$', "cart_view", name="lfs_manage_cart"),
-    url(r'^selectable-carts-inline$', "selectable_carts_inline", name="lfs_selectable_carts_inline"),    
+    url(r'^selectable-carts-inline$', "selectable_carts_inline", name="lfs_selectable_carts_inline"),
     url(r'^set-cart-filters$', "set_cart_filters", name="lfs_set_cart_filters"),
     url(r'^set-cart-filters-date$', "set_cart_filters_date", name="lfs_set_cart_filters_date"),
     url(r'^reset-cart-filters$', "reset_cart_filters", name="lfs_reset_cart_filters"),
@@ -181,7 +181,7 @@ urlpatterns += patterns('lfs.manage.views.categories.seo',
     url(r'^edit-category-seo/(?P<category_id>\d*)$', "edit_seo", name="lfs_manage_category_seo"),
 )
 
-# Customers 
+# Customers
 urlpatterns += patterns('lfs.manage.views.customer',
     url(r'^customers$', "customers", name="lfs_manage_customers"),
     url(r'^customers-inline$', "customers_inline", name="lfs_customers_inline"),
@@ -189,6 +189,7 @@ urlpatterns += patterns('lfs.manage.views.customer',
     url(r'^customer-inline/(?P<customer_id>\d*)$', "customer_inline", name="lfs_customer_inline"),
     url(r'^set-customer-filters$', "set_customer_filters", name="lfs_set_customer_filters"),
     url(r'^reset-customer-filters$', "reset_customer_filters", name="lfs_reset_customer_filters"),
+    url(r'^set-customer-ordering/(?P<ordering>\w*)$', "set_ordering", name="lfs_set_customer_ordering"),
     url(r'^selectable-customers-inline$', "selectable_customers_inline", name="lfs_selectable_customers_inline"),
 )
 

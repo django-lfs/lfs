@@ -46,20 +46,41 @@
             style="width:150px">
             {% trans 'ID' %}:
         </td>
-        <td>
+		<td>
             {{ customer.id }}
         </td>
     </tr>
     <tr>
         <td class="label">
-            {% trans 'Customer' %}:
+            {% trans 'Registriert' %}:
         </td>
-        <td>
+		<td>
+			{% if customer.user %}
+				{% trans "Yes" %}
+			{% else %}
+				{% trans "No" %}
+			{% endif %}
+        </td>
+    </tr>
+</table>
+
+<table class="lfs-manage-table">
+    <tr>
+        <th>
+            {% trans 'Invoice address' %}
+        </th>
+        <th>
+            {% trans 'Shipping address' %}
+        </th>
+    </tr>
+    <tr>
+        <td style="width:50%">
 			{% if customer.selected_invoice_address %}
 				<div>
 					{{ customer.selected_invoice_address.firstname }}
 					{{ customer.selected_invoice_address.lastname }}
-					(<a href="mailto:{{ customer.selected_invoice_address.email }}">{{ customer.selected_invoice_address.email }}</a>)
+					
+					(<a href="mailto:{{ customer.get_email_address }}">{{ customer.get_email_address }}</a>)
 				</div>
 				<div>
 					{{ customer.selected_invoice_address.street }}				
@@ -69,6 +90,25 @@
 				</div>
 				<div>
 					{{ customer.selected_invoice_address.phone }}
+				</div>
+			{% else %}
+				---
+			{% endif %}
+        </td>
+        <td>
+			{% if customer.selected_shipping_address %}
+				<div>
+					{{ customer.selected_shipping_address.firstname }}
+					{{ customer.selected_shipping_address.lastname }}
+				</div>
+				<div>
+					{{ customer.selected_shipping_address.street }}				
+				</div>
+				<div>
+					{{ customer.selected_shipping_address.zip_code }} {{ customer.selected_shipping_address.city }}				
+				</div>
+				<div>
+					{{ customer.selected_shipping_address.phone }}
 				</div>
 			{% else %}
 				---

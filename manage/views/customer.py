@@ -34,7 +34,7 @@ def customer(request, customer_id, template_name="manage/customer/customer.html"
 def customer_inline(request, customer_id, as_string=False, template_name="manage/customer/customer_inline.html"):
     """Displays customer with provided customer id.
     """
-    customer_filters = request.session.get("customer-filters", {})    
+    customer_filters = request.session.get("customer-filters", {})
     customer = lfs_get_object_or_404(Customer, pk=customer_id)
     orders = Order.objects.filter(session=customer.session)
 
@@ -50,7 +50,7 @@ def customer_inline(request, customer_id, as_string=False, template_name="manage
         "orders" : orders,
         "cart" : cart,
         "cart_price" : cart_price,
-        "name" : customer_filters.get("name", ""), 
+        "name" : customer_filters.get("name", ""),
     }))
 
     if as_string:
@@ -76,14 +76,14 @@ def customers(request, template_name="manage/customer/customers.html"):
 def customers_inline(request, as_string=False, template_name="manage/customer/customers_inline.html"):
     """Displays carts overview.
     """
-    customer_filters = request.session.get("customer-filters", {})
-    temp = _get_filtered_customers(customer_filters)
+    customer_filters = request.session.get("customer-filters", {})    
+    temp = _get_filtered_customers(request, customer_filters)
 
     paginator = Paginator(temp, 30)
 
     page = request.REQUEST.get("page", 1)
     page = paginator.page(page)
-    
+
     customers = []
     for customer in page.object_list:
         try:
@@ -92,13 +92,13 @@ def customers_inline(request, as_string=False, template_name="manage/customer/cu
         except Cart.DoesNotExist:
             cart_price = None
 
-        orders = Order.objects.filter(session=customer.session)         
+        orders = Order.objects.filter(session=customer.session)
         customers.append({
             "customer" : customer,
             "orders" : len(orders),
             "cart_price" : cart_price,
         })
-        
+
     result = render_to_string(template_name, RequestContext(request, {
         "customers" : customers,
         "page" : page,
@@ -123,7 +123,7 @@ def selectable_customers_inline(request, customer_id=0, as_string=False,
     """Display selectable customers.
     """
     customer_filters = request.session.get("customer-filters", {})
-    customers = _get_filtered_customers(customer_filters)
+    customers = _get_filtered_customers(request, customer_filters)
 
     paginator = Paginator(customers, 30)
 
@@ -148,6 +148,34 @@ def selectable_customers_inline(request, customer_id=0, as_string=False,
 
         return HttpResponse(result)
 
+def set_ordering(request, ordering):
+    """Sets customer ordering given by passed request.
+    """
+    if ordering == "lastname":
+        ordering = "selected_invoice_address__lastname"
+    elif ordering == "firstname":
+        ordering = "selected_invoice_address__firstname"
+
+    request.session["customer-ordering"] = ordering
+
+    if request.REQUEST.get("came-from") == "customer":
+        customer_id = request.REQUEST.get("customer-id")
+        html = (
+            ("#selectable-customers-inline", selectable_customers_inline(request, as_string=True)),
+            ("#customer-inline", customer_inline(request, customer_id=customer_id, as_string=True)),
+        )
+    else:
+        html = (("#customers-inline", customers_inline(request, as_string=True)),)
+
+    msg = _(u"Customer ordering has been set")
+
+    result = simplejson.dumps({
+        "html" : html,
+        "message" : msg,
+    }, cls = LazyEncoder)
+
+    return HttpResponse(result)
+    
 def set_customer_filters(request):
     """Sets customer filters given by passed request.
     """
@@ -160,7 +188,7 @@ def set_customer_filters(request):
             del customer_filters["name"]
 
     request.session["customer-filters"] = customer_filters
-    
+
     if request.REQUEST.get("came-from") == "customer":
         customer_id = request.REQUEST.get("customer-id")
         html = (
@@ -170,7 +198,7 @@ def set_customer_filters(request):
     else:
         html = (("#customers-inline", customers_inline(request, as_string=True)),)
 
-    msg = _(u"Customer filters has been set")
+    msg = _(u"Customer filters have been set")
 
     result = simplejson.dumps({
         "html" : html,
@@ -203,17 +231,20 @@ def reset_customer_filters(request):
 
     return HttpResponse(result)
 
-def _get_filtered_customers(customer_filters):
+def _get_filtered_customers(request, customer_filters):
     """
     """
+    customer_ordering = request.session.get("customer-ordering", "id")
     customers = Customer.objects.exclude(selected_invoice_address=None)
-
-    # name
-    name = customer_filters.get("name", "")
     
+    # Filter
+    name = customer_filters.get("name", "")
     if name != "":
         f  = Q(selected_invoice_address__lastname__icontains=name)
         f |= Q(selected_invoice_address__firstname__icontains=name)
         customers = customers.filter(f)
     
+    # Ordering
+    customers = customers.order_by(customer_ordering)
+
     return customers

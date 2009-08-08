@@ -83,10 +83,25 @@
 <table class="lfs-manage-table">
     <tr>
         <th class="tiny">
-            {% trans 'ID' %}
+			<a class="ajax-link"
+			   href='{% url lfs_set_customer_ordering "id" %}'>
+            	{% trans 'ID' %}
+           	</a>
         </th>
-        <th>
-            {% trans 'Name' %}
+        <th class="middle">
+			<a class="ajax-link"
+			   href='{% url lfs_set_customer_ordering "lastname" %}'>
+            	{% trans 'Lastname' %}
+			</a>
+        </th>
+        <th class="middle">
+			<a class="ajax-link" 
+			   href='{% url lfs_set_customer_ordering "firstname" %}'>
+            	{% trans 'Firstname' %}
+			</a>
+        </th>
+        <th class="middle">
+            {% trans 'E-Mail' %}
         </th>
         <th class="number">
             {% trans 'Orders' %}
@@ -103,8 +118,13 @@
                	{{ customer.customer.id }}
             </td>
             <td>
-				{{ customer.customer.selected_invoice_address.firstname }}
                 {{ customer.customer.selected_invoice_address.lastname  }}
+            </td>
+            <td>
+				{{ customer.customer.selected_invoice_address.firstname }}
+            </td>
+            <td>
+				{{ customer.customer.get_email_address }}
             </td>
             <td class="number">
 				{{ customer.orders }}

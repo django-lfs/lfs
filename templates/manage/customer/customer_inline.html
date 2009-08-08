@@ -100,7 +100,7 @@
 	        </th>
 		</tr>
 		{% for order in orders %}
-			<tr style="cursor:pointer"
+			<tr class="clickable"
 				onclick="window.location='{% url lfs_manage_order order.id %}'">
 				<td>
 					{{ order.id }}

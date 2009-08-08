@@ -65,6 +65,11 @@ table.main td {
     vertical-align: top;
 }
 
+tr.clickable:hover {
+    background-color: #ddd;
+    cursor:pointer;
+}
+
 table.lfs-manage-table {
     width: 100%;
     border-collapse: collapse;

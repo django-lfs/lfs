@@ -91,7 +91,7 @@ def cart_view(request, cart_id, template_name="manage/cart/cart.html"):
     """
     return render_to_response(template_name, RequestContext(request, {
         "cart_inline" : cart_inline(request, cart_id, as_string=True),
-        "selectable_carts_inline" : selectable_carts_inline(request, as_string=True),
+        "selectable_carts_inline" : selectable_carts_inline(request, cart_id, as_string=True),
     }));
 
 def cart_inline(request, cart_id, as_string=False, template_name="manage/cart/cart_inline.html"):
@@ -131,7 +131,7 @@ def cart_inline(request, cart_id, as_string=False, template_name="manage/cart/ca
 
         return HttpResponse(result)
 
-def selectable_carts_inline(request, as_string=False,
+def selectable_carts_inline(request, cart_id, as_string=False,
     template_name="manage/cart/selectable_carts_inline.html"):
     """Display selectable carts.
     """
@@ -149,6 +149,7 @@ def selectable_carts_inline(request, as_string=False,
     result = render_to_string(template_name, RequestContext(request, {
         "paginator" : paginator,
         "page" : page,
+        "cart_id" : int(cart_id),
     }))
 
     if as_string:

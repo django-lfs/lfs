@@ -148,19 +148,16 @@
             </th>
         </tr>
         {% for item in cart.items %}
-            <tr>
+            <tr class="clickable"
+                onclick="window.location='{% url lfs_manage_product item.product.id %}'">
                 <td class="small-right">
-                    <a href="{{ item.product.get_absolute_url}}">
-                        {{ item.id }}
-                    </a>
+                	{{ item.id }}
                 </td>
                 <td>
 					{{ item.creation_date|date:_("DATETIME_FORMAT") }}
 			    </td>
                 <td>
-                    <a href="{{ item.product.get_absolute_url}}">
-                        {{ item.product.get_name }}
-                    </a>
+                	{{ item.product.get_name }}
                 </td>
                 <td class="number">
                     {{ item.product.get_price|currency }}

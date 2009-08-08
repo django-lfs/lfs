@@ -97,11 +97,10 @@
     </tr>
 
     {% for customer in customers %}
-        <tr>
+        <tr class="clickable"
+            onclick="window.location='{% url lfs_manage_customer customer.customer.id %}'">
             <td>
-                <a href="{% url lfs_manage_customer customer.customer.id %}">
-                	{{ customer.customer.id }}
-				</a>
+               	{{ customer.customer.id }}
             </td>
             <td>
 				{{ customer.customer.selected_invoice_address.firstname }}

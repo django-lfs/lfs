@@ -124,14 +124,13 @@
     </tr>
 
     {% for cart in carts %}
-        <tr>
+        <tr class="clickable"
+            onclick="window.location='{% url lfs_manage_cart cart.id %}'">
             <td>
                 {{ cart.id }}
             </td>
             <td>
-                <a href="{% url lfs_manage_cart cart.id %}">
-                    {{ cart.creation_date|date:_("DATETIME_FORMAT") }}
-                </a>
+                {{ cart.creation_date|date:_("DATETIME_FORMAT") }}
             </td>
             <td>
                 <a href="{% url lfs_manage_cart cart.id %}">

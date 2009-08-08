@@ -54,9 +54,8 @@
 
 {% for c in page.object_list %}
     <div>
-        <a class="ajax-link"
-           href="{% url lfs_cart_inline c.id %}"
-           class="selectable {% ifequal cart.id c.id %}selected{% endifequal %}">
+        <a href="{% url lfs_cart_inline c.id %}"
+           class="ajax-link selectable {% ifequal cart_id c.id %}selected{% endifequal %}">
             {{ c.creation_date|date:_("DATETIME_FORMAT") }}
         </a>
     </div>

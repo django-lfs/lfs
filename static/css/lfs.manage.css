@@ -141,6 +141,10 @@ tr.odd {
     width: 200px;
 }
 
+.long {
+    width: 350px;
+}
+
 .lfs-header {
     background: url("../img/header_bg.jpg") repeat-x;
 }
@@ -162,6 +166,7 @@ tr.odd {
     position:relative; top:3px;
 }
 
+.manage-review .navigation-pages,
 .manage-customer .navigation-pages,
 .manage-cart .navigation-pages,
 .manage-order .navigation-pages {

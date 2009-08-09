@@ -77,6 +77,8 @@ def customers_inline(request, as_string=False, template_name="manage/customer/cu
     """Displays carts overview.
     """
     customer_filters = request.session.get("customer-filters", {})    
+    ordering = request.session.get("customer-ordering", "id")
+    
     temp = _get_filtered_customers(request, customer_filters)
 
     paginator = Paginator(temp, 30)
@@ -105,6 +107,7 @@ def customers_inline(request, as_string=False, template_name="manage/customer/cu
         "paginator" : paginator,
         "start" : customer_filters.get("start", ""),
         "end" : customer_filters.get("end", ""),
+        "ordering" : ordering,
     }))
 
     if as_string:
@@ -155,9 +158,16 @@ def set_ordering(request, ordering):
         ordering = "selected_invoice_address__lastname"
     elif ordering == "firstname":
         ordering = "selected_invoice_address__firstname"
+    
+    if ordering == request.session.get("customer-ordering"):
+        if request.session.get("customer-ordering-order") == "":
+            request.session["customer-ordering-order"] = "-"
+        else:
+            request.session["customer-ordering-order"] = ""
+    else:
+        request.session["customer-ordering-order"] = ""
 
     request.session["customer-ordering"] = ordering
-
     if request.REQUEST.get("came-from") == "customer":
         customer_id = request.REQUEST.get("customer-id")
         html = (
@@ -167,11 +177,8 @@ def set_ordering(request, ordering):
     else:
         html = (("#customers-inline", customers_inline(request, as_string=True)),)
 
-    msg = _(u"Customer ordering has been set")
-
     result = simplejson.dumps({
         "html" : html,
-        "message" : msg,
     }, cls = LazyEncoder)
 
     return HttpResponse(result)
@@ -235,6 +242,8 @@ def _get_filtered_customers(request, customer_filters):
     """
     """
     customer_ordering = request.session.get("customer-ordering", "id")
+    customer_ordering_order = request.session.get("customer-ordering-order", "")
+    
     customers = Customer.objects.exclude(selected_invoice_address=None)
     
     # Filter
@@ -245,6 +254,6 @@ def _get_filtered_customers(request, customer_filters):
         customers = customers.filter(f)
     
     # Ordering
-    customers = customers.order_by(customer_ordering)
+    customers = customers.order_by("%s%s" % (customer_ordering_order, customer_ordering))
 
     return customers

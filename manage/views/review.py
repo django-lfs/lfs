@@ -149,11 +149,8 @@ def set_ordering(request, ordering):
     else:
         html = (("#reviews-inline", reviews_inline(request, as_string=True)),)
 
-    msg = _(u"Review ordering has been set")
-
     result = simplejson.dumps({
         "html" : html,
-        "message" : msg,
     }, cls = LazyEncoder)
 
     return HttpResponse(result)
@@ -274,8 +271,16 @@ def _get_filtered_reviews(request, review_filters):
     active = review_filters.get("active", "")
     if active != "":
         reviews = reviews.filter(active=active)
-
+    
     # Ordering
-    reviews = reviews.order_by("%s%s" % (review_ordering_order, review_ordering))
+    if review_ordering == "product":
+        reviews = list(reviews)
+        if review_ordering_order == "-":
+            reviews.sort(lambda b, a: cmp(a.content.get_name(), b.content.get_name()))
+        else:
+            reviews.sort(lambda a, b: cmp(a.content.get_name(), b.content.get_name()))
+            
+    else:
+        reviews = reviews.order_by("%s%s" % (review_ordering_order, review_ordering))
 
     return reviews

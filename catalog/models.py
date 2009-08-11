@@ -97,9 +97,9 @@ class Category(models.Model):
 
         - uuid
            The unique id of the category
-           
-        - level 
-           The level of the category within the category hierachie, e.g. if it 
+
+        - level
+           The level of the category within the category hierachie, e.g. if it
            is a top level category the level is 1.
     """
     name = models.CharField(_(u"Name"), max_length=50)
@@ -127,7 +127,7 @@ class Category(models.Model):
 
     meta_keywords = models.TextField(_(u"Meta keywords"), blank=True)
     meta_description = models.TextField(_(u"Meta description"), blank=True)
-    
+
     level = models.PositiveSmallIntegerField(default=1)
     uid = models.CharField(max_length=50)
 
@@ -137,7 +137,7 @@ class Category(models.Model):
 
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.slug)
-    
+
     def get_absolute_url(self):
         """Returns the absolute_url.
         """
@@ -544,7 +544,7 @@ class Product(models.Model):
             product = self.parent
         else:
             product = self
-            
+
         return ProductAccessories.objects.filter(product=product, accessory__active=True)
 
     def has_accessories(self):
@@ -763,14 +763,44 @@ class Product(models.Model):
         """
         return self.get_price_gross()
 
-    def get_price_gross(self):
-        """Returns the real gross price of the product. Takes care whether the
-        product is for sale.
+    def get_standard_price(self):
+        """Returns always the standard price for the product. Independent
+        whether the product is for sale or not. If you want the real price of
+        the product use get_price instead.
         """
-        if self.is_variant() and not self.active_price:
+        object = self
+        
+        if object.is_product_with_variants() and object.get_default_variant():
+            object = object.get_default_variant()
+                
+        if object.is_variant():
             object = self.parent
-        else:
-            object = self
+        
+        return object.price
+
+    def get_for_sale_price(self):
+        """returns the sale price for the product.
+        """
+        object = self
+        
+        if object.is_product_with_variants() and object.get_default_variant():
+            object = object.get_default_variant()
+                
+        if object.is_variant() and not object.active_for_sale_price:
+            object = self.parent
+        
+        return object.for_sale_price
+
+    def get_price_gross(self):
+        """Returns the real gross price of the product.
+        """
+        object = self
+
+        if object.is_product_with_variants() and object.get_default_variant():
+            object = object.get_default_variant()
+
+        if object.is_variant() and not object.active_price:
+            object = self.parent
 
         if object.get_for_sale():
             return object.get_for_sale_price()
@@ -782,18 +812,6 @@ class Product(models.Model):
         product is for sale.
         """
         return self.get_price_gross() - self.get_tax()
-
-    def get_for_sale_price(self):
-        """returns the sale price for the product. Takes care whether the product
-        is a variant and if so the for sale price is active.
-        """
-        if self.is_variant():
-            if self.active_for_sale_price:
-                return self.for_sale_price
-            else:
-                return self.parent.for_sale_price
-        else:
-            return self.for_sale_price
 
     def get_global_properties(self):
         """Returns all global properties for the product.
@@ -816,18 +834,6 @@ class Product(models.Model):
         properties.extend(self.get_local_properties())
 
         return properties
-
-    def get_standard_price(self):
-        """Returns always the standard price for the product. Independent
-        whether the product is for sale or not. If you want the real price of
-        the product use get_price instead.
-        """
-        if self.is_variant() and not self.active_price:
-            object = self.parent
-        else:
-            object = self
-
-        return object.price
 
     def get_sku(self):
         """Returns the sku of the product. Takes care whether the product is a

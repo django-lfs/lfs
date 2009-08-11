@@ -158,7 +158,9 @@ def set_ordering(request, ordering):
         ordering = "selected_invoice_address__lastname"
     elif ordering == "firstname":
         ordering = "selected_invoice_address__firstname"
-    
+    elif ordering == "email":
+        ordering = "selected_invoice_address__email"
+        
     if ordering == request.session.get("customer-ordering"):
         if request.session.get("customer-ordering-order") == "":
             request.session["customer-ordering-order"] = "-"

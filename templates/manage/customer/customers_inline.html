@@ -101,7 +101,10 @@
 			</a>
         </th>
         <th class="middle">
-            {% trans 'E-Mail' %}
+			<a class="ajax-link" 
+			   href='{% url lfs_set_customer_ordering "email" %}'>
+            	{% trans 'E-Mail' %}
+			</a>	
         </th>
         <th class="number">
             {% trans 'Orders' %}

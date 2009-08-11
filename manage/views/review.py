@@ -266,7 +266,7 @@ def _get_filtered_reviews(request, review_filters):
     # Filter
     name = review_filters.get("name", "")
     if name != "":
-        reviews = reviews.filter(user_name__contains=name)
+        reviews = reviews.filter(user_name__icontains=name)
 
     active = review_filters.get("active", "")
     if active != "":

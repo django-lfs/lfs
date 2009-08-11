@@ -774,7 +774,7 @@ class Product(models.Model):
             object = object.get_default_variant()
                 
         if object.is_variant():
-            object = self.parent
+            object = object.parent
         
         return object.price
 
@@ -787,7 +787,7 @@ class Product(models.Model):
             object = object.get_default_variant()
                 
         if object.is_variant() and not object.active_for_sale_price:
-            object = self.parent
+            object = object.parent
         
         return object.for_sale_price
 
@@ -800,7 +800,7 @@ class Product(models.Model):
             object = object.get_default_variant()
 
         if object.is_variant() and not object.active_price:
-            object = self.parent
+            object = object.parent
 
         if object.get_for_sale():
             return object.get_for_sale_price()

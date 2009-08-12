@@ -773,7 +773,7 @@ class Product(models.Model):
         if object.is_product_with_variants() and object.get_default_variant():
             object = object.get_default_variant()
                 
-        if object.is_variant():
+        if object.is_variant() and not object.active_price:
             object = object.parent
         
         return object.price
@@ -799,13 +799,16 @@ class Product(models.Model):
         if object.is_product_with_variants() and object.get_default_variant():
             object = object.get_default_variant()
 
-        if object.is_variant() and not object.active_price:
-            object = object.parent
-
-        if object.get_for_sale():
-            return object.get_for_sale_price()
+        if object.get_for_sale():            
+            if object.is_variant() and not object.active_for_sale_price:
+                return object.parent.get_for_sale_price()
+            else:
+                return object.get_for_sale_price()
         else:
-            return object.price
+            if object.is_variant() and not object.active_price:
+                return object.parent.price
+            else:
+                return object.price
 
     def get_price_net(self):
         """Returns the real net price of the product. Takes care whether the

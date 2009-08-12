@@ -194,10 +194,10 @@ def category_categories(request, slug, template_name="lfs/catalog/category_categ
     if len(row) > 0:
         categories.append(row)
 
-    result = render_to_string(template_name, {
+    result = render_to_string(template_name, RequestContext(request, {
         "category" : category,
         "categories" : categories,
-    })
+    }))
 
     cache.set(cache_key, result)
     return result

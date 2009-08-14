@@ -9,13 +9,13 @@ from lfs.catalog.models import Category
 register = template.Library()
 
 @register.inclusion_tag('manage/category/category_filter.html', takes_context=True)
-def category_filter(context, css_class="", name="category_filter"):
+def category_filter(context, css_class="", name="category"):
     """Returns the categories of the shop for management purposes.
     
     The css_class attribute is used for different ajax based requests in
     different views.
     """
-    request = context.get("request")    
+    request = context.get("request")
     categories = []
     for category in Category.objects.filter(parent = None):        
         children = category_filter_children(request, category, name)
@@ -23,7 +23,7 @@ def category_filter(context, css_class="", name="category_filter"):
             "id" : category.id,
             "name" : category.name,
             "children" : children,
-            "selected" : request.session.get(name) == str(category.id)
+            "selected" : str(category.id) == request.session.get("product-filters", {}).get("category")
         })
 
     result = {"categories" : categories, "css_class" : css_class, "name" : name }
@@ -43,7 +43,7 @@ def category_filter_children(request, category, name="category_filter", level=1)
             "name" : "%s%s" % ("&nbsp;" * level*5, category.name),
             "children" : children,
             "level" : level,
-            "selected" : request.session.get(name) == str(category.id)
+            "selected" : str(category.id) == request.session.get("product-filters", {}).get("category")
         })
     
     result = render_to_string("manage/category/category_filter_children.html", RequestContext(request, {

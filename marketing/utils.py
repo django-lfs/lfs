@@ -1,5 +1,6 @@
 # django imports
 from django.core.cache import cache
+from django.db.models import Q
 
 # lfs imports
 from lfs.catalog.models import Product
@@ -60,10 +61,14 @@ def get_topseller_for_category(category, limit=5):
     categories = [category]
     categories.extend(category.get_all_children())
     category_ids = [c.id for c in categories]
-
-    # 2. Get all order items with products within these categories
-    order_items = OrderItem.objects.filter(product__categories__in=category_ids)
-
+    
+    # 2. Get all order items with products within these categories.
+    #    product__parent__categories is for variants
+    f = Q(product__parent__categories__in=category_ids) | \
+        Q(product__categories__in=category_ids)
+        
+    order_items = OrderItem.objects.filter(f)
+    
     # 3. Calculate totals per product
     products = {}
     for order_item in order_items:

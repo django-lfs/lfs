@@ -88,11 +88,7 @@ def product_dispatcher(request):
 def manage_product(request, product_id, template_name="manage/product/product.html"):
     """Displays the whole manage/edit form for the product with the passed id.
     """
-    product = lfs_get_object_or_404(Product, pk=product_id)
-    try:
-        product = Product.objects.get(pk=product_id)
-    except Exception:
-        return HttpResponse("")
+    product = Product.objects.get(pk=product_id)
     
     return render_to_response(template_name, RequestContext(request, {
         "product" : product,

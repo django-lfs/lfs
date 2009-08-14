@@ -401,9 +401,6 @@ def get_slug_from_request(request):
 def currency(price, arg=None):
     """
     """
-    if not price:
-        price = 0.0
-        
     # TODO: optimize
     price = lfs.utils.misc.FormatWithCommas("%.2f", price)
     shop = lfs_get_object_or_404(Shop, pk=1)

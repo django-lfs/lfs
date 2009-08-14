@@ -110,22 +110,6 @@ def get_end_day(date):
     end = end + datetime.timedelta(1) - datetime.timedelta(microseconds=1)
     
     return end
-  
-def getLOL(objects, objects_per_row=3):
-    """Returns a list of list of given objects.
-    """
-    result = []
-    row = []
-    for i, object in enumerate(objects):
-        row.append(object)
-        if (i+1) % objects_per_row == 0:
-            result.append(row)
-            row = []
-
-    if len(row) > 0:
-        result.append(row)
-
-    return result
     
 class CategoryTree(object):
     """Represents a category tree.

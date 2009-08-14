@@ -36,7 +36,7 @@ class TopsellerPortlet(Portlet):
                 category, self.limit)            
         else:
             topseller = lfs.marketing.utils.get_topseller_for_category(
-                object, self.limit)
+                category, self.limit)
         
         return render_to_string("lfs/portlets/topseller.html", {
             "title" : self.title,

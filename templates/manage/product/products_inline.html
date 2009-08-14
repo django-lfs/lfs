@@ -1,16 +1,36 @@
 {% load i18n %}
 {% load lfs_tags %}
-{% load lfs_manage_tags %}
-
-<form action="{% url lfs_set_product_filters %}"
-      method="POST">
-
-	{% include "manage/product/product_filters.html" %}
-</form>
 
 <form action="{% url lfs_manage_save_products %}"
       method="post">
 
+    <div class="navigation-pages">
+        {% if page.has_previous %}
+            <a class="products-page-link first"
+               href="{% url lfs_products_inline %}?page=1"
+               title="{% trans 'First' %}"></a>
+            <a class="products-page-link previous"
+               href="{% url lfs_products_inline %}?page={{page.previous_page_number}}"
+               title="{% trans 'Previous' %}"></a>
+        {% else %}
+            <a class="first" title="{% trans 'First' %}"></a>
+            <a class="previous" title="{% trans 'Previous' %}"></a>
+        {% endif %}
+
+        {{page.number}} / {{paginator.num_pages}}
+
+        {% if page.has_next %}
+            <a class="products-page-link next"
+               href="{% url lfs_products_inline %}?page={{page.next_page_number}}"
+               title="{% trans 'Next' %}"></a>
+            <a class="products-page-link last"
+               href="{% url lfs_products_inline %}?page={{paginator.num_pages}}"></a>   
+        {% else %}
+            <a class="next" title="{% trans 'Next' %}"></a>
+            <a class="last" title="{% trans 'Last' %}"></a>
+        {% endif %}
+    </div>
+     
     <table class="lfs-manage-table">
         <tr>
             <th width="1px">
@@ -23,12 +43,9 @@
             <th width="1px">
                 {% trans 'Name' %}
             </th>
-            <th width="1px">
+            <th>
                 {% trans 'SKU' %}
             </th>            
-            <th class="small">
-                {% trans 'Active' %}
-            </th>
             <th>
                 {% trans 'Sub type' %}
             </th>
@@ -52,7 +69,7 @@
                            name="id-{{product.id}}"
                            value="{{product.id}}" />
                            
-                    <input type="checkbox" name="delete-{{ product.id }}"
+                    <input type="checkbox" name="delete-{{product.id}}"
                            class="select-1" />
                 </td>
                 <td>
@@ -73,12 +90,6 @@
                            name="sku-{{product.id}}"
                            value="{{product.sku}}" />
                 </td>
-				<td>
-                    <input type="checkbox"
-                           name="active-{{ product.id }}"
-                           class="select-2"
-                           {% if  product.active %}checked="checked"{% endif %} />					
-				</td>
                 <td>
                     {{product.sub_type|sub_type_name}}
                 </td>
@@ -114,7 +125,7 @@
             </tr>            
         {% endfor %}
     </table>
-    <div class="manage-form-buttons ajax-save-button-2">
+    <div class="manage-form-buttons">
         <input type="submit" name="save" value="{% trans 'Save' %}" />
     </div>
 </form>    

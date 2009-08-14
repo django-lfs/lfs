@@ -8,6 +8,8 @@ from portlets.models import Portlet
 from portlets.utils import register_portlet
 
 # lfs imports
+import lfs.catalog.utils
+import lfs.catalog.models
 import lfs.marketing.utils
 
 class TopsellerPortlet(Portlet):
@@ -24,9 +26,14 @@ class TopsellerPortlet(Portlet):
     def render(self, context):
         """Renders the portlet as html.
         """
-        category = context.get("category")
-        if category is None:
-            topseller = []
+        object = context.get("category") or context.get("product")
+        if object is None:
+            topseller = lfs.marketing.utils.get_topseller(self.limit)
+        if isinstance(object, lfs.catalog.models.Product):
+            category = lfs.catalog.utils.get_current_product_category(
+                context.get("request"), object)
+            topseller = lfs.marketing.utils.get_topseller_for_category(
+                category, self.limit)            
         else:
             topseller = lfs.marketing.utils.get_topseller_for_category(
                 category, self.limit)

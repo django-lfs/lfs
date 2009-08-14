@@ -29,7 +29,7 @@ class TopsellerPortlet(Portlet):
         object = context.get("category") or context.get("product")
         if object is None:
             topseller = lfs.marketing.utils.get_topseller(self.limit)
-        if isinstance(object, lfs.catalog.models.Product):
+        elif isinstance(object, lfs.catalog.models.Product):
             category = lfs.catalog.utils.get_current_product_category(
                 context.get("request"), object)
             topseller = lfs.marketing.utils.get_topseller_for_category(

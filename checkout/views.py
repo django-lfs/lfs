@@ -234,7 +234,7 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
 
                 # TODO: Get rid of these payment specific payment stuff. This
                 # should be within payment utils.
-                if payment_method == PAYPAL:
+                if payment_method.id == PAYPAL and settings.LFS_PAYPAL_REDIRECT:
                     return HttpResponseRedirect(order.get_pay_link())
                 else:
                     return HttpResponseRedirect(result.get("next-url"))

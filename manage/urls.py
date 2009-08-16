@@ -41,6 +41,12 @@ urlpatterns += patterns('lfs.manage.views',
     url(r'^selectable-products-inline$', "selectable_products_inline", name="lfs_manage_selectable_products_inline"),
     url(r'^save-product-stock/(?P<product_id>\d*)$', "stock", name="lfs_save_product_stock"),
     url(r'^change-product-subtype/(?P<product_id>\d*)$', "change_subtype", name="lfs_change_product_subtype"),
+    url(r'^products$', "products", name="lfs_manage_products"),
+    url(r'^products-inline$', "products_inline", name="lfs_products_inline"),
+    url(r'^save-products$', "save_products", name="lfs_manage_save_products"),
+    url(r'^set-product-filters$', "set_filters", name="lfs_set_product_filters"),
+    url(r'^reset-product-filters$', "reset_filters", name="lfs_reset_product_filters"),
+    url(r'^set-products-page$', "set_products_page", name="lfs_set_products_page"),
 )
 
 urlpatterns += patterns('lfs.manage.views',
@@ -48,13 +54,6 @@ urlpatterns += patterns('lfs.manage.views',
     url(r'^product-accessories-tab/(?P<product_id>\d*)$', "manage_accessories_inline", name="lfs_manage_product_accessories_tab"),
     url(r'^product-relateds-tab/(?P<product_id>\d*)$', "manage_related_products_inline", name="lfs_manage_product_related_products_tab"),
     url(r'^product-variants-tab/(?P<product_id>\d*)$', "manage_variants", name="lfs_manage_product_variants_tab"),
-)
-
-# Products
-urlpatterns += patterns('lfs.manage.views.product.products',
-    url(r'^products$', "products", name="lfs_manage_products"),
-    url(r'^products-inline$', "products_inline", name="lfs_products_inline"),
-    url(r'^save-products$', "save_products", name="lfs_manage_save_products"),
 )
 
 urlpatterns += patterns('lfs.manage.views',

@@ -156,16 +156,20 @@ tr.odd {
 }
 
 .navigation-pages {
-    padding: 0 5px 3px 5px;
+    padding: 0 0px 3px 0px;
+    margin: 19px 5px 0 0 ;
     background-color: #ede9e8;
     border: 1px solid #aaa;
     text-align:center;
+    width: 170px;
+    float: left;
 }
 
 .navigation-pages img {
     position:relative; top:3px;
 }
 
+.manage-product .navigation-pages,
 .manage-review .navigation-pages,
 .manage-customer .navigation-pages,
 .manage-cart .navigation-pages,

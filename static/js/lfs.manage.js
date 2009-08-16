@@ -322,13 +322,13 @@ $(function() {
         }, 500);
     });
 
-    $(".products-category-filter").livequery("change", function() {
-        $(this).parents("form:first").ajaxSubmit({
-            "success": function(data) {
-                $("#products-inline").html(data);
-            }
-        });        
-    });
+    // $(".products-category-filter").livequery("change", function() {
+    //     $(this).parents("form:first").ajaxSubmit({
+    //         "success": function(data) {
+    //             $("#products-inline").html(data);
+    //         }
+    //     });        
+    // });
     
     $(".products-reset-link").livequery("click", function() {
         var url = $(this).attr("href");

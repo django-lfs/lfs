@@ -295,7 +295,6 @@ def add_variants(request, product_id):
     from lfs.manage.views.product.product import selectable_products_inline
     result = simplejson.dumps({
         "properties" : manage_variants(request, product_id, as_string=True),
-        "selectable_products" : selectable_products_inline(request, as_string=True)
     })
 
     return HttpResponse(result)
@@ -363,7 +362,6 @@ def update_variants(request, product_id):
     from lfs.manage.views.product.product import selectable_products_inline
     result = simplejson.dumps({
         "properties" : manage_variants(request, product_id, as_string=True),
-        "selectable_products" : selectable_products_inline(request, as_string=True)
     })
 
     return HttpResponse(result)

@@ -6,35 +6,17 @@
 {% block left-slot-wrapper %}{% endblock %}
 
 {% block content %}
-    
-    <form style="display:inline" 
-          action="{% url lfs_products_inline %}"
-          method="get"
-          onsubmit="return false">
 
-        <input name="name_filter"
-               class="products-name-filter"
-               type="text" 
-               value="{{request.session.name_filter}}" />
-               
-        <input type="hidden"
-               name="form_sent"
-               value="1" />
-                       
-        {% category_filter "products-category-filter" %}
+	<div id="pages-inline">
+		{{ pages_inline|safe }}
+	</div>
 
-        <a class="products-reset-link"
-           href="{% url lfs_products_inline %}?reset-filter=1">
-           <img class="icon-padding"
-                src="{{MEDIA_URL}}lfs/icons/cancel.png"
-                title="{% trans 'Reset Filter' %}"
-                alt="{% trans 'Reset' %}"/>           
-        </a>
-               
-    </form>
-    
+	<div id="product-filters">
+		{{ product_filters }}
+	</div>
+	
     <div id="products-inline">
-        {{products_inline|safe}}
+        {{ products_inline|safe }}
     </div>
     
 {% endblock %}

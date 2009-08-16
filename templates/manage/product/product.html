@@ -1,56 +1,33 @@
 {% extends "manage/manage_base.html" %}
-
 {% load i18n %}
-{% load lfs_tags lfs_manage_tags %}
+{% load lfs_tags %}
+{% load lfs_manage_tags %}
 
 {% block section %}manage-product{% endblock %}
 
 {% block left_slot %}
-    <form id="selectable-products-filter-form"
-          action="{% url lfs_manage_selectable_products_inline %}"
-          method="post"
-          onsubmit="return false">
+	<div id="pages-inline">
+		{{ pages_inline|safe }}
+	</div>
 
-        <input type="hidden"
-               name="reset_page"
-               value="1" />
-
-        <input class="name-filter"
-               type="text"
-               name="name_filter"
-               value="{{request.session.name_filter}}"
-               id="selectable-products-filter-input" />
-
-        <a class="selectable-products-reset-link"
-           href="{% url lfs_manage_selectable_products_inline %}?reset-filter=1">
-           <img class="icon-padding"
-                src="{{MEDIA_URL}}lfs/icons/cancel.png"
-                title="{% trans 'Reset Filter' %}"
-                alt="{% trans 'Reset' %}"/>
-        </a>
-
-        {# {% category_filter "selectable-products-category-filter" %} #}
-
-    </form>
-
-    <div id="selectable-products">
-        {{selectable_products}}
+    <div id="selectable-products-inline">
+        {{ selectable_products }}
     </div>
-
 {% endblock %}
 
 {% block content %}
-
+	
+	<div id="product-filters">
+		{{ product_filters }}
+	</div>
+		
     <div id="product">
         <div class="site-actions">
 
-            <span class="label">
-                {{product.name}}
-            </span>
-
-            {# <a href="{% url lfs_manage_products %}"> #}
-            {#    {% trans 'Overview' %} #}
-            {# </a> #}
+            <a class="overview"
+			   href="{% url lfs_manage_products %}">
+               {% trans 'Overview' %}
+            </a>
 
             <a class="add"
                href="{% url lfs_manage_add_product %}">

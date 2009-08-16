@@ -3,8 +3,8 @@
 <br clear="both" />
 {% for product in page.object_list %}
     <div style="padding-bottom:2px">
-        <a class="selectable {% ifequal current_product product.id %}selected{% endifequal %}"
-           id="selectable-product-id_{{product.id}}"
+        <a class="selectable {% ifequal product_id product.id %}selected{% endifequal %}"
+           id="selectable-product-id_{{ product.id }}"
            href="{% url lfs.manage.views.manage_product product.id %}?page={{ page.number }}">
             {{product.name}}
         </a>

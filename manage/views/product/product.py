@@ -36,13 +36,13 @@ class ProductSubTypeForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProductSubTypeForm, self).__init__(*args, **kwargs)
         self.fields["sub_type"].choices = PRODUCT_TYPE_FORM_CHOICES
-    
+
 class ProductDataForm(ModelForm):
     """Form to add and edit master data of a product.
     """
     class Meta:
         model = Product
-        fields = ("active", "name", "slug", "sku", "price", "tax", 
+        fields = ("active", "name", "slug", "sku", "price", "tax",
             "short_description", "description", "for_sale", "for_sale_price")
 
 class VariantDataForm(ModelForm):
@@ -51,7 +51,7 @@ class VariantDataForm(ModelForm):
     class Meta:
         model = Product
         fields = ("active_name", "name", "slug", "active_sku", "sku",
-            "active_price", "price", "active_short_description", "short_description", "active_description", 
+            "active_price", "price", "active_short_description", "short_description", "active_description",
             "description", "for_sale", "for_sale_price", "active_for_sale", "active_for_sale_price",
             "active_related_products")
 
@@ -60,15 +60,15 @@ class ProductStockForm(ModelForm):
     """
     class Meta:
         model = Product
-        fields = ("weight", "width", "height", "length", "manage_stock_amount", 
-                  "stock_amount", "manual_delivery_time", "delivery_time", 
+        fields = ("weight", "width", "height", "length", "manage_stock_amount",
+                  "stock_amount", "manual_delivery_time", "delivery_time",
                   "deliverable", "order_time", "ordered_at", "active_dimensions")
-    
+
     def __init__(self, *args, **kwargs):
         super(ProductStockForm, self).__init__(*args, **kwargs)
         self.fields["ordered_at"].widget = widgets.AdminDateWidget()
 
-@permission_required("manage_shop", login_url="/login/")    
+@permission_required("manage_shop", login_url="/login/")
 def manage_product(request, product_id, template_name="manage/product/product.html"):
     """Displays the whole manage/edit form for the product with the passed id.
     """
@@ -76,16 +76,16 @@ def manage_product(request, product_id, template_name="manage/product/product.ht
     products = _get_filtered_products(request)
     paginator = Paginator(products, 20)
     page = paginator.page(request.REQUEST.get("page", 1))
-    
+
     try:
         product = Product.objects.get(pk=product_id)
     except Exception:
         return HttpResponse("")
-    
+
     return render_to_response(template_name, RequestContext(request, {
-        "product" : product,        
-        "product_filters" : product_filters_inline(request, show_pages=False, came_from="product", page=page, paginator=paginator),
-        "pages_inline" : pages_inline(request, page=page, paginator=paginator),        
+        "product" : product,
+        "product_filters" : product_filters_inline(request, page, paginator, product_id),
+        "pages_inline" : pages_inline(request, page, paginator),
         "product_data" : product_data_form(request, product_id),
         "images" : manage_images(request, product_id, as_string=True),
         "selectable_products" : selectable_products_inline(request, page, paginator, product.id),
@@ -112,12 +112,12 @@ def stock(request, product_id, template_name="manage/product/stock.html"):
             message = _(u"Please correct the indicated errors.")
     else:
         form = ProductStockForm(instance=product)
-        
+
     result = render_to_string(template_name, RequestContext(request, {
-        "product" : product, 
+        "product" : product,
         "form" : form
     }))
-    
+
     if request.is_ajax():
         result = simplejson.dumps({
             "html" : result,
@@ -127,17 +127,17 @@ def stock(request, product_id, template_name="manage/product/stock.html"):
     else:
         return result
 
-@permission_required("manage_shop", login_url="/login/")    
+@permission_required("manage_shop", login_url="/login/")
 def product_data_form(request, product_id, template_name="manage/product/data.html"):
     """Displays the product master data form within the manage product view.
     """
-    product = Product.objects.get(pk=product_id)    
-    
+    product = Product.objects.get(pk=product_id)
+
     if product.sub_type == VARIANT:
         form = VariantDataForm(instance=product)
     else:
         form = ProductDataForm(instance=product)
-        
+
     return render_to_string(template_name, RequestContext(request, {
         "product" : product,
         "form" : form,
@@ -153,7 +153,7 @@ def products(request, template_name="manage/product/products.html"):
 
     return render_to_response(template_name, RequestContext(request, {
         "products_inline" : products_inline(request, page, paginator),
-        "product_filters" : product_filters_inline(request, show_pages=True, came_from="products", page=page, paginator=paginator),
+        "product_filters" : product_filters_inline(request, page=page, paginator=paginator),
         "pages_inline" : pages_inline(request, page=page, paginator=paginator),
     }))
 
@@ -168,14 +168,18 @@ def products_inline(request, page, paginator, template_name="manage/product/prod
     }))
 
 @permission_required("manage_shop", login_url="/login/")
-def product_filters_inline(request, show_pages, came_from, page, paginator,
+def product_filters_inline(request, page, paginator, product_id=0,
     template_name="manage/product/product_filters_inline.html"):
     """
     """
     product_filters = request.session.get("product_filters", {})
-    
+
+    try:
+        product_id = int(product_id)
+    except TypeError:
+        product_id = 0
+
     return render_to_string(template_name, RequestContext(request, {
-        "came_from" : came_from,
         "name" : product_filters.get("name", ""),
         "price" : product_filters.get("price", ""),
         "active" : product_filters.get("active", ""),
@@ -183,6 +187,7 @@ def product_filters_inline(request, show_pages, came_from, page, paginator,
         "sub_type" : product_filters.get("sub_type", ""),
         "page" : page,
         "paginator" : paginator,
+        "product_id" : product_id,
     }))
 
 @permission_required("manage_shop", login_url="/login/")
@@ -194,11 +199,16 @@ def pages_inline(request, page, paginator, template_name="manage/product/pages_i
         "paginator" : paginator,
     }))
 
-@permission_required("manage_shop", login_url="/login/")   
+@permission_required("manage_shop", login_url="/login/")
 def selectable_products_inline(request, page, paginator, product_id=0, template_name="manage/product/selectable_products_inline.html"):
     """Displays the selectable products for the product view. (Used to switch
     quickly from one product to another.)
     """
+    try:
+        product_id = int(product_id)
+    except TypeError:
+        product_id = 0
+        
     return render_to_string(template_name, RequestContext(request, {
         "paginator" : paginator,
         "page" : page,
@@ -217,7 +227,7 @@ def add_product(request, template_name="manage/product/add_product.html"):
             return HttpResponseRedirect(url)
     else:
         form = ProductDataForm()
-        
+
     return render_to_response(template_name, RequestContext(request, {
         "form" : form
     }))
@@ -231,14 +241,14 @@ def change_subtype(request, product_id):
     form.save()
 
     return lfs.core.utils.set_message_cookie(
-        url = reverse("lfs_manage_product", kwargs={"product_id": product_id}), 
+        url = reverse("lfs_manage_product", kwargs={"product_id": product_id}),
         msg = _(u"Sub type has been changed."),
-    )            
+    )
 
 @permission_required("manage_shop", login_url="/login/")
 def delete_product(request, product_id):
     """Deletes product with passed id.
-    """    
+    """
     product = lfs_get_object_or_404(Product, pk=product_id)
     product.delete()
 
@@ -250,36 +260,36 @@ def edit_product_data(request, product_id, template_name="manage/product/data.ht
     """Edits the product with given.
     """
     product = lfs_get_object_or_404(Product, pk=product_id)
-    
+
     if product.sub_type == VARIANT:
         form = VariantDataForm(instance=product, data=request.POST)
     else:
         form = ProductDataForm(instance=product, data=request.POST)
-    
+
     if form.is_valid():
         form.save()
         if product.sub_type == VARIANT:
             form = VariantDataForm(instance=product)
         else:
             form = ProductDataForm(instance=product)
-        
+
         message = "Productdata has been saved."
     else:
         message = "Please correct the indicated errors."
-    
+
     form_html = render_to_string(template_name, RequestContext(request, {
         "product" : product,
         "form" : form,
     }))
-        
+
     result = simplejson.dumps({
         "selectable_products" : selectable_products_inline(request, as_string=True),
         "form" : form_html,
         "message" : message,
     })
-    
+
     return HttpResponse(result)
-    
+
 @permission_required("manage_shop", login_url="/login/")
 def product_dispatcher(request):
     """Dispatches to the first product. This is called when the shop user clicks
@@ -290,7 +300,7 @@ def product_dispatcher(request):
         url = reverse("lfs_manage_product", kwargs={"product_id" : product.id})
     except IndexError:
         url = reverse("lfs_manage_add_product")
-    
+
     return HttpResponseRedirect(url)
 
 @permission_required("manage_shop", login_url="/login/")
@@ -299,15 +309,16 @@ def reset_filters(request):
     """
     if request.session.has_key("product_filters"):
         del request.session["product_filters"]
-
+            
     products = _get_filtered_products(request)
     paginator = Paginator(products, 20)
     page = paginator.page(request.REQUEST.get("page", 1))
     
+    product_id = request.REQUEST.get("product-id", 0)
     html = (
-        ("#product-filters", product_filters_inline(request, False, "product", page, paginator)),
+        ("#product-filters", product_filters_inline(request, page, paginator, product_id)),
         ("#products-inline", products_inline(request, page, paginator)),
-        ("#selectable-products-inline", selectable_products_inline(request, page, paginator)),
+        ("#selectable-products-inline", selectable_products_inline(request, page, paginator, product_id)),
         ("#pages-inline", pages_inline(request, page, paginator)),
     )
 
@@ -373,7 +384,7 @@ def save_products(request):
 def set_filters(request):
     """Sets product filters given by passed request.
     """
-    product_filters = request.session.get("product_filters", {})    
+    product_filters = request.session.get("product_filters", {})
     for name in ("name", "active", "price", "category", "for_sale", "sub_type"):
         if request.POST.get(name, "") != "":
             product_filters[name] = request.POST.get(name)
@@ -386,10 +397,10 @@ def set_filters(request):
     products = _get_filtered_products(request)
     paginator = Paginator(products, 20)
     page = paginator.page(request.REQUEST.get("page", 1))
-    
+
     product_id = request.REQUEST.get("product-id", 0)
     html = (
-        ("#product-filters", product_filters_inline(request, False, "product", page, paginator)),
+        ("#product-filters", product_filters_inline(request, page, paginator, product_id)),
         ("#products-inline", products_inline(request, page, paginator)),
         ("#selectable-products-inline", selectable_products_inline(request, page, paginator, product_id)),
         ("#pages-inline", pages_inline(request, page, paginator)),
@@ -411,7 +422,7 @@ def set_products_page(request):
     products = _get_filtered_products(request)
     paginator = Paginator(products, 20)
     page = paginator.page(request.REQUEST.get("page", 1))
-    
+
     html = (
         ("#products-inline", products_inline(request, page, paginator)),
         ("#pages-inline", pages_inline(request, page, paginator)),
@@ -420,21 +431,21 @@ def set_products_page(request):
 
     return HttpResponse(
         simplejson.dumps({ "html" : html }, cls = LazyEncoder))
-    
+
 @permission_required("manage_shop", login_url="/login/")
 def product_by_id(request, product_id):
-    """Little helper which returns a product by id. (For the shop customer the 
+    """Little helper which returns a product by id. (For the shop customer the
     products are displayed by slug, for the manager by id).
     """
     product = Product.objects.get(pk=product_id)
     url = reverse("lfs.catalog.views.product_view", kwargs={"slug" : product.slug})
     return HttpResponseRedirect(url)
-    
+
 def _get_filtered_products(request):
     """
     """
-    products = Product.objects.all()    
-    product_filters = request.session.get("product_filters", {})    
+    products = Product.objects.all()
+    product_filters = request.session.get("product_filters", {})
     product_ordering = request.session.get("product-ordering", "id")
     product_ordering_order = request.session.get("product-ordering-order", "")
 
@@ -459,7 +470,7 @@ def _get_filtered_products(request):
     if price.find("-") != -1:
         s, e = price.split("-")
         products = products.filter(price__range = (s, e))
-        
+
     category = product_filters.get("category", "")
     if category == "None":
         products = products.filter(categories__in = []).distinct()
@@ -467,9 +478,9 @@ def _get_filtered_products(request):
         category = lfs_get_object_or_404(Category, pk=category)
         categories = [category]
         categories.extend(category.get_all_children())
-    
+
         products = products.filter(categories__in = categories).distinct()
 
     products = products.order_by("%s%s" % (product_ordering_order, product_ordering))
-    
-    return products    
+
+    return products

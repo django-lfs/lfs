@@ -4,9 +4,9 @@
 <form action="{% url lfs_set_product_filters %}"
       method="POST">
 
-	<input type="hidden"
-	       name="came_from"
-	       value="{{ came_from }}">
+	<input type="text"
+	       name="product-id"
+	       value="{{ product_id }}">
 
 	<table class="filters">
 		<tr>
@@ -57,7 +57,7 @@
 				<input type="submit"
 				       class="ajax-save-button-2" />
 
-				<a href="{% url lfs_reset_product_filters %}?came_from={{ came_from }}"
+				<a href="{% url lfs_reset_product_filters %}?product-id={{ product_id }}"
 				   class="ajax-link reset">&nbsp;</a>
 			</td>
 		</tr>

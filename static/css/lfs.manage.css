@@ -157,7 +157,6 @@ tr.odd {
 
 .navigation-pages {
     padding: 0 0px 3px 0px;
-    margin: 19px 5px 0 0 ;
     background-color: #ede9e8;
     border: 1px solid #aaa;
     text-align:center;
@@ -167,6 +166,10 @@ tr.odd {
 
 .navigation-pages img {
     position:relative; top:3px;
+}
+
+.manage-products .navigation-pages {
+    margin: 19px 5px 0 0;    
 }
 
 .manage-product .navigation-pages,

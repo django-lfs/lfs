@@ -72,9 +72,9 @@ class ProductStockForm(ModelForm):
 def manage_product(request, product_id, template_name="manage/product/product.html"):
     """Displays the whole manage/edit form for the product with the passed id.
     """
-    # NOTE: For any reason the script from swfupload calls this method (I have
-    # no idea how and why). It calls it without a product id so we have to 
-    # take care of it here as a workaround.
+    # NOTE: For any reason the script from swfupload (see product/images.html)
+    # calls this method (I have no idea how and why). It calls it without a 
+    # product id so we have to take care of it here as a workaround.
     if not product_id:
         return HttpResponse("")
 

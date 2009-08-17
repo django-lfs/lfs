@@ -266,6 +266,9 @@ def edit_product_data(request, product_id, template_name="manage/product/data.ht
     """Edits the product with given.
     """
     product = lfs_get_object_or_404(Product, pk=product_id)
+    products = _get_filtered_products(request)
+    paginator = Paginator(products, 20)
+    page = paginator.page(request.REQUEST.get("page", 1))
 
     if product.sub_type == VARIANT:
         form = VariantDataForm(instance=product, data=request.POST)
@@ -289,7 +292,7 @@ def edit_product_data(request, product_id, template_name="manage/product/data.ht
     }))
 
     result = simplejson.dumps({
-        "selectable_products" : selectable_products_inline(request, as_string=True),
+        "selectable_products" : selectable_products_inline(request, page, paginator, product_id),
         "form" : form_html,
         "message" : message,
     })

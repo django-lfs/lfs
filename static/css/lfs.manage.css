@@ -161,7 +161,6 @@ tr.odd {
     border: 1px solid #aaa;
     text-align:center;
     width: 170px;
-    float: left;
 }
 
 .navigation-pages img {
@@ -169,7 +168,13 @@ tr.odd {
 }
 
 .manage-products .navigation-pages {
-    margin: 19px 5px 0 0;    
+    margin: 19px 5px 0 0;
+    float: left;
+}
+
+.manage-products .navigation-pages, 
+.manage-product .navigation-pages {
+    float: left;
 }
 
 .manage-product .navigation-pages,

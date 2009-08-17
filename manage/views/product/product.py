@@ -72,6 +72,12 @@ class ProductStockForm(ModelForm):
 def manage_product(request, product_id, template_name="manage/product/product.html"):
     """Displays the whole manage/edit form for the product with the passed id.
     """
+    # NOTE: For any reason the script from swfupload calls this method (I have
+    # no idea how and why). It calls it without a product id so we have to 
+    # take care of it here as a workaround.
+    if not product_id:
+        return HttpResponse("")
+
     product = lfs_get_object_or_404(Product, pk=product_id)
     products = _get_filtered_products(request)
     paginator = Paginator(products, 20)

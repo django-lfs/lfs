@@ -221,7 +221,8 @@ def product_navigation(context, product):
 
         products = Product.objects.filter(
             categories__in = categories,
-            sub_type__in =(STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS),
+            sub_type__in = (STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS),
+            active = True,
         ).order_by(sorting)
 
         product_slugs = [p.slug for p in products]

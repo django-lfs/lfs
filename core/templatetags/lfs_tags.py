@@ -218,12 +218,20 @@ def product_navigation(context, product):
 
         if category.show_all_products:
             categories.extend(category.get_all_children())
-
-        products = Product.objects.filter(
-            categories__in = categories,
-            sub_type__in = (STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS),
-            active = True,
-        ).order_by(sorting)
+        
+        # This is necessary as we display non active products to superusers.
+        # So we have to take care for the product navigation too.
+        if request.user.is_superuser:
+            products = Product.objects.filter(
+                categories__in = categories,
+                sub_type__in = (STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS),
+            ).order_by(sorting)
+        else:
+            products = Product.objects.filter(
+                categories__in = categories,
+                sub_type__in = (STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS),
+                active = True,
+            ).order_by(sorting)
 
         product_slugs = [p.slug for p in products]
         product_index = product_slugs.index(slug)

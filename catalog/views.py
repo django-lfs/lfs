@@ -2,6 +2,7 @@
 from django.conf import settings
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
+from django.http import Http404
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -311,7 +312,10 @@ def product_view(request, slug, template_name="lfs/catalog/product_base.html"):
     """Main view to display a product.
     """
     product = lfs_get_object_or_404(Product, slug=slug)
-
+    
+    if (request.user.is_superuser or product.active) == False:
+        raise Http404()
+    
     # Store recent products for later use
     recent = request.session.get("RECENT_PRODUCTS", [])
     if slug in recent:

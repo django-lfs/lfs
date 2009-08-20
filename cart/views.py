@@ -157,7 +157,9 @@ def add_to_cart(request, product_id=None):
     if product_id is None:
         product_id = request.REQUEST.get("product_id")
 
-    product = lfs_get_object_or_404(Product, pk=product_id)
+    # Only active and deliverable products can be added to the cart.
+    product = lfs_get_object_or_404(Product,
+        pk=product_id, active=True, deliverable=True)
 
     if product.sub_type == PRODUCT_WITH_VARIANTS:
         variant_id = request.POST.get("variant_id")
@@ -218,10 +220,10 @@ def add_to_cart(request, product_id=None):
 
     # Update the customer's shipping method (if appropriate)
     payment_utils.update_to_valid_payment_method(request, customer, save=True)
-    
+
     # Save the cart to update modification date
     cart.save()
-    
+
     url = reverse("lfs.cart.views.added_to_cart")
     return HttpResponseRedirect(url)
 

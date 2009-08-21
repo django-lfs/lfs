@@ -1,0 +1,7 @@
+{% for export in exports %}
+	<div>
+		<a href="{{ export.get_absolute_url }}">
+			{{ export.name }}
+		</a>
+	</div>
+{% endfor %}

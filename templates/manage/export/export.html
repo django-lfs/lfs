@@ -89,29 +89,65 @@
 	</script>
 {% endblock %}
 
+{% block left_slot %}
+	<div id="selectable-exports-inline">
+		{{ selectable_exports_inline|safe }}
+	</div>
+{% endblock %}
+
 {% block content %}
-	<ul id="export-tree-root"
-		style="list-style-type: none">
 
-		{% for category in categories %}
-			<li class="category {{ category.klass }}"
-			    data="{% url lfs_export_category_state category.id %}">
-				<input id="export-category-input-{{ category.id }}"
-					   class="export-category-input"
-				       type="checkbox"
-				       data="{% url lfs_export_edit_category category.id %}"
-				 	   {% if category.checked %}checked="checked"{% endif %} />
+	<div class="site-actions">
+	    <a class="export"
+	       href="{% url lfs_export_export export_id %}">
+	       {% trans 'Export' %}</a>
 
-				<a class="category-ajax-link collapsed"
-				   id="{{ category.id }}"
-				   href="{% url lfs_export_sub_categories category.id %}">
-  					{{ category.name }}
-				</a>
-				<span class="category-state" id="category-state-{{ category.id }}">
-					{% ifequal category.klass "half" %}(1/2){% endifequal %}
-				</span>
-				<div id="sub-categories-{{ category.id }}"></div>
-			</li>
-		{% endfor %}
-	</ul>
+	    <a class="add"
+	       href="{% url lfs_export_add_export %}">
+	       {% trans 'Add' %}</a>
+
+
+        <a class="delete confirmation-link"
+           data="{% trans 'Delete?' %}"
+	       href="{% url lfs_export_delete_export export_id %}">
+	       {% trans 'Delete' %}</a>
+
+	</div>
+
+    <div id="manage-tabs">
+        <ul>
+            <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Data' %}</a></li>
+            <li class="ui-tabs-nav-item"><a href="#categories">{% trans 'Categories' %}</a></li>
+        </ul>
+		
+		<div id="data">
+			{{ export_data_inline|safe }}
+		</div>
+		
+		<div id="categories">
+			<ul id="export-tree-root"
+				style="list-style-type: none">
+
+				{% for category in categories %}
+					<li class="category {{ category.klass }}"
+					    data="{% url lfs_export_category_state export_id category.id %}">
+						<input id="export-category-input-{{ category.id }}"
+							   class="export-category-input"
+						       type="checkbox"
+						       data="{% url lfs_export_edit_category export_id category.id %}"
+						 	   {% if category.checked %}checked="checked"{% endif %} />
+
+						<a class="category-ajax-link collapsed"
+						   id="{{ category.id }}"
+						   href="{% url lfs_export_inline export_id category.id %}">
+		  					{{ category.name }}
+						</a>
+						<span class="category-state" id="category-state-{{ category.id }}">
+							{% ifequal category.klass "half" %}(1/2){% endifequal %}
+						</span>
+						<div id="sub-categories-{{ category.id }}"></div>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
 {% endblock %}

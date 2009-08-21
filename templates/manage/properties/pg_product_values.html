@@ -19,7 +19,8 @@
         {% for product in products %}
             <tr class="{% cycle 'even' 'odd' %}">
                 <td>
-                    {{product.name}}
+					
+                    {{product.get_name}}
                     <input type="hidden"
                            name="product-id"
                            value="{{product.id}}" />

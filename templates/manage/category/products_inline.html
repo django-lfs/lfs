@@ -60,16 +60,16 @@
                            name="{{product.id}}" />
                 </td>
                 <td>
-                    {{product.name}}
+                    {{product.get_name}}
                 </td>
                 <td>
-                    {{product.sku}}
+                    {{product.get_sku}}
                 </td>
                 <td>
                     {{product.sub_type|sub_type_name}}
                 </td>
                 <td class="number">
-                    {{product.price|currency}}
+                    {{product.get_price|currency}}
                 </td>
                 <td class="right">
                     <a href="{% url lfs_manage_product product.id %}">

@@ -117,7 +117,12 @@
                                     <li><a href="{% url lfs_manage_marketing %}">{% trans 'Topseller' %}</a></li>
                                 </ul>
                             </li>
-                            <li><a href="{% url lfs_manage_utils %}">{% trans 'Utils' %}</a></li>
+                            <li><a>{% trans 'Utils' %}</a>
+                                <ul>
+                                    <li><a href="{% url lfs_manage_utils %}">{% trans 'Miscellaneous' %}</a></li>
+                                    <li><a href="{% url lfs_export_dispatcher %}">{% trans 'Export' %}</a></li>
+                                </ul>
+							</li>
                         </ul>
                     </td>
                 </tr>

@@ -192,6 +192,20 @@ urlpatterns += patterns('lfs.manage.views.customer',
     url(r'^selectable-customers-inline$', "selectable_customers_inline", name="lfs_selectable_customers_inline"),
 )
 
+# Export
+urlpatterns += patterns('lfs.manage.views.export',
+	url(r'^export-dispatcher$', "export_dispatcher", name="lfs_export_dispatcher"),
+	url(r'^export/(?P<export_id>\d*)$', "manage_export", name="lfs_export"),
+	url(r'^export-inline/(?P<export_id>\d*)/(?P<category_id>\d*)$', "export_inline", name="lfs_export_inline"),
+	url(r'^edit-category/(?P<export_id>\d*)/(?P<category_id>\d*)$', "edit_category", name="lfs_export_edit_category"),
+	url(r'^edit-product/(?P<export_id>\d*)/(?P<product_id>\d*)$', "edit_product", name="lfs_export_edit_product"),
+	url(r'^category-state/(?P<export_id>\d*)/(?P<category_id>\d*)$', "category_state", name="lfs_export_category_state"),
+	url(r'^update-export-data/(?P<export_id>\d*)$', "update_data", name="lfs_export_update_export_data"),
+	url(r'^add-export$', "add_export", name="lfs_export_add_export"),	
+	url(r'^delete-export/(?P<export_id>\d*)$', "delete_export", name="lfs_export_delete_export"),
+    url(r'^export-export/(?P<export_id>\d*)$', "export", name="lfs_export_export"),
+)
+
 # Shipping
 urlpatterns += patterns('lfs.manage.views',
     url(r'^shipping$', "manage_shipping", name="lfs_manage_shipping"),

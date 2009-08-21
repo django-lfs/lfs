@@ -190,6 +190,10 @@ tr.odd {
     width: 170px;
 }
 
+#selectable-exports-inline {
+    padding-top: 55px;
+}
+
 /* Links */
 a.selectable {
     color: black;
@@ -225,10 +229,17 @@ a.add {
     background: url(/media/lfs/icons/add.png) no-repeat;
 }
 
+
 a.delete {
     margin: 0 10px;
     padding-left: 20px;
     background: url(/media/lfs/icons/delete.png) no-repeat;
+}
+
+a.export {
+    margin: 0 10px;
+    padding: 0 0 1px 20px;
+    background: url(/media/lfs/icons/disk.png) no-repeat;
 }
 
 a.overview {

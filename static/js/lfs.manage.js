@@ -94,7 +94,10 @@ $(function() {
                 data = JSON.parse(data);
                 for (var html in data["html"])
                     $(data["html"][html][0]).html(data["html"][html][1]);
-                $.jGrowl(data["message"]);
+
+                if (data["message"]) {
+                    $.jGrowl(data["message"]);
+                }
             }
         })
         return false;
@@ -893,5 +896,90 @@ $(function() {
         });
         return false;
     })
+    
+    // Export #############################################################
+	// Traverses though all parent categories of given clicked knot
+	// (category) and call updates state (none, full, half) and checking. 
+	// Calls "lfs_export_category_state"
+	var update_parent_categories = function(knot) { 
+		knot.parents("li.category").each(function() {
+			// url = lfs_export_category_state category id
+			var url = $(this).attr("data")
+	        $.post(url, function(data) {
+	            data = JSON.parse(data);
+				// Sets 1/2
+                $(data["html"][0]).html(data["html"][1]);
+				// Sets checking
+                $(data["checkbox"][0]).attr("checked", data["checkbox"][1]);
+	        })
+		});
+	};
+	
+	// Deletes all states of child categories of given knot
+	var update_sub_categories = function(knot) {			
+		knot.parent().find(".category-state").html("");
+	};
 
+	$(function() {
+	    $(".category-ajax-link").livequery("click", function() {
+	        var url = $(this).attr("href");
+			
+			// Loads children of clicked category.
+			if ($(this).hasClass("collapsed")) {
+		        $.post(url, function(data) {
+		            data = JSON.parse(data);
+		            for (var html in data["html"])
+		                $(data["html"][html][0]).html(data["html"][html][1]);
+		        })
+				$(this).removeClass("collapsed");
+				$(this).addClass("expanded");
+			}
+			// Removes children of clicked category.				
+			else {
+				$(this).siblings("div").html("")
+				$(this).removeClass("expanded");
+				$(this).addClass("collapsed");
+			}
+	        return false;
+	    });
+
+		$(".export-category-input").livequery("click", function() {
+
+			// select / deselect all child nodes
+			var input = $(this);				
+			var parent_checked = this.checked;
+			$(this).parent().find("input").each(function() { this.checked = parent_checked; })
+
+			// Updates child and parent categories of clicked category
+			var url = $(this).attr("data");
+			if (parent_checked == true) {
+				$.post(url, {"action" : "add"}, function(data) { 
+					update_sub_categories(input);						
+					update_parent_categories(input);
+				});
+			}
+			else {
+				$.post(url, {"action" : "remove"}, function(data) { 
+					update_sub_categories(input);
+					update_parent_categories(input);
+				});
+			}
+		});
+		
+		$(".export-product-input").livequery("click", function() {
+			// Add / Remove product
+			var input = $(this);
+			var url = $(this).attr("data");
+			var checked = this.checked;
+
+			// Updates parent catgories of clicked product
+			if (checked == true) {
+				$.post(url, {"action" : "add"}, function(data) { update_parent_categories(input) } );
+			}
+			else {
+				$.post(url, {"action" : "remove"}, function(data) { update_parent_categories(input) });
+			}
+		});
+	});
+    
 })

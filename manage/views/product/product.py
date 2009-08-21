@@ -340,6 +340,10 @@ def reset_filters(request):
 def save_products(request):
     """Saves products with passed ids (by request body).
     """
+    products = _get_filtered_products(request)
+    paginator = Paginator(products, 20)
+    page = paginator.page(request.REQUEST.get("page", 1))
+    
     for key, value in request.POST.items():
 
         if key.startswith("id-"):
@@ -379,7 +383,7 @@ def save_products(request):
             except IntegrityError:
                 pass
 
-    html = (("#products-inline", products_inline(request, as_string=True)),)
+    html = (("#products-inline", products_inline(request, page, paginator)),)
     msg = _(u"Products have been saved")
 
     result = simplejson.dumps({

@@ -242,6 +242,11 @@ class Category(models.Model):
                 return self.parent.get_image()
 
         return None
+    
+    def get_name(self):
+        """Returns name of the category. Just to be consistent with Product
+        """
+        return self.name
 
     def get_parents(self):
         """Returns all parent categories.

@@ -104,7 +104,10 @@ def breadcrumbs(context, obj):
 
         objects = []
         while obj is not None:
-            objects.insert(0, obj)
+            objects.insert(0, {
+                "name" : obj.name,
+                "url"  : obj.get_absolute_url(),
+            })
             obj = obj.parent
 
         result = {
@@ -127,9 +130,15 @@ def breadcrumbs(context, obj):
             if category is None:
                 return []
             else:
-                objects = [obj]
+                objects = [{
+                    "name" : obj.get_name(),
+                    "url"  : obj.get_absolute_url(),                    
+                }]
                 while category is not None:
-                    objects.insert(0, category)
+                    objects.insert(0, {
+                        "name" : category.name,
+                        "url" : category.get_absolute_url(),
+                    })
                     category = category.parent
 
         result = {

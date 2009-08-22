@@ -242,11 +242,6 @@ class Category(models.Model):
                 return self.parent.get_image()
 
         return None
-    
-    def get_name(self):
-        """Returns name of the category. Just to be consistent with Product
-        """
-        return self.name
 
     def get_parents(self):
         """Returns all parent categories.
@@ -774,26 +769,26 @@ class Product(models.Model):
         the product use get_price instead.
         """
         object = self
-        
+
         if object.is_product_with_variants() and object.get_default_variant():
             object = object.get_default_variant()
-                
+
         if object.is_variant() and not object.active_price:
             object = object.parent
-        
+
         return object.price
 
     def get_for_sale_price(self):
         """returns the sale price for the product.
         """
         object = self
-        
+
         if object.is_product_with_variants() and object.get_default_variant():
             object = object.get_default_variant()
-                
+
         if object.is_variant() and not object.active_for_sale_price:
             object = object.parent
-        
+
         return object.for_sale_price
 
     def get_price_gross(self):
@@ -804,7 +799,7 @@ class Product(models.Model):
         if object.is_product_with_variants() and object.get_default_variant():
             object = object.get_default_variant()
 
-        if object.get_for_sale():            
+        if object.get_for_sale():
             if object.is_variant() and not object.active_for_sale_price:
                 return object.parent.get_for_sale_price()
             else:

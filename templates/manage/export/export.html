@@ -59,6 +59,15 @@
 						<span class="category-state" id="category-state-{{ category.id }}">
 							{% ifequal category.klass "half" %}(1/2){% endifequal %}
 						</span>
+						<select class="category-variants-options"
+							    data="{% url lfs_export_update_category_variants_option category.id %}">
+							{% for option in category.options %}
+								<option value="{{ option.value }}"
+							            {% if option.selected %}selected="selected"{% endif %}>
+									{{ option.name }}
+								</option>
+							{% endfor %}
+						</select>
 						<div id="sub-categories-{{ category.id }}"></div>
 					</li>
 				{% endfor %}

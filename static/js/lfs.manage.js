@@ -982,4 +982,9 @@ $(function() {
 		});
 	});
     
+    $(".category-variants-options").livequery("change", function() {
+	    var url = $(this).attr("data");
+	    var variants_option = $(this).val();
+        $.post(url, { "variants_option" : variants_option });
+    });
 })

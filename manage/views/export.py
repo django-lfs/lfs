@@ -17,6 +17,9 @@ from lfs.catalog.models import Category
 from lfs.catalog.models import Product
 from lfs.core.utils import LazyEncoder
 from lfs.export.models import Export
+from lfs.export.models import CategoryOption
+from lfs.export.settings import CATEGORY_VARIANTS_CHOICES
+from lfs.export.settings import CATEGORY_VARIANTS_NONE
 
 class ExportDataForm(ModelForm):
     """Form to manage selection data.
@@ -32,6 +35,25 @@ def manage_export(request, export_id, template_name="manage/export/export.html")
 
     categories = []
     for category in Category.objects.filter(parent=None):
+        
+        # Options
+        options = []
+        
+        try:
+            category_option = CategoryOption.objects.get(category = category)
+        except CategoryOption.DoesNotExist:
+            variants_option = None
+        else:
+            variants_option = category_option.variants_option
+                    
+        for option in CATEGORY_VARIANTS_CHOICES:
+            options.append({
+                "name" : option[1],
+                "value" : option[0],
+                "selected" : option[0] == variants_option,
+            })
+        
+        # Checking state
         checked, klass = _get_category_state(export, category)
 
         categories.append({
@@ -39,6 +61,7 @@ def manage_export(request, export_id, template_name="manage/export/export.html")
             "name" : category.name,
             "checked" : checked,
             "klass" : klass,
+            "options" : options,
         })
 
     data_form = ExportDataForm(instance=export)
@@ -85,6 +108,24 @@ def export_inline(request, export_id, category_id,
 
     categories = []
     for category in Category.objects.filter(parent=category_id):
+        
+        # Options
+        options = []
+        
+        try:
+            category_option = CategoryOption.objects.get(category = category)
+        except CategoryOption.DoesNotExist:
+            variants_option = None
+        else:
+            variants_option = category_option.variants_option
+
+        for option in CATEGORY_VARIANTS_CHOICES:
+            options.append({
+                "name" : option[1],
+                "value" : option[0],
+                "selected" : option[0] == variants_option,                
+            })
+        
         checked, klass = _get_category_state(export, category)
 
         categories.append({
@@ -92,6 +133,7 @@ def export_inline(request, export_id, category_id,
             "name" : category.name,
             "checked" : checked,
             "klass" : klass,
+            "options" : options,
         })
 
     result = render_to_string(template_name, RequestContext(request, {
@@ -134,7 +176,7 @@ def export_dispatcher(request):
     else:
         return HttpResponseRedirect(
             reverse("lfs_export", kwargs = {"export_id" : export.id }))
-        
+
 def delete_export(request, export_id):
     """Deletes export with passed export id.
     """
@@ -204,6 +246,38 @@ def category_state(request, export_id, category_id):
             "checkbox" : checkbox
         })
     )
+
+def update_category_variants_option(request, category_id):
+    """Stores / deletes options for the variants handling of category with
+    given id.
+    """
+    try:
+        variants_option = int(request.POST.get("variants_option"))
+    except ValueError:
+        variants_option = 0
+
+    try:
+        category = Category.objects.get(pk=category_id)
+    except Category.DoesNotExist:
+        return HttpResponse("")
+    
+    try:        
+        category_option = CategoryOption.objects.get(category = category)
+    except CategoryOption.DoesNotExist:
+        category_option = None
+
+    if variants_option == CATEGORY_VARIANTS_NONE:
+        if category_option:
+            category_option.delete()
+    else:
+        if category_option is None:
+            CategoryOption.objects.create(
+                category = category, variants_option = variants_option)
+        else:
+            category_option.variants_option = variants_option
+            category_option.save()
+
+    return HttpResponse("")
 
 def update_data(request, export_id):
     """Updates data of export with given export id.

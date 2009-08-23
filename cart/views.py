@@ -160,7 +160,7 @@ def add_to_cart(request, product_id=None):
     product = lfs_get_object_or_404(Product, pk=product_id)
 
     # Only active and deliverable products can be added to the cart.
-    if (product.is_active() and product.is_deliverable) == False:
+    if (product.is_active() and product.is_deliverable()) == False:
         raise Http404()
     
     if product.sub_type == PRODUCT_WITH_VARIANTS:

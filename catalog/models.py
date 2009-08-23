@@ -1001,6 +1001,22 @@ class Product(models.Model):
         """
         return self.sub_type == VARIANT
 
+    def is_active(self):
+        """Returns the activity state of the product.
+        """
+        if self.is_variant():
+            return self.parent.active
+        else:
+            return self.active
+    
+    def is_deliverable(self):
+        """Returns the deliverable state of the product.
+        """
+        if self.is_variant():
+            return self.parent.deliverable
+        else:
+            return self.deliverable
+        
     # 3rd party contracts
     def get_parent_for_portlets(self):
         """Returns the current category. This will add the portlets of the
@@ -1015,13 +1031,6 @@ class Product(models.Model):
             except:
                 return None
 
-    def is_active(self):
-        """Returns the activity state of the product.
-        """
-        if self.is_variant():
-            return self.parent.active
-        else:
-            return self.active
 
 class ProductAccessories(models.Model):
     """Represents the relationship between products and accessories.

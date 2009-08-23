@@ -157,10 +157,16 @@ def add_to_cart(request, product_id=None):
     if product_id is None:
         product_id = request.REQUEST.get("product_id")
 
-    # Only active and deliverable products can be added to the cart.
-    product = lfs_get_object_or_404(Product,
-        pk=product_id, active=True, deliverable=True)
+    product = lfs_get_object_or_404(Product, pk=product_id)
 
+    # Only active and deliverable products can be added to the cart.
+    if (product.is_active() and product.is_deliverable) == False:
+        raise Http404()
+    
+    temp = product
+    if temp.is_variant():
+        temp = product.parent
+    if temp.
     if product.sub_type == PRODUCT_WITH_VARIANTS:
         variant_id = request.POST.get("variant_id")
         product = lfs_get_object_or_404(Product, pk=variant_id)

@@ -1015,6 +1015,14 @@ class Product(models.Model):
             except:
                 return None
 
+    def is_active(self):
+        """Returns the activity state of the product.
+        """
+        if self.is_variant():
+            return self.parent.active
+        else:
+            return self.active
+
 class ProductAccessories(models.Model):
     """Represents the relationship between products and accessories.
 

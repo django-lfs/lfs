@@ -100,10 +100,17 @@ def export_inline(request, export_id, category_id,
 
     products = []
     for product in Product.objects.filter(sub_type__in=[STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS], categories__in=[category_id], active=True):
+        
+        if product.is_standard():
+            type = "P"
+        else:
+            type = "V"
+            
         products.append({
             "id" : product.id,
             "name" : product.get_name(),
             "checked" : product in selected_products,
+            "type" : type,
         })
 
     categories = []

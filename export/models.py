@@ -4,7 +4,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
-import lfs.export.utils
 from lfs.catalog.models import Category
 from lfs.catalog.models import Product
 from lfs.export.settings import CATEGORY_VARIANTS_CHOICES
@@ -34,6 +33,7 @@ class Export(models.Model):
     def get_products(self):
         """Returns selected products. Takes variant options into account.
         """
+        import lfs.export.utils
         products = []
 
         for product in self.products.all():

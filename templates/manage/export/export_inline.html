@@ -37,7 +37,7 @@
 				   {% if product.checked %}checked="checked"{% endif %} />
 			<a class="product-ajax-link"
 			   id="product-{{ product.id }}">
- 				(P) {{ product.name }}
+ 				({{ product.type }}) {{ product.name }}
 			</a>
 		</li>
 	{% endfor %}

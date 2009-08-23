@@ -20,6 +20,9 @@ def register(method, name):
         except:
             # Fail silently
             pass
+    except:
+        # Fail silently
+        pass
 
 def get_variants_option(product):
     """Returns the variants option for given category or None.

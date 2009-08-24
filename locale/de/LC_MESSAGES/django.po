@@ -1163,7 +1163,7 @@ msgstr "---"
 
 #: export/settings.py:11
 msgid "Default"
-msgstr "Standardwerte"
+msgstr "Standard"
 
 #: export/settings.py:12
 msgid "Cheapest"

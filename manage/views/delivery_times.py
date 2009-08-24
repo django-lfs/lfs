@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 # lfs imports
 import lfs.core.utils
 from lfs.catalog.models import DeliveryTime
+from lfs.catalog.models import Product
 
 class DeliveryTimeForm(ModelForm):
     """Form to edit a delivery time.
@@ -80,10 +81,20 @@ def add_delivery_time(request, template_name="manage/delivery_times/add.html"):
 def delete_delivery_time(request, id):
     """Deletes the delivery time with passed id.
     """
+    # Remove the delivery time from all products delivery
+    for product in Product.objects.filter(delivery_time=id):
+        product.delivery_time = None
+        product.save()
+    
+    # Remove the delivery time from all products order_time
+    for product in Product.objects.filter(order_time=id):
+        product.order_time = None
+        product.save()
+    
     delivery_time = get_object_or_404(DeliveryTime, pk=id)
     delivery_time.delete()
 
     return lfs.core.utils.set_message_cookie(
         url = reverse("lfs_manage_delivery_times"),
         msg = _(u"Delivery time has been deleted."),
-    )            
+    )

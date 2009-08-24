@@ -204,7 +204,7 @@ urlpatterns += patterns('lfs.manage.views.export',
 	url(r'^add-export$', "add_export", name="lfs_export_add_export"),	
 	url(r'^delete-export/(?P<export_id>\d*)$', "delete_export", name="lfs_export_delete_export"),
     url(r'^export-export/(?P<export_id>\d*)$', "export", name="lfs_export_export"),
-    url(r'^update-category-variants-option/(?P<category_id>\d*)$', "update_category_variants_option", name="lfs_export_update_category_variants_option"),
+    url(r'^update-category-variants-option/(?P<export_id>\d*)/(?P<category_id>\d*)$', "update_category_variants_option", name="lfs_export_update_category_variants_option"),
 )
 
 # Shipping

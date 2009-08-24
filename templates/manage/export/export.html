@@ -60,7 +60,7 @@
 							{% ifequal category.klass "half" %}(1/2){% endifequal %}
 						</span>
 						<select class="category-variants-options"
-							    data="{% url lfs_export_update_category_variants_option category.id %}">
+							    data="{% url lfs_export_update_category_variants_option export_id category.id %}">
 							{% for option in category.options %}
 								<option value="{{ option.value }}"
 							            {% if option.selected %}selected="selected"{% endif %}>

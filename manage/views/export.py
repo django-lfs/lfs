@@ -254,7 +254,7 @@ def category_state(request, export_id, category_id):
         })
     )
 
-def update_category_variants_option(request, category_id):
+def update_category_variants_option(request, export_id, category_id):
     """Stores / deletes options for the variants handling of category with
     given id.
     """
@@ -267,9 +267,14 @@ def update_category_variants_option(request, category_id):
         category = Category.objects.get(pk=category_id)
     except Category.DoesNotExist:
         return HttpResponse("")
+        
+    try:
+        export = Export.objects.get(pk=export_id)
+    except Export.DoesNotExist:
+        return HttpResponse("")
     
     try:        
-        category_option = CategoryOption.objects.get(category = category)
+        category_option = CategoryOption.objects.get(export = export, category = category)
     except CategoryOption.DoesNotExist:
         category_option = None
 
@@ -279,7 +284,7 @@ def update_category_variants_option(request, category_id):
     else:
         if category_option is None:
             CategoryOption.objects.create(
-                category = category, variants_option = variants_option)
+                export = export, category = category, variants_option = variants_option)
         else:
             category_option.variants_option = variants_option
             category_option.save()

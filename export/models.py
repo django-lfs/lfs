@@ -64,4 +64,5 @@ class CategoryOption(models.Model):
     """Stores options for categories.
     """
     category = models.ForeignKey(Category, verbose_name = _(u"Category"))
+    export = models.ForeignKey(Export, verbose_name = _(u"Export"))
     variants_option = models.PositiveSmallIntegerField(_(u"Variant"), choices=CATEGORY_VARIANTS_CHOICES)

@@ -40,7 +40,7 @@ def manage_export(request, export_id, template_name="manage/export/export.html")
         options = []
         
         try:
-            category_option = CategoryOption.objects.get(category = category)
+            category_option = CategoryOption.objects.get(export = export, category = category)
         except CategoryOption.DoesNotExist:
             variants_option = None
         else:
@@ -120,7 +120,7 @@ def export_inline(request, export_id, category_id,
         options = []
         
         try:
-            category_option = CategoryOption.objects.get(category = category)
+            category_option = CategoryOption.objects.get(export = export, category = category)
         except CategoryOption.DoesNotExist:
             variants_option = None
         else:

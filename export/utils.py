@@ -24,7 +24,7 @@ def register(method, name):
         # Fail silently
         pass
 
-def get_variants_option(product):
+def get_variants_option(export, product):
     """Returns the variants option for given category or None.
     """
     try:
@@ -34,7 +34,8 @@ def get_variants_option(product):
 
     while category:
         try:
-            category_option = CategoryOption.objects.get(category=category)
+            category_option = CategoryOption.objects.get(
+                export=export, category=category)
         except:
             category = category.parent
         else:
@@ -44,7 +45,7 @@ def get_variants_option(product):
 def get_variants(product, export):
     """Returns the variants for given product and export.
     """
-    variants_option = get_variants_option(product)
+    variants_option = get_variants_option(export, product)
     if variants_option is None:
         variants_option = export.variants_option
     

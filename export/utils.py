@@ -42,15 +42,23 @@ def get_variants_option(product):
     return None
 
 def get_variants(product, export):
-    """
+    """Returns the variants for given product and export.
     """
     variants_option = get_variants_option(product)
     if variants_option is None:
         variants_option = export.variants_option
     
     if variants_option == CATEGORY_VARIANTS_DEFAULT:
-        return [product.get_default_variant()]
+        if product.get_default_variant():
+            return [product.get_default_variant()]
+        else:
+            return []
     elif variants_option == CATEGORY_VARIANTS_ALL:
         return product.get_variants()
     elif variants_option == CATEGORY_VARIANTS_CHEAPEST:
-        return [product.get_default_variant()]
+        variants = list(product.get_variants())
+        variants.sort(lambda a, b: cmp(a.get_price(), b.get_price()))
+        try:
+            return [variants[0]]
+        except IndexError:
+            return []

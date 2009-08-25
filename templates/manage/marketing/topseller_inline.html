@@ -96,6 +96,9 @@
                 <th class="number">
                     {% trans 'Price' %}
                 </th>
+                <th class="number">
+                    {% trans 'Edit' %}
+                </th>
             </tr>
     
             {% for ts in topseller %}
@@ -120,6 +123,14 @@
                     </td>
                     <td class="number">
                         {{ts.product.price|currency}}
+                    </td>                                                
+                    <td class="number">
+						<a href="{% url lfs_manage_product ts.product.id %}">
+							<img src="{{ MEDIA_URL }}lfs/icons/pencil.png"
+							     alt='{% trans "Edit" %}'
+							     title='{% trans "Edit" %}'
+						</a>
+						
                     </td>                                                
                 </tr>
             {% endfor %}

@@ -21,26 +21,29 @@ def get_topseller(limit=5):
     cursor.execute("""SELECT product_id, sum(product_amount) as sum
                       FROM order_orderitem
                       GROUP BY product_id
-                      ORDER BY sum DESC limit %s""" % limit)
+                      ORDER BY sum DESC limit %s""" % (limit*2))
 
     products = []
     for topseller in cursor.fetchall():
-        try:
-            products.append(Product.objects.get(pk=topseller[0]))
-        except Product.DoesNotExist:
-            pass
+        product = Product.objects.get(pk=topseller[0])
+        if product.is_active():
+            try:
+                products.append(product)
+            except Product.DoesNotExist:
+                pass
 
     for explicit_ts in Topseller.objects.all():
-        
-        # Remove explicit_ts if it's already in the object list
-        if explicit_ts.product in products:
-            products.pop(products.index(explicit_ts.product))
 
-        # Then reinsert the explicit_ts on the given position
-        position = explicit_ts.position - 1
-        if position < 0:
-            position = 0
-        products.insert(position, explicit_ts.product)
+        if explicit_ts.product.is_active():
+            # Remove explicit_ts if it's already in the object list
+            if explicit_ts.product in products:
+                products.pop(products.index(explicit_ts.product))
+
+            # Then reinsert the explicit_ts on the given position
+            position = explicit_ts.position - 1
+            if position < 0:
+                position = 0
+            products.insert(position, explicit_ts.product)
 
     products = products[:limit]
     cache.set(cache_key, products)
@@ -72,9 +75,10 @@ def get_topseller_for_category(category, limit=5):
     # 3. Calculate totals per product
     products = {}
     for order_item in order_items:
-        if not products.has_key(order_item.product.id):
-            products[order_item.product.id] = 0
-        products[order_item.product.id] += order_item.product_amount
+        if order_item.product.is_active():
+            if not products.has_key(order_item.product.id):
+                products[order_item.product.id] = 0
+            products[order_item.product.id] += order_item.product_amount
 
     # 4. Sort product ids on values
     products = products.items()
@@ -88,16 +92,17 @@ def get_topseller_for_category(category, limit=5):
             pass
 
     for explicit_ts in Topseller.objects.filter(product__categories__in=category_ids):
+        
+        if explicit_ts.product.is_active():
+            # Remove explicit_ts if it's already in the object list
+            if explicit_ts.product in objects:
+                objects.pop(objects.index(explicit_ts.product))
 
-        # Remove explicit_ts if it's already in the object list
-        if explicit_ts.product in objects:
-            objects.pop(objects.index(explicit_ts.product))
-
-        # Then reinsert the explicit_ts on the given position
-        position = explicit_ts.position - 1
-        if position < 0:
-            position = 0
-        objects.insert(position, explicit_ts.product)
+            # Then reinsert the explicit_ts on the given position
+            position = explicit_ts.position - 1
+            if position < 0:
+                position = 0
+            objects.insert(position, explicit_ts.product)
 
     objects = objects[:limit]
     cache.set(cache_key, objects)

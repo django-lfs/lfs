@@ -15,6 +15,7 @@ from lfs.catalog.models import Category
 from lfs.catalog.models import Product
 from lfs.core.utils import LazyEncoder
 
+# Parts
 @permission_required("manage_shop", login_url="/login/")
 def manage_related_products(
     request, product_id, template_name="manage/product/related_products.html"):
@@ -28,7 +29,6 @@ def manage_related_products(
         "related_products_inline" : inline,
     }))
 
-# Actions
 @permission_required("manage_shop", login_url="/login/")
 def manage_related_products_inline(
     request, product_id, as_string=False, template_name="manage/product/related_products_inline.html"):
@@ -99,6 +99,14 @@ def manage_related_products_inline(
         return result
     else:
         return HttpResponse(result)
+
+# Actions
+@permission_required("manage_shop", login_url="/login/")
+def load_tab(request, product_id):
+    """
+    """
+    related_products = manage_related_products(request, product_id)
+    return HttpResponse(related_products)
 
 @permission_required("manage_shop", login_url="/login/")
 def add_related_products(request, product_id):

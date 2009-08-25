@@ -101,6 +101,12 @@ def manage_accessories_inline(
         return HttpResponse(result)
 
 # Actions
+@permission_required("manage_shop", login_url="/login/")
+def load_tab(request, product_id):
+    """
+    """
+    accessories = manage_accessories(request, product_id)
+    return HttpResponse(accessories)
 
 @permission_required("manage_shop", login_url="/login/")
 def add_accessories(request, product_id):

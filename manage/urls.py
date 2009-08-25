@@ -49,11 +49,11 @@ urlpatterns += patterns('lfs.manage.views',
     url(r'^set-products-page$', "set_products_page", name="lfs_set_products_page"),
 )
 
-urlpatterns += patterns('lfs.manage.views',
-    url(r'^product-categories-tab/(?P<product_id>\d*)$', "manage_categories", name="lfs_product_categories_tab"),
-    url(r'^product-accessories-tab/(?P<product_id>\d*)$', "manage_accessories_inline", name="lfs_manage_product_accessories_tab"),
-    url(r'^product-relateds-tab/(?P<product_id>\d*)$', "manage_related_products_inline", name="lfs_manage_product_related_products_tab"),
-    url(r'^product-variants-tab/(?P<product_id>\d*)$', "manage_variants", name="lfs_manage_product_variants_tab"),
+urlpatterns += patterns('lfs.manage.views.product',
+    url(r'^product-categories-tab/(?P<product_id>\d*)$', "categories.manage_categories", name="lfs_product_categories_tab"),
+    url(r'^product-accessories-tab/(?P<product_id>\d*)$', "accessories.load_tab", name="lfs_manage_product_accessories_tab"),
+    url(r'^product-relateds-tab/(?P<product_id>\d*)$', "related_products.load_tab", name="lfs_manage_product_related_products_tab"),
+    url(r'^product-variants-tab/(?P<product_id>\d*)$', "variants.manage_variants", name="lfs_manage_product_variants_tab"),
 )
 
 urlpatterns += patterns('lfs.manage.views',

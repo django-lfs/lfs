@@ -13,6 +13,7 @@ class Export(models.Model):
     """An export of products.
     """
     name = models.CharField(_(u"Name"), max_length=100)
+    slug = models.SlugField(_(u"Slug"), unique=True)
     products = models.ManyToManyField(Product, verbose_name=_(u"Products"), blank=True, related_name="exports")
     script = models.ForeignKey("Script", verbose_name=_(u"Script"))
     variants_option = models.PositiveSmallIntegerField(_(u"Variants"), choices=CATEGORY_VARIANTS_CHOICES[1:], default=CATEGORY_VARIANTS_DEFAULT)

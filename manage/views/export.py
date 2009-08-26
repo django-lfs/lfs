@@ -4,6 +4,7 @@ from django.forms import ModelForm
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.utils import simplejson
@@ -35,24 +36,24 @@ def manage_export(request, export_id, template_name="manage/export/export.html")
 
     categories = []
     for category in Category.objects.filter(parent=None):
-        
+
         # Options
         options = []
-        
+
         try:
             category_option = CategoryOption.objects.get(export = export, category = category)
         except CategoryOption.DoesNotExist:
             variants_option = None
         else:
             variants_option = category_option.variants_option
-                    
+
         for option in CATEGORY_VARIANTS_CHOICES:
             options.append({
                 "name" : option[1],
                 "value" : option[0],
                 "selected" : option[0] == variants_option,
             })
-        
+
         # Checking state
         checked, klass = _get_category_state(export, category)
 
@@ -100,12 +101,12 @@ def export_inline(request, export_id, category_id,
 
     products = []
     for product in Product.objects.filter(sub_type__in=[STANDARD_PRODUCT, PRODUCT_WITH_VARIANTS], categories__in=[category_id], active=True):
-        
+
         if product.is_standard():
             type = "P"
         else:
             type = "V"
-            
+
         products.append({
             "id" : product.id,
             "name" : product.get_name(),
@@ -115,10 +116,10 @@ def export_inline(request, export_id, category_id,
 
     categories = []
     for category in Category.objects.filter(parent=category_id):
-        
+
         # Options
         options = []
-        
+
         try:
             category_option = CategoryOption.objects.get(export = export, category = category)
         except CategoryOption.DoesNotExist:
@@ -130,9 +131,9 @@ def export_inline(request, export_id, category_id,
             options.append({
                 "name" : option[1],
                 "value" : option[0],
-                "selected" : option[0] == variants_option,                
+                "selected" : option[0] == variants_option,
             })
-        
+
         checked, klass = _get_category_state(export, category)
 
         categories.append({
@@ -224,10 +225,10 @@ def edit_product(request, export_id, product_id):
 
     return HttpResponse("")
 
-def export(request, export_id):
+def export(request, slug):
     """Exports the export with passed export id.
     """
-    export = Export.objects.get(pk=export_id)
+    export = get_object_or_404(Export, slug=slug)
     module = lfs.core.utils.import_module(export.script.module)
     return getattr(module, export.script.method)(request, export)
 
@@ -267,13 +268,13 @@ def update_category_variants_option(request, export_id, category_id):
         category = Category.objects.get(pk=category_id)
     except Category.DoesNotExist:
         return HttpResponse("")
-        
+
     try:
         export = Export.objects.get(pk=export_id)
     except Export.DoesNotExist:
         return HttpResponse("")
-    
-    try:        
+
+    try:
         category_option = CategoryOption.objects.get(export = export, category = category)
     except CategoryOption.DoesNotExist:
         category_option = None

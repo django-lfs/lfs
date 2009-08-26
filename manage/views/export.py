@@ -69,6 +69,7 @@ def manage_export(request, export_id, template_name="manage/export/export.html")
     return render_to_response(template_name, RequestContext(request, {
         "categories" : categories,
         "export_id" : export_id,
+        "slug" : export.slug,
         "selectable_exports_inline" : selectable_exports_inline(request, export_id),
         "export_data_inline" : export_data_inline(request, export_id, data_form),
     }))

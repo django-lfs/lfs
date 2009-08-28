@@ -37,10 +37,16 @@
                 <th>
                     {% trans 'Name' %}
                 </th>
-                <th>
+                <th class="middle">
+                    {% trans 'SKU' %}
+                </th>
+                <th class="small">
+                    {% trans 'Active' %}
+                </th>
+                <th class="middle">
                     {% trans 'Sub type' %}
                 </th>
-                <th class="number">
+                <th class="small number">
                     {% trans 'Price' %}
                 </th>                    
             </tr>
@@ -53,6 +59,16 @@
                     </td>
                     <td>
                         {{product.get_name}}
+                    </td>
+                    <td>
+                        {{ product.get_sku }}
+                    </td>
+                    <td>
+						{% if product.is_active %}
+							<img src="{{ MEDIA_URL }}/lfs/icons/tick.png" />
+						{% else %}
+							<img src="{{ MEDIA_URL }}/lfs/icons/cross.png" />
+						{% endif %}
                     </td>
                     <td>
                         {{product.sub_type|sub_type_name}}
@@ -87,10 +103,16 @@
                     <th>
                         {% trans 'Name' %}
                     </th>
-                    <th>
+	                <th class="middle">
+	                    {% trans 'SKU' %}
+	                </th>
+	                <th class="small">
+	                    {% trans 'Active' %}
+	                </th>
+                	<th class="middle">
                         {% trans 'Sub type' %}
                     </th>
-                    <th class="number">
+                    <th class="small number">
                         {% trans 'Price' %}
                     </th>
                 </tr>
@@ -103,13 +125,23 @@
                                    class="select-2" />
                         </td>
                         <td>
-                            {{related_product.get_name}}
+                            {{ related_product.get_name }}
                         </td>
                         <td>
-                            {{related_product.sub_type|sub_type_name}}
+                            {{ related_product.get_sku }}
+                        </td>
+						<td>
+							{% if product.is_active %}
+								<img src="{{ MEDIA_URL }}/lfs/icons/tick.png" />
+							{% else %}
+								<img src="{{ MEDIA_URL }}/lfs/icons/cross.png" />
+							{% endif %}							
+						</td>
+                        <td>
+                            {{ related_product.sub_type|sub_type_name }}
                         </td>
                         <td class="number">
-                            {{related_product.price|currency}}
+                            {{ related_product.price|currency }}
                         </td>                                                
                     </tr>
                 {% endfor %}

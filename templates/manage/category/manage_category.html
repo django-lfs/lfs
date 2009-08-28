@@ -3,7 +3,7 @@
 
 {% block left_slot %}
     <div id="portlet">
-        {{categories_portlet}}
+        {{categories_portlet|safe}}
     </div>    
 {% endblock %}
 
@@ -36,16 +36,13 @@
     <div id="manage-tabs">
         <ul>
             <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Category' %}</a></li>
-            <li class="ui-tabs-nav-item"><a href="#products">{% trans 'Products' %}</a></li>            
+            <li class="ui-tabs-nav-item"><a href="{% url lfs_load_products_tab category.id %}">{% trans 'Products' %}</a></li>            
             <li class="ui-tabs-nav-item"><a href="#seo">{% trans 'SEO' %}</a></li>            
             <li class="ui-tabs-nav-item"><a href="#portlets">{% trans 'Portlets' %}</a></li>            
         </ul>
     
         <div id="data">
             {{ data|safe }}
-        </div>
-        <div id="products">
-            {{ products|safe }}
         </div>
         <div id="seo">
             {{ seo|safe }}

@@ -18,6 +18,7 @@ from lfs.catalog.settings import VARIANT
 from lfs.catalog.models import Category
 from lfs.catalog.models import Product
 
+# Parts
 @permission_required("manage_shop", login_url="/login/")
 def manage_products(request, category_id, template_name="manage/category/products.html"):
     """
@@ -91,6 +92,14 @@ def products_inline(request, category_id, as_string=False,
     else:
         return HttpResponse(result)
 
+# Actions
+@permission_required("manage_shop", login_url="/login/")
+def products_tab(request, category_id):
+    """Returns the products tab for given category id.
+    """
+    result = manage_products(request, category_id)
+    return HttpResponse(result)
+
 @permission_required("manage_shop", login_url="/login/")
 def selected_products(request, category_id, as_string=False, template_name="manage/category/selected_products.html"):
     """The selected products part of the products-tab of a category.
@@ -115,7 +124,8 @@ def selected_products(request, category_id, as_string=False, template_name="mana
     
     filters = Q(categories=category)
     if filter_2:
-        filters = Q(name__icontains=filter_2)
+        filters &= Q(name__icontains=filter_2)
+        
     products = Product.objects.filter(filters).exclude(sub_type=VARIANT)
         
     paginator_2 = Paginator(products, 6)

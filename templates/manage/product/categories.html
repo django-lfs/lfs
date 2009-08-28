@@ -34,4 +34,15 @@
     <p>{% trans 'There are no categories' %}</p>
 {% endif %}
 
-    
+
+<script>
+	$(function() {		
+		$("ul.manage-categories").treeview({
+			collapsed: true,
+			persist: "cookie",
+   			cookieId: "manage-product-categories"
+		})		
+		
+		mark_selected();
+	})	
+</script>    

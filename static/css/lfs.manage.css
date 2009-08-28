@@ -185,6 +185,18 @@ tr.odd {
     margin: 20px 0;
 }
 
+.manage-categories-portlet {
+    padding-top: 20px;
+}
+
+.manage-categories-portlet li {
+    font-weight: normal;
+}
+
+.manage-categories-portlet li.current-item {
+    font-weight: bold;
+}
+
 #selectable-products-filter-input,
 #selectable-products-category-filter {
     width: 170px;

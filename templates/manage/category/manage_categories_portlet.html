@@ -1,16 +1,27 @@
 {% load i18n %}
 
-<div class="manage-categories-portlet portlet">
+<div class="manage-categories-portlet">
     <ul class="root menu">
         {% for category in categories %}
             <li {% if category.is_current %}class="current-item"{% endif %}
                 id="category_{{category.id}}">
                 <a class="manage-category-link" 
                    href="{% url lfs_manage_category category.id %}">
-                    {{category.name}}
+                    {{ category.name }}
                 </a>
-                {{category.children}}
+                {{ category.children }}
             </li>
         {% endfor %}
     </ul>
-</div>    
+</div>
+
+
+<script>
+	$(function() {
+		$("ul.menu").treeview({
+			collapsed: true,
+			persist: "cookie",
+   			cookieId: "manage-categories-categories"
+		})
+	})
+</script>

@@ -15,7 +15,7 @@
 
 {% block left_slot %}
     <div id="portlet">
-        {{categories_portlet}}
+        {{categories_portlet|safe}}
     </div>    
 {% endblock %}
 
@@ -41,6 +41,7 @@
     </div>
 <script>
     $(function() {    
+        tinyMCE.execCommand('mceAddControl', true, 'id_short_description');
         tinyMCE.execCommand('mceAddControl', true, 'id_description');
     });    
 </script>    

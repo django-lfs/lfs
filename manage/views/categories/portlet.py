@@ -2,6 +2,7 @@
 from django.contrib.auth.decorators import permission_required
 from django.template import RequestContext
 from django.template.loader import render_to_string
+from django.core.cache import cache
 
 # lfs imports
 from lfs.catalog.models import Category
@@ -11,6 +12,11 @@ def manage_categories_portlet(request,
     template_name="manage/category/manage_categories_portlet.html"):
     """Returns a management portlet of all categories.
     """
+    cache_key = "manage-category-portlet"
+    result = cache.get(cache_key)
+    if result is not None:
+        return result
+
     categories = []
     for category in Category.objects.filter(parent = None):
         children = categories_portlet_children(request, category)
@@ -23,9 +29,12 @@ def manage_categories_portlet(request,
             "is_current" : _is_current_category(request, category),
         })
 
-    return render_to_string(template_name, RequestContext(request, {
+    result = render_to_string(template_name, RequestContext(request, {
         "categories" : categories
     }))
+
+    cache.set(cache_key, result)
+    return result
 
 @permission_required("manage_shop", login_url="/login/")
 def categories_portlet_children(request, category):
@@ -49,7 +58,7 @@ def categories_portlet_children(request, category):
     }))
     
     return result
-    
+        
 def _is_current_category(request, category):
     """Returns True if the passed category is the current category.
     """

@@ -19,6 +19,19 @@ tinyMCE.init({
     content_css : "/media/tinymce_styles.css"
 })
 
+function mark_selected() {
+	$("ul.manage-categories a").each(function() {
+		$(this).css("font-weight", "normal");
+	});
+	
+	$("ul.manage-categories input:checked").each(function() {
+		$(this).parents("li:gt(0)").each(function() {
+			$(this).children("a:first").css("font-weight", "bold");
+		});						
+	});
+}
+
+
 function update_positions() {
     var position = 0;
     $(".position").each(function() {
@@ -435,6 +448,11 @@ $(function() {
         });
         return false;
     })
+
+    // Mark parent categories with selected children categories
+	$(".product-categories-save-button").livequery("click", function() {
+		mark_selected()
+	})
     
     // Product / Variants
     $(".property-add-button").livequery("click", function() {        

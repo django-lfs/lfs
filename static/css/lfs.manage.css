@@ -197,6 +197,10 @@ tr.odd {
     font-weight: bold;
 }
 
+#manage-product-categories-control {
+    padding: 0 0 20px 0;
+}
+
 #selectable-products-filter-input,
 #selectable-products-category-filter {
     width: 170px;

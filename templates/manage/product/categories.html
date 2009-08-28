@@ -2,6 +2,14 @@
 
 <h2>{% trans 'Categories' %}</h2>
 
+<div id="manage-product-categories-control">
+	<a href="#">{% trans "Collapse all" %}</a> |
+	<a href="#">{% trans "Expand all" %}</a> |
+	<a href="#"></a>
+	<a class="show-selected" 
+	   href="#">{% trans "Show selected" %}</a>
+</div>
+
 {% if categories %}
     <form id="product-categories-save-form"
           action="{% url lfs_manage_product_categories product.id %}"
@@ -37,12 +45,35 @@
 
 <script>
 	$(function() {		
-		$("ul.manage-categories").treeview({
+		$("ul.manage-categories.root").treeview({
 			collapsed: true,
 			persist: "cookie",
-   			cookieId: "manage-product-categories"
-		})		
+   			cookieId: "manage-product-categories",
+			control: "#manage-product-categories-control",
+		})
 		
 		mark_selected();
+		
+		$(".show-selected").livequery("click", function() {
+			
+			$("a:eq(0)", "#manage-product-categories-control").click()
+			
+			$("ul.manage-categories input:checked").parents("ul.manage-categories:hidden").each(function() {
+			    $(this).show()
+			});
+
+			$("ul.manage-categories input:checked").parents("li.expandable").each(function() {
+			    $(this).removeClass("expandable");
+			    $(this).addClass("collapsable");
+			});
+
+			$("ul.manage-categories input:checked").parents("li:gt(0)").children(".hitarea").each(function() {
+			    $(this).removeClass("expandable-hitarea");
+			    $(this).addClass("collapsable-hitarea");
+			});
+			
+			return false;
+		})
+		
 	})	
 </script>    

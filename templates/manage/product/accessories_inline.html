@@ -38,10 +38,16 @@
                     <th>
                         {% trans 'Name' %}
                     </th>
-                    <th>
+	                <th class="middle">
+	                    {% trans 'SKU' %}
+	                </th>
+	                <th class="small">
+	                    {% trans 'Active' %}
+	                </th>
+                	<th class="middle">
                         {% trans 'Sub type' %}
                     </th>
-                    <th class="number">
+                    <th class="small number">
                         {% trans 'Price' %}
                     </th>
                 </tr>
@@ -53,13 +59,23 @@
                                    class="select-1" />
                         </td>
                         <td>
-                            {{product.get_name}}
+                            {{ product.get_name }}
                         </td>
                         <td>
-                            {{product.sub_type|sub_type_name}}
+                            {{ product.get_sku }}
+                        </td>
+                        <td>
+							{% if product.is_active %}
+								<img src="{{ MEDIA_URL }}/lfs/icons/tick.png" />
+							{% else %}
+								<img src="{{ MEDIA_URL }}/lfs/icons/cross.png" />
+							{% endif %}							
+                        </td>
+                        <td>
+                            {{ product.sub_type|sub_type_name }}
                         </td>
                         <td class="number">
-                            {{product.price|currency}}
+                            {{ product.price|currency }}
                         </td>
                     </tr>        
                 {% endfor %}
@@ -88,18 +104,24 @@
                     <th>
                         {% trans 'Name' %}
                     </th>
-                    <th>
+                    <th class="tiny">
                         {% trans 'Position' %}
                     </th>                    
-                    <th>
+                    <th class="small">
                         {% trans 'Quantity' %}
-                    </th>                    
-                    <th>
+                    </th>         
+	                <th class="middle">
+	                    {% trans 'SKU' %}
+	                </th>
+	                <th class="small">
+	                    {% trans 'Active' %}
+	                </th>
+                    <th class="middle">
                         {% trans 'Sub type' %}
                     </th>
-                    <th class="number">
+                    <th class="small number">
                         {% trans 'Price' %}
-                    </th>                    
+                    </th>
                 </tr>
     
                 {% for product_accessory in product_accessories %}
@@ -110,7 +132,7 @@
                                    class="select-2"/>
                         </td>
                         <td>
-                            {{product_accessory.accessory.name}}
+                            {{product_accessory.accessory.get_name}}
                         </td>                        
                         <td>
                             <input class="number"
@@ -126,11 +148,21 @@
                                    name="quantity-{{product_accessory.accessory.id}}"
                                    value="{{product_accessory.quantity}}" />
                         </td>
+						<td>
+							{{ product_accessory.accessory.get_sku }}
+						</td>
+						<td>
+							{% if product_accessory.accessory.is_active %}
+								<img src="{{ MEDIA_URL }}/lfs/icons/tick.png" />
+							{% else %}
+								<img src="{{ MEDIA_URL }}/lfs/icons/cross.png" />
+							{% endif %}							
+						</td>
                         <td>
                             {{product_accessory.accessory.sub_type|sub_type_name}}
                         </td>
                         <td class="number">
-                            {{product_accessory.accessory.price|currency}}
+                            {{product_accessory.accessory.get_price|currency}}
                         </td>                        
                     </tr>
                 {% endfor %}

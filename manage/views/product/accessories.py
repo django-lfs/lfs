@@ -23,7 +23,7 @@ def manage_accessories(request, product_id, template_name="manage/product/access
     """
     product = Product.objects.get(pk=product_id)
     inline = manage_accessories_inline(request, product_id, as_string=True)
-    
+
     return render_to_string(template_name, RequestContext(request, {
         "product" : product,
         "accessories_inline" : inline,
@@ -37,36 +37,37 @@ def manage_accessories_inline(
     product = Product.objects.get(pk=product_id)
     product_accessories = ProductAccessories.objects.filter(product=product_id)
     accessory_ids = [p.accessory.id for p in product_accessories]
-    
+
     r = request.REQUEST
     s = request.session
-    
-    # If we get the parameter ``keep-filters`` or ``page`` we take the 
+
+    # If we get the parameter ``keep-filters`` or ``page`` we take the
     # filters out of the request resp. session. The request takes precedence.
-    # The page parameter is given if the user clicks on the next/previous page 
+    # The page parameter is given if the user clicks on the next/previous page
     # links. The ``keep-filters`` parameters is given is the users adds/removes
-    # products. In this way we keeps the current filters when we needed to. If 
-    # the whole page is reloaded there is no ``keep-filters`` or ``page`` and 
+    # products. In this way we keeps the current filters when we needed to. If
+    # the whole page is reloaded there is no ``keep-filters`` or ``page`` and
     # all filters are reset as they should.
-    
+
     if r.get("keep-filters") or r.get("page"):
         page = r.get("page", s.get("accessories_page", 1))
         filter_ = r.get("filter", s.get("filter"))
         category_filter = r.get("accessories_category_filter",
                           s.get("accessories_category_filter"))
-    else:        
+    else:
         page = r.get("page", 1)
         filter_ = r.get("filter")
         category_filter = r.get("accessories_category_filter")
-    
+
     # The current filters are saved in any case for later use.
     s["accessories_page"] = page
     s["filter"] = filter_
     s["accessories_category_filter"] = category_filter
-    
+
     filters = Q()
     if filter_:
         filters &= Q(name__icontains = filter_)
+        filters |= Q(sku__icontains = filter_)
     if category_filter:
         if category_filter == "None":
             filters &= Q(categories=None)
@@ -75,18 +76,18 @@ def manage_accessories_inline(
             category = lfs_get_object_or_404(Category, pk=category_filter)
             categories = [category]
             categories.extend(category.get_all_children())
-    
+
             filters &= Q(categories__in = categories)
-    
+
     products = Product.objects.filter(filters).exclude(pk=product_id)
-        
+
     paginator = Paginator(products.exclude(pk__in = accessory_ids), 6)
-    
+
     try:
         page = paginator.page(page)
     except EmptyPage:
         page = 0
-    
+
     result = render_to_string(template_name, RequestContext(request, {
         "product" : product,
         "product_accessories" : product_accessories,
@@ -94,8 +95,8 @@ def manage_accessories_inline(
         "paginator" : paginator,
         "filter" : filter_
     }))
-    
-    if as_string: 
+
+    if as_string:
         return result
     else:
         return HttpResponse(result)
@@ -113,77 +114,82 @@ def add_accessories(request, product_id):
     """Adds passed accessories to product with passed id.
     """
     parent_product = Product.objects.get(pk=product_id)
-    
+
     for temp_id in request.POST.keys():
 
         if temp_id.startswith("product") == False:
             continue
-        
+
         temp_id = temp_id.split("-")[1]
         accessory = Product.objects.get(pk=temp_id)
         product_accessory = ProductAccessories(product=parent_product, accessory=accessory)
         product_accessory.save()
     
+    _update_positions(parent_product)    
     product_changed.send(parent_product)
-    
+
     inline = manage_accessories_inline(request, product_id, as_string=True)
-    
+
     result = simplejson.dumps({
         "html" : inline,
         "message" : _(u"Accessories have been added.")
     }, cls=LazyEncoder);
-    
+
     return HttpResponse(result)
 
 # TODO: Rename to "update_accessories"
-@permission_required("manage_shop", login_url="/login/")    
+@permission_required("manage_shop", login_url="/login/")
 def remove_accessories(request, product_id):
     """Removes passed accessories from product with passed id.
     """
     parent_product = Product.objects.get(pk=product_id)
-    
+
     if request.POST.get("action") == "remove":
         for temp_id in request.POST.keys():
-        
+
             if temp_id.startswith("accessory") == False:
                 continue
-        
+
             temp_id = temp_id.split("-")[1]
             accessory = Product.objects.get(pk=temp_id)
             product_accessory = ProductAccessories.objects.filter(product=parent_product, accessory=accessory)
-            
+
             product_accessory.delete()
-    
+
+        _update_positions(parent_product)    
         product_changed.send(parent_product)
-    
+        
         inline = manage_accessories_inline(request, product_id, as_string=True)
-    
+
         result = simplejson.dumps({
             "html" : inline,
             "message" : _(u"Accessories have been removed.")
         }, cls=LazyEncoder)
-        
+
     else:
         for temp_id in request.POST.keys():
-        
+
             if temp_id.startswith("quantity") == False:
                 continue
-                
+
             temp_id = temp_id.split("-")[1]
             accessory = Product.objects.get(pk=temp_id)
             product_accessory = ProductAccessories.objects.get(product=parent_product, accessory=accessory)
-            
+
             # Update quantity
             quantity = request.POST.get("quantity-%s" % temp_id)
             product_accessory.quantity = quantity
-            
+
             # Update position
             position = request.POST.get("position-%s" % temp_id)
             product_accessory.position = position
 
-            product_accessory.save()            
+            product_accessory.save()
+
             product_changed.send(product_accessory.product)
-            
+
+        _update_positions(parent_product)
+        
         inline = manage_accessories_inline(request, product_id, as_string=True)
         result = simplejson.dumps({
             "html" : inline,
@@ -204,13 +210,20 @@ def update_accessories(request, product_id):
     product.save()
 
     inline = manage_accessories_inline(request, product_id, as_string=True)
-    
+
     result = simplejson.dumps({
         "html" : inline,
         "message" : _(u"Accessories have been updated.")
     }, cls=LazyEncoder);
-    
+
     return HttpResponse(result)
-    
+
     inline = manage_accessories_inline(request, product_id)
     return HttpResponse(inline)
+
+def _update_positions(product):
+    """Updates positions of product accessories for given product.
+    """
+    for i, pa in enumerate(ProductAccessories.objects.filter(product=product)):
+        pa.position = (i+1)*10
+        pa.save()

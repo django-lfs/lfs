@@ -197,6 +197,11 @@ tr.odd {
     font-weight: bold;
 }
 
+#manage-categories-categories-control {
+    font-size: 10px;    
+    padding: 2px 0 10px 0;
+}
+
 #manage-product-categories-control {
     padding: 0 0 20px 0;
 }

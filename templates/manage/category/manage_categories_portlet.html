@@ -1,6 +1,13 @@
 {% load i18n %}
 
 <div class="manage-categories-portlet">
+
+	<div id="manage-categories-categories-control">
+		<a href="#">{% trans "Collapse all" %}</a> |
+		<a href="#">{% trans "Expand all" %}</a>
+		<a href="#"></a>
+	</div>
+	
     <ul class="root menu">
         {% for category in categories %}
             <li {% if category.is_current %}class="current-item"{% endif %}
@@ -21,7 +28,8 @@
 		$("ul.menu").treeview({
 			collapsed: true,
 			persist: "cookie",
-   			cookieId: "manage-categories-categories"
+   			cookieId: "manage-categories-categories",
+			control: "#manage-categories-categories-control",
 		})
 	})
 </script>

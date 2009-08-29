@@ -67,6 +67,7 @@ def manage_related_products_inline(
     filters = Q()
     if filter_:
         filters &= Q(name__icontains = filter_)
+        filters |= Q(sku__icontains = filter_)
     if category_filter:
         if category_filter == "None":
             filters &= Q(categories=None)

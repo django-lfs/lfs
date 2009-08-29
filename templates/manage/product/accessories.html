@@ -24,6 +24,14 @@
     <input class="filter-accessories-input" type="text" name="filter"/>
     
     {% category_filter "accessories-categories-filter" "accessories_category_filter" %}
+
+	<select id="accessories-amount"
+	        name="accessories-amount">
+		{% for option in amount_options %}
+			<option {% if option.selected %}selected="selected"{% endif %} 
+			        value="{{ option.value }}">{{ option.value }}</option>
+		{% endfor %}
+	</select>
 </form>
 
 {{ accessories_inline }}

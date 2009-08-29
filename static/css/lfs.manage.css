@@ -107,6 +107,9 @@ tr.odd {
     background-color: #eee;
 }
 
+tr.marked {
+    background-color: yellow;    
+}
 
 /* General formats */
 .discreet {

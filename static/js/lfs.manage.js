@@ -454,6 +454,29 @@ $(function() {
 		mark_selected()
 	})
     
+    // Show selected categories - expands all categories which have a selected 
+    // sub category.
+	$(".show-selected").livequery("click", function() {
+		
+		$("a:eq(0)", "#manage-product-categories-control").click()
+		
+		$("ul.manage-categories input:checked").parents("ul.manage-categories:hidden").each(function() {
+		    $(this).show()
+		});
+
+		$("ul.manage-categories input:checked").parents("li.expandable:gt(0)").each(function() {
+		    $(this).removeClass("expandable");
+		    $(this).addClass("collapsable");
+		});
+
+		$("ul.manage-categories input:checked").parents("li:gt(0)").children(".hitarea").each(function() {
+		    $(this).removeClass("expandable-hitarea");
+		    $(this).addClass("collapsable-hitarea");
+		});
+		
+		return false;
+	})
+    
     // Product / Variants
     $(".property-add-button").livequery("click", function() {        
         $("#property-add-form").ajaxSubmit({
@@ -553,6 +576,12 @@ $(function() {
             "target": "#accessories-inline"
         });
     });
+
+    $("#accessories-amount").livequery("change", function() {
+        $("#filter-accessories-form").ajaxSubmit({
+            "target": "#accessories-inline"
+        });
+    });
     
     // Product / Related Products
     $("#add-related-products-button").livequery("click", function() {
@@ -611,6 +640,39 @@ $(function() {
         });
     });
     
+    // Select products
+    $("input.select-1").livequery("click", function(e) {
+        if ($(this).is(":checked")) {
+            $(this).parents("tr:first").addClass("marked");
+            
+            if (e.shiftKey) {
+                var tr = $(this).parents("tr:first");
+                tr.prevAll("tr").each(function() {
+                    if ($(this).hasClass("marked")) {
+                        return false;
+                    }
+                    $(this).addClass("marked");
+                    $(this).find("input.select-1").attr("checked", true);
+                })
+            }
+            
+        }
+        else {
+            $(this).parents("tr:first").removeClass("marked");
+
+            if (e.shiftKey) {
+                var tr = $(this).parents("tr:first");
+                tr.prevAll("tr").each(function() {
+                    if ($(this).hasClass("marked") == false) {
+                        return false;
+                    }
+                    $(this).removeClass("marked");
+                    $(this).find("input.select-1").attr("checked", false);
+                })
+            }
+        }
+    });
+
     // Product / SEO 
     $(".seo-save-button").livequery("click", function() {
         $("#product-seo-form").ajaxSubmit({

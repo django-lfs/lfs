@@ -7,6 +7,8 @@ from django.test import TestCase
 import lfs.catalog.utils
 from lfs.core.signals import property_type_changed
 from lfs.catalog.settings import ACTIVE_FOR_SALE_YES
+from lfs.catalog.settings import ACTIVE_FOR_SALE_STANDARD
+from lfs.catalog.settings import ACTIVE_FOR_SALE_NO
 from lfs.catalog.settings import CONTENT_CATEGORIES
 from lfs.catalog.settings import PRODUCT_WITH_VARIANTS, VARIANT
 from lfs.catalog.settings import DELIVERY_TIME_UNIT_HOURS
@@ -1113,11 +1115,12 @@ class ProductTestCase(TestCase):
             width = 1.0,
             height = 2.0,
             length = 3.0,
-            weight = 4.0)
+            weight = 4.0,
+            active=True)
 
         # Products without properties and variants
-        self.p2 = Product.objects.create(name=u"Product 2", slug=u"product-2")
-        self.p3 = Product.objects.create(name=u"Product 3", slug=u"product-3")
+        self.p2 = Product.objects.create(name=u"Product 2", slug=u"product-2", active=True)
+        self.p3 = Product.objects.create(name=u"Product 3", slug=u"product-3", active=True)
 
         # Create a size property with two options
         self.size = size = Property.objects.create(name="Size")
@@ -1710,64 +1713,141 @@ class ProductTestCase(TestCase):
         self.assertEqual(standard_price, 1.0)
 
     def test_get_standard_price_2(self):
-        """Test the price vs. standard price for a variant. Takes ``active_price``
-        into account.
+        """Test the price vs. standard price for a variant.
         """
-        self.v1.active_price = True
-        self.v1.save()
+        #
+        self.p1.for_sale = False
+        self.p1.save()
         
-        # By default get_standard_price returns then normal price of the variant
-        standard_price = self.v1.get_standard_price()
-        self.assertEqual(standard_price, 2.0)
+        self.v1.active_price = False
+        self.v1.active_for_sale_price = False
+        self.v1.save()
 
-        # Switch to for sale
-        self.v1.for_sale = True
-        self.v1.active_for_sale = ACTIVE_FOR_SALE_YES
+        self.assertEqual(self.v1.get_standard_price(), 1.0)
+        self.assertEqual(self.v1.get_price(), 1.0)
+        self.assertEqual(self.v1.get_for_sale(), False)
+
+        # 
+        self.p1.for_sale = False
+        self.p1.save()
+        
+        self.v1.active_price = False
         self.v1.active_for_sale_price = True
         self.v1.save()
 
-        # If the product is for sale ``get_price`` returns the for sale price
-        price = self.v1.get_price()
-        self.assertEqual(price, 1.5)
-
-        # But ``get_standard_price`` returns still the normal price
-        standard_price = self.v1.get_standard_price()
-        self.assertEqual(standard_price, 2.0)
-
-        # Switch to active price == False
-        self.v1.active_price = False
+        self.assertEqual(self.v1.get_standard_price(), 1.0)
+        self.assertEqual(self.v1.get_price(), 1.0)
+        self.assertEqual(self.v1.get_for_sale(), False)
+            
+        #     
+        self.p1.for_sale = False
+        self.p1.save()
+        
+        self.v1.active_price = True
+        self.v1.active_for_sale_price = False
         self.v1.save()
 
-        # By default get_standard_price returns then normal price of the product
-        standard_price = self.v1.get_standard_price()
-        self.assertEqual(standard_price, 1.0)
+        self.assertEqual(self.v1.get_standard_price(), 2.0)
+        self.assertEqual(self.v1.get_price(), 2.0)
+        self.assertEqual(self.v1.get_for_sale(), False)
 
-        # Switch the **variant** to for sale
-        self.v1.for_sale = True
+        #
+        self.p1.for_sale = False
+        self.p1.save()
+        
+        self.v1.active_price = True
+        self.v1.active_for_sale_price = True
         self.v1.save()
 
-        # This hasn't any consequence as the price attributes are taken
-        # from the parent product, this is also true for the ``for_sale``
-        # attibute
-        price = self.v1.get_price()
-        self.assertEqual(price, 1.0)
-
-        standard_price = self.v1.get_standard_price()
-        self.assertEqual(standard_price, 1.0)
-
-        # Switch the **product** to for sale
+        self.assertEqual(self.v1.get_standard_price(), 2.0)
+        self.assertEqual(self.v1.get_price(), 2.0)
+        self.assertEqual(self.v1.get_for_sale(), False)
+        
+        #
         self.p1.for_sale = True
         self.p1.save()
+        
+        self.v1.active_price = False
+        self.v1.active_for_sale_price = False
+        self.v1.save()
 
-        # The variant has the for_sale price of the parent product (due to
-        # ``active_price`` price is false)
-        price = self.v1.get_price()
-        self.assertEqual(price, 0.5)
+        self.assertEqual(self.v1.get_standard_price(), 1.0)
+        self.assertEqual(self.v1.get_price(), 0.5)
+        self.assertEqual(self.v1.get_for_sale(), True)
+        
+        #
+        self.p1.for_sale = True
+        self.p1.save()
+        
+        self.v1.active_price = False
+        self.v1.active_for_sale_price = True
+        self.v1.save()
 
-        # The variant has the standard price of the parent product (due to
-        # ``active_price`` price is false)
-        standard_price = self.v1.get_standard_price()
-        self.assertEqual(standard_price, 1.0)
+        self.assertEqual(self.v1.get_standard_price(), 1.0)
+        self.assertEqual(self.v1.get_price(), 1.5)
+        self.assertEqual(self.v1.get_for_sale(), True)
+        
+        #
+        self.p1.for_sale = True
+        self.p1.save()
+        
+        self.v1.active_price = True
+        self.v1.active_for_sale_price = False
+        self.v1.save()
+
+        self.assertEqual(self.v1.get_standard_price(), 2.0)
+        self.assertEqual(self.v1.get_price(), 0.5)
+        self.assertEqual(self.v1.get_for_sale(), True)
+
+        #
+        self.p1.for_sale = True
+        self.p1.save()
+        
+        self.v1.active_price = True
+        self.v1.active_for_sale_price = True
+        self.v1.save()
+
+        self.assertEqual(self.v1.get_standard_price(), 2.0)
+        self.assertEqual(self.v1.get_price(), 1.5)
+        self.assertEqual(self.v1.get_for_sale(), True)
+        
+        # 
+        self.p1.for_sale = True
+        self.p1.save()
+        
+        self.v1.active_for_sale = ACTIVE_FOR_SALE_STANDARD
+        self.v1.save()
+
+        self.assertEqual(self.v1.get_for_sale(), True)
+        
+        self.v1.active_for_sale = ACTIVE_FOR_SALE_YES
+        self.v1.save()
+
+        self.assertEqual(self.v1.get_for_sale(), True)
+
+        self.v1.active_for_sale = ACTIVE_FOR_SALE_NO
+        self.v1.save()
+
+        self.assertEqual(self.v1.get_for_sale(), False)
+
+        # 
+        self.p1.for_sale = False
+        self.p1.save()
+        
+        self.v1.active_for_sale = ACTIVE_FOR_SALE_STANDARD
+        self.v1.save()
+
+        self.assertEqual(self.v1.get_for_sale(), False)
+        
+        self.v1.active_for_sale = ACTIVE_FOR_SALE_YES
+        self.v1.save()
+
+        self.assertEqual(self.v1.get_for_sale(), True)
+
+        self.v1.active_for_sale = ACTIVE_FOR_SALE_NO
+        self.v1.save()
+
+        self.assertEqual(self.v1.get_for_sale(), False)
 
     def test_get_sku(self):
         """
@@ -1961,7 +2041,7 @@ class ProductTestCase(TestCase):
         self.assertEqual(self.v1.is_standard(), False)
         self.assertEqual(self.v1.is_product_with_variants(), False)
         self.assertEqual(self.v1.is_variant(), True)
-    
+
     def test_get_width(self):
         """Tests the width of product and variant.
         """
@@ -2025,16 +2105,16 @@ class ProductTestCase(TestCase):
 
         # Now we get the weight of the variant itself
         self.assertEqual(self.v1.get_weight(), 14.0)
-        
+
 class ProductAccessoriesTestCase(TestCase):
     """Tests ProductAccessories (surprise, surprise).
     """
     def setUp(self):
         """
         """
-        self.p1 = Product.objects.create(name=u"Product 1", slug=u"product-1", price=1.0)
-        self.p2 = Product.objects.create(name=u"Product 2", slug=u"product-2", price=2.0)
-        self.p3 = Product.objects.create(name=u"Product 3", slug=u"product-3", price=3.0)
+        self.p1 = Product.objects.create(name=u"Product 1", slug=u"product-1", price=1.0, active=True)
+        self.p2 = Product.objects.create(name=u"Product 2", slug=u"product-2", price=2.0, active=True)
+        self.p3 = Product.objects.create(name=u"Product 3", slug=u"product-3", price=3.0, active=True)
 
     def test_defaults(self):
         """Tests default values after creation.

@@ -16,7 +16,7 @@ class TopsellerTestCase(TestCase):
     def setUp(self):
         """
         """
-        self.p1 = Product.objects.create(name="Product 1", slug="product-1")        
+        self.p1 = Product.objects.create(name="Product 1", slug="product-1", active=True)        
         self.t1 = Topseller.objects.create(product = self.p1)
         
     def test_defaults(self):
@@ -30,10 +30,10 @@ class UtilsTestCase(TestCase):
     def setUp(self):
         """
         """
-        self.p1 = Product.objects.create(name="Product 1", slug="product-1")
-        self.p2 = Product.objects.create(name="Product 2", slug="product-2")
-        self.p3 = Product.objects.create(name="Product 3", slug="product-3")
-        self.p4 = Product.objects.create(name="Product 4", slug="product-4")
+        self.p1 = Product.objects.create(name="Product 1", slug="product-1", active=True)
+        self.p2 = Product.objects.create(name="Product 2", slug="product-2", active=True)
+        self.p3 = Product.objects.create(name="Product 3", slug="product-3", active=True)
+        self.p4 = Product.objects.create(name="Product 4", slug="product-4", active=True)
 
         self.c1 = Category.objects.create(name="Category 1", slug="category-1")
         self.c1.save()
@@ -66,14 +66,14 @@ class UtilsTestCase(TestCase):
         """Tests general topseller with explicitly selected products.
         """
         # Explicit topseller
-        self.p5 = Product.objects.create(name="Product 5", slug="product-5")
+        self.p5 = Product.objects.create(name="Product 5", slug="product-5", active=True)
         t5 = Topseller.objects.create(product=self.p5, position=1)
 
         ts = lfs.marketing.utils.get_topseller(2)
         self.assertEqual(ts[0], self.p5)
         self.assertEqual(ts[1], self.p4)
         
-        self.p6 = Product.objects.create(name="Product 6", slug="product-6")
+        self.p6 = Product.objects.create(name="Product 6", slug="product-6", active=True)
         t6 = Topseller.objects.create(product=self.p6, position=2)
         
         ts = lfs.marketing.utils.get_topseller(2)
@@ -144,7 +144,7 @@ class UtilsTestCase(TestCase):
         selected products 
         """
         # Explicit topseller for c1
-        self.p5 = Product.objects.create(name="Product 5", slug="product-5")
+        self.p5 = Product.objects.create(name="Product 5", slug="product-5", active=True)
         t5 = Topseller.objects.create(product=self.p5, position=1)
 
         self.c11.products = (self.p1, self.p2, self.p5)
@@ -152,7 +152,7 @@ class UtilsTestCase(TestCase):
         # Tests the top level category
         ts = lfs.marketing.utils.get_topseller_for_category(self.c1, limit=2)
         self.assertEqual(len(ts), 2)
-
+        
         self.assertEqual(ts[0], self.p5)
         self.assertEqual(ts[1], self.p4)
         

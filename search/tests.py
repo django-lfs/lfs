@@ -13,8 +13,8 @@ class SearchTestCase(TestCase):
     def setUp(self):
         """
         """
-        self.p1 = Product.objects.create(name="Product 1", slug="p1", price=9)
-        self.p2 = Product.objects.create(name="Product 2", slug="p2", price=11)
+        self.p1 = Product.objects.create(name="Product 1", slug="p1", price=9, active=True)
+        self.p2 = Product.objects.create(name="Product 2", slug="p2", price=11, active=True)
 
     def test_search(self):
         """

@@ -301,7 +301,7 @@ def category_products(request, slug, start=0, template_name="lfs/catalog/categor
         "previous_url" : previous_url,
         "amount_of_products" : amount_of_products,
         "pages" : pages,
-        "show_pages" : len(pages) > 1,
+        "show_pages" : amount_of_products > amount,
     }))
 
     temp[sub_cache_key] = result

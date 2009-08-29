@@ -6,7 +6,7 @@
 	<a href="#">{% trans "Collapse all" %}</a> |
 	<a href="#">{% trans "Expand all" %}</a> |
 	<a href="#"></a>
-	<a class="show-selected" 
+	<a class="show-selected"
 	   href="#">{% trans "Show selected" %}</a>
 </div>
 
@@ -17,7 +17,7 @@
         <ul class="manage-categories root">
             {% for category in categories %}
                 <li>
-                    <input type="checkbox" 
+                    <input type="checkbox"
                            name="categories"
                            value="{{category.id}}"
                            {% if category.checked %}checked="checked"{% endif %} />
@@ -28,52 +28,30 @@
                              alt="{% trans 'Edit' %}"
                              title="{% trans 'Edit category' %}" />
                     </a>
-                
+
                     {{category.children}}
                 </li>
             {% endfor %}
         </ul>
         <div class="manage-form-buttons">
-            <input class="product-categories-save-button" 
+            <input class="product-categories-save-button"
                    type="submit" value="{% trans 'Save categories' %}" />
         </div>
-    </form>    
+    </form>
 {% else %}
     <p>{% trans 'There are no categories' %}</p>
 {% endif %}
 
 
 <script>
-	$(function() {		
+	$(function() {
 		$("ul.manage-categories.root").treeview({
 			collapsed: true,
 			persist: "cookie",
    			cookieId: "manage-product-categories",
 			control: "#manage-product-categories-control",
 		})
-		
+
 		mark_selected();
-		
-		$(".show-selected").livequery("click", function() {
-			
-			$("a:eq(0)", "#manage-product-categories-control").click()
-			
-			$("ul.manage-categories input:checked").parents("ul.manage-categories:hidden").each(function() {
-			    $(this).show()
-			});
-
-			$("ul.manage-categories input:checked").parents("li.expandable").each(function() {
-			    $(this).removeClass("expandable");
-			    $(this).addClass("collapsable");
-			});
-
-			$("ul.manage-categories input:checked").parents("li:gt(0)").children(".hitarea").each(function() {
-			    $(this).removeClass("expandable-hitarea");
-			    $(this).addClass("collapsable-hitarea");
-			});
-			
-			return false;
-		})
-		
-	})	
-</script>    
+	})
+</script>

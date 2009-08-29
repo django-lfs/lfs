@@ -6,6 +6,7 @@ from models import AverageRatingPortlet
 from models import CartPortlet
 from models import CategoriesPortlet
 from models import DeliveryTimePortlet
+from models import FilterPortlet
 from models import PagesPortlet
 from models import RecentProductsPortlet
 from models import RelatedProductsPortlet
@@ -23,6 +24,7 @@ def register_lfs_portlets(sender, **kwargs):
         register_portlet(CartPortlet, "Cart")
         register_portlet(CategoriesPortlet, "Categories")
         register_portlet(DeliveryTimePortlet, "Delivery Time")
+        register_portlet(FilterPortlet, "Filter")
         register_portlet(PagesPortlet, "Pages")
         register_portlet(RecentProductsPortlet, "Recent Products")
         register_portlet(RelatedProductsPortlet, "Related Products")

@@ -545,7 +545,12 @@ class Product(models.Model):
         else:
             product = self
 
-        return ProductAccessories.objects.filter(product=product, accessory__active=True)
+        pas = []
+        for pa in ProductAccessories.objects.filter(product=product):
+            if pa.accessory.is_active():
+                pas.append(pa)
+        
+        return pas
 
     def has_accessories(self):
         """Returns True if the product has accessories.

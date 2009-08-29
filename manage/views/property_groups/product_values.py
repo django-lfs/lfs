@@ -51,7 +51,7 @@ def product_values(request, property_group_id, template_name="manage/properties/
 
         products.append({
             "id" : product.id,
-            "name" : product.name,
+            "name" : product.get_name(),
             "properties" : properties,
         })
         

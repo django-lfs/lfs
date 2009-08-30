@@ -29,6 +29,13 @@
                {% trans 'Overview' %}
             </a>
 
+			{% if product.is_variant %}
+				<a class="overview"
+			   	   href="{% url lfs_manage_product product.parent.id %}">
+					{% trans "Parent" %}
+				</a>					
+			{% endif %}
+			
             <a class="add"
                href="{% url lfs_manage_add_product %}">
                 {% trans 'Add product' %}

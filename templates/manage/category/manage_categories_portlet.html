@@ -5,7 +5,10 @@
 	<div id="manage-categories-categories-control">
 		<a href="#">{% trans "Collapse all" %}</a> |
 		<a href="#">{% trans "Expand all" %}</a>
-		<a href="#"></a>
+		<a href="#"></a> | 
+		<a class="show-current"
+		   data="#category_{{ category_id }}"
+		   href="#">{% trans "Show current" %}</a>
 	</div>
 	
     <ul class="root menu">

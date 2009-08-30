@@ -6,16 +6,16 @@ tinyMCE.init({
     button_tile_map : true,
     plugins : "safari, fullscreen",
     convert_urls : false,
-    theme_advanced_buttons1 : "bold, italic, underline, |, justifyleft," +  
-                              "justifycenter, justifyright, justifyfull, |," + 
-                              "bullist,numlist, |, outdent, indent, |, image, |, undo," +  
-                              "redo, |, code, link, unlink, styleselect, formatselect, |," +  
+    theme_advanced_buttons1 : "bold, italic, underline, |, justifyleft," +
+                              "justifycenter, justifyright, justifyfull, |," +
+                              "bullist,numlist, |, outdent, indent, |, image, |, undo," +
+                              "redo, |, code, link, unlink, styleselect, formatselect, |," +
                               "removeformat, fullscreen",
     theme_advanced_buttons2: "",
     theme_advanced_buttons3: "",
     theme_advanced_buttons4: "",
     theme_advanced_toolbar_location : "top",
-    theme_advanced_toolbar_align : "left",    
+    theme_advanced_toolbar_align : "left",
     content_css : "/media/tinymce_styles.css"
 })
 
@@ -23,11 +23,11 @@ function mark_selected() {
 	$("ul.manage-categories a").each(function() {
 		$(this).css("font-weight", "normal");
 	});
-	
+
 	$("ul.manage-categories input:checked").each(function() {
 		$(this).parents("li:gt(0)").each(function() {
 			$(this).children("a:first").css("font-weight", "bold");
-		});						
+		});
 	});
 }
 
@@ -37,7 +37,7 @@ function update_positions() {
     $(".position").each(function() {
         position += 10;
         $(this).val(position);
-    });        
+    });
 };
 
 $(function() {
@@ -45,7 +45,7 @@ $(function() {
     //     window.onbeforeunload = (on) ? function() {return ""} : null;
     // }
     // $(':input', "form").bind("change", function() { setConfirmUnload(true); });
-    
+
     // Critera
 
     // $('#spinner')
@@ -56,29 +56,29 @@ $(function() {
     //     .ajaxStop(function() {
     //         $(this).hide();
     //     });
-    
+
     var message = $.cookie("message");
-    
-    if (message != null) { 
+
+    if (message != null) {
         $.jGrowl(message);
         $.cookie("message", null, { path: '/' });
     };
-    
+
     $('ul.sf-menu').superfish({
-        speed: "fast", 
+        speed: "fast",
         delay: "200"
     });
-    
+
     $('#manage-tabs > ul').tabs({ cookie: { expires: 30 } });
-    
+
     $("#dialog").dialog({
         autoOpen: false,
         closeOnEscape: true,
-        modal: true, 
+        modal: true,
         width: 800,
         height: 600,
         overlay: {
-            opacity: 0.7, 
+            opacity: 0.7,
             background: "black"
         }
     });
@@ -115,7 +115,7 @@ $(function() {
         })
         return false;
     });
-    
+
     // Generic ajax link
     $(".ajax-link").livequery("click", function() {
         var url = $(this).attr("href");
@@ -123,7 +123,7 @@ $(function() {
             data = JSON.parse(data);
             for (var html in data["html"])
                 $(data["html"][html][0]).html(data["html"][html][1]);
-                
+
             if (data["message"]) {
                 $.jGrowl(data["message"]);
             }
@@ -169,7 +169,7 @@ $(function() {
             update_positions();
         });
     });
-    
+
     $(".criterion-save-button").livequery("click", function() {
         $(this).parents("form:first").ajaxSubmit({
             success : function(data) {
@@ -197,7 +197,7 @@ $(function() {
     $(".criterion-delete-button").livequery("click", function() {
         $(this).parents("tr.criterion:first").remove();
     });
-    
+
     // General
     $(".delete-all").livequery("click", function() {
         var checked = this.checked;
@@ -219,7 +219,7 @@ $(function() {
             this.checked = checked;
         });
     });
-        
+
     $("ul.menu").sortable({
         items : ">li",
         axis: "y",
@@ -229,7 +229,7 @@ $(function() {
             $.post("/shops/manage/update-category/" + id, {"categories" : categories}, function(data) {
                 $.jGrowl("Categories has been updated.");
             });
-        }                    
+        }
     });
 
     // There are some problems with json, when uploading an image with the form
@@ -242,13 +242,13 @@ $(function() {
     //             data = JSON.parse(data);
     //             $("#data").html(data["data"]);
     //             $("#portlet").html(data["portlet"]);
-    //             tinyMCE.execCommand('mceAddControl', true, 'id_description');                
+    //             tinyMCE.execCommand('mceAddControl', true, 'id_description');
     //             $.jGrowl(data["message"]);
     //         }
     //     });
     //     return false;
     // })
-    
+
     // Categories / Products
     $(".category-products-page-link").livequery("click", function() {
         var url = $(this).attr("href");
@@ -310,7 +310,7 @@ $(function() {
             }
         });
     });
-    
+
     // Categories / SEO
     $(".category-seo-button").livequery("click", function() {
         $("#category-seo-form").ajaxSubmit({
@@ -322,13 +322,13 @@ $(function() {
         });
         return false;
     })
-    
+
     // Products (Overview)
     $(".products-name-filter").livequery("keyup", function() {
         var form = $(this).parents("form:first");
-        
+
         try { clearTimeout(timeout); } catch(e) {}
-        
+
         timeout = setTimeout(function() {
             form.ajaxSubmit({
                 "success": function(data) {
@@ -343,9 +343,9 @@ $(function() {
     //         "success": function(data) {
     //             $("#products-inline").html(data);
     //         }
-    //     });        
+    //     });
     // });
-    
+
     $(".products-reset-link").livequery("click", function() {
         var url = $(this).attr("href");
         $.get(url, function(data) {
@@ -363,7 +363,7 @@ $(function() {
             "success": function(data) {
                 $("#selectable-products").html(data);
             }
-        });        
+        });
     });
 
     $(".selectable-products-category-filter").livequery("change", function() {
@@ -371,7 +371,7 @@ $(function() {
             "success": function(data) {
                 $("#selectable-products").html(data);
             }
-        });        
+        });
     });
 
     $(".selectable-products-page-link").livequery("click", function() {
@@ -400,7 +400,7 @@ $(function() {
         number += 1;
         $(this).parent().after("<div><input type='file' class='upload-file' name='file_" + number + "' /></div>");
     });
-    
+
     $("#product-images-save-button").livequery("click", function() {
         $("#product-images-form").ajaxSubmit({
             target : "#images"
@@ -420,7 +420,7 @@ $(function() {
         });
         return false;
     });
-    
+
     // Product / Data
     $("#product-data-save-button").livequery("click", function() {
         tinyMCE.execCommand('mceRemoveControl', false, 'id_short_description');
@@ -437,8 +437,8 @@ $(function() {
         });
         return false;
     })
-    
-    // Product / Categories 
+
+    // Product / Categories
     $(".product-categories-save-button").livequery("click", function() {
         $("#product-categories-save-form").ajaxSubmit({
             success: function(data) {
@@ -453,13 +453,13 @@ $(function() {
 	$(".product-categories-save-button").livequery("click", function() {
 		mark_selected()
 	})
-    
-    // Show selected categories - expands all categories which have a selected 
+
+    // Show selected categories - expands all categories which have a selected
     // sub category.
 	$(".show-selected").livequery("click", function() {
-		
+
 		$("a:eq(0)", "#manage-product-categories-control").click()
-		
+
 		$("ul.manage-categories input:checked").parents("ul.manage-categories:hidden").each(function() {
 		    $(this).show()
 		});
@@ -473,12 +473,40 @@ $(function() {
 		    $(this).removeClass("expandable-hitarea");
 		    $(this).addClass("collapsable-hitarea");
 		});
-		
+
 		return false;
 	})
-    
+
+    // Shows current category in category manage tree (manage category)
+	$(".show-current").livequery("click", function() {
+
+        $("a:eq(0)", "#manage-categories-categories-control").click()
+
+        var category = $(this).attr("data")
+		$(category).parents("ul.menu:hidden").each(function() {
+		    $(this).show()
+		});
+
+		$(category).parents("li.expandable").each(function() {
+		    $(this).removeClass("expandable");
+		    $(this).addClass("collapsable");
+		});
+
+		$(category).parents("li.lastExpandable").each(function() {
+		    $(this).addClass("lastCollapsable");
+		    $(this).removeClass("lastExpandable");
+		});
+
+		$(category).parents("li").children(".hitarea").each(function() {
+		    $(this).removeClass("expandable-hitarea");
+		    $(this).addClass("collapsable-hitarea");
+		});
+
+		return false;
+	})
+
     // Product / Variants
-    $(".property-add-button").livequery("click", function() {        
+    $(".property-add-button").livequery("click", function() {
         $("#property-add-form").ajaxSubmit({
             success: function(data) {
                 $("#variants").html(data);
@@ -497,7 +525,7 @@ $(function() {
         });
         return false;
     })
-    
+
     $(".variants-update-button").livequery("click", function() {
         var action = $(this).attr("name")
         $("#variants-form").ajaxSubmit({
@@ -510,7 +538,7 @@ $(function() {
         })
         return false;
     });
-    
+
     $(".option-add-button").livequery("click", function() {
         var form = $(this).parents("form:first");
         form.ajaxSubmit({
@@ -561,7 +589,7 @@ $(function() {
         });
         return false;
     });
-    
+
     $(".filter-accessories-input").livequery("keyup", function() {
         $("#filter-accessories-form").ajaxSubmit({
             "type": "post",
@@ -577,12 +605,12 @@ $(function() {
         });
     });
 
-    $("#accessories-amount").livequery("change", function() {
+    $("#products-amount").livequery("change", function() {
         $("#filter-accessories-form").ajaxSubmit({
             "target": "#accessories-inline"
         });
     });
-    
+
     // Product / Related Products
     $("#add-related-products-button").livequery("click", function() {
         $("#add-related-products-form").ajaxSubmit({
@@ -598,7 +626,7 @@ $(function() {
     $("#remove-related-products-button").livequery("click", function() {
         $("#remove-related-products-form").ajaxSubmit({
             "success": function(data) {
-                var data = JSON.parse(data);                
+                var data = JSON.parse(data);
                 $("#related-products-inline").html(data["html"]);
                 $.jGrowl(data["message"]);
             }
@@ -609,7 +637,7 @@ $(function() {
     $(".related-products-update-button").livequery("click", function() {
         $("#related-products-update-form").ajaxSubmit({
             "success": function(data) {
-                var data = JSON.parse(data);                
+                var data = JSON.parse(data);
                 $("#related-products-inline").html(data["html"]);
                 $.jGrowl(data["message"]);
             }
@@ -639,12 +667,12 @@ $(function() {
             }
         });
     });
-    
+
     // Select products
     $("input.select-1").livequery("click", function(e) {
         if ($(this).is(":checked")) {
             $(this).parents("tr:first").addClass("marked");
-            
+
             if (e.shiftKey) {
                 var tr = $(this).parents("tr:first");
                 tr.prevAll("tr").each(function() {
@@ -655,7 +683,7 @@ $(function() {
                     $(this).find("input.select-1").attr("checked", true);
                 })
             }
-            
+
         }
         else {
             $(this).parents("tr:first").removeClass("marked");
@@ -673,7 +701,7 @@ $(function() {
         }
     });
 
-    // Product / SEO 
+    // Product / SEO
     $(".seo-save-button").livequery("click", function() {
         $("#product-seo-form").ajaxSubmit({
             "type": "post",
@@ -685,7 +713,7 @@ $(function() {
         });
         return false;
     })
-    
+
     // Shipping/Payment Price
     $(".price-button").livequery("click", function() {
         var action = $(this).attr("name");
@@ -713,7 +741,7 @@ $(function() {
         });
         return false;
     })
-    
+
     // PropertyGroup
     $("#add-property-button").livequery("click", function() {
         $("#add-property-form").ajaxSubmit({
@@ -738,7 +766,7 @@ $(function() {
         });
         return false;
     })
-    
+
     // PropertyGroup / Products
     $("#add-products-button").livequery("click", function() {
         $("#add-products-form").ajaxSubmit({
@@ -770,7 +798,7 @@ $(function() {
         });
         return false;
     });
-    
+
     $(".filter-products-input").livequery("keyup", function() {
         $("#filter-products-form").ajaxSubmit({
             "type": "post",
@@ -785,7 +813,7 @@ $(function() {
             "target": "#products-inline"
         });
     });
-    
+
     // PropertyGroup / Product Property Values
     $("#update-product-values-button").livequery("click", function() {
         $("#update-product-values-form").ajaxSubmit({
@@ -797,7 +825,7 @@ $(function() {
         });
         return false;
     })
-    
+
     // Shop Property Options
     $(".shop-property-add-option-button").livequery("click", function() {
         var action = $(this).attr("name");
@@ -811,7 +839,7 @@ $(function() {
         });
         return false;
     });
-    
+
     // Shop Property Steps
     $(".shop-property-add-step-button").livequery("click", function() {
         var action = $(this).attr("name");
@@ -825,7 +853,7 @@ $(function() {
         });
         return false;
     });
-    
+
     $(".shop-property-save-step-button").livequery("click", function() {
         $(this).parents("form:first").ajaxSubmit({
             success: function(data) {
@@ -847,15 +875,15 @@ $(function() {
         });
         return false;
     });
-    
-    
+
+
     // $(".ajax-form-button").livequery("click", function() {
     //     $(this).parents("form:first").ajaxSubmit({
     //         "success": function(data) {
     //             data = JSON.parse(data);
     //             if (data["state"] == "success") {
     //                 $("#shipping-methods").html(data["methods"]);
-    //                 $("#data").html(data["form"]);                    
+    //                 $("#data").html(data["form"]);
     //                 $.jGrowl(data["message"])
     //             }
     //             else {
@@ -866,14 +894,14 @@ $(function() {
     //     });
     //     return false;
     // })
-    
+
     // Static blocks
     var confirmation;
     $(".confirmation-link-no").livequery("click", function() {
         $(this).parent().replaceWith(confirmation);
         return false;
     });
-    
+
     $(".confirmation-link").livequery("click", function() {
         confirmation = $(this);
         var url = $(this).attr("href");
@@ -882,7 +910,7 @@ $(function() {
         $(this).replaceWith("<span><span class='" + cls + "'>" + data + "</span> <a href='" + url + "'>Yes</a> <a class='confirmation-link-no' href=''>No</a></span>");
         return false;
     });
-    
+
     // Portlets
     $(".portlet-edit-button").livequery("click", function() {
         var url = $(this).attr("href");
@@ -890,8 +918,8 @@ $(function() {
             $("#dialog").html(data);
             $("#dialog").dialog("open");
             tinyMCE.execCommand('mceAddControl', true, 'id_portlet-text');
-        });        
-        return false;        
+        });
+        return false;
     });
 
     $(".portlet-add-button").livequery("click", function() {
@@ -901,7 +929,7 @@ $(function() {
                 $("#dialog").dialog("open");
                 tinyMCE.execCommand('mceAddControl', true, 'id_portlet-text');
         }});
-        return false;        
+        return false;
     });
 
     $(".ajax-portlet-save-button").livequery("click", function() {
@@ -916,7 +944,7 @@ $(function() {
         })
         return false;
     });
-    
+
     // Marketing / Topseller
     $("#add-topseller-button").livequery("click", function() {
         $("#add-topseller-form").ajaxSubmit({
@@ -928,13 +956,13 @@ $(function() {
         });
         return false;
     })
-        
+
     $(".topseller-update-button").livequery("click", function() {
         var action = $(this).attr("name");
         $("#topseller-update-form").ajaxSubmit({
-            data : {"action" : action},            
+            data : {"action" : action},
             "success": function(data) {
-                var data = JSON.parse(data);                
+                var data = JSON.parse(data);
                 $("#topseller-inline").html(data["html"]);
                 $.jGrowl(data["message"]);
             }
@@ -964,8 +992,8 @@ $(function() {
             }
         });
     });
-    
-    // Shop 
+
+    // Shop
     $("#shop-default-values-button").livequery("click", function() {
         $("#shop-default-values-form").ajaxSubmit({
             "success": function(data) {
@@ -976,12 +1004,12 @@ $(function() {
         });
         return false;
     })
-    
+
     // Export #############################################################
 	// Traverses though all parent categories of given clicked knot
-	// (category) and call updates state (none, full, half) and checking. 
+	// (category) and call updates state (none, full, half) and checking.
 	// Calls "lfs_export_category_state"
-	var update_parent_categories = function(knot) { 
+	var update_parent_categories = function(knot) {
 		knot.parents("li.category").each(function() {
 			// url = lfs_export_category_state category id
 			var url = $(this).attr("data")
@@ -994,16 +1022,16 @@ $(function() {
 	        })
 		});
 	};
-	
+
 	// Deletes all states of child categories of given knot
-	var update_sub_categories = function(knot) {			
+	var update_sub_categories = function(knot) {
 		knot.parent().find(".category-state").html("");
 	};
 
 	$(function() {
 	    $(".category-ajax-link").livequery("click", function() {
 	        var url = $(this).attr("href");
-			
+
 			// Loads children of clicked category.
 			if ($(this).hasClass("collapsed")) {
 		        $.post(url, function(data) {
@@ -1014,7 +1042,7 @@ $(function() {
 				$(this).removeClass("collapsed");
 				$(this).addClass("expanded");
 			}
-			// Removes children of clicked category.				
+			// Removes children of clicked category.
 			else {
 				$(this).siblings("div").html("")
 				$(this).removeClass("expanded");
@@ -1026,26 +1054,26 @@ $(function() {
 		$(".export-category-input").livequery("click", function() {
 
 			// select / deselect all child nodes
-			var input = $(this);				
+			var input = $(this);
 			var parent_checked = this.checked;
 			$(this).parent().find("input").each(function() { this.checked = parent_checked; })
 
 			// Updates child and parent categories of clicked category
 			var url = $(this).attr("data");
 			if (parent_checked == true) {
-				$.post(url, {"action" : "add"}, function(data) { 
-					update_sub_categories(input);						
+				$.post(url, {"action" : "add"}, function(data) {
+					update_sub_categories(input);
 					update_parent_categories(input);
 				});
 			}
 			else {
-				$.post(url, {"action" : "remove"}, function(data) { 
+				$.post(url, {"action" : "remove"}, function(data) {
 					update_sub_categories(input);
 					update_parent_categories(input);
 				});
 			}
 		});
-		
+
 		$(".export-product-input").livequery("click", function() {
 			// Add / Remove product
 			var input = $(this);
@@ -1061,7 +1089,7 @@ $(function() {
 			}
 		});
 	});
-    
+
     $(".category-variants-options").livequery("change", function() {
 	    var url = $(this).attr("data");
 	    var variants_option = $(this).val();

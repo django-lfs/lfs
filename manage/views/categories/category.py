@@ -63,7 +63,7 @@ def manage_category(request, category_id, template_name="manage/category/manage_
     category = Category.objects.get(pk=category_id)
 
     return render_to_response(template_name, RequestContext(request, {
-        "categories_portlet" : manage_categories_portlet(request),
+        "categories_portlet" : manage_categories_portlet(request, category_id),
         "category" : category,
         # "products" : manage_products(request, category.id),
         "data" : category_data(request, category_id),

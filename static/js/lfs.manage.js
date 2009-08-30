@@ -605,7 +605,7 @@ $(function() {
         });
     });
 
-    $("#products-amount").livequery("change", function() {
+    $("#accessories-amount").livequery("change", function() {
         $("#filter-accessories-form").ajaxSubmit({
             "target": "#accessories-inline"
         });

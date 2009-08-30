@@ -13,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.catalog.models import Category
 from lfs.catalog.models import Product
+from lfs.catalog.settings import VARIANT
 from lfs.core.utils import LazyEncoder
 
 # Parts
@@ -66,10 +67,10 @@ def manage_related_products_inline(
     
     filters = Q()
     if filter_:
-        filters &= Q(name__icontains = filter_)
-        filters |= Q(sku__icontains = filter_)
-        filters |= Q(parent__sku__icontains = filter_)
-        filters |= Q(parent__name__icontains = filter_)
+        filters &= (Q(name__icontains = filter_) | Q(sku__icontains = filter_))
+        filters |= (Q(sub_type = VARIANT) & Q(active_sku = False) & Q(parent__sku__icontains = filter_))
+        filters |= (Q(sub_type = VARIANT) & Q(active_name = False) & Q(parent__name__icontains = filter_))
+
     if category_filter:
         if category_filter == "None":
             filters &= Q(categories=None)

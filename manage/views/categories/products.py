@@ -60,7 +60,7 @@ def products_inline(request, category_id, as_string=False,
     
     filters = Q()
     if filter_:
-        filters &= Q(name__icontains=filter_)
+        filters &= (Q(name__icontains = filter_) | Q(sku__icontains = filter_))
     if category_filter:
         if category_filter == "None":
             filters &= Q(categories=None)
@@ -124,7 +124,7 @@ def selected_products(request, category_id, as_string=False, template_name="mana
     
     filters = Q(categories=category)
     if filter_2:
-        filters &= Q(name__icontains=filter_2)
+        filters &= (Q(name__icontains=filter_2) | Q(sku__icontains=filter_2))
         
     products = Product.objects.filter(filters).exclude(sub_type=VARIANT)
         

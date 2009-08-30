@@ -13,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.catalog.models import Category
 from lfs.catalog.models import Product
+from lfs.catalog.settings import VARIANT
 from lfs.core.signals import topseller_changed
 from lfs.core.utils import LazyEncoder
 from lfs.marketing.models import Topseller
@@ -28,7 +29,6 @@ def manage_topseller(
         "topseller_inline" : inline,
     }))
 
-# Actions
 @permission_required("manage_shop", login_url="/login/")
 def manage_topseller_inline(
     request, as_string=False, template_name="manage/marketing/topseller_inline.html"):
@@ -66,6 +66,10 @@ def manage_topseller_inline(
     filters = Q()
     if filter_:
         filters &= Q(name__icontains = filter_)
+        filters |= Q(sku__icontains = filter_)
+        filters |= (Q(sub_type = VARIANT) & Q(active_sku = False) & Q(parent__sku__icontains = filter_))
+        filters |= (Q(sub_type = VARIANT) & Q(active_name = False) & Q(parent__name__icontains = filter_))
+        
     if category_filter:
         if category_filter == "None":
             filters &= Q(categories=None)
@@ -98,6 +102,7 @@ def manage_topseller_inline(
     else:
         return HttpResponse(result)
 
+# Actions
 @permission_required("manage_shop", login_url="/login/")
 def add_topseller(request):
     """Adds topseller by given ids (within request body).

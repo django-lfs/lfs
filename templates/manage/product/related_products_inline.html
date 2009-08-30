@@ -48,7 +48,10 @@
                 </th>
                 <th class="small number">
                     {% trans 'Price' %}
-                </th>                    
+                </th>
+                <th class="tiny right">
+                    {% trans 'Edit' %}
+                </th>
             </tr>
             {% for product in page.object_list %}
                 <tr class="{% cycle 'even' 'odd' %}">
@@ -75,7 +78,20 @@
                     </td>
                     <td class="number">
                         {{product.price|currency}}
-                    </td>                                                
+                    </td>
+					<td class="right">
+						<a href="{% url lfs_product product.slug %}">
+	                        <img src="{{ MEDIA_URL }}lfs/icons/zoom.png"
+	                             alt="Edit"
+	                             title="{% trans 'Edit product' %}" />
+						</a>
+						<a href="{% url lfs_manage_product product.id %}">
+	                        <img src="{{ MEDIA_URL }}lfs/icons/pencil.png"
+	                             alt="Edit"
+	                             title="{% trans 'Edit product' %}" />
+						</a>
+					</td>
+                                                
                 </tr>
             {% endfor %}
         </table>
@@ -115,6 +131,9 @@
                     <th class="small number">
                         {% trans 'Price' %}
                     </th>
+                    <th class="tiny right">
+                        {% trans 'Edit' %}
+                    </th>
                 </tr>
     
                 {% for related_product in related_products %}
@@ -143,6 +162,18 @@
                         <td class="number">
                             {{ related_product.price|currency }}
                         </td>                                                
+						<td class="right">
+							<a href="{% url lfs_product related_product.slug %}">
+		                        <img src="{{ MEDIA_URL }}lfs/icons/zoom.png"
+		                             alt="Edit"
+		                             title="{% trans 'Edit product' %}" />
+							</a>
+							<a href="{% url lfs_manage_product related_product.id %}">
+		                        <img src="{{ MEDIA_URL }}lfs/icons/pencil.png"
+		                             alt="Edit"
+		                             title="{% trans 'Edit product' %}" />
+							</a>
+						</td>
                     </tr>
                 {% endfor %}
             </table>    

@@ -4,7 +4,7 @@
     <form id="add-accessories-form"
           action="{% url lfs.manage.views.add_accessories product.id %}"
           method="post">
-        
+
         {% if page.has_previous %}
             <a class="accessories-page-link"
                href="{% url lfs.manage.views.manage_accessories_inline product.id%}?page=1">First</a>
@@ -22,7 +22,7 @@
                href="{% url lfs.manage.views.manage_accessories_inline product.id%}?page={{page.next_page_number}}">Next</a>
             <a class="accessories-page-link"
                href="{% url lfs.manage.views.manage_accessories_inline product.id%}?page={{paginator.num_pages}}">Last</a>
-       
+
         {% else %}
             <span>{% trans 'Next' %}</span>
             <span>{% trans 'Last' %}</span>
@@ -50,6 +50,9 @@
                     <th class="small number">
                         {% trans 'Price' %}
                     </th>
+                    <th class="tiny right">
+						{% trans "Edit" %}
+                    </th>
                 </tr>
                 {% for product in page.object_list %}
                     <tr class="{% cycle 'even' 'odd' %}">
@@ -69,7 +72,7 @@
 								<img src="{{ MEDIA_URL }}/lfs/icons/tick.png" />
 							{% else %}
 								<img src="{{ MEDIA_URL }}/lfs/icons/cross.png" />
-							{% endif %}							
+							{% endif %}
                         </td>
                         <td>
                             {{ product.sub_type|sub_type_name }}
@@ -77,7 +80,19 @@
                         <td class="number">
                             {{ product.price|currency }}
                         </td>
-                    </tr>        
+						<td class="right">
+							<a href="{% url lfs_product product.slug %}">
+		                        <img src="{{ MEDIA_URL }}lfs/icons/zoom.png"
+		                             alt="Edit"
+		                             title="{% trans 'Edit product' %}" />
+							</a>
+							<a href="{% url lfs_manage_product product.id %}">
+		                        <img src="{{ MEDIA_URL }}lfs/icons/pencil.png"
+		                             alt="Edit"
+		                             title="{% trans 'Edit product' %}" />
+							</a>
+						</td>
+                    </tr>
                 {% endfor %}
             </table>
         </div>
@@ -106,10 +121,10 @@
                     </th>
                     <th class="tiny">
                         {% trans 'Position' %}
-                    </th>                    
+                    </th>
                     <th class="small">
                         {% trans 'Quantity' %}
-                    </th>         
+                    </th>
 	                <th class="middle">
 	                    {% trans 'SKU' %}
 	                </th>
@@ -122,8 +137,11 @@
                     <th class="small number">
                         {% trans 'Price' %}
                     </th>
+                    <th class="tiny right">
+                        {% trans 'Edit' %}
+                    </th>
                 </tr>
-    
+
                 {% for product_accessory in product_accessories %}
                     <tr>
                         <td>
@@ -133,7 +151,7 @@
                         </td>
                         <td>
                             {{product_accessory.accessory.get_name}}
-                        </td>                        
+                        </td>
                         <td>
                             <input class="number"
                                    type="text"
@@ -144,7 +162,7 @@
                         <td>
                             <input class="number"
                                    type="text"
-                                   size="5"                            
+                                   size="5"
                                    name="quantity-{{product_accessory.accessory.id}}"
                                    value="{{product_accessory.quantity}}" />
                         </td>
@@ -156,17 +174,29 @@
 								<img src="{{ MEDIA_URL }}/lfs/icons/tick.png" />
 							{% else %}
 								<img src="{{ MEDIA_URL }}/lfs/icons/cross.png" />
-							{% endif %}							
+							{% endif %}
 						</td>
                         <td>
                             {{product_accessory.accessory.sub_type|sub_type_name}}
                         </td>
                         <td class="number">
                             {{product_accessory.accessory.get_price|currency}}
-                        </td>                        
+                        </td>
+						<td class="right">
+							<a href="{% url lfs_product product.slug %}">
+		                        <img src="{{ MEDIA_URL }}lfs/icons/zoom.png"
+		                             alt="Edit"
+		                             title="{% trans 'Edit product' %}" />
+							</a>
+							<a href="{% url lfs_manage_product product.id %}">
+		                        <img src="{{ MEDIA_URL }}lfs/icons/pencil.png"
+		                             alt="Edit"
+		                             title="{% trans 'Edit product' %}" />
+							</a>
+						</td>
                     </tr>
                 {% endfor %}
-            </table>    
+            </table>
 
             <input type="hidden"
                    name="keep-filters"
@@ -176,10 +206,10 @@
                    class="accessories-update-button"
                    name="save"
                    value="{% trans 'Save accessories' %}" />
-               
+
             <input type="submit"
                    class="accessories-update-button"
                    name="remove"
                    value="{% trans 'Remove from accessories' %}" />
-        </form>    
-</div>    
+        </form>
+</div>

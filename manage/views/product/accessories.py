@@ -14,6 +14,7 @@ from lfs.caching.utils import lfs_get_object_or_404
 from lfs.catalog.models import Category
 from lfs.catalog.models import Product
 from lfs.catalog.models import ProductAccessories
+from lfs.catalog.settings import VARIANT
 from lfs.core.signals import product_changed
 from lfs.core.utils import LazyEncoder
 
@@ -83,8 +84,8 @@ def manage_accessories_inline(
     if filter_:
         filters &= Q(name__icontains = filter_)
         filters |= Q(sku__icontains = filter_)
-        filters |= Q(parent__sku__icontains = filter_)
-        filters |= Q(parent__name__icontains = filter_)
+        filters |= (Q(sub_type = VARIANT) & Q(active_sku = False) & Q(parent__sku__icontains = filter_))
+        filters |= (Q(sub_type = VARIANT) & Q(active_name = False) & Q(parent__name__icontains = filter_))
         
     if category_filter:
         if category_filter == "None":

@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-
+	
     <div class="site-actions">
         <span class="label">{{category.name}}</span>
         <a class="add" 
@@ -33,7 +33,8 @@
         {% endif %}
     </div>
 
-    <div id="manage-tabs">
+    <div id="manage-tabs"
+         data="#category_{{ category.id }}">
         <ul>
             <li class="ui-tabs-nav-item"><a href="#data">{% trans 'Category' %}</a></li>
             <li class="ui-tabs-nav-item"><a href="{% url lfs_load_products_tab category.id %}">{% trans 'Products' %}</a></li>            

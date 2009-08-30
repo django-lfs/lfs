@@ -482,7 +482,7 @@ $(function() {
 
         $("a:eq(0)", "#manage-categories-categories-control").click()
 
-        var category = $(this).attr("data")
+        var category = $("#manage-tabs").attr("data")
 		$(category).parents("ul.menu:hidden").each(function() {
 		    $(this).show()
 		});

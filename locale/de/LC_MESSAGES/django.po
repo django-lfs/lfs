@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-14 12:56+0200\n"
+"POT-Creation-Date: 2009-09-14 13:06+0200\n"
 "PO-Revision-Date: 2009-02-22 07:20+0100\n"
 "Last-Translator: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
 "Language-Team: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
@@ -817,6 +817,30 @@ msgstr "Bankname"
 #: order/migrations/0001_initial.py:35
 msgid "Depositor"
 msgstr "Kontoeigentümer"
+
+#: checkout/forms.py:42
+msgid "Credit Card Type"
+msgstr "Kartentyp"
+
+#: checkout/forms.py:43
+msgid "Credit Card Owner"
+msgstr "Kartenbesitzer"
+
+#: checkout/forms.py:44
+msgid "Credit Card Number"
+msgstr "Kartennummer"
+
+#: checkout/forms.py:45
+msgid "Expiration Date Month"
+msgstr "Ablaufdatum Monat"
+
+#: checkout/forms.py:46
+msgid "Expiration Date Year"
+msgstr "Ablaufdatum Jahr"
+
+#: checkout/forms.py:47
+msgid "Verification Number"
+msgstr "Prüfnummer"
 
 #: checkout/forms.py:49
 msgid "Same as invoice"

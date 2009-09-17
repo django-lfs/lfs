@@ -371,7 +371,7 @@ def one_page_checkout(request, checkout_form = OnePageCheckoutForm,
         "form" : form,
         "cart_inline" : cart_inline(request),
         "shipping_inline" : shipping_inline(request),
-        "payment_inline" : payment_inline(request),
+        "payment_inline" : payment_inline(request, form),
         "selected_payment_method" : selected_payment_method,
         "display_bank_account" : display_bank_account,
         "display_credit_card" : display_credit_card,
@@ -397,12 +397,15 @@ def thank_you(request, template_name="lfs/checkout/thank_you_page.html"):
         "order" : order,
     }))
 
-def payment_inline(request, template_name="lfs/checkout/payment_inline.html"):
+def payment_inline(request, form, template_name="lfs/checkout/payment_inline.html"):
     """Displays the selectable payment methods of the checkout page.
 
     Factored out to be reusable for the starting request (which renders the
     whole checkout page and subsequent ajax requests which refresh the
     selectable payment methods.
+    
+    Passing the form to be able to display payment forms within the several
+    payment methods, e.g. credit card form.
     """
     # Payment
     try:
@@ -417,6 +420,7 @@ def payment_inline(request, template_name="lfs/checkout/payment_inline.html"):
     return render_to_string(template_name, RequestContext(request, {
         "payment_methods" : valid_payment_methods,
         "selected_payment_method" : selected_payment_method,
+        "form" : form,
     }))
 
 def shipping_inline(request, template_name="lfs/checkout/shipping_inline.html"):

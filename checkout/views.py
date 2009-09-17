@@ -441,13 +441,14 @@ def shipping_inline(request, template_name="lfs/checkout/shipping_inline.html"):
 def changed_checkout(request):
     """
     """
+    form = OnePageCheckoutForm()
     customer = customer_utils.get_or_create_customer(request)
     _save_customer(request, customer)
     _save_country(request, customer)
     
     result = simplejson.dumps({
         "shipping" : shipping_inline(request),
-        "payment" : payment_inline(request),
+        "payment" : payment_inline(request, form),
         "cart" : cart_inline(request),
     })
 

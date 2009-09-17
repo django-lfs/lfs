@@ -44,7 +44,7 @@ class OnePageCheckoutForm(forms.Form):
     credit_card_number = forms.CharField(label=_(u"Credit Card Number"), max_length=30, required=False)
     credit_card_expiration_date_month = forms.ChoiceField(label=_(u"Expiration Date Month"), required=False)
     credit_card_expiration_date_year = forms.ChoiceField(label=_(u"Expiration Date Year"), required=False)
-    credit_card_verification = forms.CharField(label=_(u"Verification Number"), max_length=3, required=False)
+    credit_card_verification = forms.CharField(label=_(u"Verification Number"), max_length=4, required=False, widget=forms.TextInput(attrs={"size" : 4}))
     
     no_shipping = forms.BooleanField(label=_(u"Same as invoice"), initial=True, required=False)
     message = forms.CharField(label=_(u"Your message to us"), widget=forms.Textarea(attrs={'cols':'80;'}), required=False)

@@ -549,7 +549,7 @@ class Product(models.Model):
         for pa in ProductAccessories.objects.filter(product=product):
             if pa.accessory.is_active():
                 pas.append(pa)
-        
+
         return pas
 
     def has_accessories(self):
@@ -906,14 +906,14 @@ class Product(models.Model):
             return self.default_variant
         else:
             try:
-                return self.variants.all()[0]
+                return self.variants.filter(active=True)[0]
             except IndexError:
                 return None
 
     def get_variants(self):
         """Returns the variants of the product.
         """
-        return self.variants.order_by("variant_position")
+        return self.variants.filter(active=True).order_by("variant_position")
 
     def has_variants(self):
         """Returns True if the product has variants.
@@ -935,7 +935,7 @@ class Product(models.Model):
         """
         options.sort()
         options = "".join(options)
-        for variant in self.variants.all():
+        for variant in self.variants.filter(active=True):
             temp = variant.property_values.all()
             temp = ["%s|%s" % (x.property.id, x.value) for x in temp]
             temp.sort()
@@ -1010,10 +1010,10 @@ class Product(models.Model):
         """Returns the activity state of the product.
         """
         if self.is_variant():
-            return self.parent.active
+            return self.active and self.parent.active
         else:
             return self.active
-    
+
     def is_deliverable(self):
         """Returns the deliverable state of the product.
         """
@@ -1021,7 +1021,7 @@ class Product(models.Model):
             return self.parent.deliverable
         else:
             return self.deliverable
-        
+
     # 3rd party contracts
     def get_parent_for_portlets(self):
         """Returns the current category. This will add the portlets of the

@@ -13,17 +13,15 @@
       action="{% url lfs.manage.views.edit_product_data product.id %}"
       method="post">
 
-        {% if not product.is_variant %}
-            <div class="field">
-                <div class="label">
-                    {{ form.active.label_tag }}:
-                </div>
-                <div>
-                    {{ form.active }}
-                </div>
+        <div class="field">
+            <div class="label">
+                {{ form.active.label_tag }}:
             </div>
-        {% endif %}
-
+            <div>
+                {{ form.active }}
+            </div>
+        </div>
+        
         <div class="field">
             <div class="label">
                     {% if product.is_variant %}

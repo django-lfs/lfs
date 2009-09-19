@@ -69,7 +69,7 @@ def manage_variants(request, product_id, as_string=False, template_name="manage/
     # in order to select the options of the current variant.
     if variants is None:
         variants = []
-        for variant in product.get_variants():
+        for variant in product.variants.all().order_by("variant_position"):
             properties = []
             for property in product.get_properties():
                 options = []
@@ -91,6 +91,7 @@ def manage_variants(request, product_id, as_string=False, template_name="manage/
 
             variants.append({
                 "id" : variant.id,
+                "active" : variant.active,
                 "slug" : variant.slug,
                 "sku" : variant.sku,
                 "name" : variant.name,
@@ -326,22 +327,29 @@ def update_variants(request, product_id):
                 except ObjectDoesNotExist:
                     continue
                 else:
-                    for name in ("slug", "name", "sku", "price"):
+                    for name in ("slug", "sku", "price"):
                         value = request.POST.get("%s-%s" % (name, id))
                         if value != "":
                             setattr(variant, name, value)
+
+                    # name
+                    variant.name = request.POST.get("name-%s" % id)
+
+                    # active
+                    active = request.POST.get("active-%s" % id)
+                    if active:
+                        variant.active = True
+                    else:
+                        variant.active = False
+
+                    # position
                     position = request.POST.get("position-%s" % id)
                     try:
                         variant.variant_position = int(position)
                     except ValueError:
-                        variant.variant_position = 1
+                        variant.variant_position = 10
 
                 variant.save()
-
-                # Refresh variant positions
-                for i, variant in enumerate(product.get_variants()):
-                    variant.variant_position = (i+1) * 10
-                    variant.save()
 
             elif key.startswith("property"):
                 # properties are marshalled as: property-variant_id|property_id
@@ -355,6 +363,11 @@ def update_variants(request, product_id):
                     continue
                 else:
                     property.save()
+
+    # Refresh variant positions
+    for i, variant in enumerate(product.variants.order_by("variant_position")):
+        variant.variant_position = (i+1) * 10
+        variant.save()
 
     # Send a signal to update cache
     product_changed.send(product)

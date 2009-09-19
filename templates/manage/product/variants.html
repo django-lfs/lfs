@@ -141,10 +141,13 @@
             <table>
                 <th>
                     <input type="checkbox" class="delete-all" />
-                </th>
+                </th>                
                 <th>        
                     {% trans 'Pos.' %}
                 </th>
+                <th>        
+                    {% trans 'Active' %}
+                </th>                
                 <th>        
                     {% trans 'URL' %}
                 </th>
@@ -170,6 +173,9 @@
                         </td>
                         <td>
                             <input type="text" name="position-{{variant.id}}" value="{{variant.position}}" size="3" />
+                        </td>             
+                        <td>
+                            <input type="checkbox" name="active-{{variant.id}}" {% if variant.active %}checked="checked"{% endif %} />
                         </td>             
                         <td>
                             <input type="text" name="slug-{{variant.id}}" value="{{variant.slug}}" />

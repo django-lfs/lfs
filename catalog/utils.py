@@ -125,7 +125,7 @@ def get_price_filters(category, product_filter, price_filter):
     all_products = []
     for product in products:
         all_products.append(product)
-        all_products.extend(product.variants.all())
+        all_products.extend(product.variants.filter(active=True))
 
     product_ids = [p.id for p in all_products]
 
@@ -243,7 +243,7 @@ def get_product_filters(category, product_filter, price_filter, sorting):
     all_products = []
     for product in products:
         all_products.append(product)
-        all_products.extend(product.variants.all())
+        all_products.extend(product.variants.filter(active=True))
 
     # Get the ids for use within the customer SQL
     product_ids = ", ".join([str(p.id) for p in all_products])

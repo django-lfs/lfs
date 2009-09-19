@@ -725,7 +725,7 @@ class ViewsTestCase(TestCase):
         green = PropertyOption.objects.create(name="Green", property=color)
 
         # Add a variant with color = red
-        self.v1 = Product.objects.create(name="Variant 1", slug="variant-1", sub_type=VARIANT, parent=self.p1)
+        self.v1 = Product.objects.create(name="Variant 1", slug="variant-1", sub_type=VARIANT, parent=self.p1, active=True)
         ProductPropertyValue.objects.create(product=self.v1, property=color, value=str(red.id))
 
     def test_set_sorting(self):
@@ -1151,13 +1151,15 @@ class ProductTestCase(TestCase):
             width = 11.0,
             height = 12.0,
             length = 13.0,
-            weight = 14.0)
+            weight = 14.0,
+            active=True,
+        )
 
         self.ppv_color_red = ProductPropertyValue.objects.create(product=self.v1, property=self.color, value=self.red.id)
         self.ppv_size_m = ProductPropertyValue.objects.create(product=self.v1, property=self.size, value=self.m.id)
 
         # Add a variant with color = green, size = l
-        self.v2 = Product.objects.create(name="Variant 2", slug="variant-2", sub_type=VARIANT, parent=self.p1)
+        self.v2 = Product.objects.create(name="Variant 2", slug="variant-2", sub_type=VARIANT, parent=self.p1, active=True)
         self.ppv_color_green = ProductPropertyValue.objects.create(product=self.v2, property=color, value=self.green.id)
         self.ppv_size_l = ProductPropertyValue.objects.create(product=self.v2, property=size, value=self.l.id)
 

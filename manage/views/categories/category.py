@@ -156,7 +156,7 @@ def add_category(request, category_id="", template_name="manage/category/add_cat
         form = CategoryForm(initial={"parent" : category_id })
             
     return render_to_response(template_name, RequestContext(request, {
-        "categories_portlet" : manage_categories_portlet(request),    
+        "categories_portlet" : manage_categories_portlet(request, category_id),    
         "category" : parent,
         "form" : form
     }))

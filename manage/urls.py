@@ -16,9 +16,11 @@ urlpatterns += patterns('lfs.manage.views.delivery_times',
 # Marketing
 urlpatterns += patterns('lfs.manage.views.marketing',
     url(r'^marketing$', "marketing.manage_marketing", name="lfs_manage_marketing"),
+    url(r'^manage-rating-mails$', "rating_mails.manage_rating_mails", name="lfs_manage_rating_mails"),
     url(r'^add-topseller$', "topseller.add_topseller", name="lfs_manage_add_topseller"),
     url(r'^update-topseller$', "topseller.update_topseller", name="lfs_manage_update_topseller"),
     url(r'^topseller-inline$', "topseller.manage_topseller_inline", name="lfs_manage_topseller_inline"),
+    url(r'^send-rating-mails$', "rating_mails.send_rating_mails", name="lfs_send_rating_mails"),
 )
 
 # Portlets

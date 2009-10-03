@@ -1,3 +1,7 @@
+# python imports
+from datetime import datetime
+from datetime import timedelta
+
 # django imports
 from django.core.cache import cache
 from django.db.models import Q
@@ -5,8 +9,18 @@ from django.db.models import Q
 # lfs imports
 from lfs.catalog.models import Product
 from lfs.marketing.models import Topseller
+from lfs.order.models import Order
+from lfs.order.settings import CLOSED
 from lfs.order.models import OrderItem
 from django.db import connection
+
+def get_orders(days=14):
+    """Returns closed orders which are closed for given amount of days.
+    """
+    limit = datetime.now() - timedelta(days=days)
+
+    orders = Order.objects.filter(state=CLOSED, state_modified__lte=limit)
+    return orders
 
 def get_topseller(limit=5):
     """Returns products with the most sales. Limited by given limit.

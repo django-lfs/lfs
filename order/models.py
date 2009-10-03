@@ -27,7 +27,9 @@ class Order(models.Model):
     session = models.CharField(_(u"Session"), blank=True, max_length=100)
 
     created = models.DateTimeField(_(u"Created"), auto_now_add=True)
+
     state = models.PositiveSmallIntegerField(_(u"State"), choices=ORDER_STATES, default=SUBMITTED)
+    state_modified = models.DateTimeField(_(u"State modified"), auto_now_add=True)
 
     price = models.FloatField(_(u"Price"), default=0.0)
     tax = models.FloatField(_(u"Tax"), default=0.0)

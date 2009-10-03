@@ -1,3 +1,7 @@
+# python imports
+from datetime import datetime
+from datetime import timedelta
+
 # django imports
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -9,6 +13,47 @@ import lfs.marketing.utils
 from lfs.marketing.models import Topseller
 from lfs.order.models import Order
 from lfs.order.models import OrderItem
+from lfs.order.settings import CLOSED
+
+class RatingMailTestCase(TestCase):
+    """
+    """
+    def setUp(self):
+        """
+        """
+        self.p1 = Product.objects.create(name="Product 1", slug="product-1", active=True)
+
+        self.c1 = Category.objects.create(name="Category 1", slug="category-1")
+        self.c1.save()
+        self.c1.products = (self.p1, )
+        self.c1.save()
+
+        self.o = Order.objects.create(invoice_country_id=1, shipping_country_id=1)
+        self.oi1 = OrderItem.objects.create(order=self.o, product_amount=1, product=self.p1)
+    
+    def test_get_orders(self):
+        """
+        """
+        # First there is no closed order 
+        orders = lfs.marketing.utils.get_orders()
+        self.assertEqual(len(orders), 0)
+        
+        # Close order 
+        self.o.state = CLOSED
+        self.o.save()
+        
+        # But order is closed within the limit, so there is still no order for 
+        # rating mails
+        orders = lfs.marketing.utils.get_orders()
+        self.assertEqual(len(orders), 0)
+        
+        # Set the state modified date before the limit
+        self.o.state_modified = datetime.now() - timedelta(days=15)
+        self.o.save()
+        
+        # Now there is a order for which there should a rating mail be sent
+        orders = lfs.marketing.utils.get_orders()
+        self.assertEqual(len(orders), 1)
 
 class TopsellerTestCase(TestCase):
     """Tests the Topseller model

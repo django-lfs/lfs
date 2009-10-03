@@ -159,7 +159,7 @@ def set_order_filters_date(request):
         )
     else:
         html = (("#orders-inline", orders_inline(request, as_string=True)),)
-        
+
     msg = _(u"Filters has been set")
 
     result = simplejson.dumps({
@@ -183,14 +183,14 @@ def reset_order_filters(request):
         )
     else:
         html = (("#orders-inline", orders_inline(request, as_string=True)),)
-        
+
     msg = _(u"Filters has been reset")
 
     result = simplejson.dumps({
         "html" : html,
         "message" : msg,
     }, cls = LazyEncoder)
-    
+
     return HttpResponse(result)
 
 @permission_required("manage_shop", login_url="/login/")
@@ -292,13 +292,14 @@ def send_order(request, order_id):
     )
 
 def change_order_state(request):
-    """
+    """Changes the state of an order, given by request post variables.
     """
     order_id = request.POST.get("order-id")
-    state_id = request.POST.get("new-state")    
+    state_id = request.POST.get("new-state")
     order = get_object_or_404(Order, pk=order_id)
-    
+
     order.state = state_id
+    order.state_modified = datetime.now()
     order.save()
 
     msg = _(u"State has been changed")
@@ -312,9 +313,9 @@ def change_order_state(request):
         "html" : html,
         "message" : msg,
     }, cls = LazyEncoder)
-    
+
     return HttpResponse(result)
-    
+
 def _get_filtered_orders(order_filters):
     """
     """

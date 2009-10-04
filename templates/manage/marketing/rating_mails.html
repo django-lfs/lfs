@@ -3,6 +3,7 @@
 {% load lfs_manage_tags %}
 {% load lfs_tags %}
 
+{% block section %}send-rating-mails{% endblock %}
 {% block left-slot-wrapper %}{% endblock %}
 {% block content %}
 
@@ -10,17 +11,24 @@
 
     <form action="{% url lfs_send_rating_mails %}"
           method="post">
-        <input type="checkbox"
-               name="test"
-               checked = "checked"><label>{% trans "Test" %} ({% trans "The mails will get to the shop notification email adresses" %})</label>
         <div>
+            <input type="checkbox"
+                   name="test"
+                   checked = "checked"><label>{% trans "Test" %} - {% trans "The mails will get to the shop notification email adresses" %}</label>
+        </div>       
+        <div>
+            <input type="checkbox"
+                   name="bcc"
+                   checked = "checked"><label>{% trans "Send copy" %} - {% trans "The mails will also send to the shop notification email adresses (if not in test mode)" %}</label>
+        </div>           
+        <div class="padding-top">
             <input type="submit"
                    value='{% trans "Send rating mails" %}' />
         </div>
     </form>
 
     {% if display_orders_sent %}
-        <h2 class="middle">{% trans "Rating mails sent" %}</h2>
+        <h2 class="padding-top-large">{% trans "Rating mails sent" %}</h2>
         {% if orders_sent %}
             <table class="lfs-manage-table">
                 <tr>
@@ -78,7 +86,7 @@
             {% endfor %}
             </table>
         {% else %}
-           {% trans "No orders have been sent" %}
+           {% trans "No e-mails have been sent" %}
         {% endif %}
     {% endif %}
 

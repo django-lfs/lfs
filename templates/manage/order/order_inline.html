@@ -139,7 +139,7 @@
             {% trans 'State' %}:
         </td>
         <td>
-            {{current_order.get_state_display}} ({{ current_order.state_modified|date:_("DATETIME_FORMAT") }})
+            {{current_order.get_state_display}} {% if current_order.state_modified %}({{ current_order.state_modified|date:_("DATETIME_FORMAT") }}){% endif %}
         </td>
     </tr>
     <tr>

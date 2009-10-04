@@ -82,6 +82,14 @@ table.lfs-manage-table th {
     background-color: #ede9e8;
 }
 
+.padding-top {
+    margin-top: 10px;
+}
+
+.padding-top-large {
+    margin-top: 20px;    
+}
+
 .middle {
     margin-top: 10px;
 }

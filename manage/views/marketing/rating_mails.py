@@ -52,9 +52,11 @@ def send_rating_mails(request):
                 to = shop.get_notification_emails()
                 bcc = []
             else:
-                to = ["usenet@diefenba.ch"]
-                # to = [order.customer.customer_email]
-                bcc = shop.get_notification_emails()
+                to = [order.customer.customer_email]
+                if request.POST.get("bcc"):
+                    bcc = shop.get_notification_emails()
+                else:
+                    bcc = []
                 OrderRatingMail.objects.create(order=order)
 
             # text
@@ -77,10 +79,7 @@ def send_rating_mails(request):
             mail.attach_alternative(html, "text/html")
             # mail.send()
 
-        response = render_to_response("manage/marketing/rating_mails.html", RequestContext(request, {
+        return render_to_response("manage/marketing/rating_mails.html", RequestContext(request, {
             "display_orders_sent" : True,
             "orders_sent" : orders_sent
         }))
-        
-        return lfs.core.utils.set_message_to(response, _(u"Rating mails has been sent."))
-

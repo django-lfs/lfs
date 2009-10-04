@@ -17,7 +17,7 @@ import lfs.marketing.utils
 from lfs.catalog.models import Product
 from lfs.marketing.models import OrderRatingMail
 
-def manage_rating_mails(request, orders_sent=[], 
+def manage_rating_mails(request, orders_sent=[],
     template_name="manage/marketing/rating_mails.html"):
     """Displays the manage view for rating mails
     """
@@ -45,9 +45,9 @@ def send_rating_mails(request):
                 pass
             else:
                 continue
-            
+
             orders_sent.append(order)
-            
+
             if request.POST.get("test"):
                 to = shop.get_notification_emails()
                 bcc = []
@@ -77,7 +77,7 @@ def send_rating_mails(request):
             })
 
             mail.attach_alternative(html, "text/html")
-            # mail.send()
+            mail.send()
 
         return render_to_response("manage/marketing/rating_mails.html", RequestContext(request, {
             "display_orders_sent" : True,

@@ -2539,7 +2539,7 @@ msgid ""
 "The mails will also send to the shop notification email adresses (if not in "
 "test mode)"
 msgstr ""
-"Die E-Mails werden zusäztlich zu den Benachrichtigungsadressen des Shops versendet (wenn nicht im Test-Modus)"
+"Die E-Mails werden zusätzlich zu den Benachrichtigungsadressen des Shops versendet (wenn nicht im Test-Modus)"
 
 #: templates/manage/marketing/rating_mails.html:31
 msgid "Rating mails sent"

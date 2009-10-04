@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-03 13:55+0200\n"
+"POT-Creation-Date: 2009-10-04 09:26+0200\n"
 "PO-Revision-Date: 2009-02-22 07:20+0100\n"
 "Last-Translator: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
 "Language-Team: Kai Diefenbach <kai.diefenbach@iqpp.de>\n"
@@ -97,6 +97,7 @@ msgstr "Titel"
 #: templates/manage/category/selected_products.html:39
 #: templates/manage/customer/customer_inline.html:13
 #: templates/manage/customer/customers_inline.html:10
+#: templates/manage/marketing/rating_mails.html:39
 #: templates/manage/marketing/topseller_inline.html:37
 #: templates/manage/marketing/topseller_inline.html:119
 #: templates/manage/order/order_inline.html:14
@@ -288,6 +289,7 @@ msgstr "Artikelnummer"
 #: templates/manage/criteria/width_criterion.html:11
 #: templates/manage/customer/customer_inline.html:136
 #: templates/manage/customer/customer_inline.html:181
+#: templates/manage/marketing/rating_mails.html:51
 #: templates/manage/marketing/topseller_inline.html:49
 #: templates/manage/marketing/topseller_inline.html:134
 #: templates/manage/order/order_inline.html:258
@@ -870,6 +872,7 @@ msgstr "Nur authentifiziert"
 #: checkout/views.py:51 customer/models.py:70 customer/views.py:41
 #: customer/migrations/0001_initial.py:39
 #: templates/manage/customer/customers_inline.html:106
+#: templates/manage/marketing/rating_mails.html:42
 #: templates/manage/reviews/review_inline.html:116
 #: templates/manage/reviews/reviews_inline.html:113
 msgid "E-Mail"
@@ -1467,13 +1470,9 @@ msgstr "Ausgewählte Produkte wurden zur Kategorie hinzugefügt."
 msgid "SEO data has been saved."
 msgstr "SEO Daten wurden gespeichert."
 
-#: manage/views/marketing/rating_mails.py:29
+#: manage/views/marketing/rating_mails.py:34
 msgid "Please rate your products on "
 msgstr "Bitte bewerten Sie Ihre Produkte von "
-
-#: manage/views/marketing/rating_mails.py:63
-msgid "Rating mails has been sent."
-msgstr "Bewertungsmails wurden versendet."
 
 #: manage/views/marketing/topseller.py:121
 msgid "Topseller have been added."
@@ -1933,7 +1932,6 @@ msgid "Marketing"
 msgstr "Marketing"
 
 #: templates/manage/manage_base.html:120
-#: templates/manage/marketing/rating_mails.html:8
 msgid "Rating Mails"
 msgstr "Bewertungsmails"
 
@@ -2017,6 +2015,7 @@ msgstr "Allgemein"
 #: templates/manage/customer/customer_inline.html:127
 #: templates/manage/customer/customer_inline.html:175
 #: templates/manage/customer/customers_inline.html:88
+#: templates/manage/marketing/rating_mails.html:36
 #: templates/manage/reviews/review_inline.html:75
 #: templates/manage/reviews/reviews_inline.html:95
 msgid "ID"
@@ -2030,6 +2029,8 @@ msgstr "ID"
 #: templates/manage/cart/selectable_carts_inline.html:59
 #: templates/manage/customer/customer_inline.html:149
 #: templates/manage/customer/customer_inline.html:190
+#: templates/manage/marketing/rating_mails.html:70
+#: templates/manage/marketing/rating_mails.html:73
 #: templates/manage/order/order_inline.html:126
 #: templates/manage/order/order_inline.html:142
 #: templates/manage/order/orders_inline.html:138
@@ -2516,18 +2517,58 @@ msgstr "Daten"
 msgid "Product selection"
 msgstr "Produktauswahl"
 
-#: templates/manage/marketing/rating_mails.html:14
+#: templates/manage/marketing/rating_mails.html:10
+#: templates/manage/marketing/rating_mails.html:26
+msgid "Send rating mails"
+msgstr "Bewertungsmails versenden"
+
+#: templates/manage/marketing/rating_mails.html:17
 msgid "Test"
 msgstr "Test"
 
-#: templates/manage/marketing/rating_mails.html:14
-msgid "The mails will get to the shop notification email adresses"
-msgstr ""
-"Die E-Mails werden zu den Benachrichtigungsadressen des Shops versendet"
-
 #: templates/manage/marketing/rating_mails.html:17
-msgid "Send rating mails"
-msgstr "Bewertungsmails versenden"
+msgid "The mails will get to the shop notification email adresses"
+msgstr "Die E-Mails werden zu den Benachrichtigungsadressen des Shops versendet"
+
+#: templates/manage/marketing/rating_mails.html:22
+msgid "Send copy"
+msgstr "Kopie versenden"
+
+#: templates/manage/marketing/rating_mails.html:22
+msgid ""
+"The mails will also send to the shop notification email adresses (if not in "
+"test mode)"
+msgstr ""
+"Die E-Mails werden zusäztlich zu den Benachrichtigungsadressen des Shops versendet (wenn nicht im Test-Modus)"
+
+#: templates/manage/marketing/rating_mails.html:31
+msgid "Rating mails sent"
+msgstr "Bewertungsmails wurden versendet."
+
+#: templates/manage/marketing/rating_mails.html:45
+#: templates/manage/order/order_inline.html:123
+#: templates/manage/order/orders_inline.html:118
+msgid "Date"
+msgstr "Datum"
+
+#: templates/manage/marketing/rating_mails.html:48
+msgid "Date Closed"
+msgstr "Geschlossen am"
+
+#: templates/manage/marketing/rating_mails.html:54
+#: templates/manage/marketing/rating_mails.html:81
+#: templates/manage/product/products_inline.html:39
+#: templates/manage/product/products_inline.html:106
+msgid "View"
+msgstr "Ansicht"
+
+#: templates/manage/marketing/rating_mails.html:82
+msgid "View order"
+msgstr "Bestellung ansehen"
+
+#: templates/manage/marketing/rating_mails.html:89
+msgid "No e-mails have been sent"
+msgstr "Es wurden keine Bewertungsmails versendet."
 
 #: templates/manage/marketing/topseller_inline.html:103
 msgid "Add to topseller"
@@ -2562,11 +2603,6 @@ msgstr "Ändern"
 #: templates/manage/order/order_inline.html:116
 msgid "Customer name"
 msgstr "Kundenname"
-
-#: templates/manage/order/order_inline.html:123
-#: templates/manage/order/orders_inline.html:118
-msgid "Date"
-msgstr "Datum"
 
 #: templates/manage/order/order_inline.html:262
 msgid "Included VAT"
@@ -2818,11 +2854,6 @@ msgstr "Im Angebot"
 #: templates/manage/product/products_inline.html:33
 msgid "Sale Price"
 msgstr "Angebotspreis"
-
-#: templates/manage/product/products_inline.html:39
-#: templates/manage/product/products_inline.html:106
-msgid "View"
-msgstr "Ansicht"
 
 #: templates/manage/product/properties.html:18
 #: templates/manage/product/variants.html:19

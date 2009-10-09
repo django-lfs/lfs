@@ -1,4 +1,5 @@
 # django imports
+from django.contrib.contenttypes.models import ContentType
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
@@ -51,6 +52,36 @@ def send_customer_added(user):
     # html    
     html = render_to_string("lfs/mail/new_user_mail.html", {
         "user" : user, "shop" : shop,
+    })
+    
+    mail.attach_alternative(html, "text/html")
+    mail.send()
+    
+def send_review_added(review):
+    """Sends a mail to shop admins that a new review has been added
+    """
+    shop = lfs.core.utils.get_default_shop()
+    
+    subject = _(u"New review has been added")
+    from_email = shop.from_email
+    to = shop.get_notification_emails()
+
+    ctype = ContentType.objects.get_for_id(review.content_type_id)
+    product = ctype.get_object_for_this_type(pk=review.content_id)
+    
+    # text
+    text = render_to_string("lfs/mail/review_added_mail.txt", {
+        "review" : review,
+        "product" : product,
+    })  
+
+    mail = EmailMultiAlternatives(
+        subject=subject, body=text, from_email=from_email, to=to)
+    
+    # html    
+    html = render_to_string("lfs/mail/review_added_mail.html", {
+        "review" : review,
+        "product" : product,
     })
     
     mail.attach_alternative(html, "text/html")

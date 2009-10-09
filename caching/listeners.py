@@ -1,4 +1,5 @@
 # django imports
+from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.db.models.signals import pre_save
@@ -19,6 +20,9 @@ from lfs.marketing.models import Topseller
 from lfs.order.models import OrderItem
 from lfs.page.models import Page
 from lfs.shipping.models import ShippingMethod
+
+# reviews imports
+from reviews.signals import review_added
 
 # Cart
 def cart_changed_listener(sender, **kwargs):
@@ -97,6 +101,13 @@ topseller_changed.connect(topseller_changed_listener)
 def topseller_saved_listener(sender, instance, **kwargs):
     update_topseller_cache(instance)
 post_save.connect(topseller_saved_listener, sender=Topseller)
+
+def review_added_listener(sender, **kwargs):
+    ctype = ContentType.objects.get_for_id(sender.content_type_id)
+    product = ctype.get_object_for_this_type(pk=sender.content_id)
+
+    update_product_cache(product)
+review_added.connect(review_added_listener)
 
 ##### 
 def update_category_cache(instance):

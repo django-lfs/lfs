@@ -69,9 +69,21 @@ def send_rating_mails(request):
             mail = EmailMultiAlternatives(
                 subject=subject, body=text, from_email=from_email, to=to, bcc=bcc)
 
+            order_items = []
+            for order_item in order.items.all():
+                product = order_item.product
+                if product.is_variant():
+                    product = product.parent
+
+                order_items.append({
+                    "product_id" : product.id,
+                    "product_name" : product.name,
+                })
+
             # html
             html = render_to_string("lfs/reviews/rating_mail.html", {
                 "order" : order,
+                "order_items" : order_items,
                 "content_type_id" : ctype.id,
                 "site" : site,
             })

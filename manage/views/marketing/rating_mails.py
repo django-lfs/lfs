@@ -52,7 +52,7 @@ def send_rating_mails(request):
                 to = shop.get_notification_emails()
                 bcc = []
             else:
-                to = [order.customer.customer_email]
+                to = [order.customer_email]
                 if request.POST.get("bcc"):
                     bcc = shop.get_notification_emails()
                 else:

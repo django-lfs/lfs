@@ -12,6 +12,7 @@ from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 
 # lfs imports
+import lfs.catalog.utils
 import lfs.core.utils
 from lfs.caching.utils import lfs_get_object_or_404
 from lfs.cart.views import add_to_cart
@@ -20,8 +21,6 @@ from lfs.catalog.models import Product
 from lfs.catalog.settings import PRODUCT_WITH_VARIANTS, VARIANT
 from lfs.catalog.settings import SELECT
 from lfs.catalog.settings import CONTENT_PRODUCTS
-import lfs.catalog.utils
-from lfs.core.signals import lfs_sorting_changed
 from lfs.core.utils import LazyEncoder
 from lfs.utils import misc as lfs_utils
 
@@ -44,7 +43,11 @@ def select_variant_from_properties(request):
     changed.
     """
     product_id = request.POST.get("product_id")
-    product = Product.objects.get(pk = product_id)
+    
+    try:
+        product = Product.objects.get(pk = product_id)
+    except Product.DoesNotExist:
+        return HttpResponse("")
 
     options = lfs_utils.parse_properties(request)
     variant = product.get_variant(options)
@@ -312,10 +315,10 @@ def product_view(request, slug, template_name="lfs/catalog/product_base.html"):
     """Main view to display a product.
     """
     product = lfs_get_object_or_404(Product, slug=slug)
-    
+
     if (request.user.is_superuser or product.is_active()) == False:
         raise Http404()
-    
+
     # Store recent products for later use
     recent = request.session.get("RECENT_PRODUCTS", [])
     if slug in recent:
